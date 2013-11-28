@@ -1,0 +1,40 @@
+﻿* html .u3_selected {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="管理产品页面_files/u3_selected.png");
+}
+
+* html .u3_normal {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="管理产品页面_files/u3_normal.png");
+}
+
+* html .u8_selected {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="管理产品页面_files/u3_selected.png");
+}
+
+* html .u8_normal {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="管理产品页面_files/u3_normal.png");
+}
+
+* html .u25_normal {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="管理产品页面_files/u25_normal.png");
+}
+
+* html .u27_normal {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="管理产品页面_files/u25_normal.png");
+}
+
+* html .u29_normal {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="header_for_gys_files/u18_normal.png");
+}
+
+* html .u31_normal {
+    background-image: none;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="header_for_gys_files/u20_normal.png");
+}
+

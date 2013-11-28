@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>可折叠三级菜单</title>
+<style type="text/css">
+body{
+padding: 0;
+margin: 0;
+font-size: 12px;
+font-family: Arial, Helvetica, sans-serif;
+line-height: 140%;
+background:#E7DFD3;
+}
+</style>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+   $(function(){
+      $('li:has(ul)').click(function(even){
+         if(this == even.target){
+           if($(this).children().is(':hidden')){
+              $(this)
+              .css('list-style-image','url(minus.gif)')
+              .children().show();
+           }else{
+              $(this)
+              .css('list-style-image','url(plus.gif)')
+              .children().hide();
+           }
+         }
+         return false;
+      })
+      .css('cursor','pointer')
+      .click();
+    $('li:not(:has(ul))').css({
+       cursor:'default',
+       'list-style-image':'none'
+     });
+   });
+</script>
+</head>
+<body>
+<fieldset>
+    <legend>Collapsible List &mdash; Take 1</legend>
+    <ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3
+        <ul>
+        <li>Item 3.1</li>
+        <li>Item 3.2
+            <ul>
+            <li>Item 3.2.1</li>
+            <li>Item 3.2.2</li>
+            <li>Item 3.2.3</li>
+            </ul>
+        </li>
+        <li>Item 3.3</li>
+        </ul>            
+    </li>
+    <li>Item 4
+        <ul>
+        <li>Item 4.1</li>
+        <li>Item 4.2
+            <ul>
+            <li>Item 4.2.1</li>
+            <li>Item 4.2.2</li>
+            <li>Item 4.2.3</li>
+            </ul>
+        </li>
+        <li>Item 4.3</li>
+        </ul>            
+    </li>
+    <li>Item 5</li>
+    </ul>
+</fieldset>
+</body>
+</html>
