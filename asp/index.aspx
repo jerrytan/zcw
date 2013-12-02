@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=GBK" />
-<title>众材网</title>
+<title>众材网 最权威的公装材料库</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 
 
