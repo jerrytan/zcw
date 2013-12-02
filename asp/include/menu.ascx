@@ -3,7 +3,6 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
 
 <script runat="server" >
