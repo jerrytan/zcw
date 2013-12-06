@@ -3,11 +3,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <meta property="qc:admins" content="10712247166546367" /> 
-<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="1101078572" data-redirecturi="http://zhcnet.cn/" charset="utf-8"></script>
-<title>众材网 QQ登陆</title>
-
-
-
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" charset="utf-8" data-callback="true"></script>
+<title>haha </title>
 </head>
+<body>
 
+hahaha
+<script type="text/javascript">
+if(QC.Login.check()){//如果已登录
+	QC.Login.getMe(function(openId, accessToken){
+		alert(["当前登录用户的", "openId为："+openId, "accessToken为："+accessToken].join("\n"));
+	});
+	//这里可以调用自己的保存接口
+	//...
+}
+</script>
+
+<body>
 </html>
