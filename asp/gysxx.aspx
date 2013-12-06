@@ -124,9 +124,7 @@
 
     <%foreach(System.Data.DataRow row in dt3.Rows){%>
      <div class="gydl1"><img src="images/222_03.jpg" /><%=row["显示名"].ToString() %></div>
-	 <%}%>
-     <div class="gydl1"><img src="images/222_03.jpg" />品牌a</div>
-     <div class="gydl1"><img src="images/222_03.jpg" />品牌a</div>
+	 <%}%>  
 
 </div>
 

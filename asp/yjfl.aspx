@@ -227,7 +227,7 @@
 <div class="pxleft"> 
  <% foreach(System.Data.DataRow row in dt1.Rows){%>
 <div class="pxtu">
-<a href="#"><img src="images/222_03.jpg" /></a>
+<a href="xx.aspx?cl_id=<%=row["cl_id"]%>"><img src="images/222_03.jpg" /></a>
 <span class="pxtu1"><%=row["显示名"].ToString() %></span> 
 <span class="pxtu2">规格：12345678</span></div>
 <% } %>

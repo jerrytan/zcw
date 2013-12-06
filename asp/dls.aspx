@@ -57,6 +57,18 @@
         protected DataTable dt1 = new DataTable();  //二级分类名称 
 		protected DataTable dt2 = new DataTable();  //品牌(和二级分类相关的品牌) 材料分类表中fl_id 品牌字典中关系没有对应
 		protected DataTable dt3 = new DataTable();  //二级分类名称下的材料
+		protected DataTable dt4 = new DataTable();  //材料名称分页 
+		private const int Page_Size = 2; //每页的记录数量
+		private int current_page=1;
+	    int pageCount_page;
+
+      public class OptionItem
+    {
+        public string Text { get; set; }
+        public string SelectedString { get; set; }
+        public string Value { get; set; }
+    }
+       	public List<OptionItem> Items { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
@@ -64,7 +76,7 @@
             conn.Open();            
             String name= Request["name"];
 			string name1=name.ToString().Substring(0, 2); //取左边两位字符串
-            SqlDataAdapter da = new SqlDataAdapter("select 显示名字 from 材料分类表 where  left(分类编码,2)='"+name1+"' and len(分类编码)='2'  ", conn);            
+            SqlDataAdapter da = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where  left(分类编码,2)='"+name1+"' and len(分类编码)='2'  ", conn);            
             DataSet ds = new DataSet();
             da.Fill(ds, "材料分类表"); 
             dt = ds.Tables[0];
@@ -79,11 +91,112 @@
             da2.Fill(ds2, "品牌字典"); 
             dt2 = ds2.Tables[0];
 			
-			SqlDataAdapter da3 = new SqlDataAdapter("select 显示名,规格型号,一级分类编码,cl_id from 材料表 where 二级分类编码='"+name+"' ", conn);            
+			SqlDataAdapter da3 = new SqlDataAdapter("select 显示名,规格型号,分类编码,cl_id from 材料表 where 分类编码='"+name+"' ", conn);            
             DataSet ds3 = new DataSet();
             da3.Fill(ds3, "材料表"); 
             dt3 = ds3.Tables[0];
+			
+			//从查询字符串中获取"页号"参数
+            string strP = Request.QueryString["p"];
+            if (string.IsNullOrEmpty(strP))
+            {
+                strP = "1";
+            }
+            int p;
+            bool b1 = int.TryParse(strP, out p);
+            if (b1 == false)
+            {
+                p = 1;
+            }
+            current_page = p;
+            //从查询字符串中获取"总页数"参数
+            string strC = Request.QueryString["c"];
+            if (string.IsNullOrEmpty(strC))
+            {
+                double recordCount = this.GetProductCount(); //总条数
+                double d1 = recordCount / Page_Size; //13.4
+                double d2 = Math.Ceiling(d1); //14.0
+                int pageCount = (int)d2; //14
+                strC = pageCount.ToString();
+            }
+            int c;
+            bool b2 = int.TryParse(strC,out c);
+            if (b2 == false)
+            {
+                c = 1;
+            }
+            pageCount_page = c;
+            //计算/查询分页数据
+            int begin = (p - 1) * Page_Size + 1;
+            int end = p * Page_Size;
+			//string name1 = name.ToString().Substring(0, 4);    //将二级分类传过来的材料编码取前四位作为参数执行存储过程
+            dt4 = this.GetProductFormDB(begin, end,name);
+            this.SetNavLink(p, c);   
 		} 
+		
+		protected string cpPrev = "";
+        protected string cpNext = "";
+        protected string cpLast = "";       
+        private void SetNavLink(int currentPage, int pageCount)
+        {
+            string path = Request.Path;         
+            cpPrev = currentPage != 1 ? string.Format("p={0}", //连超链接上一页
+                 currentPage - 1) : "";
+            cpNext = currentPage != pageCount ? string.Format("p={0}", //连超链接下一页
+                currentPage + 1) : "";
+            cpLast = currentPage != pageCount ? string.Format("p={0}",  //连超链接尾页
+                 pageCount) : "";     
+           
+            this.Items = new List<OptionItem>();
+            for (int i = 1; i <= pageCount; i++)  //下拉列表循环总得页数
+            {
+               
+                OptionItem item = new OptionItem();
+                item.Text = i.ToString();                          
+                item.SelectedString = i == currentPage ? "selected='selected'" : string.Empty;
+                item.Value = string.Format("dls.aspx?p={0}", i);                
+                this.Items.Add(item);
+            }
+      
+        }
+
+        private DataTable GetProductFormDB(int begin, int end, string name)
+        {
+            string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;         
+            SqlCommand cmd = new SqlCommand("cp_Paging");
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@begin", SqlDbType.Int).Value = begin;  //开始页第一条记录
+            cmd.Parameters.Add("@end", SqlDbType.Int).Value = end;      //开始页最后一条记录
+			cmd.Parameters.Add("@材料编码", SqlDbType.VarChar,20).Value = name; //传材料编码给材料表,执行存储过程
+
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);          
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                cmd.Connection = conn;
+                conn.Open();
+                sda.Fill(dt4);
+                conn.Close();
+            }
+            return dt4;
+        }
+
+        //从数据库获取记录的总数量
+        private int GetProductCount()
+        {
+            string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+            String name= Request["name"];
+            string sql = "select count(cl_Id) from 材料表 where left(材料编码,2)='"+name+"'";
+            SqlCommand cmd = new SqlCommand(sql);
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                cmd.Connection = conn;
+                conn.Open();
+                object obj = cmd.ExecuteScalar();
+                conn.Close();
+                int count = (int)obj;
+                return count;
+            }
+        }
 </script>
 
 
@@ -92,7 +205,7 @@
 <a href="index.aspx">首页 ></a>&nbsp&nbsp&nbsp
 
  <% foreach(System.Data.DataRow row in dt.Rows){%>
-    <a href="#"><%=row["显示名字"].ToString() %></a>
+    <a href="yjfl.aspx?name=<%=row["分类编码"]%>"><%=row["显示名字"].ToString() %></a>
   <% } %>
  > 
  <% foreach(System.Data.DataRow row in dt1.Rows){%>
@@ -144,25 +257,14 @@
 
 <div class="dlspxl"> 
 
- <% foreach(System.Data.DataRow row in dt3.Rows){%>  
+ <% foreach(System.Data.DataRow row in dt4.Rows){%>  
 
-<div class="dlspxt"><a href="xx.aspx?fl_id=<%=row["一级分类编码"]%>&cl_id=<%=row["cl_id"]%>"><img src="images/222_03.jpg" />
+<div class="dlspxt"><a href="xx.aspx"><img src="images/222_03.jpg" />
 <div class="dlspxt1">
 <span class="dlsl"><%=row["显示名"].ToString() %></span>  
 <span class="dlspx3"><input name="" type="checkbox" value=""  class="ck" /> 收藏</span> 
 <span class="dlsgg">规格：<%=row["规格型号"].ToString() %></span> </div></div>
   <% } %>
-
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-
 
 </div>
 
@@ -187,9 +289,34 @@
 
 
 <div class="fy2">
-<div class="fy3"><a href="#">上一页</a> <a href="#">1</a> <a href="#">2</a><a href="$"> 3···</a> <a href="#">下一页</a> <a href="#"> 尾页</a>  
-直接到第 <select name="" class="fu"><option>1</option></select>      
-页</div></div>
+<div class="fy3">
+<% if(current_page!=1) { %>
+<a href="dls.aspx?<%=cpPrev %>" class="p">上一页</a> 
+<% } %> 
+<a href="dls.aspx?p=1" class="p">1</a> 
+<% if(current_page>1) { %>
+<a href="dls.aspx?p=2" class="p">2</a>
+<% } %>
+<% if(current_page>2) { %>
+<a href="dls.aspx?p=3" class="p"> 3···</a>
+<% } %>
+<% if(current_page<pageCount_page) { %>
+ <a href="dls.aspx?<%=cpNext %>" class="p">下一页</a> 
+ <% } %>
+ <% if(current_page!=pageCount_page) { %>
+ <a href="dls.aspx?<%=cpLast %>" class="p"> 尾页</a> 
+ <% } %>
+
+ 直接到第  
+    <select onchange="window.location=this.value"  name="" class="p">
+  <% foreach (var v in this.Items)
+   { %>  
+ <option   value="<%=v.Value %>" <%=v.SelectedString %> ><%=v.Text %></option>
+
+<%} %>
+</select>
+页
+</div></div>
 
 
 

@@ -45,7 +45,7 @@
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();          
 			string pp_id = Request["pp_id"];  //获取首页品牌排名传过来的pp_id
-            SqlDataAdapter da = new SqlDataAdapter("select 品牌名称 ,pp_id  from 品牌字典 where pp_id='"+pp_id+"'", conn);
+            SqlDataAdapter da = new SqlDataAdapter("select 品牌名称,gys_id  from 品牌字典 where pp_id='"+pp_id+"'", conn);
             DataSet ds = new DataSet();
             da.Fill(ds, "品牌字典");            
             dt = ds.Tables[0];				
@@ -55,13 +55,13 @@
             da1.Fill(ds1, "材料供应商信息表");            
             dt1 = ds1.Tables[0];			
 			
-			string BrandsName=Request["BrandsName"];
-            SqlDataAdapter da2 = new SqlDataAdapter("select 供应商,联系人,联系人手机,联系地址 from 材料供应商信息表 where gys_id in(select gys_id from 品牌字典 where 品牌名称='"+BrandsName+"' ) ", conn);
+			//string BrandsName=Request["BrandsName"];
+            SqlDataAdapter da2 = new SqlDataAdapter("select 供应商,联系人,联系人手机,联系地址 from 材料供应商信息表 where gys_id in ( select gys_id from 品牌字典 where pp_id='"+pp_id+"') ", conn);
             DataSet ds2 = new DataSet();
             da2.Fill(ds2, "材料供应商信息表");            
             dt2 = ds2.Tables[0];
 			
-			SqlDataAdapter da3 = new SqlDataAdapter("select 显示名 ,规格型号 from 材料表 where 品牌名称='"+BrandsName+"' ", cnn);
+			SqlDataAdapter da3 = new SqlDataAdapter("select 显示名 ,规格型号 from 材料表 where pp_id='"+pp_id+"'  ", conn);
             DataSet ds3 = new DataSet();
             da3.Fill(ds3, "材料表 ");
             conn.Close();             

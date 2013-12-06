@@ -98,19 +98,20 @@ a{ color:#707070; text-decoration:none;}
 /* common styling */
 .dh {position:relative;}
 .dh ul li a, .dh ul li a:visited {display:block;}
-.dh ul {list-style-type: none; }
+.dh ul {list-style-type: none;}
 .dh ul li {float:left;position:relative;}
-.dh ul li ul {display:none; }
+.dh ul li ul {display:none; width:760px;}
+.dh ul li ul li {width:152px; float:left;}
 /* specific to non IE browsers */
 .dh ul li:hover a {color:#000; background:#fff; }
-.dh ul li:hover ul {display:block; position:absolute; bottom:-40px; left:-11px; font-size:12px;}
-.dh ul li:hover ul li a.hide {background:#fff; color:#000; font-size:12px;  }
-.dh ul li:hover ul li {display:block; background:#fff; color:#fff;width:160px; clear:both; font-size:12px;  border-bottom:#808080 solid 1px;}
-.dh ul li:hover ul li:hover a.hide {background:#fff; color:#000; font-size:12px;}
+.dh ul li:hover ul {display:block; position:absolute; bottom:-40px; left:-11px;}
+.dh ul li:hover ul li a.hide {background:#fff; color:#000;display:block;clear:both;}
+.dh ul li:hover ul li:hover a.hide {background:#ececec; color:#000;}
 .dh ul li:hover ul li ul {display: none;}
-.dh ul li:hover ul li a {display:block; background:#fff; color:#000; width:100%; padding-left:10px; }
-.dh ul li:hover ul li a:hover {background:#fff; color:#000; }
-.dh ul li:hover ul li:hover ul {display:block; position:absolute; left:158px; bottom:0;}
+.dh ul li:hover ul li a {display:block; background:#fff; color:#000; width:100%;}
+.dh ul li:hover ul li a:hover {background:#ececec; color:#000; }
+.dh ul li:hover ul li:hover ul {display:block; position:absolute;left:158px; bottom:0; top:40px; clear:both; width:152px;}
+.dh ul li:hover ul li ul li {display:block;clear:both; float:left; width:152px;}
 .dh ul li:hover ul li:hover ul li a {background:#fff; color:#000;}
-.dh ul li:hover ul li:hover ul li a:hover {background:#fff; color:#000; }
-.dh ul li:hover ul li:hover ul.left {left:-100px; width:209px;}
+.dh ul li:hover ul li:hover ul li a:hover {background:#ececec; color:#000; }
+.dh ul li:hover ul li:hover ul.left {left:-100px; width:145px;}

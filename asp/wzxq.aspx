@@ -83,9 +83,9 @@
             da2.Fill(ds2, "文章和厂商相关表");        
             dt2 = ds2.Tables[0];
 
-            SqlDataAdapter da3 = new SqlDataAdapter("select 产品名称,cl_id from 文章和产品相关表 where wz_id='"+wz_id+"' ", conn);            
+            SqlDataAdapter da3 = new SqlDataAdapter("select 产品名称,cl_id from 文章和材料表相关表 where wz_id='"+wz_id+"' ", conn);            
             DataSet ds3 = new DataSet();
-            da3.Fill(ds3, "文章和产品相关表");        
+            da3.Fill(ds3, "文章和材料表相关表");        
             dt3 = ds3.Tables[0];   
 
 
