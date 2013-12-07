@@ -160,7 +160,7 @@
         private DataTable GetProductFormDB(int begin, int end, string name)
         {
             string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;         
-            SqlCommand cmd = new SqlCommand("cp_Paging");
+            SqlCommand cmd = new SqlCommand("cl_Paging");
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add("@begin", SqlDbType.Int).Value = begin;  //开始页第一条记录
             cmd.Parameters.Add("@end", SqlDbType.Int).Value = end;      //开始页最后一条记录

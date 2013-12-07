@@ -76,6 +76,65 @@ function ShowMenu(obj,n){
 <!-- banner 结束-->
 
 
+
+<div class="dlqqz">
+
+<div class="dlqqz1"><img src="images/sccp.jpg" /></div>
+<span class="dlqqz4"><img src="images/wz_03.jpg" width="530" height="300" /></span>
+<div class="dlqqz2"><div id="menu">
+ <h1 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> 一级菜单A &gt;</a></h1>
+ <span class="no">
+  <h2 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)">+ 二级菜单A_1</a></a></h2>
+  <ul class="no">
+   <a href="javascript:void(0)">三级菜单A_0 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_1 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_2 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_3 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+  </ul>
+  <h2 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)">+ 二级菜单A_2</a></h2>
+  <ul class="no">
+   <a href="javascript:void(0)">三级菜单A_0 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_1 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_2 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_3 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+  </ul>
+  <h2 onClick="javascript:ShowMenu(this,2)"><a href="javascript:void(0)">+ 二级菜单A_3</a></h2>
+  <ul class="no">
+   <a href="javascript:void(0)">三级菜单A_0 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_1 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_2 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_3 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单A_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+  </ul>
+ </span>
+        
+ <h1 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> 一级菜单B &gt;</a></h1>
+ <span class="no">
+  <h2 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)">+ 二级菜单B_1</a></h2>
+  <ul class="no">
+   <a href="javascript:void(0)">三级菜单B_0 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单B_1 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单B_2 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单B_3 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单B_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+  </ul>
+  <h2 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)">+ 二级菜单B_2</a></h2>
+  <ul class="no">
+   <a href="javascript:void(0)">三级菜单B_0 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单B_1 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单B_2 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单B_3 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <a href="javascript:void(0)">三级菜单B_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+  </ul>
+ </span>
+  
+</div></div>
+<div class="dlqqz3"><a href="#"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<a href="#"><img src="images/scxzcl.jpg" border="0" /></a></div>
+</div>
+
+
 <div class="dlex">
 <div class="dlex1">全部导出为EXCEL（VIP显示为选择数据进入自身内部系统）</div>
 <div class="dlex2">

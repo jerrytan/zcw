@@ -1,3 +1,13 @@
+<%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
+
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="System.Web" %>
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -59,60 +69,15 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-<div class="gywm">  <div class="gywm1">
-<div class="gywm2"><img src="images/biao_03.jpg" />关于我们</div><span class="more"><a href="#"><img src="images/more_03.jpg" /></a></span>
-</div>
-<div class="gywm3">    &nbsp&nbsp;为公司在业内赢得了良好口碑。同时中视慧达与国内多家电视、网络等媒体建立了长期的合作关系为公司为公司在业内赢得了中视慧达与国内多家电视、网络等媒体建立了长期的合作关系网络等媒体建立了长期的合作关系为公司为中视慧达与国内多家电视...</div>
- </div>
-
-
-<div class="ggfw">
-<div class="ggfw1">  <div class="ggfw2"><img src="images/biao_03.jpg" /> 广告服务</div>    <span class="more"><a href="#"><img src="images/more_03.jpg" /></a></span>
-</div>
-<div class="ggfw3">
-<ul>
- <li><a href="#">国内外多家大业及上市型企业及上市公司有了</a></li>
-  <li><a href="#">国内外多家大型企业及上市业及上市公司有了</a></li>
-    <li><a href="#">国内业及上市外多家大型企业及上市公司有了</a></li>
-      <li><a href="#">国内外多家大型企业及上市业及上市公司有了</a></li>
-        
-       
-</ul>
-</div>
+<div>
+<!-- 关于我们 广告服务 投诉建议 开始-->
+<!-- #include file="static/aboutus.aspx" -->
+<!-- 关于我们 广告服务 投诉建议 结束-->
 </div>
 
-<div class="ggfw">
-<div class="ggfw1">  <div class="ggfw2"><img src="images/biao_03.jpg" /> 投诉建议</div>    <span class="more"><a href="#"><img src="images/more_03.jpg" /></a></span>
-</div>
-<div class="ggfw3">
-<ul>
- <li><a href="#">国内外多家大业及上市型企业及上市公司有了</a></li>
-  <li><a href="#">国内外多家大型企业及上市业及上市公司有了</a></li>
-    <li><a href="#">国内业及上市外多家大型企业及上市公司有了</a></li>
-      <li><a href="#">国内外多家大型企业及上市业及上市公司有了</a></li>
-        
-       
-</ul>
-</div>
-</div>
-
-<div class="foot">
-<span class="foot2"><a href="#">网站合作</a>  |<a href="#"> 内容监督</a> | <a href="#"> 商务咨询</a> |  <a href="#">投诉建议010-87654321</a> </span>
-<span class="di3"><p>Copyright 2002-2012众材网版权所有      京ICP证0000111号      京公安网备110101000005号</p>
-<p>地址：北京市海淀区天雅大厦11层  联系电话：010-87654321    技术支持：京企在线</p></span>
-</div>
-
-
+<!--  footer 开始-->
+<!-- #include file="static/footer.aspx" -->
+<!-- footer 结束-->
 
 
 </div>

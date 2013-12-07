@@ -24,11 +24,34 @@
 <div class="topx"><a href="index.aspx"><img src="images/topx_02.jpg" /></a></div>
 
 <script runat="server" >
-  protected void Page_Load(object sender, EventArgs e)
+
+
+       protected DataTable dt = new DataTable();  //分销商信息(材料供应商信息表)
+       protected void Page_Load(object sender, EventArgs e)
         {
 		    string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
+			//SqlDataAdapter da = new SqlDataAdapter("select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机 from 材料供应商信息表 where 单位类型='分销商'", conn);
+           // DataSet ds = new DataSet();
+            //da.Fill(ds, "材料供应商信息表");            
+            //dt = ds.Tables[0];
+			string strr="select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机 from 材料供应商信息表 where 单位类型='分销商' and gys_id='30'";         
+            SqlCommand cmd = new SqlCommand(strr, conn);
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+			    
+                this.companyname.Value = dr["供应商"].ToString();
+				this.address.Value = dr["地址"].ToString();
+				this.tel.Value = dr["电话"].ToString();
+				this.homepage.Value = dr["主页"].ToString();
+				this.fax.Value = dr["传真"].ToString();
+				this.area.Value = dr["地区名称"].ToString();
+				this.name.Value = dr["联系人"].ToString();
+				this.phone.Value = dr["联系人手机"].ToString();
+			}
+			
 			if(Request.Form["companyname"] != null )
 			{
 			string companyname = Request["companyname"];
@@ -41,9 +64,9 @@
             string name = Request.Form["name"];
 			string phone = Request.Form["phone"];
 			string position = Request.Form["position"];
-			string sql = "insert into 材料供应商信息表(供应商,地址,电话,主页,传真,地区名称,公司简介,联系人,联系人手机,联系人职务)values('"+companyname+"','" + address + "','" + tel + "','" + homepage + "','"+fax+"','" + area + "','"+description+"','" + name + "','" + phone + "','"+position+"')";
-            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(sql, conn);
-            int ret =  (int)cmd.ExecuteNonQuery();
+			string sql = "insert into 材料供应商信息表(供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机)values('"+companyname+"','" + address + "','" + tel + "','" + homepage + "','"+fax+"','" + area + "','" + name + "','" + phone + "')";
+            System.Data.SqlClient.SqlCommand cmd1 = new System.Data.SqlClient.SqlCommand(sql, conn);
+            int ret =  (int)cmd1.ExecuteNonQuery();
 			conn.Close();
 		
 			}
@@ -59,19 +82,20 @@
 <span class="fxsxx1">贵公司的分销信息如下</span>
 <div class="zjgxs"> <select name="" class="fug"><option></option></select> <span class="zjgxs1"><a href="#">增加新的供销商</a></span></div>
 <div class="fxsxx2">
+
  <dl>
      <dd>贵公司名称：</dd>
-    <dt><input name="companyname" type="text" class="fxsxx3" value="<%=Request.Form["companyname"] %>"/></dt>
+    <dt><input runat="server" name="companyname" type="text" id="companyname" class="fxsxx3"  /></dt>
      <dd>贵公司地址：</dd>
-    <dt><input name="address" type="text" class="fxsxx3" value="<%=Request.Form["address"] %>"/></dt>
+    <dt><input runat="server" name="address" type="text" id="address" class="fxsxx3" /></dt>
      <dd>贵公司电话：</dd>
-    <dt><input name="tel" type="text" class="fxsxx3" value="<%=Request.Form["tel"] %>"/></dt>
+    <dt><input runat="server" name="tel" type="text" id="tel" class="fxsxx3" /></dt>
      <dd>贵公司主页：</dd>
-    <dt><input name="homepage" type="text" class="fxsxx3" value="<%=Request.Form["homepage"] %>"/></dt>
+    <dt><input runat="server" name="homepage" type="text" id="homepage" class="fxsxx3" /></dt>
      <dd>贵公司传真：</dd>
-    <dt><input name="fax" type="text" class="fxsxx3" value="<%=Request.Form["fax"] %>"/></dt>
+    <dt><input runat="server" name="fax" type="text" id="fax" class="fxsxx3" /></dt>
      <dd>贵公司地区：</dd>
-    <dt><input name="area" type="text" class="fxsxx3" value="<%=Request.Form["area"] %>"/></dt>           
+    <dt><input runat="server" name="area" type="text" id="area" class="fxsxx3" /></dt>           
      <dd>贵公司简介：</dd>
     <dt><textarea name="description" cols="" rows="" class="fgsjj" value="<%=Request.Form["description"] %>"></textarea></dt>
      <dd>贵公司logo：</dd>
@@ -82,14 +106,15 @@
         <div class="fgstp"><img src="images/wwwq_03.jpg" /> <span class="fdlpp1"><input name="" type="checkbox" value="" class="fxsfxk" />选中删除</span></div></div>
         <span class="scyp"><a href="#"><img src="images/wqwe_03.jpg" /></a></span>  <span class="scyp"><a href="#"><img src="images/sssx_03.jpg" /></a></span></dt>
      <dd>联系人姓名：</dd>
-    <dt><input name="name" type="text" class="fxsxx3" value="<%=Request.Form["name"] %>"/></dt>
+    <dt><input runat="server" name="name" type="text" id="name" class="fxsxx3" /></dt>
      <dd>联系人电话：</dd>
-    <dt><input name="phone" type="text" class="fxsxx3" value="<%=Request.Form["phone"] %>"/></dt>
+    <dt><input runat="server" name="phone" type="text" id="phone" class="fxsxx3" /></dt>
      <dd>联系人职务：</dd>
     <dt><input name="position" type="text" class="fxsxx3" value="<%=Request.Form["position"] %>"/></dt>
     
  </dl>
-<span  class="fxsbc"><a href="#"><img src="images/bbc_03.jpg" /></a></span>
+ 
+<span  class="fxsbc"><a href="#"><input type="image" name="Submit" value="Submit" src="images/bbc_03.jpg" ></a></span>
 
 
  
@@ -109,8 +134,6 @@
 
 
 </div>
-
-<input type="submit" value="保存"/>
  </form>
  
 

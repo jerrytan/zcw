@@ -32,8 +32,8 @@
           public string Value { get; set; }      
        
         }
-        protected DataTable dt = new DataTable();
-		protected DataTable dt1 = new DataTable();
+        protected DataTable dt = new DataTable();  //材料分类大类
+		protected DataTable dt1 = new DataTable();  //材料分类小类
         protected void Page_Load(object sender, EventArgs e)
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
@@ -51,7 +51,7 @@
             dt1 = ds1.Tables[0];			
 			conn.Close();
 			                 
-             this.Items1 = new List<OptionItem>();  //数据表DataTable转集合  
+            this.Items1 = new List<OptionItem>();  //数据表DataTable转集合  
             this.Items2 = new List<OptionItem>();
             this.Items3 = new List<OptionItem>();
             for (int x = 0; x < dt.Rows.Count; x++)
@@ -63,14 +63,13 @@
                     OptionItem item = new OptionItem();
                     item.Name = Convert.ToString(dr["显示名字"]);
                     item.GroupsCode = Convert.ToString(dr["分类编码"]);
-                    this.Items1.Add(item);
+                    this.Items1.Add(item);   //将大类存入集合
                 }
             }
             
             for (int x = 0; x < dt1.Rows.Count; x++)
-            {
+            { 			   
                 DataRow dr = dt1.Rows[x];
-
                 if (Convert.ToString(dr["分类编码"]).Length == 4)
                 {
                     OptionItem item1 = new OptionItem();  
@@ -80,7 +79,7 @@
                 }
             }
             
-               foreach (var v in this.Items1)
+           foreach (var v in this.Items1)
             {
                 foreach (var vr in this.Items2)
                 {
