@@ -8,15 +8,16 @@
 <%@ Import Namespace="System.Web" %>
 
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>无标题文档</title>
+<title>采购商信息填写页面</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
 <style>
- #menu { width:200px; margin:auto;}
+#menu { width:200px; margin:auto;}
  #menu h1 { font-size:12px;margin-top:1px; font-weight:100}
  #menu h2 { padding-left:15px; font-size:12px; font-weight:100}
  #menu ul { padding-left:15px; height:100px;overflow:auto; font-weight:100}
@@ -77,9 +78,7 @@ function ShowMenu(obj,n){
 
 
 <div class="dlqq">
-<div class="dlqq1"><span class="dlzi">尊敬的采购商，您好请点击右边按钮登陆！</span><span class="dlzi2"><img src="images/1wqed_03.jpg" /><a href="#">QQ账号</a></span>
-<img src="images/wz_03.jpg" /></div>
-<div class="dlqqc"><span class="dlqqc1"></span><span class="gybtan"><a href="#"><img src="images/aaaa_03.jpg" /></a></span></div>
+
 
 <div class="dlqqr">
 <dl>
@@ -155,23 +154,7 @@ function ShowMenu(obj,n){
 <div class="dlqqz3"><a href="#"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<a href="#"><img src="images/scxzcl.jpg" border="0" /></a></div>
 </div>
 
-<div class="dlex">
-<div class="dlex1">全部导出为EXCEL（VIP显示为选择数据进入自身内部系统）</div>
-<div class="dlex2">
-<span class="dlex3">您的信息如下，如需更改请单击更改按钮</span>
-  <dl>
-     <dd>公司名称：</dd><dt>北京京企在线</dt>
-     <dd>公司地址：</dd><dt>北京京企在线</dt>
-     <dd>公司电话：</dd><dt>北京京企在线</dt>
-     <dd>您的姓名：</dd><dt>北京京企在线</dt>
-     <dd>您的电话：</dd><dt>北京京企在线</dt>
-     <dd>您的QQ号：</dd><dt>北京京企在线</dt>
-     <dd>您的执照：</dd><dt><img src="images/qqqq_03.jpg" /></dt>
-     <dd>您的资质：</dd><dt><img src="images/qqqq_03.jpg" /></dt>
-     
-  </dl>
-<span class="gg"><a href="#"><img src="images/12ff_03.jpg" /></a></span></div>
-</div>
+
 
 
 

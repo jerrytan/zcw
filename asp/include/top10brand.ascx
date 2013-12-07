@@ -14,7 +14,7 @@
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
-            SqlDataAdapter da = new SqlDataAdapter("select distinct top 10 品牌名称 ,pp_id,gys_id  from 品牌字典 where 是否启用=1 order by gys_id", conn);
+            SqlDataAdapter da = new SqlDataAdapter("select distinct top 10 品牌名称 ,pp_id from 品牌字典 where 是否启用=1 ", conn);
             DataSet ds = new DataSet();
             da.Fill(ds, "品牌字典");
             conn.Close();

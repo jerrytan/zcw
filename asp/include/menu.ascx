@@ -112,13 +112,13 @@
           <li></li>
 		  <li></li>
 		  <% foreach (var v1 in this.Items3){%> 
-          <li><a class="hide" href="#" style="background:url(images/dh_04.jpg); color:#FFF"><%=v1.Name%></a>
+          <li><a class="hide" href="yjfl.aspx?name=<%=v1.Sid.ToString() %>" style="background:url(images/dh_04.jpg); color:#FFF"><%=v1.Name%></a>
               <ul style="left:-11px;">
 			  	  <%  foreach (var vr in this.Items2){				
           %>  
          <%if (vr.Sid.ToString().Substring(0, 2) == v1.Sid.ToString())
            {%> 
-                  <li><a href="dls.aspx?name=<%=v1.Sid %>"><%=vr.Name%></a></li>
+                  <li><a href="dls.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
                            <%} %>
       <% } %>     
               </ul>
