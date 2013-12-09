@@ -11,50 +11,49 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<style type="text/css">
-	.p 
-{
-	font-size: 12px;
-	color:Black;
-	font-weight:bold;
-	text-decoration:none; 
-}
-	.p1 
-{
-	font-size: 16px;
-	color:blue;
-	font-weight:bold;
-	text-decoration:none; 
-}
-</style>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <style type="text/css">
+        .p {
+            font-size: 12px;
+            color: Black;
+            font-weight: bold;
+            text-decoration: none;
+        }
 
-<title>无标题文档</title>
-<link href="css/css.css" rel="stylesheet" type="text/css" />
-<link href="css/all of.css" rel="stylesheet" type="text/css" />
+        .p1 {
+            font-size: 16px;
+            color: blue;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+
+    <title>无标题文档</title>
+    <link href="css/css.css" rel="stylesheet" type="text/css" />
+    <link href="css/all of.css" rel="stylesheet" type="text/css" />
 </head>
 
 
 <body>
-<!-- 头部开始-->
-<!-- #include file="static/header.aspx" -->
-<!-- 头部结束-->
+    <!-- 头部开始-->
+    <!-- #include file="static/header.aspx" -->
+    <!-- 头部结束-->
 
 
-<!-- 导航开始-->
-<uc1:Menu1 ID="Menu1" runat="server" />
-<!-- 导航结束-->
+    <!-- 导航开始-->
+    <uc1:Menu1 ID="Menu1" runat="server" />
+    <!-- 导航结束-->
 
 
-<!-- banner开始-->
-<!-- #include file="static/banner.aspx" -->
-<!-- banner 结束-->
+    <!-- banner开始-->
+    <!-- #include file="static/banner.aspx" -->
+    <!-- banner 结束-->
 
 
 
-<!-- 首页 石材首页 开始-->
+    <!-- 首页 石材首页 开始-->
 
-<script runat="server">
+    <script runat="server">
         protected DataTable dt = new DataTable();   //二级分类名称
         protected DataTable dt1 = new DataTable();  //材料名称分页 
         protected DataTable dt2 = new DataTable();  //首页显示一级分类名字
@@ -160,7 +159,7 @@
         private DataTable GetProductFormDB(int begin, int end, string name)
         {
             string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;         
-            SqlCommand cmd = new SqlCommand("cl_Paging");
+            SqlCommand cmd = new SqlCommand("cp_Paging");
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add("@begin", SqlDbType.Int).Value = begin;  //开始页第一条记录
             cmd.Parameters.Add("@end", SqlDbType.Int).Value = end;      //开始页最后一条记录
@@ -195,176 +194,135 @@
                 return count;
             }
         }
-</script>
+    </script>
 
 
-<div class="sc">
-<% string name=Request["name"];%>
-<div class="sc1"><a href="index.aspx" class="p1">首页 ></a>&nbsp&nbsp 
+    <div class="sc">
+        <% string name=Request["name"];%>
+        <div class="sc1">
+            <a href="index.aspx" class="p1">首页 ></a>&nbsp&nbsp 
  <% foreach(System.Data.DataRow row in dt2.Rows){%>
-    <a href="#"><%=row["显示名字"].ToString() %></a>
-  <% } %>
-</div>
+            <a href="#"><%=row["显示名字"].ToString() %></a>
+            <% } %>
+        </div>
 
-<div class="sc2">
-  <% foreach(System.Data.DataRow row in dt.Rows){%>
- <a href="dls.aspx?name=<%=row["分类编码"] %>"><%=row["显示名字"].ToString() %></a> 
+        <div class="sc2">
+            <% foreach(System.Data.DataRow row in dt.Rows){%>
+            <a href="dls.aspx?name=<%=row["分类编码"] %>"><%=row["显示名字"].ToString() %></a>
 
-<% } %>
+            <% } %>
+        </div>
 
-</div>
+        <div class="sc3">
+            <div class="rh">
+                <div class="rh1"><a href="#">如何选取大理石？</a></div>
+                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
+            </div>
+            <div class="rh">
+                <div class="rh1"><a href="#">如何选取大理石？</a></div>
+                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
+            </div>
+            <div class="rh">
+                <div class="rh1"><a href="#">如何选取大理石？</a></div>
+                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
+            </div>
+            <div class="rh">
+                <div class="rh1"><a href="#">如何选取大理石？</a></div>
+                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
+            </div>
+        </div>
 
-<div class="sc3">
-  <div class="rh"><div class="rh1"><a href="#">如何选取大理石？</a></div>  <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div></div>
-  <div class="rh"><div class="rh1"><a href="#">如何选取大理石？</a></div>  <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div></div>
-  <div class="rh"><div class="rh1"><a href="#">如何选取大理石？</a></div>  <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div></div>
-  <div class="rh"><div class="rh1"><a href="#">如何选取大理石？</a></div>  <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div></div>
-</div>
-
-<div class="px0"><div class="px">排序：  <a href="#">人气</a> <a href="#">最新</a></div></div>
-
-
-<div class="pxleft"> 
- <% foreach(System.Data.DataRow row in dt1.Rows){%>
-<div class="pxtu">
-<a href="xx.aspx?cl_id=<%=row["cl_id"]%>"><img src="images/222_03.jpg" /></a>
-<span class="pxtu1"><%=row["显示名"].ToString() %></span> 
-<span class="pxtu2">规格：12345678</span></div>
-<% } %>
-
-</div>
-
-
-<!-- 石材规格页码 结束-->
-
-<!-- 最具人气的石材 开始-->
-<div class="pxright0">
-<div class="pxright">
-<div class="pxright1">
-<ul>
-     <% foreach(System.Data.DataRow row in dt3.Rows){%>
-   <li><a href="#"><%=row["显示名"].ToString()%></a></li>
-     <%}%>
-</ul>
-
-</div> </div>
-<div class="pxright2"><a href="#"><img src="images/ggg2_03.jpg" /></a><a href="#"><img src="images/ggg2_03.jpg" /></a></div>
-</div>
+        <div class="px0">
+            <div class="px">排序：  <a href="#">人气</a> <a href="#">最新</a></div>
+        </div>
 
 
-</div>
-<!-- 最具人气的石材 结束-->
+        <div class="pxleft">
+            <% foreach(System.Data.DataRow row in dt1.Rows){%>
+            <div class="pxtu">
+                <a href="xx.aspx?cl_id=<%=row["cl_id"]%>">
+                    <img src="images/222_03.jpg" /></a>
+                <span class="pxtu1"><%=row["显示名"].ToString() %></span>
+                <span class="pxtu2">规格：12345678</span>
+            </div>
+            <% } %>
+        </div>
+
+
+        <!-- 石材规格页码 结束-->
+
+        <!-- 最具人气的石材 开始-->
+        <div class="pxright0">
+            <div class="pxright">
+                <div class="pxright1">
+                    <ul>
+                        <% foreach(System.Data.DataRow row in dt3.Rows){%>
+                        <li><a href="#"><%=row["显示名"].ToString()%></a></li>
+                        <%}%>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="pxright2"><a href="#">
+                <img src="images/ggg2_03.jpg" /></a><a href="#"><img src="images/ggg2_03.jpg" /></a></div>
+        </div>
+
+
+    </div>
+    <!-- 最具人气的石材 结束-->
 
 
 
-<!-- 首页 石材首页 结束-->
-<div>
-<div class="fy2">
-<div class="fy3">
-<% if(current_page!=1) { %>
-<a href="yjfl.aspx?<%=cpPrev %>&name=<%=name%>" class="p">上一页</a> 
-<% } %>
-<a href="yjfl.aspx?p=1&name=<%=name%>" class="p">1</a> 
-<% if(current_page>1) { %>
-<a href="yjfl.aspx?p=2&name=<%=name%>" class="p">2</a>
-<% } %>
-<% if(current_page>2) { %>
-<a href="yjfl.aspx?p=3&name=<%=name%>" class="p"> 3···</a>
-<% } %>
-<% if(current_page<pageCount_page) { %>
- <a href="yjfl.aspx?<%=cpNext %>&name=<%=name%>" class="p">下一页</a> 
- <% } %>
- <% if(current_page!=pageCount_page) { %>
- <a href="yjfl.aspx?<%=cpLast %>&name=<%=name%>" class="p"> 尾页</a> 
- <% } %>
+    <!-- 首页 石材首页 结束-->
+    <div>
+        <div class="fy2">
+            <div class="fy3">
+                <% if(current_page!=1) { %>
+                <a href="yjfl.aspx?<%=cpPrev %>&name=<%=name%>" class="p">上一页</a>
+                <% } %>
+                <a href="yjfl.aspx?p=1&name=<%=name%>" class="p">1</a>
+                <% if(current_page>1) { %>
+                <a href="yjfl.aspx?p=2&name=<%=name%>" class="p">2</a>
+                <% } %>
+                <% if(current_page>2) { %>
+                <a href="yjfl.aspx?p=3&name=<%=name%>" class="p">3···</a>
+                <% } %>
+                <% if(current_page<pageCount_page) { %>
+                <a href="yjfl.aspx?<%=cpNext %>&name=<%=name%>" class="p">下一页</a>
+                <% } %>
+                <% if(current_page!=pageCount_page) { %>
+                <a href="yjfl.aspx?<%=cpLast %>&name=<%=name%>" class="p">尾页</a>
+                <% } %>
 
 
   
 直接到第  
-    <select onchange="window.location=this.value"  name="" class="p">
-  <% foreach (var v in this.Items)
-   { %>  
- <option   value="<%=v.Value %>&name=<%=name%>" <%=v.SelectedString %> ><%=v.Text %></option>
+    <select onchange="window.location=this.value" name="" class="p">
+        <% foreach (var v in this.Items)
+   { %>
+        <option value="<%=v.Value %>&name=<%=name%>" <%=v.SelectedString %>><%=v.Text %></option>
 
-<%} %>
-</select>
-页
-</div></div>
-</div>
-<!-- 石材规格页码 开始-->
-
-
-<div>
-<!-- 关于我们 广告服务 投诉建议 开始-->
-<!-- #include file="static/aboutus.aspx" -->
-<!-- 关于我们 广告服务 投诉建议 结束-->
-</div>
-
-<!--  footer 开始-->
-<!-- #include file="static/footer.aspx" -->
-<!-- footer 结束-->
+        <%} %>
+    </select>
+                页
+            </div>
+        </div>
+    </div>
+    <!-- 石材规格页码 开始-->
 
 
+    <div>
+        <!-- 关于我们 广告服务 投诉建议 开始-->
+        <!-- #include file="static/aboutus.aspx" -->
+        <!-- 关于我们 广告服务 投诉建议 结束-->
+    </div>
+
+    <!--  footer 开始-->
+    <!-- #include file="static/footer.aspx" -->
+    <!-- footer 结束-->
 
 
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
-<script type="text/javascript">
-var speed=9//速度数值越大速度越慢
-var demo=document.getElementById("demo");
-var demo2=document.getElementById("demo2");
-var demo1=document.getElementById("demo1");
-demo2.innerHTML=demo1.innerHTML
-function Marquee(){
-if(demo2.offsetWidth-demo.scrollLeft<=0)
-demo.scrollLeft-=demo1.offsetWidth
-else{
-demo.scrollLeft++
-}
-}
-var MyMar=setInterval(Marquee,speed)
-demo.onmouseover=function() {clearInterval(MyMar)}
-demo.onmouseout=function() {MyMar=setInterval(Marquee,speed)}
-</script>
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
+
+
 </body>
 </html>
