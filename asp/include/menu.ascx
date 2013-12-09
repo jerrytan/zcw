@@ -102,7 +102,7 @@
                 %>
                 <%if (vr.Sid.ToString().Substring(0, 2) == v.Sid.ToString())
            {%>
-                <li><a href="dls.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
+                <li><a href="ejfl.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
                 <%} %>
                 <% } %>
             </ul>
@@ -122,7 +122,7 @@
                         %>
                         <%if (vr.Sid.ToString().Substring(0, 2) == v1.Sid.ToString())
            {%>
-                        <li><a href="dls.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
+                        <li><a href="ejfl.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
                         <%} %>
                         <% } %>
                     </ul>
