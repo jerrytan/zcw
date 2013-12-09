@@ -1,3 +1,9 @@
+<!--
+        材料二级分类列表页面
+        文件名：ejfl.ascx
+        传入参数：name
+               
+    -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 
 <%@ Import Namespace="System.Data" %>
@@ -11,47 +17,45 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<script src="Scripts/jquery-1.4.1-vsdoc.js" type="text/javascript"></script>
-<script language="javascript" type="text/javascript">
-       $(document).ready(function ()
-        {		      
-		    $("#ckAll").click(function ()
-            {                 			
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <script src="Scripts/jquery-1.4.1-vsdoc.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            $("#ckAll").click(function () {
                 var v = $(this).attr("checked");//获取"全选复选框"                
                 $(":checkbox.ck").attr("checked", v);//设置class=ck的复选框是否被选中
             });
-		    $(":checkbox.ck").click(function () {               
+            $(":checkbox.ck").click(function () {
                 var a = $(":checkbox.ck").size(); //获取所有的class=ck的复选框数量                
                 var b = $(":checkbox.ck:checked").size();//获取所有的class=ck,并且被选中的 复选框数量
                 var c = a == b;
                 $("#ckAll").attr("checked", c);
             });
-		});
-</script>
-<title>二级分类详细页面</title>
-<link href="css/css.css" rel="stylesheet" type="text/css" />
-<link href="css/all of.css" rel="stylesheet" type="text/css" />
+        });
+    </script>
+    <title>二级分类详细页面</title>
+    <link href="css/css.css" rel="stylesheet" type="text/css" />
+    <link href="css/all of.css" rel="stylesheet" type="text/css" />
 
 </head>
 
 <body>
 
-<!-- 头部开始-->
-<!-- #include file="static/header.aspx" -->
-<!-- 头部结束-->
+    <!-- 头部开始-->
+    <!-- #include file="static/header.aspx" -->
+    <!-- 头部结束-->
 
 
-<!-- 导航开始-->
-<uc1:Menu1 ID="Menu1" runat="server" />
-<!-- 导航结束-->
+    <!-- 导航开始-->
+    <uc1:Menu1 ID="Menu1" runat="server" />
+    <!-- 导航结束-->
 
 
-<!-- banner开始-->
-<!-- #include file="static/banner.aspx" -->
-<!-- banner 结束-->
+    <!-- banner开始-->
+    <!-- #include file="static/banner.aspx" -->
+    <!-- banner 结束-->
 
-<script runat="server" >
+    <script runat="server">
          
         protected DataTable dt = new DataTable();   //一级分类名称
         protected DataTable dt1 = new DataTable();  //二级分类名称 
@@ -197,202 +201,173 @@
                 return count;
             }
         }
-</script>
+    </script>
 
 
-<div class="sc">
-<div class="sc1">
-<a href="index.aspx">首页 ></a>&nbsp&nbsp&nbsp
+    <div class="sc">
+        <div class="sc1">
+            <a href="index.aspx">首页 ></a>&nbsp&nbsp&nbsp
 
  <% foreach(System.Data.DataRow row in dt.Rows){%>
-    <a href="yjfl.aspx?name=<%=row["分类编码"]%>"><%=row["显示名字"].ToString() %></a>
-  <% } %>
+            <a href="yjfl.aspx?name=<%=row["分类编码"]%>"><%=row["显示名字"].ToString() %></a>
+            <% } %>
  > 
  <% foreach(System.Data.DataRow row in dt1.Rows){%>
-    <a href="#"><%=row["显示名字"].ToString() %></a>
-  <% } %>
- 
- </div>
+            <a href="#"><%=row["显示名字"].ToString() %></a>
+            <% } %>
+        </div>
 
-<div class="sc3">
-  <div class="rh"><div class="rh1"><a href="#">如何选取大理石？</a></div>  <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div></div>
-  <div class="rh"><div class="rh1"><a href="#">如何选取大理石？</a></div>  <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div></div>
-  <div class="rh"><div class="rh1"><a href="#">如何选取大理石？</a></div>  <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div></div>
-  <div class="rh"><div class="rh1"><a href="#">如何选取大理石？</a></div>  <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div></div>
-</div>
+        <div class="sc3">
+            <div class="rh">
+                <div class="rh1"><a href="#">如何选取大理石？</a></div>
+                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
+            </div>
+            <div class="rh">
+                <div class="rh1"><a href="#">如何选取大理石？</a></div>
+                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
+            </div>
+            <div class="rh">
+                <div class="rh1"><a href="#">如何选取大理石？</a></div>
+                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
+            </div>
+            <div class="rh">
+                <div class="rh1"><a href="#">如何选取大理石？</a></div>
+                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
+            </div>
+        </div>
 
-<div class="xzss">
-<div class="ppxz">
-<div class="ppxz1">品牌：</div>
- <div class="ppxz2"><a href="#"><img src="images/qwez.jpg" /></a> 
- 
- <% foreach(System.Data.DataRow row in dt2.Rows){%>
-<a href="#"><%=row["品牌名称"].ToString() %></a>    
-  <% } %> 
- 
- </div></div>
-<div class="ppxz">
-<div class="ppxz1">区域：</div><div class="ppxz2"><a href="#"><img src="images/qwez.jpg" /></a> <a href="#">朝阳区</a> <a href="#">海淀区</a> <a href="#">丰台区</a></div></div>
-<div class="ppxz">
+        <div class="xzss">
+            <div class="ppxz">
+                <div class="ppxz1">品牌：</div>
+                <div class="ppxz2">
+                    <a href="#">
+                        <img src="images/qwez.jpg" /></a>
 
-<div class="ppxz1">材料：</div>
-<div class="ppxz2"><a href="#"><img src="images/qwez.jpg" /></a> 
+                    <% foreach(System.Data.DataRow row in dt2.Rows){%>
+                    <a href="#"><%=row["品牌名称"].ToString() %></a>
+                    <% } %>
+                </div>
+            </div>
+            <div class="ppxz">
+                <div class="ppxz1">区域：</div>
+                <div class="ppxz2"><a href="#">
+                    <img src="images/qwez.jpg" /></a> <a href="#">朝阳区</a> <a href="#">海淀区</a> <a href="#">丰台区</a></div>
+            </div>
+            <div class="ppxz">
 
-<% foreach(System.Data.DataRow row in dt3.Rows){%>
-<a href="#"><%=row["显示名"].ToString() %></a> 
-<%}%>
+                <div class="ppxz1">材料：</div>
+                <div class="ppxz2">
+                    <a href="#">
+                        <img src="images/qwez.jpg" /></a>
 
-</div></div>
-<div class="ppxz">
-<div class="ppxz1">更多：</div><div class="ppxz2"></a> <a href="#">属性1</a> <a href="#">属性2</a> <a href="#">属性3</a></div></div>
+                    <% foreach(System.Data.DataRow row in dt3.Rows){%>
+                    <a href="#"><%=row["显示名"].ToString() %></a>
+                    <%}%>
+                </div>
+            </div>
+            <div class="ppxz">
+                <div class="ppxz1">更多：</div>
+                <div class="ppxz2"></a> <a href="#">属性1</a> <a href="#">属性2</a> <a href="#">属性3</a></div>
+            </div>
 
-<div class="dlspx"><span class="dlspx1">排序：</span>
-<span class="dlspx2"><a href="#">默认</a></span>
-<span class="dlspx3"><a href="#">人气</a><img src="images/qweqw_03.jpg" /></span>
-<span class="dlspx3"><a href="#">最新</a><img src="images/qweqw_03.jpg" /></span> 
-<span class="dlspx3"><input name="" type="checkbox" value="" id="ckAll"  class="fx" /><a href="#">全选</a></span>
-<span class="dlspx4"><a href="#">请收藏，便于查找</a></span>
-</div>
-</div>
+            <div class="dlspx">
+                <span class="dlspx1">排序：</span>
+                <span class="dlspx2"><a href="#">默认</a></span>
+                <span class="dlspx3"><a href="#">人气</a><img src="images/qweqw_03.jpg" /></span>
+                <span class="dlspx3"><a href="#">最新</a><img src="images/qweqw_03.jpg" /></span>
+                <span class="dlspx3">
+                    <input name="" type="checkbox" value="" id="ckAll" class="fx" /><a href="#">全选</a></span>
+                <span class="dlspx4"><a href="#">请收藏，便于查找</a></span>
+            </div>
+        </div>
 
-<div class="dlspxl"> 
+        <div class="dlspxl">
 
- <% foreach(System.Data.DataRow row in dt4.Rows){%>  
+            <% foreach(System.Data.DataRow row in dt4.Rows){%>
 
-<div class="dlspxt"><a href="xx.aspx"><img src="images/222_03.jpg" />
-<div class="dlspxt1">
-<span class="dlsl"><%=row["显示名"].ToString() %></span>  
-<span class="dlspx3"><input name="" type="checkbox" value=""  class="ck" /> 收藏</span> 
-<span class="dlsgg">规格：<%=row["规格型号"].ToString() %></span> </div></div>
-  <% } %>
-
-</div>
-
-
-
-<div class="pxright0">
-<div class="pxright">
-<div class="pxright1">
-<ul>
-
-<% foreach(System.Data.DataRow row in dt3.Rows){%>
- <li><a href="#"><%=row["显示名"].ToString() %></a></li>
-<%}%>
-
-</ul>
-
-</div> </div>
-<div class="pxright2"><a href="#"><img src="images/ggg2_03.jpg" /></a><a href="#"><img src="images/ggg2_03.jpg" /></a></div>
-</div>
-
-</div>
+            <div class="dlspxt">
+                <a href="xx.aspx">
+                    <img src="images/222_03.jpg" />
+                    <div class="dlspxt1">
+                        <span class="dlsl"><%=row["显示名"].ToString() %></span>
+                        <span class="dlspx3">
+                            <input name="" type="checkbox" value="" class="ck" />
+                            收藏</span>
+                        <span class="dlsgg">规格：<%=row["规格型号"].ToString() %></span>
+                    </div>
+            </div>
+            <% } %>
+        </div>
 
 
-<div class="fy2">
-<div class="fy3">
-<% if(current_page!=1) { %>
-<a href="dls.aspx?<%=cpPrev %>" class="p">上一页</a> 
-<% } %> 
-<a href="dls.aspx?p=1" class="p">1</a> 
-<% if(current_page>1) { %>
-<a href="dls.aspx?p=2" class="p">2</a>
-<% } %>
-<% if(current_page>2) { %>
-<a href="dls.aspx?p=3" class="p"> 3···</a>
-<% } %>
-<% if(current_page<pageCount_page) { %>
- <a href="dls.aspx?<%=cpNext %>" class="p">下一页</a> 
- <% } %>
- <% if(current_page!=pageCount_page) { %>
- <a href="dls.aspx?<%=cpLast %>" class="p"> 尾页</a> 
- <% } %>
+
+        <div class="pxright0">
+            <div class="pxright">
+                <div class="pxright1">
+                    <ul>
+
+                        <% foreach(System.Data.DataRow row in dt3.Rows){%>
+                        <li><a href="#"><%=row["显示名"].ToString() %></a></li>
+                        <%}%>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="pxright2"><a href="#">
+                <img src="images/ggg2_03.jpg" /></a><a href="#"><img src="images/ggg2_03.jpg" /></a></div>
+        </div>
+
+    </div>
+
+
+    <div class="fy2">
+        <div class="fy3">
+            <% if(current_page!=1) { %>
+            <a href="dls.aspx?<%=cpPrev %>" class="p">上一页</a>
+            <% } %>
+            <a href="dls.aspx?p=1" class="p">1</a>
+            <% if(current_page>1) { %>
+            <a href="dls.aspx?p=2" class="p">2</a>
+            <% } %>
+            <% if(current_page>2) { %>
+            <a href="dls.aspx?p=3" class="p">3···</a>
+            <% } %>
+            <% if(current_page<pageCount_page) { %>
+            <a href="dls.aspx?<%=cpNext %>" class="p">下一页</a>
+            <% } %>
+            <% if(current_page!=pageCount_page) { %>
+            <a href="dls.aspx?<%=cpLast %>" class="p">尾页</a>
+            <% } %>
 
  直接到第  
-    <select onchange="window.location=this.value"  name="" class="p">
-  <% foreach (var v in this.Items)
-   { %>  
- <option   value="<%=v.Value %>" <%=v.SelectedString %> ><%=v.Text %></option>
+    <select onchange="window.location=this.value" name="" class="p">
+        <% foreach (var v in this.Items)
+   { %>
+        <option value="<%=v.Value %>" <%=v.SelectedString %>><%=v.Text %></option>
 
-<%} %>
-</select>
-页
-</div></div>
-
-
-
-<div>
-<!-- 关于我们 广告服务 投诉建议 开始-->
-<!-- #include file="static/aboutus.aspx" -->
-<!-- 关于我们 广告服务 投诉建议 结束-->
-</div>
-
-<!--  footer 开始-->
-<!-- #include file="static/footer.aspx" -->
-<!-- footer 结束-->
+        <%} %>
+    </select>
+            页
+        </div>
+    </div>
 
 
 
-</div>
+    <div>
+        <!-- 关于我们 广告服务 投诉建议 开始-->
+        <!-- #include file="static/aboutus.aspx" -->
+        <!-- 关于我们 广告服务 投诉建议 结束-->
+    </div>
+
+    <!--  footer 开始-->
+    <!-- #include file="static/footer.aspx" -->
+    <!-- footer 结束-->
 
 
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
-<script type="text/javascript">
-var speed=9//速度数值越大速度越慢
-var demo=document.getElementById("demo");
-var demo2=document.getElementById("demo2");
-var demo1=document.getElementById("demo1");
-demo2.innerHTML=demo1.innerHTML
-function Marquee(){
-if(demo2.offsetWidth-demo.scrollLeft<=0)
-demo.scrollLeft-=demo1.offsetWidth
-else{
-demo.scrollLeft++
-}
-}
-var MyMar=setInterval(Marquee,speed)
-demo.onmouseover=function() {clearInterval(MyMar)}
-demo.onmouseout=function() {MyMar=setInterval(Marquee,speed)}
-</script>
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
+
+    </div>
+
+
+
 </body>
 </html>

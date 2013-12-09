@@ -1,10 +1,15 @@
+<!--
+        材料一级分类列表页面
+        文件名：yjfl.ascx
+        传入参数：name
+               
+    -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
 
 
@@ -28,7 +33,7 @@
         }
     </style>
 
-    <title>无标题文档</title>
+    <title>一级分类</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
 </head>
@@ -62,12 +67,12 @@
 		private int current_page=1;
 	    int pageCount_page;
 
-      public class OptionItem
-    {
-        public string Text { get; set; }
-        public string SelectedString { get; set; }
-        public string Value { get; set; }
-    }
+        public class OptionItem
+        {
+            public string Text { get; set; }
+            public string SelectedString { get; set; }
+            public string Value { get; set; }
+        }
        	public List<OptionItem> Items { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -201,7 +206,7 @@
         <% string name=Request["name"];%>
         <div class="sc1">
             <a href="index.aspx" class="p1">首页 ></a>&nbsp&nbsp 
- <% foreach(System.Data.DataRow row in dt2.Rows){%>
+            <% foreach(System.Data.DataRow row in dt2.Rows){%>
             <a href="#"><%=row["显示名字"].ToString() %></a>
             <% } %>
         </div>
@@ -263,8 +268,10 @@
 
                 </div>
             </div>
-            <div class="pxright2"><a href="#">
-                <img src="images/ggg2_03.jpg" /></a><a href="#"><img src="images/ggg2_03.jpg" /></a></div>
+            <div class="pxright2">
+                <a href="#">
+                    <img src="images/ggg2_03.jpg" /></a><a href="#"><img src="images/ggg2_03.jpg" /></a>
+            </div>
         </div>
 
 
@@ -298,8 +305,7 @@
   
 直接到第  
     <select onchange="window.location=this.value" name="" class="p">
-        <% foreach (var v in this.Items)
-   { %>
+        <% foreach (var v in this.Items)  { %>
         <option value="<%=v.Value %>&name=<%=name%>" <%=v.SelectedString %>><%=v.Text %></option>
 
         <%} %>
