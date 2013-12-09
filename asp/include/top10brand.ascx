@@ -1,4 +1,9 @@
-﻿
+﻿<!--
+        十大品牌，用于头部
+        文件名：top10brand.ascx
+        传入参数：无
+        
+    -->
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
@@ -24,13 +29,13 @@
 </script>
 
 <div class="gz2">
-<div class="wz2">
+    <div class="wz2">
 
-<ul>
+        <ul>
 
-  <% foreach(System.Data.DataRow row in dt.Rows){%>    
-  <li><a href="ppxx.aspx?pp_id=<%=row["pp_id"]%>"><%=row["品牌名称"].ToString() %></a></li>  
-  <% } %>
- </ul> 
-</div>
+            <% foreach(System.Data.DataRow row in dt.Rows){%>
+            <li><a href="ppxx.aspx?pp_id=<%=row["pp_id"]%>"><%=row["品牌名称"].ToString() %></a></li>
+            <% } %>
+        </ul>
+    </div>
 </div>

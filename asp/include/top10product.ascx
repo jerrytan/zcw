@@ -1,13 +1,17 @@
-﻿ 
+﻿<!--
+        十大产品，用于头部
+        文件名：top10product.ascx
+        传入参数：无        
+    -->
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
 
-<script runat="server">  
-         protected DataTable dt = new DataTable();
+<script runat="server">
+
+        protected DataTable dt = new DataTable();
         protected void Page_Load(object sender, EventArgs e)
         {		      
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
@@ -25,14 +29,14 @@
 </script>
 
 <div class="gz">
-<div class="wz">
- <ul> 
+    <div class="wz">
+        <ul>
 
-    <% foreach(System.Data.DataRow row in dt.Rows){%>
-    
-  <li><a href="xx.aspx?fl_id=<%=row["分类编码"]%>&cl_id=<%=row["cl_id"]%> "><%=row["显示名"].ToString() %></a></li>
-  
-  <% } %>
+            <% foreach(System.Data.DataRow row in dt.Rows){%>
 
-</ul>
-</div></div>
+            <li><a href="xx.aspx?fl_id=<%=row["分类编码"]%>&cl_id=<%=row["cl_id"]%> "><%=row["显示名"].ToString() %></a></li>
+
+            <% } %>
+        </ul>
+    </div>
+</div>

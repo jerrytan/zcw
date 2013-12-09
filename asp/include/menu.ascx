@@ -1,12 +1,16 @@
-﻿
+﻿<!--
+        材料分类的导航，用于头部
+        文件名：menu.ascx
+        传入参数：无
+        
+    -->
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
 
-<script runat="server" >
+<script runat="server">
 
         public List<FLObject> Items1 { get; set; }
         public List<FLObject> Items2 { get; set; }
@@ -37,45 +41,45 @@
             dt2 = ds2.Tables[0];
 
             ////数据表DataTable转集合                  
-             this.Items1 = new List<FLObject>();
-			 this.Items2 = new List<FLObject>();
-			 this.Items3 = new List<FLObject>();
+            this.Items1 = new List<FLObject>();
+			this.Items2 = new List<FLObject>();
+			this.Items3 = new List<FLObject>();
 			 
-             for(int x=0;x<dt.Rows.Count;x++)
-              {
-                  DataRow dr2 = dt.Rows[x];                   
+            for(int x=0;x<dt.Rows.Count;x++)
+            {
+                DataRow dr2 = dt.Rows[x];                   
                   
-		         if (Convert.ToString(dr2["分类编码"]).Length ==2 ) 
-		          {
+		        if (Convert.ToString(dr2["分类编码"]).Length ==2 ) 
+		        {
  			        FLObject item = new FLObject();
-                  	item.Name = Convert.ToString(dr2["显示名字"]);
-                 	item.Sid = Convert.ToString(dr2["分类编码"]);
-                  	this.Items1.Add(item);
-                  }
-			  }
-			  for(int x=0;x<dt2.Rows.Count;x++)
-              {
-                  DataRow dr = dt2.Rows[x];                   
+                    item.Name = Convert.ToString(dr2["显示名字"]);
+                    item.Sid = Convert.ToString(dr2["分类编码"]);
+                    this.Items1.Add(item);
+                }
+			}
+			for(int x=0;x<dt2.Rows.Count;x++)
+            {
+                DataRow dr = dt2.Rows[x];                   
                   
-		         if (Convert.ToString(dr["分类编码"]).Length ==2 ) 
-		          {
+		        if (Convert.ToString(dr["分类编码"]).Length ==2 ) 
+		        {
  			        FLObject item = new FLObject();
-                  	item.Name = Convert.ToString(dr["显示名字"]);
-                 	item.Sid = Convert.ToString(dr["分类编码"]);
-                  	this.Items3.Add(item);
-                  }
-			  }
-			  for(int x=0;x<dt1.Rows.Count;x++)
-              {
-			     DataRow dr2 = dt1.Rows[x]; 
-		         if(Convert.ToString(dr2["分类编码"]).Length==4) 
-		          {
+                    item.Name = Convert.ToString(dr["显示名字"]);
+                    item.Sid = Convert.ToString(dr["分类编码"]);
+                    this.Items3.Add(item);
+                }
+			}
+			for(int x=0;x<dt1.Rows.Count;x++)
+            {
+			    DataRow dr2 = dt1.Rows[x]; 
+		        if(Convert.ToString(dr2["分类编码"]).Length==4) 
+		        {
 			        FLObject item = new FLObject();
-                	item.Name = Convert.ToString(dr2["显示名字"]);
-                	item.Sid = Convert.ToString(dr2["分类编码"]);
-                	this.Items2.Add(item);					
-		          }
-              }               
+                    item.Name = Convert.ToString(dr2["显示名字"]);
+                    item.Sid = Convert.ToString(dr2["分类编码"]);
+                    this.Items2.Add(item);					
+		        }
+            }               
 		
         }
 
@@ -86,48 +90,48 @@
         //public string Uid { get; set; }		
     }
    
-</script>  
-	   
-	   
+</script>
+
+
 <div class="dh">
- <ul>
-  <% foreach (var v in this.Items1){%>  
-  <li><a href="yjfl.aspx?name=<%=v.Sid.ToString() %>"><%=v.Name%></a>
-          <ul style="left:-39px; width:152px;">
-		  <%  foreach (var vr in this.Items2){				
-          %>  
-         <%if (vr.Sid.ToString().Substring(0, 2) == v.Sid.ToString())
-           {%> 
-          <li><a href="dls.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
+    <ul>
+        <% foreach (var v in this.Items1){%>
+        <li><a href="yjfl.aspx?name=<%=v.Sid.ToString() %>"><%=v.Name%></a>
+            <ul style="left: -39px; width: 152px;">
+                <%  foreach (var vr in this.Items2){				
+                %>
+                <%if (vr.Sid.ToString().Substring(0, 2) == v.Sid.ToString())
+           {%>
+                <li><a href="dls.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
                 <%} %>
-      <% } %> 
-          </ul>
+                <% } %>
+            </ul>
         </li>
-      <% } %>
-	  
-	  
- <li><a href="#">更多</a>
-   
-  <ul style="left:-677px;">
-          <li></li>
-		  <li></li>
-		  <% foreach (var v1 in this.Items3){%> 
-          <li><a class="hide" href="yjfl.aspx?name=<%=v1.Sid.ToString() %>" style="background:url(images/dh_04.jpg); color:#FFF"><%=v1.Name%></a>
-              <ul style="left:-11px;">
-			  	  <%  foreach (var vr in this.Items2){				
-          %>  
-         <%if (vr.Sid.ToString().Substring(0, 2) == v1.Sid.ToString())
-           {%> 
-                  <li><a href="dls.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
-                           <%} %>
-      <% } %>     
-              </ul>
-          </li>
-            <% } %>
-          </ul>
-		
-  </li>
- </ul>
+        <% } %>
+
+
+        <li><a href="#">更多</a>
+
+            <ul style="left: -677px;">
+                <li></li>
+                <li></li>
+                <% foreach (var v1 in this.Items3){%>
+                <li><a class="hide" href="yjfl.aspx?name=<%=v1.Sid.ToString() %>" style="background: url(images/dh_04.jpg); color: #FFF"><%=v1.Name%></a>
+                    <ul style="left: -11px;">
+                        <%  foreach (var vr in this.Items2){				
+                        %>
+                        <%if (vr.Sid.ToString().Substring(0, 2) == v1.Sid.ToString())
+           {%>
+                        <li><a href="dls.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
+                        <%} %>
+                        <% } %>
+                    </ul>
+                </li>
+                <% } %>
+            </ul>
+
+        </li>
+    </ul>
 </div>
 
 
