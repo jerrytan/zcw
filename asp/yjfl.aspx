@@ -213,7 +213,7 @@
 
         <div class="sc2">
             <% foreach(System.Data.DataRow row in dt.Rows){%>
-            <a href="dls.aspx?name=<%=row["分类编码"] %>"><%=row["显示名字"].ToString() %></a>
+            <a href="ejfl.aspx?name=<%=row["分类编码"] %>"><%=row["显示名字"].ToString() %></a>
 
             <% } %>
         </div>
