@@ -5,7 +5,7 @@
                   wz_id    文章类型
                
     -->
-<%-- 产品发现文章首页--%>
+
 
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 
@@ -59,19 +59,22 @@
     <!-- 文章首页 开始-->
     <script runat="server">
 
-        public class ArticleContent
+        <%--public class ArticleContent
         {
             public string Text { get; set; }
             public string Content { get; set; }  
             public string Wz_id { get; set; }		
         }
-       	public List<ArticleContent> Items { get; set; }
+       	public List<ArticleContent> Items { get; set; }--%>
 
            
  	    protected DataTable dt=new DataTable();  //文章表
-        protected DataTable dt1=new DataTable();
+        protected DataTable dt1=new DataTable();  //文章和内容相关表
         protected DataTable dt2=new DataTable();  //文章和厂商相关表
         protected DataTable dt3=new DataTable();  //文章和产品相关表
+        protected int total_pages =1;
+        protected int current_page = 1;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
@@ -94,8 +97,15 @@
             dt3 = ds3.Tables[0];   
 
 
-                            
-            string strr="select 内容, wz_id from 文章表 where wz_id='"+wz_id+"' ";         
+            string page = Request["p"];
+            if (page!=null) current_page =int.Parse(page);               
+            string strr="select 页面内容, 页面编号, wz_id from 文章和内容相关表 where wz_id='"+wz_id+"' and 页面编号='"+ current_page+"'";  
+            SqlDataAdapter da1 = new SqlDataAdapter(strr, conn);            
+            DataSet ds1 = new DataSet();
+            da1.Fill(ds1, "文章和内容相关表");   
+            dt1 = ds1.Tables[0];
+             
+            <%--dt2 = ds2.Tables[0];       
             SqlCommand cmd = new SqlCommand(strr, conn);
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -107,14 +117,14 @@
 			
                 this.Items.Add(item);
                 //item.Text=m_strPageInfo ;              
-            }
+            }--%>
             conn.Close();
             //分页还未处理
         
         }
 			
 			
-         public string OutputBySize(string p_strContent)//分页函数
+       <%--  public string OutputBySize(string p_strContent)//分页函数
         {
             string m_strRet = "";
             int m_intPageSize = 1500;//文章每页大小
@@ -186,7 +196,7 @@
                 m_strRet += p_strContent;
             }
             return m_strRet;
-        }
+        }--%>
     </script>
 
 
@@ -199,8 +209,8 @@
             <div class="xwleft1"><%=row["标题"].ToString() %></div>
             <div class="xwleft2">作者：<%=row["作者"].ToString() %></div>
 
-            <% foreach(var v in Items){%>
-            <div class="xwleft3"><%=v.Content %></div>
+            <% foreach(System.Data.DataRow row2 in dt1.Rows){%>
+            <div class="xwleft3"><%=row2["页面内容"].ToString() %></div>
             <%}%>
             <%--<div class="xwleft3"><%=row["内容"].ToString() %></div>--%>
             <%}%>
@@ -249,9 +259,9 @@
     <!-- 文章页码开始 -->
     <center>
         <div>
-            <% foreach(var v in Items){%>
+            <%--<% foreach(var v in Items){%>
             <div class="xwleft3"><%=v.Text %></div>
-            <%}%>
+            <%}%>--%>
         </div>
     </center>
     <!-- 文章页码结束 -->
