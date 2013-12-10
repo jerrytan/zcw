@@ -1,3 +1,10 @@
+<!--
+        文章详情页面
+        文件名：wzxq.ascx
+        传入参数：p     列表页数
+                  wz_id    文章类型
+               
+    -->
 <%-- 产品发现文章首页--%>
 
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
@@ -6,60 +13,58 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>文章详情页</title>
-<style type="text/css">
-	.p 
-{
-	font-size: 12px;
-	color:Black;
-	font-weight:bold;
-	text-decoration:none; 
-}
-	.p1 
-{
-	font-size: 15px;
-	color:blue;
-	font-weight:bold;
-	text-decoration:none; 
-}
-</style>
-<link href="css/css.css" rel="stylesheet" type="text/css" />
-<link href="css/all of.css" rel="stylesheet" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <title>文章详情页</title>
+    <style type="text/css">
+        .p {
+            font-size: 12px;
+            color: Black;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .p1 {
+            font-size: 15px;
+            color: blue;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+    <link href="css/css.css" rel="stylesheet" type="text/css" />
+    <link href="css/all of.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-<!-- 头部开始-->
-<!-- #include file="static/header.aspx" -->
-<!-- 头部结束-->
+    <!-- 头部开始-->
+    <!-- #include file="static/header.aspx" -->
+    <!-- 头部结束-->
 
 
-<!-- 导航开始-->
-<uc1:Menu1 ID="Menu1" runat="server" />
-<!-- 导航结束-->
+    <!-- 导航开始-->
+    <uc1:Menu1 ID="Menu1" runat="server" />
+    <!-- 导航结束-->
 
 
-<!-- banner开始-->
-<!-- #include file="static/banner.aspx" -->
-<!-- banner 结束-->
+    <!-- banner开始-->
+    <!-- #include file="static/banner.aspx" -->
+    <!-- banner 结束-->
 
 
 
-<!-- 文章首页 开始-->
-<script runat="server">
+    <!-- 文章首页 开始-->
+    <script runat="server">
 
         public class ArticleContent
-    {
-        public string Text { get; set; }
-        public string Content { get; set; }  
-        public string Wz_id { get; set; }		
-    }
+        {
+            public string Text { get; set; }
+            public string Content { get; set; }  
+            public string Wz_id { get; set; }		
+        }
        	public List<ArticleContent> Items { get; set; }
 
            
@@ -182,143 +187,87 @@
             }
             return m_strRet;
         }
-	</script>
+    </script>
 
 
 
-<div class="xwn">
-<div class="xwn1"><a href="index.aspx" class="p1">首页 ></a> 正文</div>
-<div class="xwleft">
+    <div class="xwn">
+        <div class="xwn1"><a href="index.aspx" class="p1">首页 ></a> 正文</div>
+        <div class="xwleft">
 
- <% foreach(System.Data.DataRow row in dt.Rows){%> 
-<div class="xwleft1"><%=row["标题"].ToString() %></div>
-<div class="xwleft2">作者：<%=row["作者"].ToString() %></div>
+            <% foreach(System.Data.DataRow row in dt.Rows){%>
+            <div class="xwleft1"><%=row["标题"].ToString() %></div>
+            <div class="xwleft2">作者：<%=row["作者"].ToString() %></div>
 
- <% foreach(var v in Items){%> 
-<div class="xwleft3"><%=v.Content %></div> 
-<%}%>
-<%--<div class="xwleft3"><%=row["内容"].ToString() %></div>--%> 
-<%}%>
-</div>
+            <% foreach(var v in Items){%>
+            <div class="xwleft3"><%=v.Content %></div>
+            <%}%>
+            <%--<div class="xwleft3"><%=row["内容"].ToString() %></div>--%>
+            <%}%>
+        </div>
 
-<!-- 文章首页 结束-->
-
-
+        <!-- 文章首页 结束-->
 
 
-<!-- 相关厂商列表 开始-->
 
-<div class="xwright">
-<div class="xwright1">
-  <ul>
-   <%foreach(System.Data.DataRow row in dt2.Rows){%>
-     <li><a href="scsxx.aspx?gys_id=<%=row["gys_id"]%>"><%=row["厂商名称"].ToString()%></a></li>
- <%}%>
+
+
+        <div class="xwright">
+            <!-- 相关厂商列表 开始-->
+            <% if (dt2.Rows != null & dt2.Rows.Count >0 ) {  %>
+                
+            <div class="xwright1">
+                <ul>
+                    <%foreach(System.Data.DataRow row in dt2.Rows){%>
+                    <li><a href="scsxx.aspx?gys_id=<%=row["gys_id"]%>"><%=row["厂商名称"].ToString()%></a></li>
+                    <%}%>
+                </ul>
+            </div>
+            <% } %>
+            <!-- 相关厂商列表 结束-->
+
+
+
+            <!-- 相关产品列表 开始-->
+             <% if (dt3.Rows != null & dt3.Rows.Count >0 ) {  %>
+            <div class="xwright1">
+                <ul>
+                    <%foreach(System.Data.DataRow row in dt3.Rows){%>
+                    <li><a href="#"><%=row["产品名称"].ToString()%></a></li>
+                    <%}%>
+                </ul>
+            </div>
+            <% } %>
+            <!-- 相关产品列表 结束-->
+
+
+        </div>
+
+    </div>
+
+
+    <!-- 文章页码开始 -->
+    <center>
+        <div>
+            <% foreach(var v in Items){%>
+            <div class="xwleft3"><%=v.Text %></div>
+            <%}%>
+        </div>
+    </center>
+    <!-- 文章页码结束 -->
+
+
+
+    <!-- 关于我们 广告服务 开始-->
+    <!-- #include file="static/aboutus.aspx" -->
+    <!-- 关于我们 广告服务 结束-->
+
+
+
+    <!-- footer 开始-->
+    <!-- #include file="static/footer.aspx" -->
+    <!-- footer 结束-->
+
    
-  </ul>
-</div>
-<!-- 相关厂商列表 结束-->
-
-
-
-<!-- 相关产品列表 开始-->
-<div class="xwright1">
-  <ul>
-     <%foreach(System.Data.DataRow row in dt3.Rows){%>
-     <li><a href="#"><%=row["产品名称"].ToString()%></a></li>
-  <%}%>
-   
-  </ul>
-</div>
-</div>
-
-</div>
-<!-- 相关产品列表 结束-->
-
-
-<!-- 文章页码开始 -->
-<center>
-<div>
- <% foreach(var v in Items){%> 
-<div class="xwleft3"><%=v.Text %></div> 
-<%}%>
-</div>
-</center>
-<!-- 文章页码结束 -->
-
-
-
-<!-- 关于我们 广告服务 开始-->
-<!-- #include file="static/aboutus.aspx" -->
-<!-- 关于我们 广告服务 结束-->
-
-
-
-<!-- footer 开始-->
-<!-- #include file="static/footer.aspx" -->
-<!-- footer 结束-->
-
-
-
-
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
-<script type="text/javascript">
-var speed=9//速度数值越大速度越慢
-var demo=document.getElementById("demo");
-var demo2=document.getElementById("demo2");
-var demo1=document.getElementById("demo1");
-demo2.innerHTML=demo1.innerHTML
-function Marquee(){
-if(demo2.offsetWidth-demo.scrollLeft<=0)
-demo.scrollLeft-=demo1.offsetWidth
-else{
-demo.scrollLeft++
-}
-}
-var MyMar=setInterval(Marquee,speed)
-demo.onmouseover=function() {clearInterval(MyMar)}
-demo.onmouseout=function() {MyMar=setInterval(Marquee,speed)}
-</script>
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
-<body>
+    <body>
 </html>
