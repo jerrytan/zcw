@@ -1,39 +1,23 @@
-<%@ Page Language="C#" Debug="true" %>
-<%@ Import Namespace="System.Web" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-    <meta property="qc:admins" content="10712247166546367" />
-    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" charset="utf-8" data-callback="true"></script>
-    <title>haha </title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta property="qc:admins" content="10712247166546367" /> 
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" charset="utf-8" data-callback="true"></script>
+<title>haha </title>
 </head>
 <body>
-    hahaha
-    <script type="text/javascript">
-        if (QC.Login.check()) {//如果已登录
-            QC.Login.getMe(function (openId, accessToken) {
-                alert(["当前登录用户的", "openId为：" + openId, "accessToken为：" + accessToken].join("\n"));
-            });
-            //这里可以调用自己的保存接口
-            document.cookie = "qq_id=" + openId;
 
-        }
-    </script>
+hahaha
+<script type="text/javascript">
+if(QC.Login.check()){//如果已登录
+	QC.Login.getMe(function(openId, accessToken){
+		alert(["当前登录用户的", "openId为："+openId, "accessToken为："+accessToken].join("\n"));
+	});
+	//这里可以调用自己的保存接口
+	//...
+}
+</script>
 
-    <%
-    Object qq_id = Session["openId"];
-    if ( null == qq_id) 
-    {
-        Response.Write("还没有登录，请登录");
-    }
-    else
-    {
-        Response.Write("welcome，"+ qq_id.ToString());
-
-    }
-   
-    %>
-    <body>
+<body>
 </html>
