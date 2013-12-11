@@ -1,10 +1,16 @@
+<!--
+        材料详情页面
+        文件名：clxx.ascx
+        传入参数：cl_id
+               
+    -->
+
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
 
 
@@ -12,7 +18,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>信息详情页</title>
+<title>材料信息详情页</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
 <script type=text/javascript src="js/lrtk.js"></script>
@@ -41,12 +47,13 @@
 		 protected DataTable dt2 = new DataTable();   //品牌名称,规格型号(品牌字典)
 		 protected DataTable dt3 = new DataTable();   //生产商信息(材料供应商信息表)
 		 protected DataTable dt4 = new DataTable();  //分销商信息(材料供应商信息表)
+        string cl_id;
         protected void Page_Load(object sender, EventArgs e)
         {		      
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
-			string cl_id = Request["cl_id"];
+			cl_id = Request["cl_id"];
             SqlDataAdapter da = new SqlDataAdapter("select 显示名,fl_id,材料编码 from 材料表 where cl_id='"+cl_id+"' ", conn);
             DataSet ds = new DataSet();
             da.Fill(ds, "材料表");            
@@ -143,7 +150,7 @@
   <%}%>
 
  </dl>
- <span class="xx4"><a href="#">请收藏，便于查找</a></span></div>
+ <span class="xx4" onclick="sc_login(<%=cl_id %>)"><a href="" onclick="NewWindow(<%=cl_id %>)">请收藏，便于查找</a></span></div>
 </div>
 
 <div class="xx5"><img src="images/sst_03.jpg" />
@@ -223,69 +230,10 @@
 
 
 </div>
-<script language=javascript>
-  mytv("idNum","idTransformView","idSlider",300,5,true,2000,5,true,"onmouseover");
-  //按钮容器aa，滚动容器bb，滚动内容cc，滚动宽度dd，滚动数量ee，滚动方向ff，延时gg，滚动速度hh，自动滚动ii，
-  </script>
-
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
+<script>function NewWindow(id) {
+    window.open("sccl.aspx?cl_id=id","","height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=no");
 }
-window.onload=menuFix;
-//--><!]]></script>
-<script type="text/javascript">
-var speed=9//速度数值越大速度越慢
-var demo=document.getElementById("demo");
-var demo2=document.getElementById("demo2");
-var demo1=document.getElementById("demo1");
-demo2.innerHTML=demo1.innerHTML
-function Marquee(){
-if(demo2.offsetWidth-demo.scrollLeft<=0)
-demo.scrollLeft-=demo1.offsetWidth
-else{
-demo.scrollLeft++
-}
-}
-var MyMar=setInterval(Marquee,speed)
-demo.onmouseover=function() {clearInterval(MyMar)}
-demo.onmouseout=function() {MyMar=setInterval(Marquee,speed)}
 </script>
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
+
 </body>
 </html>

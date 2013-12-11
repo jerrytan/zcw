@@ -34,7 +34,7 @@
 
             <% foreach(System.Data.DataRow row in dt.Rows){%>
 
-            <li><a href="xx.aspx?fl_id=<%=row["分类编码"]%>&cl_id=<%=row["cl_id"]%> "><%=row["显示名"].ToString() %></a></li>
+            <li><a href="clxx.aspx?cl_id=<%=row["cl_id"]%> "><%=row["显示名"].ToString() %></a></li>
 
             <% } %>
         </ul>

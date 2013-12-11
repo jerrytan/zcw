@@ -286,7 +286,7 @@
             <% foreach(System.Data.DataRow row in dt4.Rows){%>
 
             <div class="dlspxt">
-                <a href="xx.aspx">
+                <a href="clxx.aspx?cl_id=<%= %>">
                     <img src="images/222_03.jpg" />
                     <div class="dlspxt1">
                         <span class="dlsl"><%=row["ÏÔÊ¾Ãû"].ToString() %></span>
