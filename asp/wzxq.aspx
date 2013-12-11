@@ -58,29 +58,21 @@
 
     <!-- 文章首页 开始-->
     <script runat="server">
-
-        <%--public class ArticleContent
-        {
-            public string Text { get; set; }
-            public string Content { get; set; }  
-            public string Wz_id { get; set; }		
-        }
-       	public List<ArticleContent> Items { get; set; }--%>
-
-           
+                         
  	    protected DataTable dt=new DataTable();  //文章表
         protected DataTable dt1=new DataTable();  //文章和内容相关表
         protected DataTable dt2=new DataTable();  //文章和厂商相关表
         protected DataTable dt3=new DataTable();  //文章和产品相关表
         protected int total_pages =1;
         protected int current_page = 1;
+        protected string wz_id;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
-            string wz_id=Request["wz_id"];  //获取文章id
+            wz_id=Request["wz_id"];  //获取文章id
             SqlDataAdapter da = new SqlDataAdapter("select distinct 标题,作者,内容, wz_id from 文章表 where wz_id='"+wz_id+"'", conn);            
             DataSet ds = new DataSet();
             da.Fill(ds, "文章表");        
@@ -98,111 +90,35 @@
 
 
             string page = Request["p"];
-            if (page!=null) current_page =int.Parse(page);               
+            if (page != null) current_page = int.Parse(page);   
+                    
             string strr="select 页面内容, 页面编号, wz_id from 文章和内容相关表 where wz_id='"+wz_id+"' and 页面编号='"+ current_page+"'";  
             SqlDataAdapter da1 = new SqlDataAdapter(strr, conn);            
             DataSet ds1 = new DataSet();
             da1.Fill(ds1, "文章和内容相关表");   
             dt1 = ds1.Tables[0];
-             
-            <%--dt2 = ds2.Tables[0];       
-            SqlCommand cmd = new SqlCommand(strr, conn);
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+
+            string total_sql_str = "select count(*) from 文章和内容相关表 where wz_id='"+wz_id+"'";
+            SqlCommand cmd = new SqlCommand(total_sql_str,conn);
+            Object result = cmd.ExecuteScalar();
+            if (result != null) 
             {
-                string str = dr.GetString(0);
-                ArticleContent item = new ArticleContent();
-                this.Items = new List<ArticleContent>();  //接收文章内容
-                item.Content = OutputBySize(str) ; 
-			
-                this.Items.Add(item);
-                //item.Text=m_strPageInfo ;              
-            }--%>
+                total_pages = int.Parse(Convert.ToString(result));
+            }             
+
             conn.Close();
-            //分页还未处理
+            
         
         }
 			
 			
-       <%--  public string OutputBySize(string p_strContent)//分页函数
-        {
-            string m_strRet = "";
-            int m_intPageSize = 1500;//文章每页大小
-            int m_intCurrentPage = 1;//设置第一页为初始页
-            int m_intTotalPage = 0; //设置分页数
-            int m_intArticlelength = p_strContent.Length;//文章长度
-            if (m_intArticlelength > m_intPageSize)//如果每页大小大于文章长度时开始分页
-            {
-                if (m_intArticlelength % m_intPageSize == 0)//set total pages count
-                {
-                    m_intTotalPage = m_intArticlelength / m_intPageSize;
-                }
-                else
-                {//if the totalsize
-                    m_intTotalPage = m_intArticlelength / m_intPageSize + 1;
-                }
-				
-                if (Request["ps"] != null)
-                {//set Current page number
-                    try
-                    {//处理不正常的地址栏的值
-                        m_intCurrentPage = Convert.ToInt32(Request["ps"]);
-                        if (m_intCurrentPage > m_intTotalPage)
 
-                            m_intCurrentPage = m_intTotalPage;
-
-                    }
-                    catch
-                    {
-                        //m_intCurrentPage = m_intCurrentPage;
-                    }
-                }
-                //set the page content 设置获取当前页的大小
-                if (m_intCurrentPage < m_intTotalPage)
-                {
-                    m_intPageSize = m_intCurrentPage < m_intTotalPage ? m_intPageSize : (m_intArticlelength - m_intPageSize * (m_intCurrentPage - 1));
-                    m_strRet += p_strContent.Substring(m_intPageSize * (m_intCurrentPage - 1), m_intPageSize); //点击超链接时分页内容长度
-                }
-                else if (m_intCurrentPage == m_intTotalPage)
-                {
-                    int mm_intPageSize = m_intArticlelength - m_intPageSize * (m_intCurrentPage - 1);//最后一页前的内容
-                    m_strRet += p_strContent.Substring(m_intArticlelength - mm_intPageSize); //最后一页的内容
-                }
-                string wz_id = Request["wz_id"];  //获取文章id
-                string m_strPageInfo = "";
-                for (int i = 1; i <= m_intTotalPage; i++)
-                {
-                    if (i == m_intCurrentPage)
-                        m_strPageInfo += "[" + i + "]";
-                    else
-                        m_strPageInfo += " <a href=?ps=" + i + "&wz_id="+wz_id+"  >[" + i + "]</a> ";
-
-                }
-                if (m_intCurrentPage > 1)
-				    
-                    m_strPageInfo = "<a href=?ps=" + (m_intCurrentPage - 1) + "&wz_id="+wz_id+" >上一页</a>" + m_strPageInfo;
-                if (m_intCurrentPage < m_intTotalPage)
-                    m_strPageInfo += "<a href=?ps=" + (m_intCurrentPage + 1) + "&wz_id="+wz_id+" >下一页</a>";
-                //输出显示各个页码
-                //this.ShowPageNumber.Text = "<p></p>" + m_strPageInfo;
-                ArticleContent item = new ArticleContent();
-                this.Items = new List<ArticleContent>();  //接收文章内容
-                item.Text = m_strPageInfo ;    //接收文章分页页码
-                this.Items.Add(item);
-
-            }
-            else
-            {
-                m_strRet += p_strContent;
-            }
-            return m_strRet;
-        }--%>
     </script>
 
 
 
     <div class="xwn">
-        <div class="xwn1"><a href="index.aspx" class="p1">首页 ></a> 正文</div>
+        <div class="xwn1"><a href="index.aspx" class="p1">首页 ></a>正文</div>
         <div class="xwleft">
 
             <% foreach(System.Data.DataRow row in dt.Rows){%>
@@ -212,7 +128,22 @@
             <% foreach(System.Data.DataRow row2 in dt1.Rows){%>
             <div class="xwleft3"><%=row2["页面内容"].ToString() %></div>
             <%}%>
-            <%--<div class="xwleft3"><%=row["内容"].ToString() %></div>--%>
+          
+            <center>
+        <div>
+            <div class="fy3">
+                <% if(total_pages >1 && current_page !=1) { %>
+                <a href="wzxq.aspx?wz_id=<%=wz_id %>&p=<%=current_page-1%>" class="p">上一页</a>
+                <% } %>
+              
+                <% if(current_page<total_pages ) { %>
+                <a href="wzxq.aspx?wz_id=<%=wz_id %>&p=<%=current_page+1%>" class="p">下一页</a>
+                <% } %>
+
+              </div>
+               
+          </div>
+    </center>
             <%}%>
         </div>
 
@@ -257,13 +188,8 @@
 
 
     <!-- 文章页码开始 -->
-    <center>
-        <div>
-            <%--<% foreach(var v in Items){%>
-            <div class="xwleft3"><%=v.Text %></div>
-            <%}%>--%>
-        </div>
-    </center>
+    
+ 
     <!-- 文章页码结束 -->
 
 
