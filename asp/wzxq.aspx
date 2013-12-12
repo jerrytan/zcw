@@ -73,7 +73,7 @@
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
             wz_id=Request["wz_id"];  //获取文章id
-            SqlDataAdapter da = new SqlDataAdapter("select distinct 标题,作者,内容, wz_id from 文章表 where wz_id='"+wz_id+"'", conn);            
+            SqlDataAdapter da = new SqlDataAdapter("select distinct 标题,作者, wz_id from 文章表 where wz_id='"+wz_id+"'", conn);            
             DataSet ds = new DataSet();
             da.Fill(ds, "文章表");        
             dt = ds.Tables[0];
