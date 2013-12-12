@@ -10,7 +10,6 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
 
 
@@ -261,7 +260,7 @@
                         <img src="images/qwez.jpg" /></a>
 
                     <% foreach(System.Data.DataRow row in dt3.Rows){%>
-                    <a href="#"><%=row["显示名"].ToString() %></a>
+                    <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>"><%=row["显示名"].ToString() %></a>
                     <%}%>
                 </div>
             </div>
@@ -286,7 +285,7 @@
             <% foreach(System.Data.DataRow row in dt4.Rows){%>
 
             <div class="dlspxt">
-                <a href="clxx.aspx?cl_id=<%= %>">
+                <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">
                     <img src="images/222_03.jpg" />
                     <div class="dlspxt1">
                         <span class="dlsl"><%=row["显示名"].ToString() %></span>

@@ -1,4 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" %>
+﻿<!--
+        材料收藏，QQ登陆页面
+        文件名：sccl2.ascx
+        传入参数：无
+               
+    -->
+<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1transitional.dtd">
 
@@ -13,14 +19,13 @@
         if (QC.Login.check()) {//如果已登录  
             QC.Login.getMe(function (openId, accessToken) {
                 //alert(["当前登录用户的", "openId为：" + openId, "accessToken为：" + accessToken].join("\n！"));
-                alert("登陆成功，将自动返回");
+                alert("您好，您已经用QQ号登陆成功，将自动返回前一页。");
                 //using cookie to store openId
 
                 document.cookie = "OpenId=" + openId;
                 opener.location.reload();
             });
-            //这里可以调用自己的保存接口  
-            //...  
+            
         }
 
 

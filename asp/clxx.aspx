@@ -231,7 +231,8 @@
 
 </div>
 <script>function NewWindow(id) {
-    window.open("sccl.aspx?cl_id=id","","height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=no");
+    var url = "sccl.aspx?cl_id="+id;
+    window.open(url,"","height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
 }
 </script>
 
