@@ -66,13 +66,12 @@
             da1.Fill(ds1, "材料供应商信息表");            
             dt1 = ds1.Tables[0];
 			
-			//接受gys_id进行查询gys_id='"+gys_id+"'
-			SqlDataAdapter da2 = new SqlDataAdapter("select 品牌名称,pp_id from 品牌字典 where scs_id='"+gys_id+"'", conn);
+			SqlDataAdapter da2 = new SqlDataAdapter("select 品牌名称,pp_id from 分销商和品牌对应关系表 where fxs_id='"+gys_id+"'", conn);
             DataSet ds2 = new DataSet();
-            da2.Fill(ds2, "材料供应商信息表");            
+            da2.Fill(ds2, "分销商和品牌对应关系表");            
             dt2 = ds2.Tables[0];
 			
-			SqlDataAdapter da3 = new SqlDataAdapter("select 显示名 from 材料表 where gys_id in(select gys_id from 品牌字典 where 品牌名称 in(select 品牌名称 from 品牌字典 where gys_id='"+gys_id+"') )", conn);
+			SqlDataAdapter da3 = new SqlDataAdapter("select 显示名,cl_id from 材料表 where pp_id in(select pp_id from  分销商和品牌对应关系表 where fxs_id ='"+gys_id+"') ", conn);
             DataSet ds3 = new DataSet();
             da3.Fill(ds3, "材料表");            
             dt3 = ds3.Tables[0];
@@ -120,8 +119,10 @@
         <div class="gydl">
             <div class="dlpp">代理品牌</div>
             <%foreach(System.Data.DataRow row in dt2.Rows){%>
+            <a href="ppxx.aspx?pp_id=<%=row["pp_id"] %>">
             <div class="gydl1">
                 <img src="images/222_03.jpg" /><%=row["品牌名称"].ToString()%></div>
+             </a>
             <%}%>
         </div>
 
@@ -134,8 +135,11 @@
             <div class="dlpp">现货供应</div>
 
             <%foreach(System.Data.DataRow row in dt3.Rows){%>
+            <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">
+
             <div class="gydl1">
                 <img src="images/222_03.jpg" /><%=row["显示名"].ToString() %></div>
+            </a>
             <%}%>
         </div>
 

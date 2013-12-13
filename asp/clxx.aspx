@@ -70,12 +70,13 @@
             da2.Fill(ds2, "材料表");            
             dt2 = ds2.Tables[0];
 			
-			SqlDataAdapter da3 = new SqlDataAdapter("select 联系人手机,供应商,联系地址 from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') " , conn);
+			SqlDataAdapter da3 = new SqlDataAdapter("select 联系人手机,供应商,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') " , conn);
             DataSet ds3 = new DataSet();
             da3.Fill(ds3, "材料供应商信息表");            
             dt3 = ds3.Tables[0];
 			
-			SqlDataAdapter da4 = new SqlDataAdapter("select 供应商,联系人,联系人手机,联系地址 from 材料供应商信息表 where gys_id in(select gys_id from 品牌字典 where pp_id in(select pp_id from 材料表 where cl_id='"+cl_id+"') ) " , conn);
+            String sql_str = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"'))";
+			SqlDataAdapter da4 = new SqlDataAdapter(sql_str , conn);
             DataSet ds4 = new DataSet();
             da4.Fill(ds4, "材料供应商信息表");            
             dt4 = ds4.Tables[0];
@@ -158,9 +159,11 @@
          <ul>
           <li class="xx7">生产商信息</li>
 		<% foreach(System.Data.DataRow row in dt3.Rows){%>  
+          <a href="scsxx.aspx?scs_id=<%=row["gys_id"] %>">
           <li>厂名：<%=row["供应商"].ToString()%></li>
           <li>地址：<%=row["联系地址"].ToString()%></li>
           <li>电话：<%=row["联系人手机"].ToString()%></li>
+          </a>
 		<%}%>  
        </ul>
 </div>
@@ -176,40 +179,20 @@
     <div class="fxs2">
        <ul>
           <li class="fxsa">分销商:</li>
+          <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
           <li>厂名：<%=row["供应商"].ToString()%></li>
           <li>地址：<%=row["联系地址"].ToString()%></li>
           <li>电话：<%=row["联系人手机"].ToString()%></li>
+          </a>
        </ul>
     </div>
 	<%}%>
-    <div class="fxs2">
-       <ul>
-          <li class="fxsa">分销商A</li>
-          <li>厂名：</li>
-          <li>地址：</li>
-          <li>电话：</li>
-       </ul>
-    </div>
-    <div class="fxs2">
-       <ul>
-          <li class="fxsa">分销商A</li>
-          <li>厂名：</li>
-          <li>地址：</li>
-          <li>电话：</li>
-       </ul>
-    </div>
+    
 </div></div>
 
 <div class="xx10"><img src="images/231_03.jpg" />
   <dl>
-     <dd>·持续帮助着客户飞速发展同时创造更佳运营绩效，其中包括汽车产业、电子通信材免费下载...   </dd>
-     <dt>2013.09.09</dt>
-     <dd>·持续帮助着客户飞速发展同时创造更佳运营绩效，其中包括汽车产业、电子通信材免费下载...   </dd>
-     <dt>2013.09.09</dt>
-     <dd>·持续帮助着客户飞速发展同时创造更佳运营绩效，其中包括汽车产业、电子通信材免费下载...   </dd>
-     <dt>2013.09.09</dt>
-     <dd>·持续帮助着客户飞速发展同时创造更佳运营绩效，其中包括汽车产业、电子通信材免费下载...   </dd>
-     <dt>2013.09.09</dt>
+     
   </dl>
   <div class="xx11"><img src="images/231_03.jpg" /></div>
 </div>

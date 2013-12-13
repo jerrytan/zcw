@@ -1,7 +1,7 @@
 <!--
         生产商信息首页
         文件名：scsxx.ascx
-        传入参数：scs_id    供应商编号
+        传入参数：gys_id    供应商编号
                
     -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
@@ -70,7 +70,7 @@
 			
                 //获取分销商信息
 			    //子查询嵌套 先根据传过来的gys_id查品牌名称  再从品牌字典里查复合条件的gys_id 最后根据复合条件的gys_id查分销商信息
-			    SqlDataAdapter da3 = new SqlDataAdapter("select 供应商,联系人,联系人手机,联系地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where gys_id='"+gys_id+"') )", conn);
+			    SqlDataAdapter da3 = new SqlDataAdapter("select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )", conn);
                 DataSet ds3 = new DataSet();
                 da3.Fill(ds3, "材料供应商信息表");            
                 dt3 = ds3.Tables[0];
@@ -116,8 +116,11 @@
         <div class="gydl">
             <div class="dlpp">公司旗下品牌</div>
             <%foreach(System.Data.DataRow row in dt2.Rows){%>
+            <a href="ppxx.aspx?pp_id=<%=row["pp_id"] %>">
+
             <div class="gydl1">
                 <img src="images/222_03.jpg" /><%=row["品牌名称"].ToString()%></div>
+            </a>
             <%}%>
         </div>
 
@@ -144,6 +147,8 @@
             </div>
 
             <%foreach(System.Data.DataRow row in dt3.Rows){%>
+            <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
+
             <div class="fxs2">
                 <ul>
                     <li class="fxsa"><%=row["供应商"].ToString() %></li>
@@ -152,6 +157,7 @@
                     <li>地址：<%=row["联系地址"].ToString() %></li>
                 </ul>
             </div>
+                </a>
             <%}%>
         </div>
 
