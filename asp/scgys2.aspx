@@ -1,6 +1,6 @@
 ﻿<!--
-        材料收藏，QQ登陆页面
-        文件名：sccl2.ascx
+        收藏供应商，QQ登陆页面
+        文件名：scgys2.ascx
         传入参数：无
                
     -->
@@ -19,10 +19,10 @@
         if (QC.Login.check()) {//如果已登录  
             QC.Login.getMe(function (openId, accessToken) {
                 //alert(["当前登录用户的", "openId为：" + openId, "accessToken为：" + accessToken].join("\n！"));
-                alert("您好，您已经用QQ号登陆成功，确认后自动返回。");
+                alert("您好，您已经用QQ号登陆成功，将自动返回。");
                 //using cookie to store openId
 
-                document.cookie = "QQ_id=" + openId;
+                document.cookie = "OpenId=" + openId;
                 opener.location.reload();
             });
             

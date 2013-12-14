@@ -47,6 +47,7 @@
 		protected DataTable dt1 = new DataTable(); //供应商信息(材料供应商信息表)
 		protected DataTable dt2 = new DataTable(); //代理品牌(品牌字典)
 		protected DataTable dt3 = new DataTable(); //现货供应(材料表)
+        protected string gys_id;
         protected void Page_Load(object sender, EventArgs e)
         {
 		if (!Page.IsPostBack)
@@ -54,7 +55,7 @@
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
-			string gys_id = Request["gys_id"];   //获取供应商id
+			gys_id = Request["gys_id"];   //获取供应商id
             SqlDataAdapter da = new SqlDataAdapter("select  供应商  from 材料供应商信息表 where 是否启用=1 and gys_id='"+gys_id+"' ", conn);
             DataSet ds = new DataSet();
             da.Fill(ds, "材料供应商信息表");
@@ -107,7 +108,7 @@
                 <%}%>
             </div>
             <div class="gyan"><a href="#">本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>
-            <div class="gyan1"><a href="#">请收藏，便于查找</a></div>
+            <div class="gyan1"><a href="" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
         </div>
 
         <!-- 首页 供应商信息 结束-->
@@ -158,6 +159,11 @@
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->
 
-
+    
+    <script>function NewWindow(id) {
+    var url = "scgys.aspx?gys_id=" + id;
+    window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+}
+</script>
 </body>
 </html>
