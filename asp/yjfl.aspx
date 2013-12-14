@@ -86,12 +86,12 @@
             da.Fill(ds, "材料分类表"); 
             dt = ds.Tables[0];
 
-            SqlDataAdapter da2 = new SqlDataAdapter("select  显示名字 from 材料分类表 where  分类编码='"+name+"' ", conn);                
+            SqlDataAdapter da2 = new SqlDataAdapter("select  显示名字,fl_id from 材料分类表 where  分类编码='"+name+"' ", conn);                
 			DataSet ds2 = new DataSet();
             da2.Fill(ds2, "材料分类表"); 
             dt2 = ds2.Tables[0];      
   
-            SqlDataAdapter da3 = new SqlDataAdapter("select  显示名 from 材料表 where  left(材料编码,2)='"+name+"' ", conn);             
+            SqlDataAdapter da3 = new SqlDataAdapter("select  显示名,cl_id from 材料表 where  left(材料编码,2)='"+name+"' ", conn);             
 			DataSet ds3 = new DataSet();
             da3.Fill(ds3, "材料表"); 
             dt3 = ds3.Tables[0]; 

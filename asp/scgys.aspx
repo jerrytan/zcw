@@ -1,7 +1,7 @@
 <!--
-        材料收藏页面
-        文件名：sccl.ascx
-        传入参数：cl_id   材料id
+        收藏供应商页面
+        文件名：scgyc.ascx
+        传入参数：gys_id 供应商id
                
     -->
 <%@ Import Namespace="System.Data" %>
@@ -16,12 +16,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
-        data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/sccl2.aspx" charset="utf8"></script>
+        data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/scgys2.aspx" charset="utf8"></script>
 
-    <title>收藏材料</title>
+    <title>收藏供应商</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
 </head>
+
 
 <body>
     <div class="dlqq">
@@ -29,7 +30,8 @@
             <%
    
         HttpCookie QQ_id = Request.Cookies["QQ_id"];
-        String  cl_id = Request["cl_id"];
+        String  gys_id = Request["gys_id"];
+
         if (QQ_id != null)
         {
             //Response.Write("QQ_id is " + QQ_id.Value + "<p>");
@@ -51,7 +53,6 @@
                      int count = Convert.ToInt32(res_checkuserexist);
                      if (count ==0 )  //qq_id 不存在，需要增加用户表
                      {
-        
                            String str_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('"+ QQ_id.Value+"')";
                            SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);         
                            cmd_insertuser.ExecuteNonQuery();
@@ -61,7 +62,7 @@
                            cmd_updateyhid.ExecuteNonQuery();
                      }
 
-                     //获得yh_id，QQ_id应该为
+                     //获得yh_id
                      String str_getyhid = "select myId from 用户表 where QQ_id ='"+ QQ_id.Value+"'";
                      SqlCommand cmd_getyhid = new SqlCommand(str_getyhid, conn);
                      Object res_yhid = cmd_getyhid.ExecuteScalar();
@@ -72,30 +73,28 @@
 
                     
                   
-                      //先判断“采购商关注材料表”是否有该记录，如果没有，则插入
+                      //先判断“采购商关注供应商表”是否有该记录，如果没有，则插入
 
-                      string str_checkexist = "select count(*) from 采购商关注材料表 where yh_id = '"+yh_id+"' and cl_id ='"+cl_id+"'";
+                      string str_checkexist = "select count(*) from 采购商关注供应商表 where yh_id = '"+yh_id+"' and gys_id ='"+gys_id+"'";
                       SqlCommand cmd_checkexist = new SqlCommand(str_checkexist, conn);
                       int res_checkexist = Convert.ToInt32(cmd_checkexist.ExecuteScalar());
                       if (res_checkexist !=1 ) 
                       {
        
-
-
-                          String str_getcl = "select 显示名,材料编码 from 材料表 where cl_id ='"+cl_id+"'";
+                      //
+                          String str_getcl = "select 供应商,gys_id from 材料供应商信息表 where gys_id ='"+gys_id+"'";
                           SqlDataAdapter da_cl = new SqlDataAdapter(str_getcl, conn);
                           DataSet ds_cl = new DataSet();
-                          da_cl.Fill(ds_cl, "材料表");            
+                          da_cl.Fill(ds_cl, "材料供应商信息表");            
                           DataTable dt_cl = ds_cl.Tables[0];
-                          String str_clname = Convert.ToString(dt_cl.Rows[0]["显示名"]);
-                          String str_clcode = Convert.ToString(dt_cl.Rows[0]["材料编码"]);
+                          String str_gysid = Convert.ToString(dt_cl.Rows[0]["gys_id"]);
+                          String str_gysname = Convert.ToString(dt_cl.Rows[0]["供应商"]);
 
-                       
 
-                          String str_addcl = "insert into 采购商关注材料表 (yh_id,cl_id,材料名称,材料编码) values ('"+yh_id+"','"+cl_id+"','"+str_clname+"','"+str_clcode+"')";
-                          SqlCommand cmd_addcl = new SqlCommand(str_addcl, conn); 
-                          cmd_addcl.ExecuteNonQuery();
-                       }
+                          String str_addgys = "insert into 采购商关注供应商表 (yh_id,gys_id,供应商名称) values ('"+yh_id+"','"+str_gysid+"','"+str_gysname+"')";
+                          SqlCommand cmd_addgys = new SqlCommand(str_addgys, conn); 
+                          cmd_addgys.ExecuteNonQuery();
+                      }
 
                       
                 }
@@ -110,7 +109,7 @@
            
 
 			Response.Write("<span class='dlzi'>尊敬的采购商，您好!</span>");
-            Response.Write("<span class='dlzi'>该材料已被收藏成功！</span>");
+            Response.Write("<span class='dlzi'>该供应商信息已被收藏成功！</span>");
             Response.Write("<span class='dlzi'><a href='sclb.aspx' target='_blank'>您可以点击查看已收藏的所有信息。</a></span>");
             Response.Write("<span class='dlzi' onclick='window.close()'>关闭此窗口</span>");
 
