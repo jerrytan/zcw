@@ -159,7 +159,7 @@
          <ul>
           <li class="xx7">生产商信息</li>
 		<% foreach(System.Data.DataRow row in dt3.Rows){%>  
-          <a href="scsxx.aspx?scs_id=<%=row["gys_id"] %>">
+          <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
           <li>厂名：<%=row["供应商"].ToString()%></li>
           <li>地址：<%=row["联系地址"].ToString()%></li>
           <li>电话：<%=row["联系人手机"].ToString()%></li>

@@ -91,7 +91,7 @@
                 <img src="images/133123_03.jpg" /></span>
             <div class="gycs">
                 <% foreach(System.Data.DataRow row in dt1.Rows){%>
-                <a href="scsxx.aspx?gys_id=<%=row["gys_id"] %>">
+                <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
                 <p>厂名：<%=row["供应商"].ToString() %></p>
                 <p>地址：<%=row["联系地址"].ToString() %></p>
                 <p>联系人：<%=row["联系人"].ToString() %></p>
