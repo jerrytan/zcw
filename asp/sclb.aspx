@@ -83,8 +83,8 @@
 
            
 
-			    Response.Write("<span class='dlzi'>尊敬的采购商，您好!</span>");
-                Response.Write("<span class='dlzi'>您收藏的供应商名单如下!<p>");
+			    Response.Write("<span class='dlzi'>尊敬的采购商，您好! <br>");
+                Response.Write("<span class='2'>您收藏的供应商名单如下!<p>");
                 foreach(DataRow row in dt_scgys.Rows){
                     Response.Write("<a href=gysxx.aspx?gys_id="+row["gys_id"].ToString()+">"+row["供应商名称"]+"<br></a>");
                 }

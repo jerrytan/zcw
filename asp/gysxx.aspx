@@ -66,6 +66,11 @@
                 da_gysxx.Fill(ds_gysxx, "材料供应商信息表");            
                 dt_gysxx = ds_gysxx.Tables[0];
 
+                //访问计数加1
+                String str_updatecounter = "update 材料供应商信息表 set 访问计数 = (select 访问计数 from 材料供应商信息表 where gys_id = '"+ gys_id +"')+1 where gys_id = '"+ gys_id +"'";
+                SqlCommand cmd_updatecounter = new SqlCommand(str_updatecounter, conn);         
+                cmd_updatecounter.ExecuteNonQuery();
+
                 //获得供应商的单位类型，生产商还是分销商
                 gys_type = Convert.ToString(dt_gysxx.Rows[0]["单位类型"]);
 			

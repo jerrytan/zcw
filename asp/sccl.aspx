@@ -104,7 +104,7 @@
                 Response.Write(ex);
             }
             finally{
-                conn.close();
+                conn.Close();
             }           
 
            

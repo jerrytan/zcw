@@ -55,6 +55,12 @@
             DataSet ds = new DataSet();
             da.Fill(ds, "品牌字典");            
             dt = ds.Tables[0];				
+
+             //访问计数加1
+            String str_updatecounter = "update 品牌字典 set 访问计数 = (select 访问计数 from 品牌字典 where pp_id = '"+ pp_id +"')+1 where pp_id = '"+ pp_id +"'";
+            SqlCommand cmd_updatecounter = new SqlCommand(str_updatecounter, conn);         
+            cmd_updatecounter.ExecuteNonQuery();
+
 			
             SqlDataAdapter da1 = new SqlDataAdapter("select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in (select scs_id from 品牌字典 where pp_id='"+pp_id+"' )", conn);
             DataSet ds1 = new DataSet();

@@ -58,6 +58,11 @@
             DataSet ds = new DataSet();
             da.Fill(ds, "材料表");            
             dt = ds.Tables[0];
+
+             //访问计数加1
+            String str_updatecounter = "update 材料表 set 访问计数 = (select 访问计数 from 材料表 where cl_id = '"+ cl_id +"')+1 where cl_id = '"+ cl_id +"'";
+            SqlCommand cmd_updatecounter = new SqlCommand(str_updatecounter, conn);         
+            cmd_updatecounter.ExecuteNonQuery();
 			
 			string fl_id = Request["fl_id"];//获取传过来的一级分类编码
 			SqlDataAdapter da1 = new SqlDataAdapter("select 显示名字 from 材料分类表 where 分类编码='"+fl_id+"' ", conn);
