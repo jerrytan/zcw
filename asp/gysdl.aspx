@@ -30,11 +30,7 @@
         <div class="dlqq1">
       <%
    
-        HttpCookie QQ_id = Request.Cookies["QQ_id"];
-        String  cl_id = Request["cl_id"];
-
-       
-
+        HttpCookie QQ_id = Request.Cookies["QQ_id"];   
         if (QQ_id != null)
         {
             //Response.Write("openid is " + openId.Value + "<p>");
@@ -43,8 +39,10 @@
             String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             
-            try{
-                 string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '"+QQ_id.Value+"'";
+            try
+            {
+                
+                String str_checkuserexist = "select count(*) from 用户表 where QQ_id = '"+QQ_id.Value+"'";
                 SqlCommand cmd_checkuserexist = new SqlCommand(str_checkuserexist, conn);
        
                 conn.Open();
@@ -55,10 +53,10 @@
                      if (count ==0 )  //qq_id 不存在，需要增加用户表
                      {
         
-                           String str_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('"+ QQ_id.Value+"')";
+                           String str_insertuser = "insert into 用户表 (QQ_id) VALUES ('"+ QQ_id.Value+"')";
                            SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);         
                            cmd_insertuser.ExecuteNonQuery();
-                           String str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+QQ_id.Value+"') where QQ_id = '"+QQ_id.Value+"')";
+                           String str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+QQ_id.Value+"') where QQ_id = '"+QQ_id.Value+"'";
                            SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
                            cmd_updateuser.ExecuteNonQuery();
                       }
@@ -92,7 +90,7 @@
             <img src="images/wz_03.jpg">
             <%
         }
-    
+   
             %>
             
         </div>

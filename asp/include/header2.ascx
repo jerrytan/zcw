@@ -12,15 +12,14 @@
 <%@ Import Namespace="System.Web" %>
 
 <script runat="server">
-
-        
-        
-        
+            
 
         protected DataTable dt = new DataTable(); //用户名字(用户表)    	
         protected void Page_Load(object sender, EventArgs e)
         {
             HttpCookie QQ_id = Request.Cookies["QQ_id"];
+            if (QQ_id != null )
+            {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
@@ -28,16 +27,19 @@
             DataSet ds = new DataSet();
             da.Fill(ds, "用户表");           
             dt = ds.Tables[0];
+            }
 		}	      
 	
 
 
-    </script>
+</script>
 
 <div class="box">
 
-    <div class="topx"><a href="gyszym.aspx">
-        <img src="images/topx_02.jpg" /></a></div>
+    <div class="topx">
+        <a href="gyszym.aspx">
+            <img src="images/topx_02.jpg" /></a>
+    </div>
     <div class="gyzy0">
         <div class="gyzy">
             尊敬的
@@ -47,3 +49,4 @@
 
             先生/女士，您好
         </div>
+    </div>

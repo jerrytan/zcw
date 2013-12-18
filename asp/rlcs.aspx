@@ -1,8 +1,7 @@
 <!--
       认领厂商页面
 	  (当用户认领厂商后 把对应的用户id赋给认领的供应商(材料供应商信息表的yh_id))
-	  文件名:  认领厂商.aspx 
-       
+	  文件名:  认领厂商.aspx        
 	  传入参数:无	   
 
      
@@ -15,7 +14,6 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
 
 
@@ -199,64 +197,5 @@
 </div>
 
 
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
-<script type="text/javascript">
-var speed=9//速度数值越大速度越慢
-var demo=document.getElementById("demo");
-var demo2=document.getElementById("demo2");
-var demo1=document.getElementById("demo1");
-demo2.innerHTML=demo1.innerHTML
-function Marquee(){
-if(demo2.offsetWidth-demo.scrollLeft<=0)
-demo.scrollLeft-=demo1.offsetWidth
-else{
-demo.scrollLeft++
-}
-}
-var MyMar=setInterval(Marquee,speed)
-demo.onmouseover=function() {clearInterval(MyMar)}
-demo.onmouseout=function() {MyMar=setInterval(Marquee,speed)}
-</script>
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
 </body>
 </html>

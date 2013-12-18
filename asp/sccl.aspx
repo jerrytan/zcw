@@ -56,7 +56,7 @@
                            SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);         
                            cmd_insertuser.ExecuteNonQuery();
 
-                           String str_updateyhid = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+QQ_id.Value+"') where QQ_id = '"+QQ_id.Value+"')";
+                           String str_updateyhid = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+QQ_id.Value+"') where QQ_id = '"+QQ_id.Value+"'";
                            SqlCommand cmd_updateyhid = new SqlCommand(str_updateyhid, conn);         
                            cmd_updateyhid.ExecuteNonQuery();
                      }
