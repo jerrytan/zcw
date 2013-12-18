@@ -50,18 +50,12 @@
         <ul>
             <% foreach(var v  in  Items){%>
 
-            <%if (v.Type.ToString() == "生产商")
-           {		 %>
-            <li><a href="scsxx.aspx?gys_id=<%=v.Gys_id%>"><%=v.Manufacturers %></a></li>
-
-            <%} %>
-            <%if (v.Type.ToString() == "分销商")
-           { %>
+            
             <li><a href="gysxx.aspx?gys_id=<%=v.Gys_id%>"><%=v.Manufacturers %></a></li>
 
             <%} %>
+           
 
-            <% } %>
         </ul>
     </div>
 </div>

@@ -1,4 +1,13 @@
-<%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
+<!--
+          
+       供应商新增材料页面	   
+       文件名：czclym.aspx 
+       传入参数:无	   
+	   
+-->
+
+
+<%@ Register Src="include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
 
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
@@ -17,113 +26,180 @@
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body>
+<script language="javascript">
+//发送ajax有问题,待处理
 
 
-<script runat="server">  
-        public List<OptionItem> Items1 { get; set; }
-        public List<OptionItem> Items2 { get; set; }
-		public List<OptionItem> Items3 { get; set; }
-        public class OptionItem
-        {
-          public string Name { get; set; }  //下拉列表显示名属性
-		  public string GroupsCode {get; set ; }  //下拉列表分类编码属性
-          public string SelectedString { get; set; }
-          public string Value { get; set; }      
-       
-        }
-        protected DataTable dt = new DataTable();  //材料分类大类
-		protected DataTable dt1 = new DataTable();  //材料分类小类
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            conn.Open();
-            SqlDataAdapter da = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'", conn);
-            DataSet ds = new DataSet();
-            da.Fill(ds, "材料分类表");            
-            dt = ds.Tables[0];
-            
-			//string type = Request[""];
-            SqlDataAdapter da1 = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where len(分类编码)='4'", conn);
-            DataSet ds1 = new DataSet();
-            da1.Fill(ds1, "材料分类表");            
-            dt1 = ds1.Tables[0];			
-			conn.Close();
-			                 
-            this.Items1 = new List<OptionItem>();  //数据表DataTable转集合  
-            this.Items2 = new List<OptionItem>();
-            this.Items3 = new List<OptionItem>();
-            for (int x = 0; x < dt.Rows.Count; x++)
-            {
-                DataRow dr = dt.Rows[x];
-
-                if (Convert.ToString(dr["分类编码"]).Length == 2)
-                {
-                    OptionItem item = new OptionItem();
-                    item.Name = Convert.ToString(dr["显示名字"]);
-                    item.GroupsCode = Convert.ToString(dr["分类编码"]);
-                    this.Items1.Add(item);   //将大类存入集合
-                }
-            }
-            
-            for (int x = 0; x < dt1.Rows.Count; x++)
-            { 			   
-                DataRow dr = dt1.Rows[x];
-                if (Convert.ToString(dr["分类编码"]).Length == 4)
-                {
-                    OptionItem item1 = new OptionItem();  
-                    item1.Name = Convert.ToString(dr["显示名字"]);
-                    item1.GroupsCode = Convert.ToString(dr["分类编码"]);
-                    this.Items2.Add(item1);
-                }
-            }
-            
-           foreach (var v in this.Items1)
-            {
-                foreach (var vr in this.Items2)
-                {
-                    
-                    if (vr.GroupsCode.ToString().Substring(0, 2) == v.GroupsCode.ToString())
-                    {
-					    OptionItem item2 = new OptionItem();  //小类
-                        item2.Name = Convert.ToString(vr.Name);
-                        this.Items3.Add(item2);
-                    }
-                }
-            }
-        }	
-		
-		
-	
+  function changedrop() 
+  {
  
+  var http_request ;
+  if (window.XMLHttpRequest)
+  { //Mozilla 浏览器
+      http_request = new XMLHttpRequest();
+      if (http_request.overrideMimeType) 
+	  {//设置MiME类别
+          http_request.overrideMimeType("text/xml");
+      }
+  }
+  else {
+      if (window.ActiveXObject) { // IE浏览器
+          try {
+              http_request = new ActiveXObject("Msxml2.XMLHTTP");
+          }
+          catch (e) {
+              try {
+                  http_request = new ActiveXObject("Microsoft.XMLHTTP");
+              }
+              catch (e)
+	 { }
+
+          }
+      }
+  }
+        var url = "xzclym2.aspx?id=" + document.getElementById('drop1').options[document.getElementById('drop1').selectedIndex].value;
+        alert(url);
+
+        http_request.open("GET", url, true);
+        http_request.onreadystatechange = updatePage;
+        http_request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        http_request.send(null);
+    }
+	
+	function updatePage ()
+  {
+  if (http_request.readyState==4 && http_request.status==200)
+    {
+      document.getElementById("drop").innerHTML=http_request.responseText;
+    }
+  }
+
+
+  
 </script>
 
 
-<div class="box">
+<script runat="server">  
+        
+    public List<OptionItem> Items1 { get; set; }
+    public List<OptionItem> Items2 { get; set; }
+    public class OptionItem
+    {
+        public string Name { get; set; }  //下拉列表显示名属性
+        public string GroupsCode { get; set; }  //下拉列表分类编码属性
+        public string SelectedString { get; set; }
+        public string Value { get; set; }
 
-<div class="topx"><img src="images/topx_02.jpg" /></div>
-<div class="gyzy0">
-<div class="gyzy">尊敬的XX先生/女士，您好</div>
+    }
+    protected DataTable dt = new DataTable();  //材料分类大类
+    protected DataTable dt1 = new DataTable();  //材料分类小类
+    protected DataTable dt2 = new DataTable();  //要选择的品牌名称(品牌字典)
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+        SqlConnection conn = new SqlConnection(constr);
+        SqlDataAdapter da = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'", conn);
+        DataSet ds = new DataSet();
+        da.Fill(ds, "材料分类表");
+        dt = ds.Tables[0];
+
+        string type = Request["id"];   //获取大类穿过来的分类编码
+        SqlDataAdapter da1 = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where left(分类编码,2)='"+type+"' and len(分类编码)='4'", conn);
+        DataSet ds1 = new DataSet();
+        da1.Fill(ds1, "材料分类表");
+        dt1 = ds1.Tables[0];
+
+        string gys_id = Request["gys_id"];
+        SqlDataAdapter da2 = new SqlDataAdapter("select 品牌名称 from 品牌字典 where scs_id='" + gys_id + "' ", conn);
+        DataSet ds2 = new DataSet();
+        da2.Fill(ds2, "材料分类表");
+        dt2 = ds2.Tables[0];
+
+
+        this.Items1 = new List<OptionItem>();  //数据表DataTable转集合  
+        this.Items2 = new List<OptionItem>();
+        for (int x = 0; x < dt.Rows.Count; x++)
+        {
+            DataRow dr = dt.Rows[x];
+
+            if (Convert.ToString(dr["分类编码"]).Length == 2)
+            {
+                OptionItem item = new OptionItem();
+                item.Name = Convert.ToString(dr["显示名字"]);
+                item.GroupsCode = Convert.ToString(dr["分类编码"]);
+                this.Items1.Add(item);   //将大类存入集合
+            }
+        }
+
+        for (int x = 0; x < dt1.Rows.Count; x++)
+        {
+            DataRow dr = dt1.Rows[x];
+            if (Convert.ToString(dr["分类编码"]).Length == 4)
+            {
+                OptionItem item1 = new OptionItem();
+                item1.Name = Convert.ToString(dr["显示名字"]);
+                item1.GroupsCode = Convert.ToString(dr["分类编码"]);
+                this.Items2.Add(item1);
+            }
+        }
+
+
+
+
+        if (Request.Form["clname"] != null)
+        {
+            conn.Open();
+            //string code = Request.QueryString["code"]; //获取分类编码 把材料信息和相应的分类编码插入到材料表中
+            string clname = Request.Form["clname"];  //材料名称
+            string brand = Request.Form["brand"];    //品牌名称
+            string cltype = Request.Form["cltype"];          //规格型号
+            string measure = Request.Form["measure"];        //计量单位
+            string volumetric = Request.Form["volumetric"];  //单位体积
+            string instruction = Request.Form["instruction"];  //说明 
+            string ejflname = Request.Form["ejflname"];        //分类名称 				
+
+            string sql1 = " insert into 材料表(显示名,品牌名称,规格型号,计量单位,单位体积,说明,是否启用,分类名称,updatetime)values('" + clname + "','" + brand + "','" + cltype + "','" + measure + "','" + volumetric + "','" + instruction + "',1,'" + ejflname + "','getdate()') ";
+            SqlCommand cmd3 = new SqlCommand(sql1, conn);
+            int ret1 = (int)cmd3.ExecuteNonQuery();
+            string sql2 = " update 材料表 set gys_id='61' where gys_id is null ";   //待处理
+            SqlCommand cmd2 = new SqlCommand(sql2, conn);
+            int ret = (int)cmd2.ExecuteNonQuery();
+            conn.Close();
+
+        }
+
+    }				
+ 
+</script>
+
+<body>
+
+<!-- 头部开始-->
+<uc2:Header2 ID="Header2" runat="server" />
+<!-- 头部结束-->
+
 
 <div class="fxsxx">
-<span class="fxsxx1">贵公司的分销信息如下</span>
+<span class="fxsxx1">请选择您要添加的材料信息</span>
+<%string gys_id = Request["gys_id"];%>
+<form  action="xzclym.aspx?gys_id=<%=gys_id%>" method="get">
+
 <div class="xz1"><div class="xza"> 
 
 
 
 <span class="xz2"><a href="#">大类</a></span>
- <select name="" class="fux">
+ <select id="drop1" name="drop1" onchange="changedrop()">
  <% foreach(var v  in Items1){%>
- <option value="<%=v.GroupsCode %>" <%=v.SelectedString %>><%=v.Name%></option>
+ <option value="<%=v.GroupsCode %>" ><%=v.Name%></option>
  <%}%> 
  </select> 
  </div>
                 <div class="xza"> 
 				<span class="xz2"><a href="#">小类</a></span> 
-				<select name="" class="fux">
-				 <% foreach(var v  in Items3){%>
-				<option><%=v.Name%></option>
+				<select id="drop" name="drop" class="fux" >
+				 <% foreach(var v  in Items2){%>
+				<option value="<%=v.Name%>&<%=v.GroupsCode%>"><%=v.Name%></option>
 				<%}%>
 				
 				</select> </div>
@@ -136,25 +212,32 @@
 <div class="fxsxx2">
 <span class="srcl">请输入材料信息</span>
  <dl>
-     <dd>材料名字：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/></dt>
+      <dd>材料名字：</dd>
+    <dt><input name="clname" type="text" class="fxsxx3" value="<%=Request.Form["clname"] %>"/></dt>
+	
      <dd>品    牌：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/></dt>
+    <dt><select name="brand" style="width: 300px">	
+	<%foreach(System.Data.DataRow row in dt2.Rows){%>
+	<option value="<%=row["品牌名称"].ToString() %>" ><%=row["品牌名称"].ToString()%></option>
+	<%}%>
+	
+	</select></dt>         
+
      <dd>型号：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/></dt>
-     <dd>纹理效果：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/></dt>
+    <dt><input name="cltype" type="text" class="fxsxx3" value="<%=Request.Form["cltype"] %>"/></dt>     
      <dd>适用场所：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/></dt>
-     <dd>瓷砖尺寸：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/></dt>  
-     <dd>计价单位：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/></dt>  
-    <dd>家装风格：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/></dt>                    
+    <dt><input name="" type="text" class="fxsxx3" value="<%=Request.Form["gysid"] %>"/></dt>
+     <dd>计量单位：</dd>
+    <dt><input name="bit" type="text" class="fxsxx3" value="<%=Request.Form["bit"] %>"/></dt>  
+     <dd>单位体积：</dd>
+    <dt><input name="volumetric" type="text" class="fxsxx3" value="<%=Request.Form["volumetric"] %>"/></dt>  
+    <dd>说明：</dd>
+    <dt><input name="instruction" type="text" class="fxsxx3" value="<%=Request.Form["instruction"] %>"/></dt>                     
  </dl>
 </div>
 
+
+<!--
 <div class="cpdt">
    <dl>
      <dd>产品大图1：</dd>
@@ -169,6 +252,8 @@
     <dt><input name="" type="text" class="fxsxx3"/><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
   </dl>
 </div>
+-->
+
 
 <div class="cpdt">
 <span class="dmt">多媒体信息</span>
@@ -180,30 +265,24 @@
      <dd>更多资料：</dd>
     <dt><input name="" type="text" class="fxsxx3"/><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>                          
  </dl>
- <span class="fxsbc"><a href="#"><img src="images/bbc_03.jpg" /></a></span>  
+
+ <span class="fxsbc"><a href="#"><input type="image" name="Submit" value="Submit" src="images/bbc_03.jpg" ></a></span> 
+
+</div>
+</form>
+</div>
 </div>
 
 
 
-</div>
 
-
-</div>
-
-
-
-<div>
-<!-- 关于我们 广告服务 投诉建议 开始-->
-<!-- #include file="static/aboutus.aspx" -->
-<!-- 关于我们 广告服务 投诉建议 结束-->
-</div>
 
 <!--  footer 开始-->
 <!-- #include file="static/footer.aspx" -->
 <!-- footer 结束-->
 
 
-</div>
+
 
 
 <script type=text/javascript><!--//--><![CDATA[//><!--

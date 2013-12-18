@@ -41,45 +41,53 @@
 <!-- #include file="static/banner.aspx" -->
 <!-- banner 结束-->
 
-<script runat="server">  
-         protected DataTable dt = new DataTable();   //材料名字(材料表)
-		 protected DataTable dt1 = new DataTable();   //一级分类名称(材料分类表)
-		 protected DataTable dt2 = new DataTable();   //品牌名称,规格型号(品牌字典)
-		 protected DataTable dt3 = new DataTable();   //生产商信息(材料供应商信息表)
-		 protected DataTable dt4 = new DataTable();  //分销商信息(材料供应商信息表)
+<script runat="server"> 
+
+        protected DataTable dt_clxx = new DataTable();   //材料名字(材料表)
+		protected DataTable dt_flxx = new DataTable();   //分类名称(材料分类表)
+		protected DataTable dt_ppxx = new DataTable();   //品牌名称(品牌字典)
+		protected DataTable dt_scsxx = new DataTable();   //生产商信息(材料供应商信息表)
+		protected DataTable dt_fxsxx = new DataTable();  //分销商信息(材料供应商信息表)
         string cl_id;
+        
         protected void Page_Load(object sender, EventArgs e)
         {		      
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
 			cl_id = Request["cl_id"];
-            SqlDataAdapter da = new SqlDataAdapter("select 显示名,fl_id,材料编码 from 材料表 where cl_id='"+cl_id+"' ", conn);
-            DataSet ds = new DataSet();
-            da.Fill(ds, "材料表");            
-            dt = ds.Tables[0];
+
+            SqlDataAdapter da_clxx = new SqlDataAdapter("select 显示名,fl_id,材料编码 from 材料表 where cl_id='"+cl_id+"' ", conn);
+            DataSet ds_clxx = new DataSet();
+            da_clxx.Fill(ds_clxx, "材料表");            
+            dt_clxx = ds_clxx.Tables[0];
+
+             //材料表访问计数加1
+            String str_updatecounter = "update 材料表 set 访问计数 = (select 访问计数 from 材料表 where cl_id = '"+ cl_id +"')+1 where cl_id = '"+ cl_id +"'";
+            SqlCommand cmd_updatecounter = new SqlCommand(str_updatecounter, conn);         
+            cmd_updatecounter.ExecuteNonQuery();
 			
-			string fl_id = Request["fl_id"];//获取传过来的一级分类编码
-			SqlDataAdapter da1 = new SqlDataAdapter("select 显示名字 from 材料分类表 where 分类编码='"+fl_id+"' ", conn);
-            DataSet ds1 = new DataSet();
-            da1.Fill(ds1, "材料分类表");           
-            dt1 = ds1.Tables[0];
+            String fl_id = Convert.ToString(dt_clxx.Rows[0]["fl_id"]);
+			SqlDataAdapter da_flxx = new SqlDataAdapter("select 显示名字 from 材料分类表 where fl_id='"+fl_id+"' ", conn);
+            DataSet ds_flxx = new DataSet();
+            da_flxx.Fill(ds_flxx, "材料分类表");           
+            dt_flxx = ds_flxx.Tables[0];
 			
-			SqlDataAdapter da2 = new SqlDataAdapter("select 品牌名称,规格型号 from 材料表 where cl_id='"+cl_id+"' " , conn);
-            DataSet ds2 = new DataSet();
-            da2.Fill(ds2, "材料表");            
-            dt2 = ds2.Tables[0];
+			SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,规格型号 from 材料表 where cl_id='"+cl_id+"' " , conn);
+            DataSet ds_ppxx = new DataSet();
+            da_ppxx.Fill(ds_ppxx, "材料表");            
+            dt_ppxx = ds_ppxx.Tables[0];
 			
-			SqlDataAdapter da3 = new SqlDataAdapter("select 联系人手机,供应商,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') " , conn);
-            DataSet ds3 = new DataSet();
-            da3.Fill(ds3, "材料供应商信息表");            
-            dt3 = ds3.Tables[0];
+			SqlDataAdapter da_scsxx = new SqlDataAdapter("select 联系人手机,供应商,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') " , conn);
+            DataSet ds_scsxx = new DataSet();
+            da_scsxx.Fill(ds_scsxx, "材料供应商信息表");            
+            dt_scsxx = ds_scsxx.Tables[0];
 			
-            String sql_str = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"'))";
-			SqlDataAdapter da4 = new SqlDataAdapter(sql_str , conn);
-            DataSet ds4 = new DataSet();
-            da4.Fill(ds4, "材料供应商信息表");            
-            dt4 = ds4.Tables[0];
+            String str__fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"'))";
+			SqlDataAdapter da_fxsxx = new SqlDataAdapter(str__fxsxx , conn);
+            DataSet ds_fxsxx = new DataSet();
+            da_fxsxx.Fill(ds_fxsxx, "材料供应商信息表");            
+            dt_fxsxx = ds_fxsxx.Tables[0];
 		   
         }		
         
@@ -88,11 +96,11 @@
 <div class="sc">
 <div class="sc1"><a href="index.aspx">首页 ></a>&nbsp&nbsp&nbsp
 
-<% foreach(System.Data.DataRow row in dt1.Rows){%>
+<% foreach(System.Data.DataRow row in dt_flxx.Rows){%>
  <a href="#"><%=row["显示名字"].ToString() %></a>
  <%}%>
 > 
-<% foreach(System.Data.DataRow row in dt.Rows){%>
+<% foreach(System.Data.DataRow row in dt_clxx.Rows){%>
  <a href="#"><%=row["显示名"].ToString() %></a>
  <%}%>
 
@@ -143,7 +151,7 @@
 
 <div class="xx3">
  <dl>
-  <% foreach(System.Data.DataRow row in dt2.Rows){%>
+  <% foreach(System.Data.DataRow row in dt_ppxx.Rows){%>
   <dd>品牌:</dd>
   <dt><%=row["品牌名称"].ToString() %></dt>
   <dd>型号:</dd>
@@ -158,8 +166,8 @@
 <div class="xx6">
          <ul>
           <li class="xx7">生产商信息</li>
-		<% foreach(System.Data.DataRow row in dt3.Rows){%>  
-          <a href="scsxx.aspx?scs_id=<%=row["gys_id"] %>">
+		<% foreach(System.Data.DataRow row in dt_scsxx.Rows){%>  
+          <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
           <li>厂名：<%=row["供应商"].ToString()%></li>
           <li>地址：<%=row["联系地址"].ToString()%></li>
           <li>电话：<%=row["联系人手机"].ToString()%></li>
@@ -175,7 +183,7 @@
 <select name="" class="fu2"><option>北京</option></select>省（市）
     <select name="" class="fu3"><option>石家庄</option></select> 地区
 	<select name="" class="fu4"><option>市区</option></select> 区（县） </div>
-	<% foreach(System.Data.DataRow row in dt4.Rows){%>
+	<% foreach(System.Data.DataRow row in dt_fxsxx.Rows){%>
     <div class="fxs2">
        <ul>
           <li class="fxsa">分销商:</li>

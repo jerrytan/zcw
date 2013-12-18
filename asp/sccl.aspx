@@ -73,15 +73,12 @@
                     
                   
                       //先判断“采购商关注材料表”是否有该记录，如果没有，则插入
-
                       string str_checkexist = "select count(*) from 采购商关注材料表 where yh_id = '"+yh_id+"' and cl_id ='"+cl_id+"'";
                       SqlCommand cmd_checkexist = new SqlCommand(str_checkexist, conn);
                       int res_checkexist = Convert.ToInt32(cmd_checkexist.ExecuteScalar());
                       if (res_checkexist !=1 ) 
                       {
-       
-
-
+                       
                           String str_getcl = "select 显示名,材料编码 from 材料表 where cl_id ='"+cl_id+"'";
                           SqlDataAdapter da_cl = new SqlDataAdapter(str_getcl, conn);
                           DataSet ds_cl = new DataSet();
@@ -89,15 +86,12 @@
                           DataTable dt_cl = ds_cl.Tables[0];
                           String str_clname = Convert.ToString(dt_cl.Rows[0]["显示名"]);
                           String str_clcode = Convert.ToString(dt_cl.Rows[0]["材料编码"]);
-
-                       
-
+                      
                           String str_addcl = "insert into 采购商关注材料表 (yh_id,cl_id,材料名称,材料编码) values ('"+yh_id+"','"+cl_id+"','"+str_clname+"','"+str_clcode+"')";
                           SqlCommand cmd_addcl = new SqlCommand(str_addcl, conn); 
                           cmd_addcl.ExecuteNonQuery();
                        }
-
-                      
+                     
                 }
             }
             catch (Exception ex){

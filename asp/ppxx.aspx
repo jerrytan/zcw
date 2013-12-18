@@ -10,7 +10,6 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
 
 
@@ -41,38 +40,44 @@
 
     <script runat="server">  
 
-        protected DataTable dt = new DataTable(); //品牌名称(品牌字典表)
-		protected DataTable dt1 = new DataTable(); //供应商信息(材料供应商信息表)
-		protected DataTable dt2 = new DataTable(); //分销商信息(供应商和分销商相关表)
-		protected DataTable dt3 = new DataTable(); //该品牌下的产品(材料表)
+        protected DataTable dt_ppxx = new DataTable(); //品牌名称(品牌字典表)
+		protected DataTable dt_scsxx = new DataTable(); //供应商信息(材料供应商信息表)
+		protected DataTable dt_fxsxx = new DataTable(); //分销商信息(供应商和分销商相关表)
+		protected DataTable dt_clxx = new DataTable(); //该品牌下的产品(材料表)
         protected void Page_Load(object sender, EventArgs e)
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();          
 			string pp_id = Request["pp_id"];  //获取传过来的pp_id
-            SqlDataAdapter da = new SqlDataAdapter("select 品牌名称,scs_id  from 品牌字典 where pp_id='"+pp_id+"'", conn);
-            DataSet ds = new DataSet();
-            da.Fill(ds, "品牌字典");            
-            dt = ds.Tables[0];				
+            SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,scs_id  from 品牌字典 where pp_id='"+pp_id+"'", conn);
+            DataSet ds_ppxx = new DataSet();
+            da_ppxx.Fill(ds_ppxx, "品牌字典");            
+            dt_ppxx = ds_ppxx.Tables[0];				
+
+             //访问计数加1
+            String str_updatecounter = "update 品牌字典 set 访问计数 = (select 访问计数 from 品牌字典 where pp_id = '"+ pp_id +"')+1 where pp_id = '"+ pp_id +"'";
+            SqlCommand cmd_updatecounter = new SqlCommand(str_updatecounter, conn);         
+            cmd_updatecounter.ExecuteNonQuery();
+
 			
-            SqlDataAdapter da1 = new SqlDataAdapter("select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in (select scs_id from 品牌字典 where pp_id='"+pp_id+"' )", conn);
-            DataSet ds1 = new DataSet();
-            da1.Fill(ds1, "材料供应商信息表");            
-            dt1 = ds1.Tables[0];			
+            SqlDataAdapter da_scsxx = new SqlDataAdapter("select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in (select scs_id from 品牌字典 where pp_id='"+pp_id+"' )", conn);
+            DataSet ds_scsxx = new DataSet();
+            da_scsxx.Fill(ds_scsxx, "材料供应商信息表");            
+            dt_scsxx = ds_scsxx.Tables[0];			
 			
             //获得该品牌的分销信息
 			//string BrandsName=Request["BrandsName"];
-            SqlDataAdapter da2 = new SqlDataAdapter("select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='"+pp_id+"')", conn);
-            DataSet ds2 = new DataSet();
-            da2.Fill(ds2, "材料供应商信息表");            
-            dt2 = ds2.Tables[0];
+            SqlDataAdapter da_fxsxx = new SqlDataAdapter("select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='"+pp_id+"')", conn);
+            DataSet ds_fxsxx = new DataSet();
+            da_fxsxx.Fill(ds_fxsxx, "材料供应商信息表");            
+            dt_fxsxx = ds_fxsxx.Tables[0];
 			
-			SqlDataAdapter da3 = new SqlDataAdapter("select 显示名 ,规格型号,cl_id from 材料表 where pp_id='"+pp_id+"'  ", conn);
-            DataSet ds3 = new DataSet();
-            da3.Fill(ds3, "材料表 ");
+			SqlDataAdapter da_clxx = new SqlDataAdapter("select 显示名 ,规格型号,cl_id from 材料表 where pp_id='"+pp_id+"'  ", conn);
+            DataSet ds_clxx  = new DataSet();
+            da_clxx .Fill(ds_clxx , "材料表 ");
             conn.Close();             
-            dt3 = ds3.Tables[0];
+            dt_clxx = ds_clxx .Tables[0];
         }	
        
     </script>
@@ -82,7 +87,7 @@
     <div class="gysxx">
         <div class="gysxx1">
             <a href="index.aspx">首页 ></a>&nbsp&nbsp&nbsp
-            <% foreach(System.Data.DataRow row in dt.Rows){%>
+            <% foreach(System.Data.DataRow row in dt_ppxx.Rows){%>
             <a href="#"><%=row["品牌名称"].ToString() %></a>
             <%}%>
         </div>
@@ -90,8 +95,8 @@
             <span class="gytu">
                 <img src="images/133123_03.jpg" /></span>
             <div class="gycs">
-                <% foreach(System.Data.DataRow row in dt1.Rows){%>
-                <a href="scsxx.aspx?gys_id=<%=row["gys_id"] %>">
+                <% foreach(System.Data.DataRow row in dt_scsxx.Rows){%>
+                <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
                 <p>厂名：<%=row["供应商"].ToString() %></p>
                 <p>地址：<%=row["联系地址"].ToString() %></p>
                 <p>联系人：<%=row["联系人"].ToString() %></p>
@@ -125,7 +130,7 @@
                 </select>
                 区（县）
             </div>
-            <%foreach(System.Data.DataRow row in  dt2.Rows){%>
+            <%foreach(System.Data.DataRow row in  dt_fxsxx.Rows){%>
             <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
 
             <div class="fxs2">
@@ -149,7 +154,7 @@
         <div class="gydl">
             <div class="dlpp">该品牌下产品</div>
 
-            <%foreach(System.Data.DataRow row in dt3.Rows){%>
+            <%foreach(System.Data.DataRow row in dt_clxx.Rows){%>
             <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">
             <div class="ppcp">
                 <img src="images/222_03.jpg" />
