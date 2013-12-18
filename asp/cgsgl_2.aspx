@@ -8,58 +8,31 @@
 <%@ Import Namespace="System.Web" %>
 <%@ Import Namespace="System.IO" %>
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>无标题文档</title>
+<title>采购商材料管理页</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
-<style>
-#menu { width:200px; margin:auto;}
- #menu h1 { font-size:12px;margin-top:1px; font-weight:100}
- #menu h2 { padding-left:15px; font-size:12px; font-weight:100}
- #menu ul { padding-left:15px; height:100px;overflow:auto; font-weight:100}
- #menu a { display:block; padding:5px 0 3px 10px; text-decoration:none; overflow:hidden;}
- #menu a:hover{ color:#000;}
- #menu .no {display:none;}
- #menu .h1 a{color:#000;}
- #menu .h2 a{color:#000;}
- #menu  h1 a{color:#000;}
-</style>
-<script language="JavaScript">
-<!--//
-function ShowMenu(obj,n){
- var Nav = obj.parentNode;
- if(!Nav.id){
-  var BName = Nav.getElementsByTagName("ul");
-  var HName = Nav.getElementsByTagName("h2");
-  var t = 2;
- }else{
-  var BName = document.getElementById(Nav.id).getElementsByTagName("span");
-  var HName = document.getElementById(Nav.id).getElementsByTagName("h1");
-  var t = 1;
- }
- for(var i=0; i<HName.length;i++){
-  HName[i].innerHTML = HName[i].innerHTML.replace("-","+");
-  HName[i].className = "";
- }
- obj.className = "h" + t;
- for(var i=0; i<BName.length; i++){if(i!=n){BName[i].className = "no";}}
- if(BName[n].className == "no"){
-  BName[n].className = "";
-  obj.innerHTML = obj.innerHTML.replace("+","-");
- }else{
-  BName[n].className = "no";
-  obj.className = "";
-  obj.innerHTML = obj.innerHTML.replace("-","+");
- }
-}
-//-->
-</script>
 </head>
 
 <body>
+
+<!-- 头部开始-->
+<!-- #include file="static/header.aspx" -->
+<!-- 头部结束-->
+
+
+<!-- 导航开始-->
+<uc1:Menu1 ID="Menu1" runat="server" />
+<!-- 导航结束-->
+
+
+<!-- banner开始-->
+<!-- #include file="static/banner.aspx" -->
+<!-- banner 结束-->
 
 <script runat="server">  
   
@@ -268,139 +241,13 @@ function ShowMenu(obj,n){
         */
     }
 </script>
-<div class="box">
-<div class="top"></div>
-<div class="logo"><img src="images/logo_03.jpg" /></div>
-<div class="sous"><input name="sou"  type="text" class="sou" /><a href="#"><img src="images/sss_03.jpg" /></a></div>
-<div class="anniu"><a href="#">供应商登录</a></div>    
-<div class="anniu"><a href="#">采购商登录</a></div>
-<div class="dh">
- <ul>
-  <li><a href="#">石材</a>
-          <ul>
-          <li><a href="#">测试二级栏目001</a></li>
-          <li><a href="#">测试二级栏目002</a></li>
-          <li><a class="hide" href="#">带三级栏目000 &gt;</a>
-              <ul>
-                  <li><a href="#">测试三级栏目01</a></li>
-                  <li><a href="#">测试三级栏目02</a></li>
-                  <li><a href="#">测试三级栏目03</a></li>
-                  <li><a href="#">测试三级栏目04</a></li>
-              </ul>
-          </li>
-          <li><a href="#">测试二级栏目003</a></li>
-          <li><a href="#">测试二级栏目004</a></li>
-          </ul>
-        </li>
-  <li><a href="#">板材</a>
-            <ul>
-          <li><a href="#">测试二级栏目001</a></li>
-          <li><a href="#">测试二级栏目002</a></li>
-          <li><a class="hide" href="#">带三级栏目000 &gt;</a>
-              <ul>
-                  <li><a href="#">测试三级栏目01</a></li>
-                  <li><a href="#">测试三级栏目02</a></li>
-                  <li><a href="#">测试三级栏目03</a></li>
-                  <li><a href="#">测试三级栏目04</a></li>
-              </ul>
-          </li>
-          <li><a href="#">测试二级栏目003</a></li>
-          <li><a href="#">测试二级栏目004</a></li>
-          </ul>
-</li>
-  <li><a href="#">吊顶</a>
-      <ul>
-          <li><a href="#">测试二级栏目001</a></li>
-          <li><a href="#">测试二级栏目002</a></li>
-          <li><a class="hide" href="#">带三级栏目000 &gt;</a>
-              <ul>
-                  <li><a href="#">测试三级栏目01</a></li>
-                  <li><a href="#">测试三级栏目02</a></li>
-                  <li><a href="#">测试三级栏目03</a></li>
-                  <li><a href="#">测试三级栏目04</a></li>
-              </ul>
-          </li>
-          <li><a href="#">测试二级栏目003</a></li>
-          <li><a href="#">测试二级栏目004</a></li>
-          </ul>
-  </li>
-  <li><a href="#">门窗</a>
-  <ul>
-          <li><a href="#">测试二级栏目001</a></li>
-          <li><a href="#">测试二级栏目002</a></li>
-          <li><a class="hide" href="#">带三级栏目000 &gt;</a>
-              <ul>
-                  <li><a href="#">测试三级栏目01</a></li>
-                  <li><a href="#">测试三级栏目02</a></li>
-                  <li><a href="#">测试三级栏目03</a></li>
-                  <li><a href="#">测试三级栏目04</a></li>
-              </ul>
-          </li>
-          <li><a href="#">测试二级栏目003</a></li>
-          <li><a href="#">测试二级栏目004</a></li>
-          </ul>
-  </li>
-  <li><a href="#">玻璃</a>
-  <ul>
-          <li><a href="#">测试二级栏目001</a></li>
-          <li><a href="#">测试二级栏目002</a></li>
-          <li><a class="hide" href="#">带三级栏目000 &gt;</a>
-              <ul>
-                  <li><a href="#">测试三级栏目01</a></li>
-                  <li><a href="#">测试三级栏目02</a></li>
-                  <li><a href="#">测试三级栏目03</a></li>
-                  <li><a href="#">测试三级栏目04</a></li>
-              </ul>
-          </li>
-          <li><a href="#">测试二级栏目003</a></li>
-          <li><a href="#">测试二级栏目004</a></li>
-          </ul>
-  </li>
-  <li><a href="#">幕墙</a>
-  <ul>
-          <li><a href="#">测试二级栏目001</a></li>
-          <li><a href="#">测试二级栏目002</a></li>
-          <li><a class="hide" href="#">带三级栏目000 &gt;</a>
-              <ul style="left:-180px;">
-                  <li><a href="#">测试三级栏目01</a></li>
-                  <li><a href="#">测试三级栏目02</a></li>
-                  <li><a href="#">测试三级栏目03</a></li>
-                  <li><a href="#">测试三级栏目04</a></li>
-              </ul>
-          </li>
-          <li><a href="#">测试二级栏目003</a></li>
-          <li><a href="#">测试二级栏目004</a></li>
-          </ul>
-  </li>
-  <li><a href="#">厨房</a>
-  <ul>
-          <li><a href="#">测试二级栏目001</a></li>
-          <li><a href="#">测试二级栏目002</a></li>
-          <li><a class="hide" href="#">带三级栏目000 &gt;</a>
-              <ul style="left:-180px;">
-                  <li><a href="#">测试三级栏目01</a></li>
-                  <li><a href="#">测试三级栏目02</a></li>
-                  <li><a href="#">测试三级栏目03</a></li>
-                  <li><a href="#">测试三级栏目04</a></li>
-              </ul>
-          </li>
-          <li><a href="#">测试二级栏目003</a></li>
-          <li><a href="#">测试二级栏目004</a></li>
-          </ul>
-  </li>
 
-  <li><a href="#">更多</a></li>
- </ul>
-</div>
-
-
-<div class="banner"><a href="#"><img src="images/banner_03.jpg" /></a></div>
 
 
 <div class="dlqqz">
 
 <div class="dlqqz1"><img src="images/sccp.jpg" /></div>
-<span class="dlqqz4"><img src="images/wz_03.jpg" width="530" height="300" /></span>
+
 <form id="form1" runat="server">
 	
 <div class="dlqqz2"><div id="menu">
@@ -422,51 +269,12 @@ function ShowMenu(obj,n){
    <% 	}
    		}
    %>
-   <a href="javascript:void(0)">三级菜单A_1 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单A_2 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单A_3 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单A_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-  </ul>
+   </ul>
   <% 	} 
   	}
   %>
-  <h2 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)">+ 二级菜单A_2</a></h2>
-  <ul class="no">
-   <a href="javascript:void(0)">三级菜单A_0 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单A_1 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单A_2 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单A_3 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单A_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-  </ul>
-  <h2 onClick="javascript:ShowMenu(this,2)"><a href="javascript:void(0)">+ 二级菜单A_3</a></h2>
-  <ul class="no">
-   <a href="javascript:void(0)">三级菜单A_0 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单A_1 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单A_2 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单A_3 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单A_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-  </ul>
  </span>
  <% } %>       
- <h1 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> 一级菜单B &gt;</a></h1>
- <span class="no">
-  <h2 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)">+ 二级菜单B_1</a></h2>
-  <ul class="no">
-   <a href="javascript:void(0)">三级菜单B_0 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_1 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_2 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_3 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-  </ul>
-  <h2 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)">+ 二级菜单B_2</a></h2>
-  <ul class="no">
-   <a href="javascript:void(0)">三级菜单B_0 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_1 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_2 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_3 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
-  </ul>
- </span>
   
 </div></div>
 <div class="dlqqz3"><a href="#"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<a href="#"><img src="images/scxzcl.jpg" border="0" /></a></div>
@@ -487,74 +295,25 @@ function ShowMenu(obj,n){
 %>
 </div>
 </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="gywm">  <div class="gywm1">
-<div class="gywm2"><img src="images/biao_03.jpg" />关于我们</div><span class="more"><a href="#"><img src="images/more_03.jpg" /></a></span>
+<div>
+<!-- 关于我们 广告服务 投诉建议 开始-->
+<!-- #include file="static/aboutus.aspx" -->
+<!-- 关于我们 广告服务 投诉建议 结束-->
 </div>
-<div class="gywm3">    &nbsp&nbsp;为公司在业内赢得了良好口碑。同时中视慧达与国内多家电视、网络等媒体建立了长期的合作关系为公司为公司在业内赢得了中视慧达与国内多家电视、网络等媒体建立了长期的合作关系网络等媒体建立了长期的合作关系为公司为中视慧达与国内多家电视...</div>
- </div>
+
+<!--  footer 开始-->
+<!-- #include file="static/footer.aspx" -->
+<!-- footer 结束-->
 
 
-<div class="ggfw">
-<div class="ggfw1">  <div class="ggfw2"><img src="images/biao_03.jpg" /> 广告服务</div>    <span class="more"><a href="#"><img src="images/more_03.jpg" /></a></span>
-</div>
-<div class="ggfw3">
-<ul>
- <li><a href="#">国内外多家大业及上市型企业及上市公司有了</a></li>
-  <li><a href="#">国内外多家大型企业及上市业及上市公司有了</a></li>
-    <li><a href="#">国内业及上市外多家大型企业及上市公司有了</a></li>
-      <li><a href="#">国内外多家大型企业及上市业及上市公司有了</a></li>
-        
-       
-</ul>
 </div>
 </div>
 
-<div class="ggfw">
-<div class="ggfw1">  <div class="ggfw2"><img src="images/biao_03.jpg" /> 投诉建议</div>    <span class="more"><a href="#"><img src="images/more_03.jpg" /></a></span>
-</div>
-<div class="ggfw3">
-<ul>
- <li><a href="#">国内外多家大业及上市型企业及上市公司有了</a></li>
-  <li><a href="#">国内外多家大型企业及上市业及上市公司有了</a></li>
-    <li><a href="#">国内业及上市外多家大型企业及上市公司有了</a></li>
-      <li><a href="#">国内外多家大型企业及上市业及上市公司有了</a></li>
-        
-       
-</ul>
-</div>
-</div>
 
-<div class="foot">
-<span class="foot2"><a href="#">网站合作</a>  |<a href="#"> 内容监督</a> | <a href="#"> 商务咨询</a> |  <a href="#">投诉建议010-87654321</a> </span>
-<span class="di3"><p>Copyright 2002-2012众材网版权所有      京ICP证0000111号      京公安网备110101000005号</p>
-<p>地址：北京市海淀区天雅大厦11层  联系电话：010-87654321    技术支持：京企在线</p></span>
 </div>
 
 
 
-
-</div>
 
 
 <script type=text/javascript><!--//--><![CDATA[//><!--
