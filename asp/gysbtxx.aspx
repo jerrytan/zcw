@@ -1,3 +1,10 @@
+<!--
+        供应商补填信息页  (未做)
+        文件名:  gysbuxx.aspx   
+        
+-->
+
+
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 
 <%@ Import Namespace="System.Data" %>
