@@ -10,7 +10,6 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
 
 
@@ -53,7 +52,7 @@
 			string pp_id = Request["pp_id"];  //获取传过来的pp_id
             SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,scs_id  from 品牌字典 where pp_id='"+pp_id+"'", conn);
             DataSet ds_ppxx = new DataSet();
-            da.Fill(ds_ppxx, "品牌字典");            
+            da_ppxx.Fill(ds_ppxx, "品牌字典");            
             dt_ppxx = ds_ppxx.Tables[0];				
 
              //访问计数加1
@@ -88,7 +87,7 @@
     <div class="gysxx">
         <div class="gysxx1">
             <a href="index.aspx">首页 ></a>&nbsp&nbsp&nbsp
-            <% foreach(System.Data.DataRow row in dt.Rows){%>
+            <% foreach(System.Data.DataRow row in dt_ppxx.Rows){%>
             <a href="#"><%=row["品牌名称"].ToString() %></a>
             <%}%>
         </div>
