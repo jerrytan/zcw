@@ -51,6 +51,107 @@ function ShowMenu(obj,n){
 
 <body>
 
+<script runat="server">  
+  
+//  //创建菜单
+//  //从cookie中得到yh_id
+//  //建立数据库连接
+//  //查询数据库
+//  string yh_id = Request["yh_id"];
+//  string sqlstringForFirstType = 
+//  "select a.分类编码,a.显示名字 from 材料分类表 as a , 
+//   (select distinct left(分类编码,6) as flbm from 采购商关注的材料表 as b ,材料表 as c  
+//           where b.yh_id='“ + yh_id +"' and b.cl_id=c.cl_id  ) as  d
+//  where a.分类编码=d.flbm  
+//     or a.分类编码=left(d.flbm,4)  
+//     or a.分类编码=left(d.flbm.2)"  
+//  
+//  //生成菜单
+//  
+//  //一级分类
+//  len(分类编码) = 2
+//  //二级分类
+//  len(分类编码) = 4 and 分类编码 的头两位等于一级分类
+//  //三级分类
+//  len(分类编码) = 6 and 分类编码 的头4位等于二级分类
+//  
+//  //显示收藏的材料
+//  //从cookie中得到yh_id
+//  //连接数据库
+//  
+//  //查询数据库
+//  string queryCL=" select * from 采购商关注的材料表 as a ,材料表 as b
+//                   where a.yh_id='” + yh_id + "' and a.cl_id=b.cl_id and
+//                   left(b.分类编码,6) = '" + flbm + "' "
+//  //生成材料列表
+  
+  public List<FLObject> Items1 { get; set; }
+  public List<FLObject> Items2 { get; set; }
+  public List<FLObject> Items3 { get; set; }
+
+  protected DataTable dt = new DataTable(); //取一级分类名称
+  protected void Page_Load(object sender, EventArgs e)
+  {
+  	string yh_id = Request["yh_id"];
+		string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+    SqlConnection conn = new SqlConnection(constr);
+    conn.Open();
+    
+    string yh_id = Request["yh_id"];
+    yh_id="054C93797C32272E3C65FEAC1495C308"
+  	string querySQL = 
+  		"select a.分类编码,a.显示名字 from 材料分类表 as a , 
+   			(select distinct left(分类编码,6) as flbm from 采购商关注的材料表 as b ,材料表 as c  
+           where b.yh_id='“ + yh_id +"' and b.cl_id=c.cl_id  ) as  d
+  		where a.分类编码=d.flbm  
+     	 	 or a.分类编码=left(d.flbm,4)  
+         or a.分类编码=left(d.flbm.2)" 
+         
+    SqlDataAdapter da = new SqlDataAdapter(querySQL, conn);
+    DataSet ds = new DataSet();
+    da.Fill(ds, "材料分类表");           
+    dt = ds.Tables[0];
+
+    ////数据表DataTable转集合                  
+    this.Items1 = new List<FLObject>();
+    this.Items2 = new List<FLObject>();
+    this.Items3 = new List<FLObject>();
+       
+    for(int x=0;x<dt.Rows.Count;x++)
+    {
+    	DataRow dr2 = dt.Rows[x];                         
+      if (Convert.ToString(dr2["分类编码"]).Length == 2 ) 
+      {
+      	FLObject item = new FLObject();
+        item.Name = Convert.ToString(dr2["显示名字"]);
+        item.Sid = Convert.ToString(dr2["分类编码"]);
+        this.Items1.Add(item);
+      }
+      if (Convert.ToString(dr2["分类编码"]).Length == 4 ) 
+      {
+      	FLObject item = new FLObject();
+        item.Name = Convert.ToString(dr2["显示名字"]);
+        item.Sid = Convert.ToString(dr2["分类编码"]);
+        this.Items2.Add(item);
+      }
+      if (Convert.ToString(dr2["分类编码"]).Length == 6 ) 
+      {
+      	FLObject item = new FLObject();
+        item.Name = Convert.ToString(dr2["显示名字"]);
+        item.Sid = Convert.ToString(dr2["分类编码"]);
+        this.Items3.Add(item);
+      }
+		}       
+    
+	}
+	public class FLObject
+  { //属性
+  	public string Sid { get; set; }
+    public string Name { get; set; }
+    //public string Uid { get; set; }   
+  }
+    
+</script>
 <div class="box">
 <div class="top"></div>
 <div class="logo"><img src="images/logo_03.jpg" /></div>
@@ -185,16 +286,30 @@ function ShowMenu(obj,n){
 <div class="dlqqz1"><img src="images/sccp.jpg" /></div>
 <span class="dlqqz4"><img src="images/wz_03.jpg" width="530" height="300" /></span>
 <div class="dlqqz2"><div id="menu">
- <h1 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> 一级菜单A &gt;</a></h1>
+ <% foreach (var menu1 in this.Items1){%>
+ <h1 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> <%=menu1.Name%> &gt;</a></h1>
  <span class="no">
-  <h2 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)">+ 二级菜单A_1</a></a></h2>
+ 	<% foreach (var menu2 in this.Items2){
+ 	   	if ( substring(menu2.sid,0,2) = menu1.sid ){
+ 	    
+ 	%>
+  <h2 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)">+ <%=menu2.Name%></a></a></h2>
   <ul class="no">
-   <a href="javascript:void(0)">三级菜单A_0 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <% foreach (var menu3 in this.Items3){
+      	if ( substring(menu3.sid,0,4) = menu2.sid ){
+   %>
+   <a href="javascript:void(0)"><%=menu3.Name %> <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
+   <% 	}
+   		}
+   %>
    <a href="javascript:void(0)">三级菜单A_1 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
    <a href="javascript:void(0)">三级菜单A_2 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
    <a href="javascript:void(0)">三级菜单A_3 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
    <a href="javascript:void(0)">三级菜单A_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
   </ul>
+  <% 	} 
+  	}
+  %>
   <h2 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)">+ 二级菜单A_2</a></h2>
   <ul class="no">
    <a href="javascript:void(0)">三级菜单A_0 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
@@ -212,7 +327,7 @@ function ShowMenu(obj,n){
    <a href="javascript:void(0)">三级菜单A_4 <input type="checkbox" name="checkbox" id="checkbox" /> 选中</a>
   </ul>
  </span>
-        
+ <% } %>       
  <h1 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> 一级菜单B &gt;</a></h1>
  <span class="no">
   <h2 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)">+ 二级菜单B_1</a></h2>
