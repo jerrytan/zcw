@@ -1,7 +1,7 @@
 <!--      
-	   管理生产厂商信息页面 修改保存生产厂商信息 删除选中品牌 增加新的品牌
-       文件名：glsccsxxym.aspx 
-       传入参数：gys_id    
+	   管理生产商信息 修改保存生产厂商信息 删除选中品牌 增加新的品牌
+       文件名：glscsxx.aspx 
+       传入参数：无    
 -->
 
 
@@ -11,7 +11,6 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
 
 
@@ -89,6 +88,7 @@
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
 			string gys_id = Request["gys_id"];
+            String yh_id = Convert.ToString(Session["yh_id"]);
 			if (Request.Form["companyname"] != null)
             {
                 conn.Open();				
@@ -107,7 +107,7 @@
                 conn.Close();
 
             }
-            string str = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机 from 材料供应商信息表 where  gys_id='"+gys_id+"' ";
+            string str = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机 from 材料供应商信息表 where  yh_id='"+yh_id+"' ";
             SqlCommand cmd1 = new SqlCommand(str, conn);
             conn.Open();
 			SqlDataReader reader1 = cmd1.ExecuteReader();
@@ -162,9 +162,9 @@
 
 
 <%string gys_id = Request["gys_id"];%>
-<form id="login" name="login" action="glsccsxxym.aspx?gys_id=<%=gys_id%>" method="post">
+<form id="login" name="login" action="glscsxx.aspx?gys_id=<%=gys_id%>" method="post">
 <div class="fxsxx">
-<span class="fxsxx1">贵公司的分销信息如下</span>
+<span class="fxsxx1">贵公司的详细信息如下</span>
 
 <div class="fxsxx2">
  <dl>
@@ -238,64 +238,6 @@
 </div>
 
 
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
-<script type="text/javascript">
-var speed=9//速度数值越大速度越慢
-var demo=document.getElementById("demo");
-var demo2=document.getElementById("demo2");
-var demo1=document.getElementById("demo1");
-demo2.innerHTML=demo1.innerHTML
-function Marquee(){
-if(demo2.offsetWidth-demo.scrollLeft<=0)
-demo.scrollLeft-=demo1.offsetWidth
-else{
-demo.scrollLeft++
-}
-}
-var MyMar=setInterval(Marquee,speed)
-demo.onmouseover=function() {clearInterval(MyMar)}
-demo.onmouseout=function() {MyMar=setInterval(Marquee,speed)}
-</script>
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
+
 </body>
 </html>

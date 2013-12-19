@@ -43,11 +43,12 @@
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
-            SqlDataAdapter da = new SqlDataAdapter("select 姓名,是否验证通过,类型,等级 from 用户表 where QQ_id='"+QQ_id.Value+"'", conn);
+            SqlDataAdapter da = new SqlDataAdapter("select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='"+QQ_id.Value+"'", conn);
             DataSet ds = new DataSet();
             da.Fill(ds, "用户表");           
             DataTable dt = ds.Tables[0];
-            
+            String yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);
+            Session["yh_id"] = yh_id;
             String passed = Convert.ToString(dt.Rows[0]["是否验证通过"]);
             String name=  Convert.ToString(dt.Rows[0]["姓名"]);
             if (!passed.Equals("通过"))
@@ -65,7 +66,7 @@
             else { %>
     <div class="gyzy2">
         <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>
-        <span class="zyy1"><a href="glsccsxxym.aspx?gys_id=67">管理生厂商信息</a></span>
+        <span class="zyy1"><a href="glscsxx.aspx">管理生厂商信息</a></span>
         <span class="zyy1"><a href="" >管理分销商信息</a></span>
         <span class="zyy1"><a href="gysglcl.aspx?gys_id=61 ">管理材料信息</a></span>        
     </div>

@@ -24,126 +24,53 @@
    <title>认领厂商页面</title>
    <link href="css/css.css" rel="stylesheet" type="text/css" />
    <link href="css/all of.css" rel="stylesheet" type="text/css" />
+    <script language ="javascript">
+        function send_request() 
+        {
+            var gys_list = document.getElementById("gyslist");
+            var gys_id = gys_list.options[gys_list.selectedIndex].value;
+            alert(gys_id);
 
-   <script src="Scripts/jquery-1.4.1-vsdoc.js" type="text/javascript"></script>
-   <script type="text/javascript" language="javascript">
+            var xmlhttp;
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    alert(xmlhttp.responseText);
+                    document.getElementById("rljg").innerHTML = xmlhttp.responseText;
 
-        $(function()
-	    {
-         $("#btnSubmit1").click(function()
-		 {   //调试用的           
-            var list= $('input:radio[name="list"]:checked').val();
-            if(list==null)
-			{
-               alert("请选中一个!");
-               return false;
+                }
             }
-            else
-			{
-                //alert(list);
-            }           
-         });
-       }); 
-	 
-       function send_request() 
-       { 
-          http_request = false;
-          if(window.XMLHttpRequest)
-          {   //Mozilla 浏览器
-              http_request = new XMLHttpRequest();
-              if (http_request.overrideMimeType) 
-	          {  //设置MiME类别
-                 http_request.overrideMimeType("text/xml");
-              }
-          }
-          else
-          {
-            if (window.ActiveXObject)
-	        { // IE浏览器
-             try 
-	          {
-                    http_request = new ActiveXObject("Msxml2.XMLHTTP");
-              }
-	         catch (e) 
-	          {
-                 try 
-	              {
-                       http_request = new ActiveXObject("Microsoft.XMLHTTP");
-                  } 
-	             catch (e)	{}
-              }
-            }
-           }
-       if (!http_request) 
-        {     // 异常，创建对象实例失败
-              window.alert("不能创建XMLHttpRequest对象实例.");
-              return false;
+
+
+            //xmlhttp.open("GET", "rlcs2.aspx?gys_id=" +gys_id, true);
+            xmlhttp.send();
         }
- 
-           var x=document.getElementsByName("list"); //获取复选框 属性name为list
-           var checkedvalue;   //局部变量
-           for(var i=0;i<x.length;i++)  //遍历选中的
-            {
-               if(x[i].checked)
-               {
-                   checkedvalue=x[i].value  //获取选中的value的值
-	               window.alert(checkedvalue);
-                   break;
-               }
-            }
-            //ajax请求
-            http_request.open("GET", "rlcs.aspx?name="+checkedvalue, true);
-            http_request.onreadystatechange = processRequest;
-            http_request.send(null);
-            alert("认领成功!");
-    }
-           function processRequest() 
-		   {
-            if (http_request.readyState == 4) 
-            {     // 判断对象状态
-                  if (http_request.status == 200) 
-                  {   // 信息已经成功返回，开始处理信息
-                      var response = http_request.responseText;
-                      c1.innerHTML=response;
-                  } 
-                  else
-                  {         //页面不正常
-                      alert("您所请求的页面有异常。");
-                  }
-            }
-            }
-</script>
-
-
-
-
-
+    </script>
 </head>
 
 
 <script runat="server"  > 
 		
 		
-               protected DataTable dt = new DataTable(); //未认领的供应商信息(材料供应商信息表) 		
+               protected DataTable dt = new DataTable(); //未认领的供应商信息(材料供应商信息表) 	
+              
                protected void Page_Load(object sender, EventArgs e)
-               {           
+               {  
+                    
 			        string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
                     SqlConnection conn = new SqlConnection(constr);
-                    string sql = "select 供应商,gys_id from 材料供应商信息表 where yh_id='0' ";
+                    string sql = "select 供应商,gys_id from 材料供应商信息表 where yh_id is null and 单位类型 ='生产商'";
                     SqlDataAdapter da = new SqlDataAdapter(sql, conn);
                     DataSet ds = new DataSet();
                     da.Fill(ds, "材料供应商信息表");
                     dt = ds.Tables[0];	
 
-			        string yh_id = Request["name"];   //点击认领之后 把选中的供应商id传过来作为条件,修改材料供应商信息表
-                    if(yh_id!=null)
-			        {            
-			          conn.Open();
-                      string sql1 = "update 材料供应商信息表 set yh_id='7' where gys_id='"+yh_id+"' ";
-                      SqlCommand cmd = new SqlCommand(sql1,conn);
-			          int ret = (int)cmd.ExecuteNonQuery();
-                      conn.Close();			
-		            }
+			        string yh_id = Convert.ToString(Session["yh_id"]);                    
                }
 	                  
         
@@ -165,18 +92,21 @@
 
 
    <div class="rlcs4"> <span class="rlcs5">查询结果</span>
+       <select name="gys" id="gyslist">
       <%foreach (System.Data.DataRow row in dt.Rows)
       { %>
-        <span class="rlcs6"><input name="list" type="radio" value="<%=row["gys_id"].ToString() %>" class="ck"/><%=row["供应商"].ToString() %></span>
+        <span class="rlcs6"><option name="list" value="<%=row["gys_id"].ToString() %>" class="ck"/><%=row["供应商"].ToString() %></span>
     <%} %>
+       </select>
 
-
-   <a  onclick="send_request()" href="#"></div> <img src="images/rl_03.jpg" /></a>
-
+   <a  onclick="send_request()" ></div> <img src="images/rl_03.jpg" /></a>
+      <div class="rlcs4" id="rljg"></div>
   </div>
 
+   <div class="rlcs4">
     <span class="rlcs7">如果您没有找到贵公司，您可以提交贵公司资料，我方工作人员会在3个工作日内完成审核工作（流程图如下）</span>
     <span><img src="images/www_03.jpg" /></span>
+    </div>
   </div>
 
   </div>
