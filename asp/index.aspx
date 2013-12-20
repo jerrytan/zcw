@@ -16,7 +16,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=GBK" />
     <title>众材网-----面向建筑装饰企业的公装材料库</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
-    
 </head>
 
 <body>
