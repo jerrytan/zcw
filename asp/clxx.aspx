@@ -48,6 +48,7 @@
 		protected DataTable dt_ppxx = new DataTable();   //品牌名称(品牌字典)
 		protected DataTable dt_scsxx = new DataTable();   //生产商信息(材料供应商信息表)
 		protected DataTable dt_fxsxx = new DataTable();  //分销商信息(材料供应商信息表)
+		protected DataTable dt_image = new DataTable();  //材料图片(材料多媒体信息表)
         string cl_id;
         
         protected void Page_Load(object sender, EventArgs e)
@@ -88,6 +89,11 @@
             DataSet ds_fxsxx = new DataSet();
             da_fxsxx.Fill(ds_fxsxx, "材料供应商信息表");            
             dt_fxsxx = ds_fxsxx.Tables[0];
+			
+			SqlDataAdapter da_image = new SqlDataAdapter("select top 3 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='大'" , conn);
+            DataSet ds_image = new DataSet();
+            da_image.Fill(ds_image, "材料多媒体信息表");            
+            dt_image = ds_image.Tables[0];
 		   
         }		
         
@@ -140,6 +146,9 @@
 
 <div>
 <ul id=idNum class=hdnum>
+
+ 
+  
   <li><img src="images/01.jpg" width=61px height=45px></li>
   <li><img src="images/02.jpg" width=61px height=45px></li>
   <li><img src="images/03.jpg" width=61px height=45px></li>
@@ -197,14 +206,14 @@
 	<%}%>
     
 </div></div>
-
-<div class="xx10"><img src="images/231_03.jpg" />
+<%foreach(System.Data.DataRow row in dt_image.Rows){%>
+<div class="xx10">
   <dl>
      
   </dl>
-  <div class="xx11"><img src="images/231_03.jpg" /></div>
+  <div class="xx11"><img src="<%=row["存放地址"].ToString()%>" /></div>
 </div>
-
+<%}%>
 
 </div>
 
