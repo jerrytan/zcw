@@ -1,7 +1,7 @@
 <!--  
 	    管理分销商信息页面   对分销商信息进行修改保存 增加新的分销商
         文件名：glfxsxx.aspx
-        传入参数：gys_id    
+        传入参数：无    
 -->
 
 
@@ -77,7 +77,9 @@
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
-			string gys_id = Request["gys_id"];          
+			String gys_id = Request["gys_id"];
+            String yh_id = Convert.ToString(Session["yh_id"]);
+          
 			if (Request.Form["companyname"] != null)  //修改后写入
             {
                 conn.Open();

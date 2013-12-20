@@ -21,7 +21,7 @@
                     SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
                     cmd_updateuser.ExecuteNonQuery();
                     conn.Close();
-                
+                    
                     Response.Write("恭喜！该供应商已经成功被您认领.");
 
                }

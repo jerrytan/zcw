@@ -16,7 +16,34 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
 
+<script runat="server"  > 
+		
+		
+               protected DataTable dt_wrl_gys = new DataTable(); //未认领的供应商信息(材料供应商信息表) 	
+               protected DataTable dt_yrl_gys= new DataTable(); //已经认领的供应商信息(材料供应商信息表) 	
 
+               protected void Page_Load(object sender, EventArgs e)
+               {  
+                    
+			        string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+                    SqlConnection conn = new SqlConnection(constr);
+                    string str_wrl_gys = "select 供应商,gys_id from 材料供应商信息表 where yh_id is null and 单位类型 ='生产商'";
+                    SqlDataAdapter da_wrl_gys = new SqlDataAdapter(str_wrl_gys, conn);
+                    DataSet ds_wrl_gys = new DataSet();
+                    da_wrl_gys.Fill(ds_wrl_gys, "材料供应商信息表");
+                    dt_wrl_gys = ds_wrl_gys.Tables[0];	
+
+			        string yh_id = Convert.ToString(Session["yh_id"]);    
+                    
+                    string str_yrl_gys = "select 供应商,gys_id from 材料供应商信息表 where yh_id ='"+ yh_id+"'";
+                    SqlDataAdapter da_yrl_gys = new SqlDataAdapter(str_yrl_gys, conn);
+                    DataSet ds_yrl_gys = new DataSet();
+                    da_yrl_gys.Fill(ds_yrl_gys, "材料供应商信息表");
+                    dt_yrl_gys = ds_yrl_gys.Tables[0];	                
+               }
+	                  
+        
+</script>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -41,7 +68,8 @@
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     alert(xmlhttp.responseText);
-                    document.getElementById("rljg").innerHTML = xmlhttp.responseText;
+                    location.reload();
+                    //document.getElementById("rljg").innerHTML = xmlhttp.responseText;
 
                 }
             }
@@ -54,27 +82,7 @@
 </head>
 
 
-<script runat="server"  > 
-		
-		
-               protected DataTable dt = new DataTable(); //未认领的供应商信息(材料供应商信息表) 	
-              
-               protected void Page_Load(object sender, EventArgs e)
-               {  
-                    
-			        string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-                    SqlConnection conn = new SqlConnection(constr);
-                    string sql = "select 供应商,gys_id from 材料供应商信息表 where yh_id is null and 单位类型 ='生产商'";
-                    SqlDataAdapter da = new SqlDataAdapter(sql, conn);
-                    DataSet ds = new DataSet();
-                    da.Fill(ds, "材料供应商信息表");
-                    dt = ds.Tables[0];	
 
-			        string yh_id = Convert.ToString(Session["yh_id"]);                    
-               }
-	                  
-        
-    </script>
 
 <body>
 
@@ -82,7 +90,20 @@
 <uc2:Header2 ID="Header2" runat="server" />
 <!-- 头部2结束-->
 
-
+<%
+  if(dt_yrl_gys.Rows.Count > 0)  //已经有认领的供应商了
+  {
+  %>
+    <div class="rlcs"><span class="rlcszi">您已经在本站认领的供应商如下</span></div>
+    <%foreach (System.Data.DataRow row in dt_yrl_gys.Rows)
+      { %>
+        <span class="rlcszi"><a href="gysxx.aspx?gys_id=<%=row["gys_id"].ToString()%>"><%=row["供应商"].ToString() %></a></span>
+    <%} %>
+    <div class="rlcs1">
+  <%
+  }
+  else {
+%>
 
 <form id="form1" >
   <div class="rlcs"><span class="rlcszi">您可以认领信息已经在本站的生产厂商， 流程如下图</span><img src="images/www_03.jpg" /></div>
@@ -93,7 +114,7 @@
 
    <div class="rlcs4"> <span class="rlcs5">查询结果</span>
        <select name="gys" id="gyslist">
-      <%foreach (System.Data.DataRow row in dt.Rows)
+      <%foreach (System.Data.DataRow row in dt_wrl_gys.Rows)
       { %>
         <span class="rlcs6"><option name="list" value="<%=row["gys_id"].ToString() %>" class="ck"/><%=row["供应商"].ToString() %></span>
     <%} %>
@@ -112,6 +133,7 @@
   </div>
 </form>
 
+<% } %>
 <div>
 <!-- 关于我们 广告服务 投诉建议 开始-->
 <!-- #include file="static/aboutus.aspx" -->
