@@ -8,6 +8,7 @@
 <%@ Register Src="include/top10product.ascx" TagName="top10product" TagPrefix="uc3" %>
 <%@ Register Src="include/top10brand.ascx" TagName="top10brand" TagPrefix="uc4" %>
 <%@ Register Src="include/clfx.ascx" TagName="clfx" TagPrefix="uc5" %>
+<%@ Register Src="include/rxcp.ascx" TagName="rxcp" TagPrefix="uc6" %>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -73,7 +74,7 @@
 
 
     <!--  热销产品 开始-->
-    <!-- #include file="static/rxcp.aspx" -->
+    <uc6:rxcp ID="rxcp" runat="server" />
     <!-- 热销产品 结束-->
 
     <!--  关于我们 开始-->
