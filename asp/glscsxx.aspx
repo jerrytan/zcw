@@ -118,7 +118,10 @@
 
                 </dl>
                 <span class="fxsbc">
-                    <input type="Submit" name="Submit" value="提交" src="images/bbc_03.jpg"></span>
+                    <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["gys_id"] %>"/>
+                    <input type="submit" value="保存" />
+
+                </span>
                      </form>
                 <div class="ggspp">
                     <span class="ggspp1">贵公司品牌如下</span>
@@ -137,7 +140,7 @@
                             <span class="fxsbc"><a href="#">删除选中品牌</a></span>
             <span class="fxsbc"><a style="color: Red" onclick="NewWindow(<%=gys_id %>)">增加新品牌</a></span>
         </div>
-    </form>
+    
 
 
 
