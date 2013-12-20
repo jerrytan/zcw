@@ -22,8 +22,7 @@
                     cmd_updateuser.ExecuteNonQuery();
                     conn.Close();
                 
-                    Response.Write("该供应商已经成功认领"+str_updateuser);
-                    //Response.Write("该供应商已经成功认领");
+                    Response.Write("恭喜！该供应商已经成功被您认领.");
 
                }
 	                  

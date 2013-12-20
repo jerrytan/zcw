@@ -29,7 +29,7 @@
         {
             var gys_list = document.getElementById("gyslist");
             var gys_id = gys_list.options[gys_list.selectedIndex].value;
-            alert(gys_id);
+            //alert(gys_id);
 
             var xmlhttp;
             if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -47,7 +47,7 @@
             }
 
 
-            //xmlhttp.open("GET", "rlcs2.aspx?gys_id=" +gys_id, true);
+            xmlhttp.open("GET", "rlcs2.aspx?gys_id=" +gys_id, true);
             xmlhttp.send();
         }
     </script>
@@ -100,7 +100,7 @@
        </select>
 
    <a  onclick="send_request()" ></div> <img src="images/rl_03.jpg" /></a>
-      <div class="rlcs4" id="rljg"></div>
+     
   </div>
 
    <div class="rlcs4">
