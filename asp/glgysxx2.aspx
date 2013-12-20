@@ -21,58 +21,12 @@
 <title>分销商信息页</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
-    <script src="Scripts/jquery-1.4.1-vsdoc.js" type="text/javascript"></script>
-    <script type="text/javascript" language="javascript">
-        //使用js,好处是不用刷新页面 清空文本框
-        function ClearAllTextBox() {
-            var obj = window.document.forms[0];//获取表单提交的类容
-            for (i = 0; i < obj.elements.length; i++) {
-                var elem = obj.elements[i];
-                if (elem) {
-                    if (elem.type == "text") {
-                        elem.value = "";  //类型为文本框进行清空
-                    }
-                }
-            }
-        }
-
-
-        function TextSelect() {
-            var vr = $("#selectbox").find("option:selected").text();
-            window.alert(vr);
-            $("#selectbox option[value='vr']").attr("selected", true); //有效
-        }
-        
-    </script>
+    
 </head>
 
 <script runat="server"  >
 
-             public class ScsInformotion    //供应商类
-        {
-            public string ScsName { get; set; }  //属性 供应商名字
-            public string GysCode { get; set; }   //属性 供应商Id 
-            public string Dq_id { get; set; }   //属性 地区id 			
-        }
-		
-	    public class DqInformotion    //地区区域类
-        {
-            public string DqName { get; set; }  //属性 地区名字
-            public string DqCode { get; set; }   //属性 地区id          
-        }
-		
-        public List<ScsInformotion> Items { get; set; }
-		public List<DqInformotion> Selects1 { get; set; }
-		public List<DqInformotion> Selects2 { get; set; }
-		public List<DqInformotion> Selects3 { get; set; }
-		
-		
-        protected DataTable dt = new DataTable();  //分销商信息(材料供应商信息表)
-		protected DataTable dt1 = new DataTable(); //代理品牌(品牌字典)
-        protected DataTable dt2 = new DataTable(); //所属区域名称
-		protected DataTable dt3 = new DataTable(); //所属区域的省
-		protected DataTable dt4 = new DataTable(); //所属区域的市
-		protected DataTable dt5 = new DataTable(); //测试用
+             
         protected void Page_Load(object sender, EventArgs e)
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
