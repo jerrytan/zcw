@@ -24,7 +24,7 @@
                     
                 SqlCommand cmd_update= new SqlCommand(str_update, conn);
                 int ret = (int)cmd_update.ExecuteNonQuery();	
-				Response.Write(str_update);
+								//Response.Write(str_update);
                 conn.Close();
         
             }	                    
