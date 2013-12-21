@@ -47,7 +47,7 @@
             dt_gysxx = ds_gysxx.Tables[0]; 
             gys_id = dt_gysxx.Rows[0]["gys_id"].ToString();
 							
-			SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,scs_id from 品牌字典 where 是否启用='1' and scs_id='"+gys_id+"' ", conn);
+			SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='"+gys_id+"' ", conn);
             DataSet ds_ppxx = new DataSet();
             da_ppxx.Fill(ds_ppxx, "品牌字典");
             dt_ppxx = ds_ppxx.Tables[0];   
@@ -130,15 +130,17 @@
                     <div class="fgstp">
                         <img src="images/wwwq_03.jpg" />
                         <span class="fdlpp1">
-                            <input name="" type="checkbox" value="" class="fxsfxk" /><%=row["品牌名称"].ToString() %></span>
+                            <input name="brand" type="checkbox" value="<%=row["pp_id"].ToString() %>" class="fxsfxk" />
+                            <%=row["品牌名称"].ToString() %>
+                        </span>
                     </div>
 
                     <%} %>
                     
                 </div>
             </div>
-                            <span class="fxsbc"><a href="#">删除选中品牌</a></span>
-            <span class="fxsbc"><a style="color: Red" onclick="NewWindow(<%=gys_id %>)">增加新品牌</a></span>
+             <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand()">删除选中品牌</a></span>
+            <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新品牌</a></span>
         </div>
     
 
@@ -146,10 +148,32 @@
 
 	  
 
-    <script>function NewWindow(id) {
-        var url = "xzpp.aspx?gys_id=" + id;
-        window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
-    }
+    <script>
+        function AddNewBrand(id)
+        {
+             var url = "xzpp.aspx?gys_id=" + id;
+             window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+        }
+        function DeleteBrand()
+        {
+            var r = confirm("请确认您将删除此品牌!");
+            if (r == true) {
+
+                var brand_str = "?pp_id=";
+                var brands = document.getElementsByName("brand");
+
+                for (var i = 0; i < brands.length; i++) {
+                    if (brands[i].checked) {
+
+                        brand_str = brand_str + "," + brands[i].value;
+                    }
+
+                }
+
+                var url = "scpp.aspx" + brand_str;
+                window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+            }
+        }
     </script>
 
 
