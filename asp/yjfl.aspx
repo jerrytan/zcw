@@ -62,7 +62,8 @@
         protected DataTable dt = new DataTable();   //二级分类名称
         protected DataTable dt1 = new DataTable();  //材料名称分页 
         protected DataTable dt2 = new DataTable();  //首页显示一级分类名字
-        protected DataTable dt3 = new DataTable();   //具体材料名称 最具人气的石材		
+        protected DataTable dt3 = new DataTable();   //具体材料名称 最具人气的石材	
+        protected DataTable dt_image = new DataTable();		
         private const int Page_Size = 2; //每页的记录数量
 		private int current_page=1;
 	    int pageCount_page;
@@ -91,11 +92,12 @@
             da2.Fill(ds2, "材料分类表"); 
             dt2 = ds2.Tables[0];      
   
-            SqlDataAdapter da3 = new SqlDataAdapter("select  显示名,cl_id from 材料表 where  left(材料编码,2)='"+name+"' ", conn);             
+            SqlDataAdapter da3 = new SqlDataAdapter("select 显示名,cl_id from 材料表 where left(材料编码,2)='08' ", conn);             
 			DataSet ds3 = new DataSet();
             da3.Fill(ds3, "材料表"); 
             dt3 = ds3.Tables[0]; 
             conn.Close();
+			
 
             //从查询字符串中获取"页号"参数
             string strP = Request.QueryString["p"];
@@ -243,12 +245,33 @@
 
 
         <div class="pxleft">
-            <% foreach(System.Data.DataRow row in dt1.Rows){%>
+		    
+            <% foreach(System.Data.DataRow row in dt3.Rows){%>
             <div class="pxtu">
-                <a href="clxx.aspx?cl_id=<%=row["cl_id"]%>">
-                    <img src="images/222_03.jpg" /></a>
-                <span class="pxtu1"><%=row["显示名"].ToString() %></span>
-                <span class="pxtu2">规格：12345678</span>
+                <a href="clxx.aspx?cl_id=<%=row["cl_id"]%>>">
+				
+				<%
+					conn.Open();
+					SqlDataAdapter da_image = new SqlDataAdapter("select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='74' and 大小='小' ", conn);             
+					DataSet ds_image = new DataSet();
+					da_image.Fill(ds_image, "材料多媒体信息表"); 
+					DataTable dt_image = ds_image.Tables[0]; 
+					conn.Close();
+				%>
+				<%foreach(System.Data.DataRow row in dt_image.Rows){%>
+				
+				<%if(<%=row["存放地址"].ToString() %>!=null){%>
+				<img src="<%=row["存放地址"].ToString() %>" width=150px height=150px /></a>
+				<%}%>
+				
+				<%if(<%=row["存放地址"].ToString() %>==null){%>
+                <img src="images/222_03.jpg" width=150px height=150px /></a>
+				<%}%>
+				
+				<%}%>
+				
+                <span class="pxtu1"><%=row["显示名"].ToString()%></span>
+               
             </div>
             <% } %>
         </div>
