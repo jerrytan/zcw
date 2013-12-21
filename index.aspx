@@ -7,4 +7,4 @@
 <title>haha </title>
 </head>
 <body>
-<%  Response.Redirect("/asp/index.asp");  %>
+<%  Response.Redirect("/asp/index.aspx");  %>
