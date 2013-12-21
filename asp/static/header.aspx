@@ -18,4 +18,4 @@
     </div>
 
     <div class="anniu"><a href="gysdl.aspx" target="_blank">供应商登录</a></div>
-    <div class="anniu"><a href="sclb.aspx" target="_blank">采购商登录</a></div>
+    <div class="anniu"><a href="cgsgl.aspx" target="_blank">采购商登录</a></div>

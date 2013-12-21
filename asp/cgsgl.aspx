@@ -31,15 +31,12 @@
       <%
    
         HttpCookie QQ_id = Request.Cookies["QQ_id"];
-        String  cl_id = Request["cl_id"];
-
-       
+      
 
         if (QQ_id != null)
         {
             //Response.Write("openid is " + openId.Value + "<p>");
 
-            //insert into db to store openid and its cl_id
             String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             
@@ -66,33 +63,15 @@
                                      
                 }
 
-                //列表出所收藏的供应商和材料
-                DataTable dt_sccl = new DataTable(); //收藏的材料
-		        DataTable dt_scgys= new DataTable(); //收藏的供应商
+                //write yh_id to session
+                string str_getyhid = "select yh_id from 用户表 where QQ_id = '"+QQ_id.Value+"'";
+                SqlCommand cmd_getyhid = new SqlCommand(str_getyhid, conn);
+                String yh_id = cmd_getyhid.ExecuteScalar().ToString();
+                Session["yh_id"]=yh_id;
+
+                Response.Redirect("cgsgl_2.aspx");
+
                 
-                SqlDataAdapter da_sccl = new SqlDataAdapter("select 材料名称,cl_id from 采购商关注材料表 ", conn);
-                DataSet ds_sccl = new DataSet();
-                da_sccl.Fill(ds_sccl, "采购商关注材料表");            
-                dt_sccl = ds_sccl.Tables[0];
-			    
-                SqlDataAdapter da_scgys = new SqlDataAdapter("select 供应商名称,gys_id from 采购商关注供应商表 ", conn);
-                DataSet ds_scgys = new DataSet();
-                da_scgys.Fill(ds_scgys, "采购商关注供应商表");            
-                dt_scgys = ds_scgys.Tables[0];
-		
-
-           
-
-			    Response.Write("<span class='dlzi'>尊敬的采购商，您好! <br>");
-                Response.Write("<span class='2'>您收藏的供应商名单如下!<p>");
-                foreach(DataRow row in dt_scgys.Rows){
-                    Response.Write("<a href=gysxx.aspx?gys_id="+row["gys_id"].ToString()+">"+row["供应商名称"]+"<br></a>");
-                }
-                Response.Write("</span><span class='dlzi'>您收藏的材料名单如下!<p>");
-                foreach(DataRow row in dt_sccl.Rows){
-                    Response.Write("<a href=clxx.aspx?cl_id="+row["cl_id"].ToString()+">"+row["材料名称"]+"<br></a>");
-                }
-                Response.Write("</span>");
             	
             }
             catch (Exception ex){
@@ -104,20 +83,8 @@
         }
         else
         {
-            //Response.Write("openid is empty");
-            %>
-            <span class="dlzi">尊敬的采购商，您好! </span>
-            <span class="dlzi">请点击右边按钮登陆！</span>
-            <span class="dlzi2" id="qqLoginBtn"></span>
-            <script type="text/javascript">
-                QC.Login({
-                    btnId: "qqLoginBtn" //插入按钮的节点id  
-
-                });
-
-            </script>
-            <img src="images/wz_03.jpg">
-            <%
+            Response.Redirect("cgsdl.aspx");
+          
         }
     
             %>
