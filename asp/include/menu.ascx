@@ -25,7 +25,7 @@
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
             //暂时只显示人工挑选的7个，12-10 add by 谭中意
-            SqlDataAdapter da = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 in (08,07,10,04,05,01,06) order by 分类编码 desc", conn);
+            SqlDataAdapter da = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 in (08,07,02,04,05,01,06) order by 分类编码 desc", conn);
             DataSet ds = new DataSet();
             da.Fill(ds, "材料分类表");           
             dt = ds.Tables[0];
@@ -35,7 +35,7 @@
             da1.Fill(ds1, "材料分类表");            
             dt1 = ds1.Tables[0];
 			
-			SqlDataAdapter da2 = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 not in(08,07,10,04,05,01,06 )", conn);
+			SqlDataAdapter da2 = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 not in(08,07,02,04,05,01,06 )", conn);
             DataSet ds2 = new DataSet();
             da2.Fill(ds2, "材料分类表");
             conn.Close();
