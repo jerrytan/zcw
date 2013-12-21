@@ -266,11 +266,11 @@
                              imgsrc = result.ToString();
                          }
                     }
-                    Response.Write("<img src="+imgsrc+ " width=150px height=150px /></a>");
+                    Response.Write("<img src="+imgsrc+ " width=150px height=150px />");
                 
 				
 				%>
-				
+				</a>
                 <span class="pxtu1"><%=row["ÏÔÊ¾Ãû"].ToString()%></span>
                
             </div>
