@@ -160,7 +160,7 @@
             <div class="xwright1">
                 <ul>
                     <%foreach(System.Data.DataRow row in dt2.Rows){%>
-                    <li><a href="scsxx.aspx?gys_id=<%=row["gys_id"]%>"><%=row["厂商名称"].ToString()%></a></li>
+                    <li><a href="gysxx.aspx?gys_id=<%=row["gys_id"]%>"><%=row["厂商名称"].ToString()%></a></li>
                     <%}%>
                 </ul>
             </div>
@@ -174,7 +174,7 @@
             <div class="xwright1">
                 <ul>
                     <%foreach(System.Data.DataRow row in dt3.Rows){%>
-                    <li><a href="#"><%=row["产品名称"].ToString()%></a></li>
+                    <li><a href="clxx?cl_id=<% =row["cl_id"]%>"><%=row["产品名称"].ToString()%></a></li>
                     <%}%>
                 </ul>
             </div>
