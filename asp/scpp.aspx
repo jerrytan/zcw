@@ -14,7 +14,7 @@
             String yh_id = Session["yh_id"].ToString();
          
 
-            //新增品牌写入数据库
+            //删除品牌
             {
                 conn.Open(); 
                 String ppid_str = Request["pp_id"]; 				//like ",214,238,237"
