@@ -169,22 +169,20 @@ function ShowMenu(obj,n){
   }
   
   
-  void cancelFollow()
+  void cancelFollowCLIDs(object sender, EventArgs e)
   {
   	string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
-    
   	string yh_id ;//= Session["yh_id"].ToString();
   	yh_id = "20";
-  	string clidstr =Request.Form["clid"];
-  	string[] listclid = clidstr.Split(',');
-  	foreach (var clid in listclid)
-  	{
-  		string str_cancelfollow = "delete from 采购商关注材料表 where yh_id ='" +  yh_id + "' and cl_id='" + clid + "'";
-  		SqlCommand cmd_cancelfollow = new SqlCommand(str_cancelfollow, conn);         
-      cmd_cancelfollow.ExecuteNonQuery();
-  	}
+  	string clidstr =Request.Form["clids"];
+  	clidstr = ",21,100";
+  	clidstr =clidstr.Substring(1);
+  	string str_cancelfollow = "delete from 采购商关注材料表 where yh_id ='" +  yh_id + "' and cl_id in (" + clidstr + ")" ;
+  	SqlCommand cmd_cancelfollow = new SqlCommand(str_cancelfollow, conn);         
+    cmd_cancelfollow.ExecuteNonQuery();
+    button3.Text=str_cancelfollow;
   	conn.Close();
   }
   
@@ -304,7 +302,8 @@ function ShowMenu(obj,n){
    } 
  %>  
 </div></div>
-<div class="dlqqz3"><a href="#"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<a href="#"><img src="images/scxzcl.jpg" border="0" /></a></div>
+<div class="dlqqz3"><a href="#"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<a href="#" onclick="cancelFollowCLIDs()"><img src="images/scxzcl.jpg" border="0" /></a></div>
+<asp:Button id="button3" Text="Click me!" runat="server" OnClick="cancelFollowCLIDs" /> 
 <%
 	if (userIsVIP){
 %>
@@ -402,5 +401,30 @@ function menuFix() {
 }
 window.onload=menuFix;
 //--><!]]></script>
+
+<script>
+        
+        function cancelFollowCLIDs()
+        {
+            var r = confirm("请确认您将取消关注选中的材料!");
+            if (r == true) {
+
+                var clids_str = "?pp_id=";
+                var clids = document.getElementsByName("clid");
+
+                for (var i = 0; i < clids.length; i++) {
+                    if (clids[i].checked) {
+
+                        clids_str = clids_str + "," + clids[i].value;
+                    }
+
+                }
+
+                var url = "scpp.aspx" + clids_str;
+                window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+            }
+        }
+    </script>
+    
 </body>
 </html>
