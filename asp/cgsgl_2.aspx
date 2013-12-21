@@ -12,72 +12,112 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>采购商材料管理页</title>
-<link href="css/css.css" rel="stylesheet" type="text/css" />
-<link href="css/all of.css" rel="stylesheet" type="text/css" />
-<style>
-#menu { width:200px; margin:auto;}
- #menu h1 { font-size:12px;margin-top:1px; font-weight:100}
- #menu h2 { padding-left:15px; font-size:12px; font-weight:100}
- #menu ul { padding-left:15px; height:100px;overflow:auto; font-weight:100}
- #menu a { display:block; padding:5px 0 3px 10px; text-decoration:none; overflow:hidden;}
- #menu a:hover{ color:#000;}
- #menu .no {display:none;}
- #menu .h1 a{color:#000;}
- #menu .h2 a{color:#000;}
- #menu  h1 a{color:#000;}
-</style>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <title>采购商材料管理页</title>
+    <link href="css/css.css" rel="stylesheet" type="text/css" />
+    <link href="css/all of.css" rel="stylesheet" type="text/css" />
+    <style>
+        #menu {
+            width: 200px;
+            margin: auto;
+        }
+
+            #menu h1 {
+                font-size: 12px;
+                margin-top: 1px;
+                font-weight: 100;
+            }
+
+            #menu h2 {
+                padding-left: 15px;
+                font-size: 12px;
+                font-weight: 100;
+            }
+
+            #menu ul {
+                padding-left: 15px;
+                height: 100px;
+                overflow: auto;
+                font-weight: 100;
+            }
+
+            #menu a {
+                display: block;
+                padding: 5px 0 3px 10px;
+                text-decoration: none;
+                overflow: hidden;
+            }
+
+                #menu a:hover {
+                    color: #000;
+                }
+
+            #menu .no {
+                display: none;
+            }
+
+            #menu .h1 a {
+                color: #000;
+            }
+
+            #menu .h2 a {
+                color: #000;
+            }
+
+            #menu h1 a {
+                color: #000;
+            }
+    </style>
 
 <script language="JavaScript">
 <!--//
-function ShowMenu(obj,n){
- var Nav = obj.parentNode;
- if(!Nav.id){
-  var BName = Nav.getElementsByTagName("ul");
-  var HName = Nav.getElementsByTagName("h2");
-  var t = 2;
- }else{
-  var BName = document.getElementById(Nav.id).getElementsByTagName("span");
-  var HName = document.getElementById(Nav.id).getElementsByTagName("h1");
-  var t = 1;
- }
- for(var i=0; i<HName.length;i++){
-  HName[i].innerHTML = HName[i].innerHTML.replace("-","+");
-  HName[i].className = "";
- }
- obj.className = "h" + t;
- for(var i=0; i<BName.length; i++){if(i!=n){BName[i].className = "no";}}
- if(BName[n].className == "no"){
-  BName[n].className = "";
-  obj.innerHTML = obj.innerHTML.replace("+","-");
- }else{
-  BName[n].className = "no";
-  obj.className = "";
-  obj.innerHTML = obj.innerHTML.replace("-","+");
- }
-}
-//-->
-</script>
+    function ShowMenu(obj, n) {
+        var Nav = obj.parentNode;
+        if (!Nav.id) {
+            var BName = Nav.getElementsByTagName("ul");
+            var HName = Nav.getElementsByTagName("h2");
+            var t = 2;
+        } else {
+            var BName = document.getElementById(Nav.id).getElementsByTagName("span");
+            var HName = document.getElementById(Nav.id).getElementsByTagName("h1");
+            var t = 1;
+        }
+        for (var i = 0; i < HName.length; i++) {
+            HName[i].innerHTML = HName[i].innerHTML.replace("-", "+");
+            HName[i].className = "";
+        }
+        obj.className = "h" + t;
+        for (var i = 0; i < BName.length; i++) { if (i != n) { BName[i].className = "no"; } }
+        if (BName[n].className == "no") {
+            BName[n].className = "";
+            obj.innerHTML = obj.innerHTML.replace("+", "-");
+        } else {
+            BName[n].className = "no";
+            obj.className = "";
+            obj.innerHTML = obj.innerHTML.replace("-", "+");
+        }
+    }
+    //-->
+    </script>
 </head>
 
 <body>
 
-<!-- 头部开始-->
-<!-- #include file="static/header.aspx" -->
-<!-- 头部结束-->
+    <!-- 头部开始-->
+    <!-- #include file="static/header.aspx" -->
+    <!-- 头部结束-->
 
 
-<!-- 导航开始-->
-<uc1:Menu1 ID="Menu1" runat="server" />
-<!-- 导航结束-->
+    <!-- 导航开始-->
+    <uc1:Menu1 ID="Menu1" runat="server" />
+    <!-- 导航结束-->
 
 
-<!-- banner开始-->
-<!-- #include file="static/banner.aspx" -->
-<!-- banner 结束-->
+    <!-- banner开始-->
+    <!-- #include file="static/banner.aspx" -->
+    <!-- banner 结束-->
 
-<script runat="server">  
+    <script runat="server">  
   
   public List<FLObject> Items1 { get; set; }
   public List<FLObject> Items2 { get; set; }
@@ -87,12 +127,16 @@ function ShowMenu(obj,n){
   protected DataTable dt = new DataTable(); //取一级分类名称
   protected void Page_Load(object sender, EventArgs e)
   {
-
-		string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+        listFollowCLIDs();
+  }
+  protected void listFollowCLIDs()
+  {
+    
+	string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
     
-    string yh_id ;//= Session["yh_id"].ToString();
+    string yh_id = Session["yh_id"].ToString();
     yh_id = "20";
   	string querySQL = 
   		"select distinct a.分类编码,a.显示名字 from 材料分类表 as a , " + 
@@ -110,7 +154,7 @@ function ShowMenu(obj,n){
     querySQL = 
    		"	select b.cl_id ,分类编码,显示名 " + 
    		"   from 采购商关注材料表 as a ,材料表 as b  " +
-      "  where a.yh_id='" + yh_id + "' and a.cl_id=b.cl_id";
+      "  where a.yh_id='" + yh_id + "' and a.cl_id=b.cl_id order by b.cl_id";
          
     da = new SqlDataAdapter(querySQL, conn);
     DataSet clds = new DataSet();
@@ -152,9 +196,11 @@ function ShowMenu(obj,n){
       item.flbm = Convert.ToString(dr2["分类编码"]);
       item.clid = Convert.ToString(dr2["cl_id"]);
       this.Cllist.Add(item);
-		} 
-	}
-	public class FLObject
+    } 
+
+    CancelFollowButton.Attributes.Add("onClick", "return confirm('您真的要取消对这些材料的关注吗？');");
+  }
+  public class FLObject
   { //属性
   	public string flbm { get; set; }
     public string Name { get; set; }
@@ -169,29 +215,14 @@ function ShowMenu(obj,n){
   }
   
   
-  void cancelFollowCLIDs(object sender, EventArgs e)
-  {
-  	string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-    SqlConnection conn = new SqlConnection(constr);
-    conn.Open();
-  	string yh_id ;//= Session["yh_id"].ToString();
-  	yh_id = "20";
-  	string clidstr =Request.Form["clids"];
-  	clidstr = ",21,100";
-  	clidstr =clidstr.Substring(1);
-  	string str_cancelfollow = "delete from 采购商关注材料表 where yh_id ='" +  yh_id + "' and cl_id in (" + clidstr + ")" ;
-  	SqlCommand cmd_cancelfollow = new SqlCommand(str_cancelfollow, conn);         
-    cmd_cancelfollow.ExecuteNonQuery();
-    //button3.Text=str_cancelfollow;
-  	conn.Close();
-  }
+  
   
   protected void dumpFollowCLs(object sender, EventArgs e)
   {
   	string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
-  	string yh_id;// = Session["yh_id"].ToString();
+  	string yh_id = Session["yh_id"].ToString();
   	yh_id = "20";
   	string str_queryallcl = "select b.* from 采购商关注材料表 as  a ,材料表 as b " + 
   	                        " where a.yh_id='"  + yh_id + "'  and a.cl_id = b.cl_id " ;
@@ -255,176 +286,172 @@ function ShowMenu(obj,n){
         swCSV.Close();
         Response.End();
     }
+    </script>
+
+    <div class="dlqqz">
+        <div class="dlqqz1">
+            <img src="images/sccp.jpg" />
+        </div>
+        
+
+        <form id="form1" runat="server">
+
+<script runat="server">
+  void cancelFollowCLIDs(object sender, EventArgs e)
+  {
+  	string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+    SqlConnection conn = new SqlConnection(constr);
+    conn.Open();
+  	string yh_id = Session["yh_id"].ToString();
+  	//yh_id = "20";
+  	string clidstr =Request.Form["clid"];
+  	//clidstr = ",21,100";
+  	//clidstr =clidstr.Substring(1);
+  	string str_cancelfollow = "delete 采购商关注材料表 where yh_id ='" +  yh_id + "' and cl_id in (" + clidstr + ")" ;
+  	SqlCommand cmd_cancelfollow = new SqlCommand(str_cancelfollow, conn);         
+    cmd_cancelfollow.ExecuteNonQuery();
+    //label1.Text=str_cancelfollow;
+  	conn.Close();
+    listFollowCLIDs();
+  }
 </script>
 
-
-
-<div class="dlqqz">
-
-<div class="dlqqz1"><img src="images/sccp.jpg" /></div>
-<span class="dlqqz4"><img src="images/wz_03.jpg" width="530" height="300" /></span>
-
-<form id="form1" runat="server">
-	
-<div class="dlqqz2"><div id="menu">
- <% 
+<div class="dlqqz2">
+    <div id="menu">
+<% 
  	 int firstlevel = 0;
-   foreach (var menu1 in this.Items1){
- %>
- 
- <h1 onClick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> <%=menu1.Name%> &gt;</a></h1>
- <span class="no">
- 	<% 
- 	  int secondlevel = 0;
+     foreach (var menu1 in this.Items1){
+%>
+        <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /><%=menu1.Name%> &gt;</a></h1>
+        <span class="no">
+<% 
+ 	    int secondlevel = 0;
  		foreach (var menu2 in this.Items2){
  	   	if ( (menu2.flbm).Substring(0,2) == menu1.flbm ){  
- 	%>
-  <h2 onClick="javascript:ShowMenu(this,<%=secondlevel %> )"><a href="javascript:void(0)">+ <%=menu2.Name%></a></h2>
-  <ul class="no">
-   <% foreach (var cl in this.Cllist){
-      	if ( (cl.flbm).Substring(0,4) == menu2.flbm ){
-   %>
-   		<a href="javascript:void(0)"><%=cl.Name %><input type="checkbox" name="clid" value="<%=cl.clid%>"/> 选中</a>
-   <% 	
-   			}
-   		}
-   		secondlevel++;
-   %>
-   </ul>
-  <% 	} 
+%>
+            <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )"><a href="javascript:void(0)">+ <%=menu2.Name%></a></h2>
+            <ul class="no">
+<% 
+            foreach (var cl in this.Cllist){
+      	        if ( (cl.flbm).Substring(0,4) == menu2.flbm ){
+%>
+                            <a href="javascript:void(0)"><%=cl.Name %><input type="checkbox" name="clid" value="<%=cl.clid%>" />选中</a>
+<% 	
+   			    }
+   		    }
+   		    secondlevel++;
+%>
+            </ul>
+<% 	
+        } 
   	}
-  %>
-  
- </span>
- 
- <% 
+%>
+      </span>
+<% 
  		firstlevel++;
    } 
- %>  
-</div></div>
-<div class="dlqqz3"><a href="#"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<a href="#" onclick="cancelFollowCLIDs()"><img src="images/scxzcl.jpg" border="0" /></a></div>
-<asp:ImageButton id="button3" Text="Click me!" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="cancelFollowCLIDs" /> 
+%>
+                </div>
+            </div>
+            <div class="dlqqz3">
+                <a href="#"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="cancelFollowCLIDs" />
+            </div>
+            <asp:Label ID="label1" runat="server" Text="" />
+
 <%
 	if (userIsVIP){
 %>
-<div class="dlex1"><div class="dlex1">
-	<asp:Button  runat="server" ID="button1" Text ="选择数据进入自身内部系统" onclick="dumpFollowCLs"/></div>
-</div>
+            <div class="dlex1">
+                <div class="dlex1">
+                    <asp:Button runat="server" ID="button1" Text="选择数据进入自身内部系统" OnClick="dumpFollowCLs" />
+                </div>
+            </div>
 <%
 	}else {
 %>
-<div class="dlex1">
-	<asp:Button  runat="server" ID="button2" Text ="全部导出为EXCEL" onclick="dumpFollowCLs"/>
-</div>
+            <div class="dlex1">
+                <asp:Button runat="server" ID="button2" Text="全部导出为EXCEL" OnClick="dumpFollowCLs" />
+            </div>
 <%
 	}	
 %>
-</div>
-</form>
-<div>
-<!-- 关于我们 广告服务 投诉建议 开始-->
-<!-- #include file="static/aboutus.aspx" -->
-<!-- 关于我们 广告服务 投诉建议 结束-->
-</div>
-
-<!--  footer 开始-->
-<!-- #include file="static/footer.aspx" -->
-<!-- footer 结束-->
-
-
-</div>
-</div>
-
+    </div>
+    </form>
+    <div>
+        <!-- 关于我们 广告服务 投诉建议 开始-->
+        <!-- #include file="static/aboutus.aspx" -->
+        <!-- 关于我们 广告服务 投诉建议 结束-->
 
 </div>
 
+    <!--  footer 开始-->
+    <!-- #include file="static/footer.aspx" -->
+    <!-- footer 结束-->
 
 
+    </div>
+</div>
 
 
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
-<script type="text/javascript">
-var speed=9//速度数值越大速度越慢
-var demo=document.getElementById("demo");
-var demo2=document.getElementById("demo2");
-var demo1=document.getElementById("demo1");
-demo2.innerHTML=demo1.innerHTML
-function Marquee(){
-if(demo2.offsetWidth-demo.scrollLeft<=0)
-demo.scrollLeft-=demo1.offsetWidth
-else{
-demo.scrollLeft++
-}
-}
-var MyMar=setInterval(Marquee,speed)
-demo.onmouseover=function() {clearInterval(MyMar)}
-demo.onmouseout=function() {MyMar=setInterval(Marquee,speed)}
-</script>
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
+</div>
 
-<script>
-        
-        function cancelFollowCLIDs()
-        {
-            var r = confirm("请确认您将取消关注选中的材料!");
-            if (r == true) {
-
-                var clids_str = "?pp_id=";
-                var clids = document.getElementsByName("clid");
-
-                for (var i = 0; i < clids.length; i++) {
-                    if (clids[i].checked) {
-
-                        clids_str = clids_str + "," + clids[i].value;
-                    }
-
-                }
-
-                var url = "scpp.aspx" + clids_str;
-                window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+    <script type="text/javascript"><!--//--><![CDATA[//><!--
+    function menuFix() {
+        var sfEls = document.getElementById("nav").getElementsByTagName("li");
+        for (var i = 0; i < sfEls.length; i++) {
+            sfEls[i].onmouseover = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onMouseDown = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onMouseUp = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onmouseout = function () {
+                this.className = this.className.replace(new RegExp("( ?|^)sfhover\\b"),
+              "");
             }
         }
+    }
+    window.onload = menuFix;
+    //--><!]]></script>
+    <script type="text/javascript">
+        var speed = 9//速度数值越大速度越慢
+        var demo = document.getElementById("demo");
+        var demo2 = document.getElementById("demo2");
+        var demo1 = document.getElementById("demo1");
+        demo2.innerHTML = demo1.innerHTML
+        function Marquee() {
+            if (demo2.offsetWidth - demo.scrollLeft <= 0)
+                demo.scrollLeft -= demo1.offsetWidth
+            else {
+                demo.scrollLeft++
+            }
+        }
+        var MyMar = setInterval(Marquee, speed)
+        demo.onmouseover = function () { clearInterval(MyMar) }
+        demo.onmouseout = function () { MyMar = setInterval(Marquee, speed) }
     </script>
-    
-</body>
+    <script type="text/javascript"><!--//--><![CDATA[//><!--
+    function menuFix() {
+        var sfEls = document.getElementById("nav").getElementsByTagName("li");
+        for (var i = 0; i < sfEls.length; i++) {
+            sfEls[i].onmouseover = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onMouseDown = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onMouseUp = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onmouseout = function () {
+                this.className = this.className.replace(new RegExp("( ?|^)sfhover\\b"),
+              "");
+            }
+        }
+    }
+    window.onload = menuFix;
+    //--><!]]></script>
 </html>
