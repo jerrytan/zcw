@@ -169,10 +169,33 @@
             <div class="dlpp">现货供应</div>
 
             <%foreach(System.Data.DataRow row in dt_clxx.Rows){%>
-            <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">
+            <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">			
+			
+			
 
             <div class="gydl1">
-                <img src="images/222_03.jpg" /><%=row["显示名"].ToString() %></div>
+			<%
+					string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+                    SqlConnection con = new SqlConnection(connString);
+                    SqlCommand cmd = new SqlCommand("select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
+                        +row["cl_id"]+"' and 大小='小'", con);
+
+                    String imgsrc= "images/222_03.jpg";
+                    using (con)
+                    {
+                         con.Open();
+                         Object result = cmd.ExecuteScalar();
+                         if (result != null) {
+                             imgsrc = result.ToString();
+                         }
+                    }
+                    Response.Write("<img src="+imgsrc+ " width=150px height=150px />");
+                
+				
+				%>
+                
+				<%=row["显示名"].ToString() %>
+			</div>
             </a>
             <%}%>
         </div>
