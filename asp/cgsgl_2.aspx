@@ -182,7 +182,7 @@ function ShowMenu(obj,n){
   	string str_cancelfollow = "delete from 采购商关注材料表 where yh_id ='" +  yh_id + "' and cl_id in (" + clidstr + ")" ;
   	SqlCommand cmd_cancelfollow = new SqlCommand(str_cancelfollow, conn);         
     cmd_cancelfollow.ExecuteNonQuery();
-    button3.Text=str_cancelfollow;
+    //button3.Text=str_cancelfollow;
   	conn.Close();
   }
   
@@ -303,7 +303,7 @@ function ShowMenu(obj,n){
  %>  
 </div></div>
 <div class="dlqqz3"><a href="#"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<a href="#" onclick="cancelFollowCLIDs()"><img src="images/scxzcl.jpg" border="0" /></a></div>
-<asp:Button id="button3" Text="Click me!" runat="server" OnClick="cancelFollowCLIDs" /> 
+<asp:ImageButton id="button3" Text="Click me!" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="cancelFollowCLIDs" /> 
 <%
 	if (userIsVIP){
 %>
