@@ -7,17 +7,4 @@
 <title>haha </title>
 </head>
 <body>
-
-hahaha
-<script type="text/javascript">
-if(QC.Login.check()){//如果已登录
-	QC.Login.getMe(function(openId, accessToken){
-		alert(["当前登录用户的", "openId为："+openId, "accessToken为："+accessToken].join("\n"));
-	});
-	//这里可以调用自己的保存接口
-	//...
-}
-</script>
-
-<body>
-</html>
+<%  Response.Redirect("/asp/index.asp");  %>

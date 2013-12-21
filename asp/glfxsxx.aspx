@@ -17,10 +17,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>分销商信息页</title>
-<link href="css/css.css" rel="stylesheet" type="text/css" />
-<link href="css/all of.css" rel="stylesheet" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <title>分销商信息页</title>
+    <link href="css/css.css" rel="stylesheet" type="text/css" />
+    <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <script src="Scripts/jquery-1.4.1-vsdoc.js" type="text/javascript"></script>
     <script type="text/javascript" language="javascript">
         //使用js,好处是不用刷新页面 清空文本框
@@ -42,37 +42,16 @@
             window.alert(vr);
             $("#selectbox option[value='vr']").attr("selected", true); //有效
         }
-        
+
     </script>
 </head>
 
-<script runat="server"  >
+<script runat="server">
 
-             public class ScsInformotion    //供应商类
-        {
-            public string ScsName { get; set; }  //属性 供应商名字
-            public string GysCode { get; set; }   //属性 供应商Id 
-            public string Dq_id { get; set; }   //属性 地区id 			
-        }
-		
-	    public class DqInformotion    //地区区域类
-        {
-            public string DqName { get; set; }  //属性 地区名字
-            public string DqCode { get; set; }   //属性 地区id          
-        }
-		
-        public List<ScsInformotion> Items { get; set; }
-		public List<DqInformotion> Selects1 { get; set; }
-		public List<DqInformotion> Selects2 { get; set; }
-		public List<DqInformotion> Selects3 { get; set; }
-		
-		
+      
         protected DataTable dt = new DataTable();  //分销商信息(材料供应商信息表)
 		protected DataTable dt1 = new DataTable(); //代理品牌(品牌字典)
-        protected DataTable dt2 = new DataTable(); //所属区域名称
-		protected DataTable dt3 = new DataTable(); //所属区域的省
-		protected DataTable dt4 = new DataTable(); //所属区域的市
-		protected DataTable dt5 = new DataTable(); //测试用
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
@@ -251,173 +230,190 @@
             }
             
         }
-    </script>
+</script>
 
 <body>
 
-<!-- 头部开始-->
-<uc2:Header2 ID="Header2" runat="server" />
-<!-- 头部结束-->
+    <!-- 头部开始-->
+    <uc2:Header2 ID="Header2" runat="server" />
+    <!-- 头部结束-->
 
-<%string gys_id = Request["gys_id"];%>
-<form id="login" name="login" action="glfxsxx.aspx?gys_id=<%=gys_id%>" method="post">
+    <%string gys_id = Request["gys_id"];%>
+    <form id="login" name="login" action="glfxsxx.aspx?gys_id=<%=gys_id%>" method="post">
 
-<div class="fxsxx">
-<span class="fxsxx1">贵公司的分销信息如下</span>
-<div class="zjgxs">
- 
-<select name=""  id="selectbox" class="fug"  onchange="javascript:location.href='glfxsxx.aspx?bm='+this.value">
-<%foreach (var v in this.Items)
+        <div class="fxsxx">
+            <span class="fxsxx1">贵公司的分销信息如下</span>
+            <div class="zjgxs">
+
+                <select name="" id="selectbox" class="fug" onchange="javascript:location.href='glfxsxx.aspx?bm='+this.value">
+                    <%foreach (var v in this.Items)
   { %>
-<option name="" onclick="TextSelect()" id=""  value="<%=v.GysCode%>"><%=v.ScsName%></option>
-<%} %>
-</select>
+                    <option name="" onclick="TextSelect()" id="" value="<%=v.GysCode%>"><%=v.ScsName%></option>
+                    <%} %>
+                </select>
 
 
-<span class="zjgxs1"><a onclick="ClearAllTextBox()"  href="glfxsxx.aspx">增加新的供销商</a></span></div>
-<div class="fxsxx2">
- <dl>
-    <dd>公司名称：</dd>
-    <dt><input runat="server" name="companyname" id="companyname" type="text" class="fxsxx3"/></dt>
-     <dd>公司地址：</dd>
-    <dt><input runat="server" name="address" id="address" type="text" class="fxsxx3"/></dt>
-     <dd>公司电话：</dd>
-    <dt><input runat="server" name="tel" id="tel" type="text" class="fxsxx3"/></dt>
-     <dd>公司主页：</dd>
-    <dt><input runat="server" name="homepage" id="homepage" type="text" class="fxsxx3"/></dt>
-     <dd>公司传真：</dd>
-    <dt><input runat="server" name="fax" id="fax" type="text" class="fxsxx3"/></dt>
-	
-	
-    <dd>分销区域：</dd>
-    <dt><div class="fxs1">
-	<select name="" class="fu1">
-	<%foreach (var v in this.Selects1) { %>
-    <option><%=v.DqName%></option>
-    <%} %>	
-	</select> 
-	
-	<select name="" class="fu2">	
-	<%foreach (var v in this.Selects2) { %>
-    <option><%=v.DqName%></option>
-    <%} %>
-	</select>
-	省（市）
+                <span class="zjgxs1"><a onclick="ClearAllTextBox()" href="glfxsxx.aspx">增加新的供销商</a></span>
+            </div>
+            <div class="fxsxx2">
+                <dl>
+                    <dd>公司名称：</dd>
+                    <dt>
+                        <input runat="server" name="companyname" id="companyname" type="text" class="fxsxx3" /></dt>
+                    <dd>公司地址：</dd>
+                    <dt>
+                        <input runat="server" name="address" id="address" type="text" class="fxsxx3" /></dt>
+                    <dd>公司电话：</dd>
+                    <dt>
+                        <input runat="server" name="tel" id="tel" type="text" class="fxsxx3" /></dt>
+                    <dd>公司主页：</dd>
+                    <dt>
+                        <input runat="server" name="homepage" id="homepage" type="text" class="fxsxx3" /></dt>
+                    <dd>公司传真：</dd>
+                    <dt>
+                        <input runat="server" name="fax" id="fax" type="text" class="fxsxx3" /></dt>
+
+
+                    <dd>分销区域：</dd>
+                    <dt>
+                        <div class="fxs1">
+                            <select name="" class="fu1">
+                                <%foreach (var v in this.Selects1) { %>
+                                <option><%=v.DqName%></option>
+                                <%} %>
+                            </select>
+
+                            <select name="" class="fu2">
+                                <%foreach (var v in this.Selects2) { %>
+                                <option><%=v.DqName%></option>
+                                <%} %>
+                            </select>
+                            省（市）
 	
     <select name="" class="fu3">
-	<%foreach (var v in this.Selects3) { %>
-    <option><%=v.DqName%></option>
-    <%} %>
-	</select>
-	地区
-	<select name="" class="fu4"><option>市区</option></select> 区（县） 
-	</div></dt>
-     
-	 
-	 
-	 <dd>代理品牌：</dd>
-    <dt>
-	<%foreach(System.Data.DataRow row in dt1.Rows){%>
-	<span class="fdlpp"><input name="" type="checkbox" value="" class="fxsfxk" /><%=row["品牌名称"].ToString() %></span>
-     <%}%>
-	</dt>
-		
-		
-     <dd>公司简介：</dd>
-    <dt><textarea name="" cols="" rows="" class="fgsjj"></textarea></dt>
-	
-	
-	
-	<!--
+        <%foreach (var v in this.Selects3) { %>
+        <option><%=v.DqName%></option>
+        <%} %>
+    </select>
+                            地区
+	<select name="" class="fu4">
+        <option>市区</option>
+    </select>
+                            区（县） 
+                        </div>
+                    </dt>
+
+
+
+                    <dd>代理品牌：</dd>
+                    <dt>
+                        <%foreach(System.Data.DataRow row in dt1.Rows){%>
+                        <span class="fdlpp">
+                            <input name="" type="checkbox" value="" class="fxsfxk" /><%=row["品牌名称"].ToString() %></span>
+                        <%}%>
+                    </dt>
+
+
+                    <dd>公司简介：</dd>
+                    <dt>
+                        <textarea name="" cols="" rows="" class="fgsjj"></textarea></dt>
+
+
+
+                    <!--
      <dd>公司图片：</dd>
     <dt><div class="fgstp1"><div class="fgstp"><img src="images/wwwq_03.jpg" /> <span class="fdlpp1"><input name="" type="checkbox" value="" class="fxsfxk" />选中删除</span></div>
         <div class="fgstp"><img src="images/wwwq_03.jpg" /> <span class="fdlpp1"><input name="" type="checkbox" value="" class="fxsfxk" />选中删除</span></div>
         <div class="fgstp"><img src="images/wwwq_03.jpg" /> <span class="fdlpp1"><input name="" type="checkbox" value="" class="fxsfxk" />选中删除</span></div></div>
         <span class="scyp"><a href="#"><img src="images/wqwe_03.jpg" /></a></span>  <span class="scyp"><a href="#"><img src="images/sssx_03.jpg" /></a></span></dt>
      -->
-	 
-	 
-	 
-	 <dd>联系人姓名：</dd>
-    <dt><input runat="server" name="name" id="name" type="text" class="fxsxx3"/></dt>
-     <dd>联系人电话：</dd>
-    <dt><input runat="server" name="phone" id="phone" type="text" class="fxsxx3"/></dt>
-    
- </dl>
-
-<span class="fxsbc"><a href="#"><input type="image" name="Submit" value="Submit" src="images/bbc_03.jpg" ></a></span></div>
-</div>
-</div>
-</form>
 
 
 
-<!--  footer 开始-->
-<!-- #include file="static/footer.aspx" -->
-<!-- footer 结束-->
+                    <dd>联系人姓名：</dd>
+                    <dt>
+                        <input runat="server" name="name" id="name" type="text" class="fxsxx3" /></dt>
+                    <dd>联系人电话：</dd>
+                    <dt>
+                        <input runat="server" name="phone" id="phone" type="text" class="fxsxx3" /></dt>
+
+                </dl>
+
+                <span class="fxsbc"><a href="#">
+                    <input type="image" name="Submit" value="Submit" src="images/bbc_03.jpg"></a></span>
+            </div>
+        </div>
+        </div>
+    </form>
+
+
+
+    <!--  footer 开始-->
+    <!-- #include file="static/footer.aspx" -->
+    <!-- footer 结束-->
 
 
 
 
 
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
-<script type="text/javascript">
-var speed=9//速度数值越大速度越慢
-var demo=document.getElementById("demo");
-var demo2=document.getElementById("demo2");
-var demo1=document.getElementById("demo1");
-demo2.innerHTML=demo1.innerHTML
-function Marquee(){
-if(demo2.offsetWidth-demo.scrollLeft<=0)
-demo.scrollLeft-=demo1.offsetWidth
-else{
-demo.scrollLeft++
-}
-}
-var MyMar=setInterval(Marquee,speed)
-demo.onmouseover=function() {clearInterval(MyMar)}
-demo.onmouseout=function() {MyMar=setInterval(Marquee,speed)}
-</script>
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
+    <script type="text/javascript"><!--//--><![CDATA[//><!--
+    function menuFix() {
+        var sfEls = document.getElementById("nav").getElementsByTagName("li");
+        for (var i = 0; i < sfEls.length; i++) {
+            sfEls[i].onmouseover = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onMouseDown = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onMouseUp = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onmouseout = function () {
+                this.className = this.className.replace(new RegExp("( ?|^)sfhover\\b"),
+              "");
+            }
+        }
+    }
+    window.onload = menuFix;
+    //--><!]]></script>
+    <script type="text/javascript">
+        var speed = 9//速度数值越大速度越慢
+        var demo = document.getElementById("demo");
+        var demo2 = document.getElementById("demo2");
+        var demo1 = document.getElementById("demo1");
+        demo2.innerHTML = demo1.innerHTML
+        function Marquee() {
+            if (demo2.offsetWidth - demo.scrollLeft <= 0)
+                demo.scrollLeft -= demo1.offsetWidth
+            else {
+                demo.scrollLeft++
+            }
+        }
+        var MyMar = setInterval(Marquee, speed)
+        demo.onmouseover = function () { clearInterval(MyMar) }
+        demo.onmouseout = function () { MyMar = setInterval(Marquee, speed) }
+    </script>
+    <script type="text/javascript"><!--//--><![CDATA[//><!--
+    function menuFix() {
+        var sfEls = document.getElementById("nav").getElementsByTagName("li");
+        for (var i = 0; i < sfEls.length; i++) {
+            sfEls[i].onmouseover = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onMouseDown = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onMouseUp = function () {
+                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
+            }
+            sfEls[i].onmouseout = function () {
+                this.className = this.className.replace(new RegExp("( ?|^)sfhover\\b"),
+              "");
+            }
+        }
+    }
+    window.onload = menuFix;
+    //--><!]]></script>
 </body>
 </html>
