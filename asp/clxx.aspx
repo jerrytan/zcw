@@ -48,6 +48,8 @@
 		protected DataTable dt_ppxx = new DataTable();   //品牌名称(品牌字典)
 		protected DataTable dt_scsxx = new DataTable();   //生产商信息(材料供应商信息表)
 		protected DataTable dt_fxsxx = new DataTable();  //分销商信息(材料供应商信息表)
+		protected DataTable dt_image = new DataTable();  //材料大图片(材料多媒体信息表)
+		protected DataTable dt_images = new DataTable();  //材料小图片(材料多媒体信息表)
         string cl_id;
         
         protected void Page_Load(object sender, EventArgs e)
@@ -88,6 +90,16 @@
             DataSet ds_fxsxx = new DataSet();
             da_fxsxx.Fill(ds_fxsxx, "材料供应商信息表");            
             dt_fxsxx = ds_fxsxx.Tables[0];
+			
+			SqlDataAdapter da_image = new SqlDataAdapter("select top 3 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='大'" , conn);
+            DataSet ds_image = new DataSet();
+            da_image.Fill(ds_image, "材料多媒体信息表");            
+            dt_image = ds_image.Tables[0];
+			
+			SqlDataAdapter da_images = new SqlDataAdapter("select 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='小'" , conn);
+            DataSet ds_images = new DataSet();
+            da_images.Fill(ds_images, "材料多媒体信息表");            
+            dt_images = ds_images.Tables[0];
 		   
         }		
         
@@ -111,40 +123,22 @@
 <ul id=idSlider class=slider>
   <div style="POSITION: relative">
      
-     
-      <a href="http://www.lanrentuku.com/" target="_blank"><img alt="2013年宜宾市规划设计成果求意见" src="images/01.jpg" width=320 height=300></a>
-  </div>
-  <div style="POSITION: relative">
-     
-     
-      <a href="http://www.lanrentuku.com/" target="_blank"><img alt="宜宾县16日起限制部分车辆同行" src="images/02.jpg" width=320 height=300></a>
+     <% foreach(System.Data.DataRow row in dt_images.Rows){%>
+      <a href="http://www.lanrentuku.com/" target="_blank"><img  src="<%=row["存放地址"].ToString()%>" width=320 height=300></a>
+    <%}%>
   </div>
   
-  <div style="POSITION: relative">
-   
-   
-    <a href="http://www.lanrentuku.com/" target="_blank"><img alt="网络“神兽”到宜宾了！" src="images/03.jpg" width=320 height=300></a>
-  </div>
-  <div style="POSITION: relative">
-     
-      
-      <a href="http://www.lanrentuku.com/" target="_blank"><img alt="客人吃醉了!宜宾星乐迪小伙伴拾“金”归还" src="images/04.jpg" width=320 height=300></a>
-  </div>
-  <div style="POSITION: relative">
-     
-     
-      <a href="http://www.lanrentuku.com/" target="_blank"><img alt="宜宾翠柏大道又发生惨烈车祸，别克车被压变" src="images/05.jpg" width=320 height=300></a>
-  </div>
 </ul>
 </div>
 
 <div>
 <ul id=idNum class=hdnum>
-  <li><img src="images/01.jpg" width=61px height=45px></li>
-  <li><img src="images/02.jpg" width=61px height=45px></li>
-  <li><img src="images/03.jpg" width=61px height=45px></li>
-  <li><img src="images/04.jpg" width=61px height=45px></li>
-  <li><img src="images/05.jpg" width=61px height=45px></li>
+   
+  <% foreach(System.Data.DataRow row in dt_images.Rows){%>
+     
+  <li><img src="<%=row["存放地址"].ToString()%>" width=61px height=45px></li>
+  <%}%>
+  
 </ul>
 
 </div></div>
@@ -197,14 +191,14 @@
 	<%}%>
     
 </div></div>
-
-<div class="xx10"><img src="images/231_03.jpg" />
+<%foreach(System.Data.DataRow row in dt_image.Rows){%>
+<div class="xx10">
   <dl>
      
   </dl>
-  <div class="xx11"><img src="images/231_03.jpg" /></div>
+  <div class="xx11"><img src="<%=row["存放地址"].ToString()%>" /></div>
 </div>
-
+<%}%>
 
 </div>
 

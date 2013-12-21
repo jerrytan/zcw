@@ -61,7 +61,7 @@
 		protected DataTable dt2 = new DataTable();  //品牌(和二级分类相关的品牌) 材料分类表中fl_id 品牌字典中关系没有对应
 		protected DataTable dt3 = new DataTable();  //二级分类名称下的材料
 		protected DataTable dt4 = new DataTable();  //材料名称分页 
-		private const int Page_Size = 2; //每页的记录数量
+		private const int Page_Size = 8; //每页的记录数量
 		private int current_page=1;
 	    int pageCount_page;
 
@@ -152,8 +152,7 @@
            
             this.Items = new List<OptionItem>();
             for (int i = 1; i <= pageCount; i++)  //下拉列表循环总得页数
-            {
-               
+            {               
                 OptionItem item = new OptionItem();
                 item.Text = i.ToString();                          
                 item.SelectedString = i == currentPage ? "selected='selected'" : string.Empty;
