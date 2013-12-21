@@ -16,6 +16,49 @@
 <title>采购商材料管理页</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
+<style>
+#menu { width:200px; margin:auto;}
+ #menu h1 { font-size:12px;margin-top:1px; font-weight:100}
+ #menu h2 { padding-left:15px; font-size:12px; font-weight:100}
+ #menu ul { padding-left:15px; height:100px;overflow:auto; font-weight:100}
+ #menu a { display:block; padding:5px 0 3px 10px; text-decoration:none; overflow:hidden;}
+ #menu a:hover{ color:#000;}
+ #menu .no {display:none;}
+ #menu .h1 a{color:#000;}
+ #menu .h2 a{color:#000;}
+ #menu  h1 a{color:#000;}
+</style>
+
+<script language="JavaScript">
+<!--//
+function ShowMenu(obj,n){
+ var Nav = obj.parentNode;
+ if(!Nav.id){
+  var BName = Nav.getElementsByTagName("ul");
+  var HName = Nav.getElementsByTagName("h2");
+  var t = 2;
+ }else{
+  var BName = document.getElementById(Nav.id).getElementsByTagName("span");
+  var HName = document.getElementById(Nav.id).getElementsByTagName("h1");
+  var t = 1;
+ }
+ for(var i=0; i<HName.length;i++){
+  HName[i].innerHTML = HName[i].innerHTML.replace("-","+");
+  HName[i].className = "";
+ }
+ obj.className = "h" + t;
+ for(var i=0; i<BName.length; i++){if(i!=n){BName[i].className = "no";}}
+ if(BName[n].className == "no"){
+  BName[n].className = "";
+  obj.innerHTML = obj.innerHTML.replace("+","-");
+ }else{
+  BName[n].className = "no";
+  obj.className = "";
+  obj.innerHTML = obj.innerHTML.replace("-","+");
+ }
+}
+//-->
+</script>
 </head>
 
 <body>
@@ -49,16 +92,15 @@
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
     
-    string yh_id = Request["yh_id"];
-    yh_id="10";
+    string yh_id ;//= Session["yh_id"].ToString();
+    yh_id = "20";
   	string querySQL = 
-  		"select a.分类编码,a.显示名字 from 材料分类表 as a , " + 
-   		"	(select distinct left(分类编码,6) as flbm " + 
+  		"select distinct a.分类编码,a.显示名字 from 材料分类表 as a , " + 
+   		"	(select distinct c.分类编码 as flbm " + 
    		"    from 采购商关注材料表 as b ,材料表 as c  " +
       "   where b.yh_id='"  + yh_id  +  "' and b.cl_id=c.cl_id  ) as  d " + 
   		" where a.分类编码=d.flbm  " + 
      	" 	 or a.分类编码=left(d.flbm,2)";
-      //"    or a.分类编码=left(d.flbm,2) " ;
          
     SqlDataAdapter da = new SqlDataAdapter(querySQL, conn);
     DataSet ds = new DataSet();
@@ -133,12 +175,13 @@
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
     
-  	string yhid = Request["yh_id"];
+  	string yh_id ;//= Session["yh_id"].ToString();
+  	yh_id = "20";
   	string clidstr =Request.Form["clid"];
   	string[] listclid = clidstr.Split(',');
   	foreach (var clid in listclid)
   	{
-  		string str_cancelfollow = "delete from 采购商关注材料表 where yh_id ='" +  yhid + "' and cl_id='" + clid + "'";
+  		string str_cancelfollow = "delete from 采购商关注材料表 where yh_id ='" +  yh_id + "' and cl_id='" + clid + "'";
   		SqlCommand cmd_cancelfollow = new SqlCommand(str_cancelfollow, conn);         
       cmd_cancelfollow.ExecuteNonQuery();
   	}
@@ -150,10 +193,10 @@
   	string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
-  	string yhid = Request["yh_id"];
-  	yhid="10";
+  	string yh_id;// = Session["yh_id"].ToString();
+  	yh_id = "20";
   	string str_queryallcl = "select b.* from 采购商关注材料表 as  a ,材料表 as b " + 
-  	                        " where a.yh_id='"  + yhid + "'  and a.cl_id = b.cl_id " ;
+  	                        " where a.yh_id='"  + yh_id + "'  and a.cl_id = b.cl_id " ;
   	
   	SqlDataAdapter da = new SqlDataAdapter(str_queryallcl, conn);
     DataSet clds = new DataSet();
@@ -213,32 +256,6 @@
         DownloadFile(Response, swCSV.GetStringBuilder(), fileName +".csv");
         swCSV.Close();
         Response.End();
-        /*
-        string fileName = Global.getRamFileName();
-        fileName = System.Web.HttpContext.Current.Server.MapPath(".") + "//excel//" + fileName + ".xls";
-        workbook.SaveCopyAs(fileName); 
-        workbook.Close(false, null, null);
-        excel.Quit();
-
-        System.IO.FileInfo file = new System.IO.FileInfo(fileName);
-        System.Web.HttpContext.Current.Response.Clear();
-        System.Web.HttpContext.Current.Response.Charset = "UTF-8";
-        System.Web.HttpContext.Current.Response.ContentEncoding = System.Text.Encoding.UTF8; 
-        //添加头信息，为"文件下载/另存为"对话框指定默认文件名
-        System.Web.HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=" + System.Web.HttpContext.Current.Server.UrlEncode(file.Name)); 
-        //添加头信息，指定文件大小，让浏览器能够显示下载进度
-        System.Web.HttpContext.Current.Response.AddHeader("Content-Length",file.Length.ToString());
-
-        // 指定返回的是一个不能被客户端读取的流，必须被下载
-        System.Web.HttpContext.Current.Response.ContentType = "application/ms-excel";
-
-        // 把文件流发送到客户端
-        System.Web.HttpContext.Current.Response.WriteFile(file.FullName); 
-        //停止页面的执行
-
-        System.Web.HttpContext.Current.Response.End();
-        //CheckBoxList1.Items.Clear();
-        */
     }
 </script>
 
@@ -247,35 +264,45 @@
 <div class="dlqqz">
 
 <div class="dlqqz1"><img src="images/sccp.jpg" /></div>
+<span class="dlqqz4"><img src="images/wz_03.jpg" width="530" height="300" /></span>
 
 <form id="form1" runat="server">
 	
 <div class="dlqqz2"><div id="menu">
-	
- <% foreach (var menu1 in this.Items1){%>
- <h1 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> <%=menu1.Name%> &gt;</a></h1>
+ <% 
+ 	 int firstlevel = 0;
+   foreach (var menu1 in this.Items1){
+ %>
+ 
+ <h1 onClick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> <%=menu1.Name%> &gt;</a></h1>
  <span class="no">
- 	<% foreach (var menu2 in this.Items2){
- 	   	if ( (menu2.flbm).Substring(0,2) == menu1.flbm ){
- 	    
+ 	<% 
+ 	  int secondlevel = 0;
+ 		foreach (var menu2 in this.Items2){
+ 	   	if ( (menu2.flbm).Substring(0,2) == menu1.flbm ){  
  	%>
-  <h2 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)">+ <%=menu2.Name%></a></a></h2>
+  <h2 onClick="javascript:ShowMenu(this,<%=secondlevel %> )"><a href="javascript:void(0)">+ <%=menu2.Name%></a></h2>
   <ul class="no">
    <% foreach (var cl in this.Cllist){
       	if ( (cl.flbm).Substring(0,4) == menu2.flbm ){
    %>
-   		<a href="javascript:void(0)"><%=cl.Name %> 
-   		<input type="checkbox" name="clid" value="<%=cl.clid%>" /> 选中</a>
-   <% 	}
+   		<a href="javascript:void(0)"><%=cl.Name %><input type="checkbox" name="clid" value="<%=cl.clid%>"/> 选中</a>
+   <% 	
+   			}
    		}
+   		secondlevel++;
    %>
    </ul>
   <% 	} 
   	}
   %>
- </span>
- <% } %>       
   
+ </span>
+ 
+ <% 
+ 		firstlevel++;
+   } 
+ %>  
 </div></div>
 <div class="dlqqz3"><a href="#"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<a href="#"><img src="images/scxzcl.jpg" border="0" /></a></div>
 <%
