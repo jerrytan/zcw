@@ -27,7 +27,7 @@
                     
 			        string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
                     SqlConnection conn = new SqlConnection(constr);
-                    string str_wrl_gys = "select 供应商,gys_id from 材料供应商信息表 where yh_id is null and 单位类型 ='生产商'";
+                    string str_wrl_gys = "select 供应商,gys_id from 材料供应商信息表 where yh_id is null ";
                     SqlDataAdapter da_wrl_gys = new SqlDataAdapter(str_wrl_gys, conn);
                     DataSet ds_wrl_gys = new DataSet();
                     da_wrl_gys.Fill(ds_wrl_gys, "材料供应商信息表");
@@ -102,7 +102,7 @@
     <div class="rlcs1">
   <%
   }
-  else {
+  
 %>
 
 <form id="form1" >
@@ -133,7 +133,7 @@
   </div>
 </form>
 
-<% } %>
+
 <div>
 <!-- 关于我们 广告服务 投诉建议 开始-->
 <!-- #include file="static/aboutus.aspx" -->
