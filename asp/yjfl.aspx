@@ -246,29 +246,30 @@
 
         <div class="pxleft">
 		    
-            <% foreach(System.Data.DataRow row in dt3.Rows){%>
+            <% foreach(System.Data.DataRow row in dt3.Rows)
+               {%>
             <div class="pxtu">
-                <a href="clxx.aspx?cl_id=<%=row["cl_id"]%>>">
+                <a href="clxx.aspx?cl_id=<%=row["cl_id"]%>">
 				
 				<%
-					conn.Open();
-					SqlDataAdapter da_image = new SqlDataAdapter("select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='74' and 大小='小' ", conn);             
-					DataSet ds_image = new DataSet();
-					da_image.Fill(ds_image, "材料多媒体信息表"); 
-					DataTable dt_image = ds_image.Tables[0]; 
-					conn.Close();
+					string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+                    SqlConnection con = new SqlConnection(connString);
+                    SqlCommand cmd = new SqlCommand("select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
+                        +row["cl_id"]+"' and 大小='小'", con);
+
+                    String imgsrc= "images/222_03.jpg";
+                    using (con)
+                    {
+                         con.Open();
+                         Object result = cmd.ExecuteScalar();
+                         if (result != null) {
+                             imgsrc = result.ToString();
+                         }
+                    }
+                    Response.Write("<img src="+imgsrc+ " width=150px height=150px /></a>");
+                
+				
 				%>
-				<%foreach(System.Data.DataRow row in dt_image.Rows){%>
-				
-				<%if(<%=row["存放地址"].ToString() %>!=null){%>
-				<img src="<%=row["存放地址"].ToString() %>" width=150px height=150px /></a>
-				<%}%>
-				
-				<%if(<%=row["存放地址"].ToString() %>==null){%>
-                <img src="images/222_03.jpg" width=150px height=150px /></a>
-				<%}%>
-				
-				<%}%>
 				
                 <span class="pxtu1"><%=row["显示名"].ToString()%></span>
                
