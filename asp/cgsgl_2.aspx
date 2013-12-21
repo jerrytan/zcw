@@ -116,8 +116,7 @@
     <!-- banner开始-->
     <!-- #include file="static/banner.aspx" -->
     <!-- banner 结束-->
-
-    <script runat="server">  
+<script runat="server">  
   
   public List<FLObject> Items1 { get; set; }
   public List<FLObject> Items2 { get; set; }
@@ -377,18 +376,15 @@
 %>
     </div>
     </form>
-    <div>
+<div>
         <!-- 关于我们 广告服务 投诉建议 开始-->
         <!-- #include file="static/aboutus.aspx" -->
         <!-- 关于我们 广告服务 投诉建议 结束-->
 
 </div>
-
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->
-
-
     </div>
 </div>
 
@@ -453,5 +449,6 @@
         }
     }
     window.onload = menuFix;
-    //--><!]]></script>
+        //--><!]]>
+    </script>
 </html>
