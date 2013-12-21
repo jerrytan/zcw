@@ -105,7 +105,7 @@
 
 			Response.Write("<span class='dlzi'>尊敬的采购商，您好!</span>");
             Response.Write("<span class='dlzi'>该材料已被收藏成功！</span>");
-            Response.Write("<span class='dlzi'><a href='sclb.aspx' target='_blank'>您可以点击查看已收藏的所有信息。</a></span>");
+            Response.Write("<span class='dlzi'><a href='cgsgl.aspx' target='_blank'>您可以点击查看已收藏的所有信息。</a></span>");
             Response.Write("<span class='dlzi' onclick='window.close()'>关闭此窗口</span>");
 
 
