@@ -202,6 +202,15 @@
 </div>
 <%}%>
 
+    
+<% if (cl_id.Equals("74")) { %>
+<div class="xx10">
+    <div class="xx11">ΩÈ…‹ ”∆µ</div>
+    <div class="xx11"><embed src="http://player.56.com/v_OTA0NzMyNDA.swf" type="application/x-shockwave-flash" width="480" height="405" allowfullscreen="true" allownetworking="all" allowscriptaccess="always"></embed>
+    </div>
+</div>
+<% } %>
+
 </div>
 
 <div>
