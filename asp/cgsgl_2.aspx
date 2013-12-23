@@ -13,7 +13,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-    <title>采购商材料管理页</title>
+    <title>采购商关注材料管理页</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <style>
@@ -69,7 +69,7 @@
             }
     </style>
 
-<script language="JavaScript">
+    <script language="JavaScript">
 <!--//
     function ShowMenu(obj, n) {
         var Nav = obj.parentNode;
@@ -116,7 +116,7 @@
     <!-- banner开始-->
     <!-- #include file="static/banner.aspx" -->
     <!-- banner 结束-->
-<script runat="server">  
+    <script runat="server">  
   
   public List<FLObject> Items1 { get; set; }
   public List<FLObject> Items2 { get; set; }
@@ -136,7 +136,6 @@
     conn.Open();
     
     string yh_id = Session["yh_id"].ToString();
-    yh_id = "20";
   	string querySQL = 
   		"select distinct a.分类编码,a.显示名字 from 材料分类表 as a , " + 
    		"	(select distinct c.分类编码 as flbm " + 
@@ -291,11 +290,11 @@
         <div class="dlqqz1">
             <img src="images/sccp.jpg" />
         </div>
-        
+
 
         <form id="form1" runat="server">
 
-<script runat="server">
+            <script runat="server">
   void cancelFollowCLIDs(object sender, EventArgs e)
   {
   	string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
@@ -313,142 +312,85 @@
   	conn.Close();
     listFollowCLIDs();
   }
-</script>
+            </script>
 
-<div class="dlqqz2">
-    <div id="menu">
-<% 
+            <div class="dlqqz2">
+                <div id="menu">
+                    <% 
  	 int firstlevel = 0;
      foreach (var menu1 in this.Items1){
-%>
-        <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /><%=menu1.Name%> &gt;</a></h1>
-        <span class="no">
-<% 
+                    %>
+                    <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)">
+                        <img src="images/biao2.jpg" /><%=menu1.Name%> &gt;</a></h1>
+                    <span class="no">
+                        <% 
  	    int secondlevel = 0;
  		foreach (var menu2 in this.Items2){
  	   	if ( (menu2.flbm).Substring(0,2) == menu1.flbm ){  
-%>
-            <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )"><a href="javascript:void(0)">+ <%=menu2.Name%></a></h2>
-            <ul class="no">
-<% 
+                        %>
+                        <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )"><a href="javascript:void(0)">+ <%=menu2.Name%></a></h2>
+                        <ul class="no">
+                            <% 
             foreach (var cl in this.Cllist){
       	        if ( (cl.flbm).Substring(0,4) == menu2.flbm ){
-%>
+                            %>
                             <a href="javascript:void(0)"><%=cl.Name %><input type="checkbox" name="clid" value="<%=cl.clid%>" />选中</a>
-<% 	
+                            <% 	
    			    }
    		    }
    		    secondlevel++;
-%>
-            </ul>
-<% 	
+                            %>
+                        </ul>
+                        <% 	
         } 
   	}
-%>
-      </span>
-<% 
+                        %>
+                    </span>
+                    <% 
  		firstlevel++;
    } 
-%>
+                    %>
                 </div>
             </div>
             <div class="dlqqz3">
-                <a href="#"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="cancelFollowCLIDs" />
+                <a href="#">
+                    <img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="cancelFollowCLIDs" />
             </div>
             <asp:Label ID="label1" runat="server" Text="" />
 
-<%
+            <%
 	if (userIsVIP){
-%>
+            %>
             <div class="dlex1">
                 <div class="dlex1">
                     <asp:Button runat="server" ID="button1" Text="选择数据进入自身内部系统" OnClick="dumpFollowCLs" />
                 </div>
             </div>
-<%
+            <%
 	}else {
-%>
+            %>
             <div class="dlex1">
                 <asp:Button runat="server" ID="button2" Text="全部导出为EXCEL" OnClick="dumpFollowCLs" />
             </div>
-<%
+            <%
 	}	
-%>
+            %>
     </div>
     </form>
-<div>
+    <div>
         <!-- 关于我们 广告服务 投诉建议 开始-->
         <!-- #include file="static/aboutus.aspx" -->
         <!-- 关于我们 广告服务 投诉建议 结束-->
 
-</div>
+    </div>
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->
-    </div>
+</div>
 </div>
 
 
 </div>
 
-    <script type="text/javascript"><!--//--><![CDATA[//><!--
-    function menuFix() {
-        var sfEls = document.getElementById("nav").getElementsByTagName("li");
-        for (var i = 0; i < sfEls.length; i++) {
-            sfEls[i].onmouseover = function () {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onMouseDown = function () {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onMouseUp = function () {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onmouseout = function () {
-                this.className = this.className.replace(new RegExp("( ?|^)sfhover\\b"),
-              "");
-            }
-        }
-    }
-    window.onload = menuFix;
-    //--><!]]></script>
-    <script type="text/javascript">
-        var speed = 9//速度数值越大速度越慢
-        var demo = document.getElementById("demo");
-        var demo2 = document.getElementById("demo2");
-        var demo1 = document.getElementById("demo1");
-        demo2.innerHTML = demo1.innerHTML
-        function Marquee() {
-            if (demo2.offsetWidth - demo.scrollLeft <= 0)
-                demo.scrollLeft -= demo1.offsetWidth
-            else {
-                demo.scrollLeft++
-            }
-        }
-        var MyMar = setInterval(Marquee, speed)
-        demo.onmouseover = function () { clearInterval(MyMar) }
-        demo.onmouseout = function () { MyMar = setInterval(Marquee, speed) }
-    </script>
-    <script type="text/javascript"><!--//--><![CDATA[//><!--
-    function menuFix() {
-        var sfEls = document.getElementById("nav").getElementsByTagName("li");
-        for (var i = 0; i < sfEls.length; i++) {
-            sfEls[i].onmouseover = function () {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onMouseDown = function () {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onMouseUp = function () {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onmouseout = function () {
-                this.className = this.className.replace(new RegExp("( ?|^)sfhover\\b"),
-              "");
-            }
-        }
-    }
-    window.onload = menuFix;
-        //--><!]]>
-    </script>
+  
 </html>

@@ -66,7 +66,7 @@
     <script runat="server">
 
         
-        private const int Page_Size = 2; //每页的记录数量
+        private const int Page_Size = 10; //每页的记录数量
         private int current_page=1;
 	    int pageCount_page;
         protected DataTable dt = new DataTable();
