@@ -84,8 +84,8 @@
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
   	string yh_id;// = Session["yh_id"].ToString();
-  	yh_id = Session["yh_id"].ToString();
-  	//yh_id = "20";
+  	//yh_id = Session["yh_id"].ToString();
+  	yh_id = "20";
   	
   //userInfo.companyname = Convert.ToString(userInfoDS["显示名"]);
   //userInfo.companyaddress = Convert.ToString(userInfoDS["分类编码"]);
@@ -102,6 +102,11 @@
   	//label1.Text = updateUserinfoString;
   	userInfo.contactorname =Request.Form["contactorname"];
     userInfo.contactortel =  Request.Form["contactortel"];
+    userInfo.companyname =Request.Form["companyname"];
+    userInfo.companyaddress =  Request.Form["companyaddress"];
+    userInfo.companytel =Request.Form["companytel"];
+    //userInfo.contactortel =  Request.Form["contactortel"];
+    
   }
 	</script>
 
@@ -110,9 +115,9 @@
 <div class="gybtl"><img src="images/www_03.jpg" /></div>
 <div class="gybtr">
 <dl>
-<dd>贵公司名称：</dd>  <dt><input name="companyname" type="text" class="ggg" /></dt>
-<dd>贵公司地址：</dd>  <dt><input name="companyaddress" type="text" class="ggg" /></dt>
-<dd>贵公司电话：</dd>  <dt><input name="companytel" type="text" class="ggg" /></dt>
+<dd>贵公司名称：</dd>  <dt><input name="companyname" type="text" class="ggg" value="<%= userInfo.companyname %>" /></dt>
+<dd>贵公司地址：</dd>  <dt><input name="companyaddress" type="text" class="ggg" value="<%= userInfo.companyaddress %>" /></dt>
+<dd>贵公司电话：</dd>  <dt><input name="companytel" type="text" class="ggg"  value="<%= userInfo.companytel %>" /></dt>
 
 <dd>贵公司是：</dd>    <dt><input name="" type="radio" value="" />生产商  <input name="" type="radio" value="" />供销商 </dt>
 
