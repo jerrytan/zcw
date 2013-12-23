@@ -21,8 +21,6 @@
 <title>材料信息详情页</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
-<script type=text/javascript src="js/lrtk.js"></script>
-<script type=text/javascript src="js/jquery-1.4.2.min.js"></script>
 </head>
 
 <body>
@@ -123,9 +121,9 @@
 <ul id=idSlider class=slider>
   <div style="POSITION: relative">
      
-     <% foreach(System.Data.DataRow row in dt_images.Rows){%>
-      <a href="http://www.lanrentuku.com/" target="_blank"><img  src="<%=row["存放地址"].ToString()%>" width=320 height=300></a>
-    <%}%>
+    
+      <a ><img  src="<%=dt_images.Rows[0]["存放地址"].ToString()%>" width=320 height=300 id="bigImage"></a>
+    
   </div>
   
 </ul>
@@ -134,11 +132,17 @@
 <div>
 <ul id=idNum class=hdnum>
    
-  <% foreach(System.Data.DataRow row in dt_images.Rows){%>
-     
-  <li><img src="<%=row["存放地址"].ToString()%>" width=61px height=45px></li>
+  <% for (int i=0;i< dt_images.Rows.Count;i++) {
+       
+      System.Data.DataRow row =dt_images.Rows[i];
+  %>   
+  <li>
+      <img src='<%=row["存放地址"].ToString()%>' width=61px height=45px onmouseover="changeImage('<%=row["存放地址"].ToString()%>')">
+
+  </li>
   <%}%>
   
+   
 </ul>
 
 </div></div>
@@ -230,7 +234,12 @@
     var url = "sccl.aspx?cl_id="+id;
     window.open(url,"","height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
 }
+    function changeImage(src) {
+        document.getElementById("bigImage").src = src;
+        
+    }
 </script>
+
 
 </body>
 </html>
