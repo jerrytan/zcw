@@ -174,7 +174,7 @@
             <div class="xwright1">
                 <ul>
                     <%foreach(System.Data.DataRow row in dt3.Rows){%>
-                    <li><a href="clxx?cl_id=<% =row["cl_id"]%>"><%=row["产品名称"].ToString()%></a></li>
+                    <li><a href="clxx.aspx?cl_id=<% =row["cl_id"]%>"><%=row["产品名称"].ToString()%></a></li>
                     <%}%>
                 </ul>
             </div>
