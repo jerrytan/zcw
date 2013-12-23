@@ -75,7 +75,7 @@
             da_flxx.Fill(ds_flxx, "材料分类表");           
             dt_flxx = ds_flxx.Tables[0];
 			
-			SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,规格型号 from 材料表 where cl_id='"+cl_id+"' " , conn);
+			SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,规格型号,材料编码 from 材料表 where cl_id='"+cl_id+"' " , conn);
             DataSet ds_ppxx = new DataSet();
             da_ppxx.Fill(ds_ppxx, "材料表");            
             dt_ppxx = ds_ppxx.Tables[0];
@@ -150,6 +150,8 @@
   <dt><%=row["品牌名称"].ToString() %></dt>
   <dd>型号:</dd>
   <dt><%=row["规格型号"].ToString() %></dt>
+  <dd>编码:</dd>
+  <dt><%=row["材料编码"].ToString() %></dt>
   <%}%>
 
  </dl>

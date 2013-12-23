@@ -121,7 +121,7 @@
   public List<FLObject> Items1 { get; set; }
   public List<FLObject> Items2 { get; set; }
   public List<CLObject> Cllist { get; set; }
-  public Boolean userIsVIP = true;
+  public Boolean userIsVIP = false;
 
   protected DataTable dt = new DataTable(); //取一级分类名称
   protected void Page_Load(object sender, EventArgs e)
