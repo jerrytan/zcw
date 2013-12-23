@@ -1,7 +1,7 @@
 <!--
         材料二级分类列表页面
         文件名：ejfl.ascx
-        传入参数：name
+        传入参数：name [分类编码]
                
     -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
@@ -59,9 +59,9 @@
         protected DataTable dt = new DataTable();   //一级分类名称
         protected DataTable dt1 = new DataTable();  //二级分类名称 
 		protected DataTable dt2 = new DataTable();  //品牌(和二级分类相关的品牌) 材料分类表中fl_id 品牌字典中关系没有对应
-		protected DataTable dt3 = new DataTable();  //二级分类名称下的材料
-		protected DataTable dt4 = new DataTable();  //材料名称分页 
-		private const int Page_Size = 8; //每页的记录数量
+		protected DataTable dt3 = new DataTable();  //二级分类名称下的材料(最具人气的石材)
+		protected DataTable dt4 = new DataTable();  //材料名称分页 (对小类中的所有材料进行分页)
+		private const int Page_Size = 4; //每页的记录数量
 		private int current_page=1;
 	    int pageCount_page;
 
@@ -134,13 +134,13 @@
             int end = p * Page_Size;
 			//string name1 = name.ToString().Substring(0, 4);    //将二级分类传过来的材料编码取前四位作为参数执行存储过程
             dt4 = this.GetProductFormDB(begin, end,name);
-            this.SetNavLink(p, c);   
+            this.SetNavLink(p, c,name);   
 		} 
 		
 		protected string cpPrev = "";
         protected string cpNext = "";
         protected string cpLast = "";       
-        private void SetNavLink(int currentPage, int pageCount)
+        private void SetNavLink(int currentPage, int pageCount,string name)
         {
             string path = Request.Path;         
             cpPrev = currentPage != 1 ? string.Format("p={0}", //连超链接上一页
@@ -156,7 +156,7 @@
                 OptionItem item = new OptionItem();
                 item.Text = i.ToString();                          
                 item.SelectedString = i == currentPage ? "selected='selected'" : string.Empty;
-                item.Value = string.Format("dls.aspx?p={0}", i);                
+                item.Value = string.Format("ejfl.aspx?p={0}&name={1}", i,name);                
                 this.Items.Add(item);
             }
       
@@ -165,7 +165,7 @@
         private DataTable GetProductFormDB(int begin, int end, string name)
         {
             string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;         
-            SqlCommand cmd = new SqlCommand("cp_Paging");
+            SqlCommand cmd = new SqlCommand("ej_cl_Paging");
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add("@begin", SqlDbType.Int).Value = begin;  //开始页第一条记录
             cmd.Parameters.Add("@end", SqlDbType.Int).Value = end;      //开始页最后一条记录
@@ -187,7 +187,7 @@
         {
             string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             String name= Request["name"];
-            string sql = "select count(cl_Id) from 材料表 where left(材料编码,2)='"+name+"'";
+            string sql = "select count(cl_Id) from 材料表 where left(材料编码,4)='"+name+"'";
             SqlCommand cmd = new SqlCommand(sql);
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -325,7 +325,7 @@
                     <ul>
 
                         <% foreach(System.Data.DataRow row in dt3.Rows){%>
-                        <li><a href="#"><%=row["显示名"].ToString() %></a></li>
+                        <li><a href="clxx.aspx?cl_id=<%=row["cl_id"]%>"><%=row["显示名"].ToString() %></a></li>
                         <%}%>
                     </ul>
 
@@ -340,21 +340,22 @@
 
     <div class="fy2">
         <div class="fy3">
+		    <%string name = Request["name"];%>
             <% if(current_page!=1) { %>
-            <a href="dls.aspx?<%=cpPrev %>" class="p">上一页</a>
+            <a href="ejfl.aspx?<%=cpPrev %>&name=<%=name%>" class="p">上一页</a>
             <% } %>
-            <a href="dls.aspx?p=1" class="p">1</a>
+            <a href="ejfl.aspx?p=1&name=<%=name%>" class="p">1</a>
             <% if(current_page>1) { %>
-            <a href="dls.aspx?p=2" class="p">2</a>
+            <a href="ejfl.aspx?p=2&name=<%=name%>" class="p">2</a>
             <% } %>
             <% if(current_page>2) { %>
-            <a href="dls.aspx?p=3" class="p">3···</a>
+            <a href="ejfl.aspx?p=3&name=<%=name%>" class="p">3···</a>
             <% } %>
             <% if(current_page<pageCount_page) { %>
-            <a href="dls.aspx?<%=cpNext %>" class="p">下一页</a>
+            <a href="ejfl.aspx?<%=cpNext %>&name=<%=name%>" class="p">下一页</a>
             <% } %>
             <% if(current_page!=pageCount_page) { %>
-            <a href="dls.aspx?<%=cpLast %>" class="p">尾页</a>
+            <a href="ejfl.aspx?<%=cpLast %>&name=<%=name%>" class="p">尾页</a>
             <% } %>
 
  直接到第  

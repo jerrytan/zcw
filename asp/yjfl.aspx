@@ -60,11 +60,11 @@
 
     <script runat="server">
         protected DataTable dt = new DataTable();   //二级分类名称
-        protected DataTable dt1 = new DataTable();  //材料名称分页 
+        protected DataTable dt1 = new DataTable();  //材料名称分页 (大类下的所有材料分页)
         protected DataTable dt2 = new DataTable();  //首页显示一级分类名字
         protected DataTable dt3 = new DataTable();   //具体材料名称 最具人气的石材	
         protected DataTable dt_image = new DataTable();		
-        private const int Page_Size = 2; //每页的记录数量
+        private const int Page_Size = 8; //每页的记录数量
 		private int current_page=1;
 	    int pageCount_page;
 
@@ -81,7 +81,7 @@
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();            
-            String name= Request["name"];
+            String name= Request["name"]; //获取首页传过来的一级分类编码
             SqlDataAdapter da = new SqlDataAdapter("select top 10 显示名字,分类编码 from 材料分类表 where  left(分类编码,2)='"+name+"' and len(分类编码)='4' ", conn);            
             DataSet ds = new DataSet();
             da.Fill(ds, "材料分类表"); 
@@ -166,7 +166,7 @@
         private DataTable GetProductFormDB(int begin, int end, string name)
         {
             string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;         
-            SqlCommand cmd = new SqlCommand("cp_Paging");
+            SqlCommand cmd = new SqlCommand("yj_cl_Paging");
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add("@begin", SqlDbType.Int).Value = begin;  //开始页第一条记录
             cmd.Parameters.Add("@end", SqlDbType.Int).Value = end;      //开始页最后一条记录
@@ -246,7 +246,7 @@
 
         <div class="pxleft">
 		    
-            <% foreach(System.Data.DataRow row in dt3.Rows)
+            <% foreach(System.Data.DataRow row in dt1.Rows)
                {%>
             <div class="pxtu">
                 <a href="clxx.aspx?cl_id=<%=row["cl_id"]%>">
@@ -286,7 +286,7 @@
                 <div class="pxright1">
                     <ul>
                         <% foreach(System.Data.DataRow row in dt3.Rows){%>
-                        <li><a href="#"><%=row["显示名"].ToString()%></a></li>
+                        <li><a href="clxx.aspx?cl_id=<%=row["cl_id"]%>"><%=row["显示名"].ToString()%></a></li>
                         <%}%>
                     </ul>
 
