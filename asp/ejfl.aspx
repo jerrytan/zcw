@@ -61,6 +61,7 @@
 		protected DataTable dt2 = new DataTable();  //品牌(和二级分类相关的品牌) 材料分类表中fl_id 品牌字典中关系没有对应
 		protected DataTable dt3 = new DataTable();  //二级分类名称下的材料(最具人气的石材)
 		protected DataTable dt4 = new DataTable();  //材料名称分页 (对小类中的所有材料进行分页)
+		protected DataTable dt_wz = new DataTable();  //如何挑选大理石相关文章(文章表)
 		private const int Page_Size = 4; //每页的记录数量
 		private int current_page=1;
 	    int pageCount_page;
@@ -76,7 +77,7 @@
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
-            conn.Open();            
+                       
             String name= Request["name"];
 			string name1=name.ToString().Substring(0, 2); //取左边两位字符串
             SqlDataAdapter da = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where  left(分类编码,2)='"+name1+"' and len(分类编码)='2'  ", conn);            
@@ -98,6 +99,11 @@
             DataSet ds3 = new DataSet();
             da3.Fill(ds3, "材料表"); 
             dt3 = ds3.Tables[0];
+			
+			SqlDataAdapter da_wz = new  SqlDataAdapter("select top 4 标题,摘要,wz_id from 文章表 where left(分类编码,4)='"+name+"' ",conn);
+			DataSet ds_wz = new DataSet();
+			da_wz.Fill(ds_wz,"文章表");
+			dt_wz = ds_wz.Tables[0];
 			
 			//从查询字符串中获取"页号"参数
             string strP = Request.QueryString["p"];
@@ -216,22 +222,14 @@
         </div>
 
         <div class="sc3">
+		
+            <%foreach(System.Data.DataRow row in this.dt_wz.Rows){%>
             <div class="rh">
-                <div class="rh1"><a href="#">如何选取大理石？</a></div>
-                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
+                <div class="rh1"><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>"><%=row["标题"].ToString() %></a></div>
+                <div class="rh2"><%=row["摘要"].ToString() %></div>
             </div>
-            <div class="rh">
-                <div class="rh1"><a href="#">如何选取大理石？</a></div>
-                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
-            </div>
-            <div class="rh">
-                <div class="rh1"><a href="#">如何选取大理石？</a></div>
-                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
-            </div>
-            <div class="rh">
-                <div class="rh1"><a href="#">如何选取大理石？</a></div>
-                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
-            </div>
+			<%}%>		
+           
         </div>
 
         <div class="xzss">
@@ -239,7 +237,7 @@
                 <div class="ppxz1">品牌：</div>
                 <div class="ppxz2">
                     <a href="#">
-                        <img src="images/qwez.jpg" /></a>
+                    <img src="images/qwez.jpg" /></a>
 
                     <% foreach(System.Data.DataRow row in dt2.Rows){%>
                     <a href="#"><%=row["品牌名称"].ToString() %></a>
