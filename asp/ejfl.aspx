@@ -62,7 +62,7 @@
 		protected DataTable dt3 = new DataTable();  //二级分类名称下的材料(最具人气的石材)
 		protected DataTable dt4 = new DataTable();  //材料名称分页 (对小类中的所有材料进行分页)
 		protected DataTable dt_wz = new DataTable();  //如何挑选大理石相关文章(文章表)
-		private const int Page_Size = 4; //每页的记录数量
+		private const int Page_Size = 20; //每页的记录数量
 		private int current_page=1;
 	    int pageCount_page;
 

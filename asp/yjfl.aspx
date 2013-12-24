@@ -65,7 +65,7 @@
         protected DataTable dt3 = new DataTable();   //具体材料名称 最具人气的石材	
 		protected DataTable dt_wz = new DataTable();  //如何挑选大理石打相关文章(文章表)
         //protected DataTable dt_image = new DataTable();		
-        private const int Page_Size = 8; //每页的记录数量
+        private const int Page_Size = 20; //每页的记录数量
 		private int current_page=1;
 	    int pageCount_page;
 
