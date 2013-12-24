@@ -63,7 +63,8 @@
         protected DataTable dt1 = new DataTable();  //材料名称分页 (大类下的所有材料分页)
         protected DataTable dt2 = new DataTable();  //首页显示一级分类名字
         protected DataTable dt3 = new DataTable();   //具体材料名称 最具人气的石材	
-        protected DataTable dt_image = new DataTable();		
+		protected DataTable dt_wz = new DataTable();  //如何挑选大理石打相关文章(文章表)
+        //protected DataTable dt_image = new DataTable();		
         private const int Page_Size = 8; //每页的记录数量
 		private int current_page=1;
 	    int pageCount_page;
@@ -80,8 +81,8 @@
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
-            conn.Open();            
-            String name= Request["name"]; //获取首页传过来的一级分类编码
+                       
+            String name= Request["name"]; //获取首页传过来的一级分类编码(两位)
             SqlDataAdapter da = new SqlDataAdapter("select top 10 显示名字,分类编码 from 材料分类表 where  left(分类编码,2)='"+name+"' and len(分类编码)='4' ", conn);            
             DataSet ds = new DataSet();
             da.Fill(ds, "材料分类表"); 
@@ -96,7 +97,12 @@
 			DataSet ds3 = new DataSet();
             da3.Fill(ds3, "材料表"); 
             dt3 = ds3.Tables[0]; 
-            conn.Close();
+			
+			SqlDataAdapter da_wz = new  SqlDataAdapter("select top 4 标题,摘要,wz_id from 文章表 where left(分类编码,2)='"+name+"' ",conn);
+			DataSet ds_wz = new DataSet();
+			da_wz.Fill(ds_wz,"文章表");
+			dt_wz = ds_wz.Tables[0];
+            
 			
 
             //从查询字符串中获取"页号"参数
@@ -221,22 +227,13 @@
         </div>
 
         <div class="sc3">
+		    <%foreach(System.Data.DataRow row in this.dt_wz.Rows){%>
             <div class="rh">
-                <div class="rh1"><a href="#">如何选取大理石？</a></div>
-                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
+                <div class="rh1"><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>"><%=row["标题"].ToString() %></a></div>
+                <div class="rh2"><%=row["摘要"].ToString() %></div>
             </div>
-            <div class="rh">
-                <div class="rh1"><a href="#">如何选取大理石？</a></div>
-                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
-            </div>
-            <div class="rh">
-                <div class="rh1"><a href="#">如何选取大理石？</a></div>
-                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
-            </div>
-            <div class="rh">
-                <div class="rh1"><a href="#">如何选取大理石？</a></div>
-                <div class="rh2">素材中国打造中国最优秀平面设计素材网站...</div>
-            </div>
+			<%}%>			
+           
         </div>
 
         <div class="px0">
