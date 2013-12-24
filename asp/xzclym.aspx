@@ -20,62 +20,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>新增材料页面</title>
-<link href="css/css.css" rel="stylesheet" type="text/css" />
-<link href="css/all of.css" rel="stylesheet" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <title>新增材料页面</title>
+    <link href="css/css.css" rel="stylesheet" type="text/css" />
+    <link href="css/all of.css" rel="stylesheet" type="text/css" />
 </head>
 
 <script language="javascript">
-//发送ajax有问题,待处理
+    //发送ajax有问题,待处理
 
 
-  function changedrop() 
-  {
- 
-  var http_request ;
-  if (window.XMLHttpRequest)
-  { //Mozilla 浏览器
-      http_request = new XMLHttpRequest();
-      if (http_request.overrideMimeType) 
-	  {//设置MiME类别
-          http_request.overrideMimeType("text/xml");
-      }
-  }
-  else {
-      if (window.ActiveXObject) { // IE浏览器
-          try {
-              http_request = new ActiveXObject("Msxml2.XMLHTTP");
-          }
-          catch (e) {
-              try {
-                  http_request = new ActiveXObject("Microsoft.XMLHTTP");
-              }
-              catch (e)
-	 { }
+    function updateFL(id) {
 
-          }
-      }
-  }
-        var url = "xzclym2.aspx?id=" + document.getElementById('drop1').options[document.getElementById('drop1').selectedIndex].value;
-        alert(url);
-
-        http_request.open("GET", url, true);
-        http_request.onreadystatechange = updatePage;
-        http_request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        http_request.send(null);
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        }
+        else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                //document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+                document.getElementById("ejflname").innerHTML = xmlhttp.responseText;
+            }
+        }
+        xmlhttp.open("GET", "xzclym2.aspx?id=" + id, true);
+        xmlhttp.send();
+              
     }
-	
-	function updatePage ()
-  {
-  if (http_request.readyState==4 && http_request.status==200)
-    {
-      document.getElementById("drop").innerHTML=http_request.responseText;
-    }
-  }
+
+    
 
 
-  
 </script>
 
 
@@ -174,70 +152,79 @@
 
 <body>
 
-<!-- 头部开始-->
-<uc2:Header2 ID="Header2" runat="server" />
-<!-- 头部结束-->
+    <!-- 头部开始-->
+    <uc2:Header2 ID="Header2" runat="server" />
+    <!-- 头部结束-->
 
 
-<div class="fxsxx">
-<span class="fxsxx1">请选择您要添加的材料信息</span>
-<%string gys_id = Request["gys_id"];%>
-<form  action="xzclym.aspx?gys_id=<%=gys_id%>" method="get">
+    <div class="fxsxx">
+        <span class="fxsxx1">请选择您要添加的材料信息</span>
+        <%string gys_id = Request["gys_id"];%>
+        <form action="xzclym.aspx?gys_id=<%=gys_id%>" method="get">
 
-<div class="xz1"><div class="xza"> 
-
-
-
-<span class="xz2"><a href="#">大类</a></span>
- <select id="drop1" name="drop1" onchange="changedrop()">
- <% foreach(var v  in Items1){%>
- <option value="<%=v.GroupsCode %>" ><%=v.Name%></option>
- <%}%> 
- </select> 
- </div>
-                <div class="xza"> 
-				<span class="xz2"><a href="#">小类</a></span> 
-				<select id="drop" name="drop" class="fux" >
-				 <% foreach(var v  in Items2){%>
-				<option value="<%=v.Name%>&<%=v.GroupsCode%>"><%=v.Name%></option>
-				<%}%>
-				
-				</select> </div>
-
-				
-<div class="xzz"><span class="xzz0">如果没有适合的小类，请联系网站管理员增加！ 联系方式是xxx@xxx.com.请使用模板。 </span>
-<span class="xzz1"><a href="#">模板下载地址</a></span></div>
-</div>
-
-<div class="fxsxx2">
-<span class="srcl">请输入材料信息</span>
- <dl>
-      <dd>材料名字：</dd>
-    <dt><input name="clname" type="text" class="fxsxx3" value="<%=Request.Form["clname"] %>"/></dt>
-	
-     <dd>品    牌：</dd>
-    <dt><select name="brand" style="width: 300px">	
-	<%foreach(System.Data.DataRow row in dt2.Rows){%>
-	<option value="<%=row["品牌名称"].ToString() %>" ><%=row["品牌名称"].ToString()%></option>
-	<%}%>
-	
-	</select></dt>         
-
-     <dd>型号：</dd>
-    <dt><input name="cltype" type="text" class="fxsxx3" value="<%=Request.Form["cltype"] %>"/></dt>     
-     <dd>适用场所：</dd>
-    <dt><input name="" type="text" class="fxsxx3" value="<%=Request.Form["gysid"] %>"/></dt>
-     <dd>计量单位：</dd>
-    <dt><input name="bit" type="text" class="fxsxx3" value="<%=Request.Form["bit"] %>"/></dt>  
-     <dd>单位体积：</dd>
-    <dt><input name="volumetric" type="text" class="fxsxx3" value="<%=Request.Form["volumetric"] %>"/></dt>  
-    <dd>说明：</dd>
-    <dt><input name="instruction" type="text" class="fxsxx3" value="<%=Request.Form["instruction"] %>"/></dt>                     
- </dl>
-</div>
+            <div class="xz1">
+                <div class="xza">
 
 
-<!--
+
+                    <span class="xz2"><a href="#">大类</a></span>
+                    <select id="drop1" name="drop1" onchange="updateFL(this.options[this.options.selectedIndex].value)">
+                        <% foreach(var v  in Items1){%>
+                        <option value="<%=v.GroupsCode %>"><%=v.Name%></option>
+                        <%}%>
+                    </select>
+                </div>
+                <div class="xza">
+                    <span class="xz2"><a href="#">小类</a></span>
+                    <select id="drop" name="drop" class="fux">
+                        <% foreach(var v  in Items2){%>
+                        <option value="<%=v.Name%>&<%=v.GroupsCode%>"><%=v.Name%></option>
+                        <%}%>
+                    </select>
+                </div>
+
+
+                <div class="xzz">
+                    <span class="xzz0">如果没有适合的小类，请联系网站管理员增加！ 联系方式是xxx@xxx.com.请使用模板。 </span>
+                    <span class="xzz1"><a href="#">模板下载地址</a></span>
+                </div>
+            </div>
+
+            <div class="fxsxx2">
+                <span class="srcl">请输入材料信息</span>
+                <dl>
+                    <dd>材料名字：</dd>
+                    <dt>
+                        <input name="clname" type="text" class="fxsxx3" value="<%=Request.Form["clname"] %>" /></dt>
+
+                    <dd>品    牌：</dd>
+                    <dt>
+                        <select name="brand" style="width: 300px">
+                            <%foreach(System.Data.DataRow row in dt2.Rows){%>
+                            <option value="<%=row["品牌名称"].ToString() %>"><%=row["品牌名称"].ToString()%></option>
+                            <%}%>
+                        </select></dt>
+
+                    <dd>型号：</dd>
+                    <dt>
+                        <input name="cltype" type="text" class="fxsxx3" value="<%=Request.Form["cltype"] %>" /></dt>
+                    <dd>适用场所：</dd>
+                    <dt>
+                        <input name="" type="text" class="fxsxx3" value="<%=Request.Form["gysid"] %>" /></dt>
+                    <dd>计量单位：</dd>
+                    <dt>
+                        <input name="bit" type="text" class="fxsxx3" value="<%=Request.Form["bit"] %>" /></dt>
+                    <dd>单位体积：</dd>
+                    <dt>
+                        <input name="volumetric" type="text" class="fxsxx3" value="<%=Request.Form["volumetric"] %>" /></dt>
+                    <dd>说明：</dd>
+                    <dt>
+                        <input name="instruction" type="text" class="fxsxx3" value="<%=Request.Form["instruction"] %>" /></dt>
+                </dl>
+            </div>
+
+
+            <!--
 <div class="cpdt">
    <dl>
      <dd>产品大图1：</dd>
@@ -255,94 +242,39 @@
 -->
 
 
-<div class="cpdt">
-<span class="dmt">多媒体信息</span>
-   <dl>
-     <dd>产品视频：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
-     <dd>成功案例：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
-     <dd>更多资料：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>                          
- </dl>
+            <div class="cpdt">
+                <span class="dmt">多媒体信息</span>
+                <dl>
+                    <dd>产品视频：</dd>
+                    <dt>
+                        <input name="" type="text" class="fxsxx3" /><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
+                    <dd>成功案例：</dd>
+                    <dt>
+                        <input name="" type="text" class="fxsxx3" /><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
+                    <dd>更多资料：</dd>
+                    <dt>
+                        <input name="" type="text" class="fxsxx3" /><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
+                </dl>
 
- <span class="fxsbc"><a href="#"><input type="image" name="Submit" value="Submit" src="images/bbc_03.jpg" ></a></span> 
+                <span class="fxsbc"><a href="#">
+                    <input type="image" name="Submit" value="Submit" src="images/bbc_03.jpg"></a></span>
 
-</div>
-</form>
-</div>
-</div>
-
-
-
-
-
-<!--  footer 开始-->
-<!-- #include file="static/footer.aspx" -->
-<!-- footer 结束-->
+            </div>
+        </form>
+    </div>
+    </div>
 
 
 
 
 
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
-<script type="text/javascript">
-var speed=9//速度数值越大速度越慢
-var demo=document.getElementById("demo");
-var demo2=document.getElementById("demo2");
-var demo1=document.getElementById("demo1");
-demo2.innerHTML=demo1.innerHTML
-function Marquee(){
-if(demo2.offsetWidth-demo.scrollLeft<=0)
-demo.scrollLeft-=demo1.offsetWidth
-else{
-demo.scrollLeft++
-}
-}
-var MyMar=setInterval(Marquee,speed)
-demo.onmouseover=function() {clearInterval(MyMar)}
-demo.onmouseout=function() {MyMar=setInterval(Marquee,speed)}
-</script>
-<script type=text/javascript><!--//--><![CDATA[//><!--
-function menuFix() {
- var sfEls = document.getElementById("nav").getElementsByTagName("li");
- for (var i=0; i<sfEls.length; i++) {
-  sfEls[i].onmouseover=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseDown=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onMouseUp=function() {
-  this.className+=(this.className.length>0? " ": "") + "sfhover";
-  }
-  sfEls[i].onmouseout=function() {
-  this.className=this.className.replace(new RegExp("( ?|^)sfhover\\b"), 
-"");
-  }
- }
-}
-window.onload=menuFix;
-//--><!]]></script>
+    <!--  footer 开始-->
+    <!-- #include file="static/footer.aspx" -->
+    <!-- footer 结束-->
+
+
+
+
+
 </body>
 </html>

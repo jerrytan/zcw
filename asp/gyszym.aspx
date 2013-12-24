@@ -68,7 +68,7 @@
         <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>
         <span class="zyy1"><a href="glscsxx.aspx">管理生厂商信息</a></span>
         <span class="zyy1"><a href="glfxsxx.aspx">管理分销商信息</a></span>
-        <span class="zyy1"><a href="gysglcl.aspx?gys_id=61 ">管理材料信息</a></span>        
+        <span class="zyy1"><a href="gysglcl.aspx">管理材料信息</a></span>        
     </div>
     <%        }%>
 
