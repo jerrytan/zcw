@@ -223,10 +223,15 @@
 
         <div class="sc3">
 		
-            <%foreach(System.Data.DataRow row in this.dt_wz.Rows){%>
+            <%foreach(System.Data.DataRow row in this.dt_wz.Rows){
+               String resume = row["摘要"].ToString();
+               if (resume.Length > 40) {
+                    resume = resume.Substring(0,40)+"...";
+               }
+            %>
             <div class="rh">
                 <div class="rh1"><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>"><%=row["标题"].ToString() %></a></div>
-                <div class="rh2"><%=row["摘要"].ToString() %></div>
+                <div class="rh2"><%=resume %></div>
             </div>
 			<%}%>		
            
