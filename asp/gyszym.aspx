@@ -43,7 +43,7 @@
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
-            SqlDataAdapter da = new SqlDataAdapter("select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='054C93797C32272E3C65FEAC1495C308'", conn);
+            SqlDataAdapter da = new SqlDataAdapter("select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='"+QQ_id.Values+"'", conn);
             DataSet ds = new DataSet();
             da.Fill(ds, "用户表");           
             DataTable dt = ds.Tables[0];
