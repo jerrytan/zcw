@@ -18,7 +18,7 @@
     <div class="ggfw1">
         <div class="ggfw2">
             <img src="images/biao_03.jpg" />
-            广告服务</div>
+            网站说明</div>
         <span class="more"><a href="#">
             <img src="images/more_03.jpg" /></a></span>
     </div>
@@ -26,8 +26,8 @@
         <ul>
             <li><a href="#">众材网材料文章投稿说明</a></li>
             <li><a href="#">众材网给建筑装饰材料企业的一封公开信</a></li>
-            <li><a href="#">国内业及上市外多家大型企业及上市公司有了</a></li>
-            <li><a href="#">国内外多家大型企业及上市业及上市公司有了</a></li>
+            <li><a href="#">众材网广告投放说明</a></li>
+            <li><a href="#">众材网面向公装企业的合作说明</a></li>
 
 
         </ul>
@@ -38,16 +38,16 @@
     <div class="ggfw1">
         <div class="ggfw2">
             <img src="images/biao_03.jpg" />
-            投诉建议</div>
+            招商合作</div>
         <span class="more"><a href="#">
             <img src="images/more_03.jpg" /></a></span>
     </div>
     <div class="ggfw3">
         <ul>
-            <li><a href="#">国内外多家大业及上市型企业及上市公司有了</a></li>
-            <li><a href="#">国内外多家大型企业及上市业及上市公司有了</a></li>
-            <li><a href="#">国内业及上市外多家大型企业及上市公司有了</a></li>
-            <li><a href="#">国内外多家大型企业及上市业及上市公司有了</a></li>
+            <li><a href="#">广告投放标准</a></li>
+            <li><a href="#">跟建筑装饰企业合作的条款</a></li>
+            <li><a href="#">用户建议</a></li>
+            <li><a href="#">联系电话和QQ群</a></li>
 
 
         </ul>

@@ -45,8 +45,10 @@
 			DataSet ds_gysxx = new DataSet();
             da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
             dt_gysxx = ds_gysxx.Tables[0]; 
+           
+            if (dt_gysxx.Rows.Count == 0) Response.Redirect("gyszym.aspx");
             gys_id = dt_gysxx.Rows[0]["gys_id"].ToString();
-							
+    						
 			SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='"+gys_id+"' ", conn);
             DataSet ds_ppxx = new DataSet();
             da_ppxx.Fill(ds_ppxx, "分销商和品牌对应关系表");

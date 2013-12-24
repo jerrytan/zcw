@@ -42,8 +42,8 @@
         xmlhttp.onreadystatechange = function () {
             
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                //document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
-                document.getElementById("ejflname").innerHTML = xmlhttp.responseText;
+                
+                document.getElementById("ejfl").innerHTML = xmlhttp.responseText;
             }
         }
         xmlhttp.open("GET", "xzclym2.aspx?id=" + id, true);
@@ -176,7 +176,7 @@
                 </div>
                 <div class="xza">
                     <span class="xz2"><a href="#">–°¿‡</a></span>
-                    <select id="drop" name="drop" class="fux">
+                    <select id="ejfl" name="drop" class="fux">
                         <% foreach(var v  in Items2){%>
                         <option value="<%=v.Name%>&<%=v.GroupsCode%>"><%=v.Name%></option>
                         <%}%>

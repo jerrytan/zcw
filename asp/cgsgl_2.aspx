@@ -353,8 +353,7 @@
                 </div>
             </div>
             <div class="dlqqz3">
-                <a href="#">
-                    <img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;<asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="cancelFollowCLIDs" />
+                &nbsp;&nbsp;<asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="cancelFollowCLIDs" />
             </div>
             <asp:Label ID="label1" runat="server" Text="" />
 
@@ -369,7 +368,9 @@
             <%
 	}else {
             %>
+            
             <div class="dlex1">
+                您也可以把您收藏的材料数据和供应商数据导出为excel，供线下使用
                 <asp:Button runat="server" ID="button2" Text="全部导出为EXCEL" OnClick="dumpFollowCLs" />
             </div>
             <%

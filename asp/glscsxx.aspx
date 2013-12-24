@@ -45,6 +45,9 @@
 			DataSet ds_gysxx = new DataSet();
             da_gysxx.Fill(ds_gysxx, "品牌字典");
             dt_gysxx = ds_gysxx.Tables[0]; 
+
+            if (dt_gysxx.Rows.Count == 0) Response.Redirect("gyszym.aspx");
+
             gys_id = dt_gysxx.Rows[0]["gys_id"].ToString();
 							
 			SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='"+gys_id+"' ", conn);

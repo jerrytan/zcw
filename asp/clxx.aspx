@@ -210,8 +210,8 @@
 <% if (cl_id.Equals("74")) { %>
 <div class="xx10">
     <div class="xx11">介绍视频</div>
-    <div class="xx11"><embed src="http://player.56.com/v_OTA0NzMyNDA.swf" type="application/x-shockwave-flash" width="480" height="405" allowfullscreen="true" allownetworking="all" allowscriptaccess="always"></embed>
-    </div>
+    <embed src="http://tv.people.com.cn/img/2010tv_flash/outplayer.swf?xml=/pvservice/xml/2011/10/6/12d1c210-dd85-4872-8eb2-33b224fb0743.xml&key=人民电视:/150716/152576/152586/&quote=1&" quality="high" width="480" height="384" align="middle" allowScriptAccess="always" allowFullScreen="true" type="application/x-shockwave-flash"></embed>
+    
 </div>
 <% } %>
 
