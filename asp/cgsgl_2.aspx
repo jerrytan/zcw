@@ -121,6 +121,7 @@
   public List<FLObject> Items1 { get; set; }
   public List<FLObject> Items2 { get; set; }
   public List<CLObject> Cllist { get; set; }
+  public List<GYSObject> Gyslist { get; set; }
   public Boolean userIsVIP = false;
 
   protected DataTable dt = new DataTable(); //取一级分类名称
@@ -131,11 +132,13 @@
   protected void listFollowCLIDs()
   {
     
-	string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+	  string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
     
-    string yh_id = Session["yh_id"].ToString();
+    string yh_id ;
+    yh_id = Session["yh_id"].ToString();
+    //yh_id ="20";
   	string querySQL = 
   		"select distinct a.分类编码,a.显示名字 from 材料分类表 as a , " + 
    		"	(select distinct c.分类编码 as flbm " + 
@@ -157,15 +160,29 @@
     da = new SqlDataAdapter(querySQL, conn);
     DataSet clds = new DataSet();
     da.Fill(clds, "材料表"); 
-    conn.Close(); 
     DataTable cldt = new DataTable();
     cldt = clds.Tables[0];
+    
+    querySQL = 
+   		"	select a.gys_id ,a.供应商 " + 
+   		"   from 材料供应商信息表 as a ,采购商关注供应商表 as b  " +
+      "  where b.yh_id='" + yh_id + "' and a.gys_id=b.gys_id order by a.gys_id";
+      
+    da = new SqlDataAdapter(querySQL, conn);
+    DataSet clgysds = new DataSet();
+    da.Fill(clgysds, "材料供应商信息表"); 
+    DataTable clgysdt = new DataTable();
+    clgysdt = clgysds.Tables[0];
+    
+    conn.Close(); 
+    
 		
     ////分类表DataTable转集合                  
     this.Items1 = new List<FLObject>();
     this.Items2 = new List<FLObject>();
     //材料DataTable转集合
     this.Cllist = new List<CLObject>();
+    this.Gyslist = new List<GYSObject>();
        
     for(int x=0;x<dt.Rows.Count;x++)
     {
@@ -195,8 +212,16 @@
       item.clid = Convert.ToString(dr2["cl_id"]);
       this.Cllist.Add(item);
     } 
-
-    CancelFollowButton.Attributes.Add("onClick", "return confirm('您真的要取消对这些材料的关注吗？');");
+    
+    for(int x=0;x<clgysdt.Rows.Count;x++)
+    {
+    	DataRow dr2 = clgysdt.Rows[x];                         
+      GYSObject item = new GYSObject();
+      item.gysname = Convert.ToString(dr2["供应商"]);
+      item.gysid = Convert.ToString(dr2["gys_id"]);
+      this.Gyslist.Add(item);
+    } 
+    CancelFollowButton.Attributes.Add("onClick", "return confirm('您真的要取消对这些材料或供应商的关注吗？');");
   }
   public class FLObject
   { //属性
@@ -211,6 +236,13 @@
     public string Name { get; set; }
     public string clid { get; set; }
   }
+  public class GYSObject
+  {
+  	//属性
+  	public string gysid { get; set; }
+    public string gysname { get; set; }
+  }
+  
   
   
   
@@ -221,7 +253,7 @@
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
   	string yh_id = Session["yh_id"].ToString();
-  	yh_id = "20";
+  	//yh_id = "20";
   	string str_queryallcl = "select b.* from 采购商关注材料表 as  a ,材料表 as b " + 
   	                        " where a.yh_id='"  + yh_id + "'  and a.cl_id = b.cl_id " ;
   	
@@ -295,12 +327,13 @@
         <form id="form1" runat="server">
 
             <script runat="server">
-  void cancelFollowCLIDs(object sender, EventArgs e)
+  void cancelFollows(object sender, EventArgs e)
   {
   	string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
-  	string yh_id = Session["yh_id"].ToString();
+  	string yh_id;
+  	yh_id = Session["yh_id"].ToString();
   	//yh_id = "20";
   	string clidstr =Request.Form["clid"];
   	//clidstr = ",21,100";
@@ -308,16 +341,24 @@
   	string str_cancelfollow = "delete 采购商关注材料表 where yh_id ='" +  yh_id + "' and cl_id in (" + clidstr + ")" ;
   	SqlCommand cmd_cancelfollow = new SqlCommand(str_cancelfollow, conn);         
     cmd_cancelfollow.ExecuteNonQuery();
-    //label1.Text=str_cancelfollow;
+    
+    string gysids = Request.Form["gysid"];
+    string sql_cancelfollowgys = "delete 采购商关注供应商表 where yh_id ='" +  yh_id + "' and gys_id in (" + gysids + ")" ;
+  	
+  	cmd_cancelfollow = new SqlCommand(sql_cancelfollowgys, conn);         
+    cmd_cancelfollow.ExecuteNonQuery();
+    label1.Text=sql_cancelfollowgys;
   	conn.Close();
     listFollowCLIDs();
   }
+  
+  
             </script>
 
             <div class="dlqqz2">
                 <div id="menu">
                     <% 
- 	 int firstlevel = 0;
+ 	   int firstlevel = 0;
      foreach (var menu1 in this.Items1){
                     %>
                     <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)">
@@ -325,7 +366,7 @@
                     <span class="no">
                         <% 
  	    int secondlevel = 0;
- 		foreach (var menu2 in this.Items2){
+ 		  foreach (var menu2 in this.Items2){
  	   	if ( (menu2.flbm).Substring(0,2) == menu1.flbm ){  
                         %>
                         <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )"><a href="javascript:void(0)">+ <%=menu2.Name%></a></h2>
@@ -350,10 +391,21 @@
  		firstlevel++;
    } 
                     %>
+ <h1 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> 供应商列表 &gt;</a></h1>
+ <span class="no">
+  <h2 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)">+ 材料供应商</a></h2>
+  <ul class="no">
+   <%
+   foreach (var gys in this.Gyslist){
+   %>
+   <a href="javascript:void(0)"><%=gys.gysname %><input type="checkbox" name="gysid" value="<%=gys.gysid%>" />选中</a>
+   <% } %>
+  </ul>
+ </span>
                 </div>
             </div>
             <div class="dlqqz3">
-                &nbsp;&nbsp;<asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="cancelFollowCLIDs" />
+                &nbsp;&nbsp;<asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="cancelFollows" />
             </div>
             <asp:Label ID="label1" runat="server" Text="" />
 
