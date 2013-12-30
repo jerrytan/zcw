@@ -95,7 +95,7 @@
                         <select id="ejflname" name="ejflname" style="width: 250px">
 
 
-                            <option value="">请选择大类</option>
+                            <option value="">请选择小类</option>
 
                         </select>
                     </td>

@@ -43,10 +43,11 @@
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
-            SqlDataAdapter da = new SqlDataAdapter("select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='"+QQ_id.Values+"'", conn);
+            SqlDataAdapter da = new SqlDataAdapter("select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='"+QQ_id.Values+"' ", conn);
             DataSet ds = new DataSet();
+			DataTable dt = new DataTable();
             da.Fill(ds, "用户表");           
-            DataTable dt = ds.Tables[0];
+            dt = ds.Tables[0];
             String yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);
 			
             Session["yh_id"] = yh_id;      //用户yh_id 存入session中

@@ -1,3 +1,9 @@
+<!--
+           搜索页
+           文件名为:ss.aspx
+		   传入参数为: 搜索文本框中的值
+-->
+
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 
 <%@ Import Namespace="System.Data" %>
@@ -16,6 +22,139 @@
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
 </head>
+
+<script runat="server">
+
+          protected DataTable dt_clss = new DataTable();   //搜索的产品(材料表)   
+          protected DataTable dt_cl_page = new DataTable();  //对搜索的材料进行分页
+		  
+		  private const int Page_Size = 4; //每页的记录数量
+		  private int current_page=1;
+	      int pageCount_page;
+
+          public class OptionItem //材料分页的 类 属性
+          {
+            public string Text { get; set; }
+            public string SelectedString { get; set; }
+            public string Value { get; set; }
+          }
+       	  public List<OptionItem> Items { get; set; }  //材料分页集合
+          protected void Page_Load(object sender, EventArgs e)
+          {
+		     string key_ss = Request["sou"];  //获取搜索文本框中的值
+             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+             SqlConnection conn = new SqlConnection(constr);
+             SqlDataAdapter da_clss = new SqlDataAdapter("select 显示名,规格型号,cl_id from 材料表 where 显示名 like '%"+key_ss+"%'" , conn);
+             DataSet ds_clss = new DataSet();
+             da_clss.Fill(ds_clss, "材料表");
+             dt_clss = ds_clss.Tables[0];  
+
+
+             //从查询字符串中获取"页号"参数
+            string str_page = Request.QueryString["p"];
+            if (string.IsNullOrEmpty(str_page))
+            {//为空时默认为1
+                str_page = "1";
+            }
+            int p;
+            bool b1 = int.TryParse(str_page, out p);  //校验 地址栏不为数字 都强转为数字
+            if (b1 == false)
+            {
+                p = 1;
+            }
+            current_page = p;
+			
+            //从查询字符串中获取"总页数"参数
+            string str_Count = Request.QueryString["c"];
+            if (string.IsNullOrEmpty(str_Count))
+            {
+                double recordCount = this.GetProductCount(); //获得总条数
+                double d1 = recordCount / Page_Size; //13.4
+                double d2 = Math.Ceiling(d1); //14.0
+                int pageCount = (int)d2; //14                //取整
+                str_Count = pageCount.ToString();
+            }
+            int c;
+            bool b2 = int.TryParse(str_Count,out c);
+            if (b2 == false)
+            {
+                c = 1;
+            }
+            pageCount_page = c;
+			
+            //计算/查询分页数据
+            int begin = (p - 1) * Page_Size + 1;    //开始记录数 点击第二页时(若每页10) begin 为11条
+            int end = p * Page_Size;                //结束的记录数
+            dt_cl_page = this.GetProductFormDB(begin, end,key_ss);
+            this.SetNavLink(p, c); 	
+
+          }
+              //从数据库获取记录的总数量
+              private int GetProductCount()
+              {
+                    string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+                    string key_ss = Request["sou"];  //获取搜索文本框中的值
+                    string sql = "select count(cl_Id) from 材料表 where 显示名 like '%"+key_ss+"%'";
+                    SqlCommand cmd = new SqlCommand(sql);
+                    using (SqlConnection conn = new SqlConnection(connString))
+                    {
+                      cmd.Connection = conn;
+                      conn.Open();
+                      object obj = cmd.ExecuteScalar();
+                      conn.Close();
+                      int count = (int)obj;
+                      return count;
+                    }
+              }
+
+              private DataTable GetProductFormDB(int begin, int end, string key_ss)
+              {
+                     string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;         
+                     SqlCommand cmd = new SqlCommand("cl_ss_Paging");     //材料搜索分页存储过程
+                     cmd.CommandType = CommandType.StoredProcedure;
+                     cmd.Parameters.Add("@begin", SqlDbType.Int).Value = begin;            //开始页第一条记录
+                     cmd.Parameters.Add("@end", SqlDbType.Int).Value = end;                //开始页最后一条记录
+			         cmd.Parameters.Add("@显示名", SqlDbType.VarChar,20).Value = key_ss; //传材料编码给材料表,执行存储过程
+
+                     SqlDataAdapter sda = new SqlDataAdapter(cmd);        
+                     using (SqlConnection conn = new SqlConnection(connString))
+                     {
+                          cmd.Connection = conn;
+                          conn.Open();
+                          sda.Fill(dt_cl_page);
+                          conn.Close();
+                     }
+                     return dt_cl_page;
+               }
+
+               protected string cpPrev = "";
+               protected string cpNext = "";
+               protected string cpLast = "";       
+               private void SetNavLink(int currentPage, int pageCount)
+               {
+                   //string path = Request.Path;         
+                   cpPrev = currentPage != 1 ? string.Format("p={0}",currentPage - 1) : "";          //连超链接上一页
+                   cpNext = currentPage != pageCount ? string.Format("p={0}",currentPage + 1) : "";  //连超链接下一页
+                   cpLast = currentPage != pageCount ? string.Format("p={0}",pageCount) : "";         //连超链接尾页
+           
+                   this.Items = new List<OptionItem>();
+                   for (int i = 1; i <= pageCount; i++)  //下拉列表循环总得页数
+                   {               
+                       OptionItem item = new OptionItem();
+                       item.Text = i.ToString();                          
+                       item.SelectedString = i == currentPage ? "selected='selected'" : string.Empty;
+                       item.Value = string.Format("ss.aspx?p={0}", i);                
+                       this.Items.Add(item);
+                   }
+      
+               }			   
+        
+         
+		  
+		  
+		  
+
+</script>
 
 <body>
 
@@ -55,47 +194,68 @@
 
 
 <div class="dlspxl"> 
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
-<div class="dlspxt"><a href="#"><img src="images/222_03.jpg" />
-<div class="dlspxt1"><span class="dlsl">大理石</span>  <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
-<span class="dlsgg">规格：123456789</span> </div></div>
+
+    <%foreach(System.Data.DataRow row in this.dt_cl_page.Rows){%>
+    <div class="dlspxt">
+    <a href="#">
+     <%
+					string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+                    SqlConnection con = new SqlConnection(connString);
+                    SqlCommand cmd = new SqlCommand("select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
+                        +row["cl_id"]+"' and 大小='小'", con);
+
+                    String imgsrc= "images/222_03.jpg";
+                    using (con)
+                    {
+                         con.Open();
+                         Object result = cmd.ExecuteScalar();
+                         if (result != null) 
+						 {
+                             imgsrc = result.ToString();
+                         }
+                    }
+                    Response.Write("<img src="+imgsrc+ " width=150px height=150px />");
+                
+				
+				%>
+    </a>
+    <div class="dlspxt1">
+    <span class="dlsl"><%=row["显示名"].ToString()%></span>  
+    <span class="dlspx3"><input name="" type="checkbox" value=""  class="fxk" /> 收藏</span> 
+    <span class="dlsgg"><%=row["规格型号"].ToString()%></span> </div></div>
+  <%}%>
+
+
+
 
 
 <div class="fy2">
-<div class="fy3"><a href="#">上一页</a> <a href="#">1</a> <a href="#">2</a><a href="$"> 3···</a> <a href="#">下一页</a> <a href="#"> 尾页</a>  
-直接到第 <select name="" class="fu"><option>1</option></select>      
+<div class="fy3">
+                <%string key_ss = Request["sou"];  //获取搜索文本框中的值 %>
+                <% if(current_page!=1) { %>
+                <a href="ss.aspx?<%=cpPrev %>&sou=<%=key_ss%>" class="p">上一页</a>
+                <% } %>
+                <a href="ss.aspx?p=1&sou=<%=key_ss%>" class="p">1</a>
+                <% if(current_page>1) { %>
+                <a href="ss.aspx?p=2&sou=<%=key_ss%>" class="p">2</a>
+                <% } %>
+                <% if(current_page>2) { %>
+                <a href="ss.aspx?p=3&sou=<%=key_ss%>" class="p">3···</a>
+                <% } %>
+                <% if(current_page<pageCount_page) { %>
+                <a href="ss.aspx?<%=cpNext %>&sou=<%=key_ss%>" class="p">下一页</a>
+                <% } %>
+                <% if(current_page!=pageCount_page) { %>
+                <a href="ss.aspx?<%=cpLast %>&sou=<%=key_ss%>" class="p">尾页</a>
+                <% } %>
+				
+直接到第 
+         <select onchange="window.location=this.value" name="" class="p">
+         <% foreach (var v in this.Items)  { %>
+         <option value="<%=v.Value %>&sou=<%=key_ss%>" <%=v.SelectedString %>><%=v.Text %></option>
+
+        <%} %>
+    </select>     
 页</div></div>
 </div>
 
@@ -105,15 +265,11 @@
 <div class="pxright">
 <div class="pxright1">
 <ul>
-   <li><a href="#">黄锈石</a></li>
-   <li><a href="#">大理石</a></li>
-   <li><a href="#">白锈石</a></li>
-   <li><a href="#">黄锈石</a></li>
-   <li><a href="#">黄锈石</a></li>
-   <li><a href="#">黄锈石</a></li>
-   <li><a href="#">黄锈石</a></li>
-   <li><a href="#">黄锈石</a></li>
-   <li><a href="#">黄锈石</a></li>
+
+   <%foreach(System.Data.DataRow row in this.dt_clss.Rows){%>
+   <li><a href="#"><%=row["显示名"].ToString()%></a></li>
+   <%}%>
+
 </ul>
 
 </div> </div>

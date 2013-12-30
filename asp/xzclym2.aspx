@@ -1,3 +1,7 @@
+<!--
+       文件名:xzclym2.aspx
+	   传入参数 : 分类编码(两位)
+-->
 
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
@@ -12,7 +16,7 @@
             DataSet ds_ejfl = new DataSet();
             da_ejfl.Fill(ds_ejfl, "材料分类表");            
             DataTable dt_ejfl = ds_ejfl.Tables[0];        
-            Response.Write("<option value='0'>选择大类</option>");
+            Response.Write("<option value='0'>选择小类</option>");
             foreach(System.Data.DataRow row in dt_ejfl.Rows) 
             {
                 Response.Write("<option value='"+row["分类编码"]+"'>"+row["显示名字"]+"</option>");

@@ -14,7 +14,7 @@
 <script runat="server">
             
 
-        protected DataTable dt = new DataTable(); //用户名字(用户表)    	
+        protected DataTable dt_yh = new DataTable(); //用户名字(用户表)    	
         protected void Page_Load(object sender, EventArgs e)
         {
             HttpCookie QQ_id = Request.Cookies["QQ_id"];
@@ -23,10 +23,10 @@
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
-            SqlDataAdapter da = new SqlDataAdapter("select 姓名 from 用户表 where yh_id='"+QQ_id.Value+"'", conn);
-            DataSet ds = new DataSet();
-            da.Fill(ds, "用户表");           
-            dt = ds.Tables[0];
+            SqlDataAdapter da_yh = new SqlDataAdapter("select 姓名 from 用户表 where QQ_id='"+QQ_id.Value+"'", conn);
+            DataSet ds_yh = new DataSet();
+            da_yh.Fill(ds_yh, "用户表");           
+            dt_yh = ds_yh.Tables[0];
             }
 		}	      
 	
@@ -43,9 +43,8 @@
     <div class="gyzy0">
         <div class="gyzy">
             尊敬的
-            <% foreach (System.Data.DataRow row in dt.Rows){%>
-            <span><%=row["姓名"].ToString() %></span>
-            <%}%>
+			<%string yh_name = Convert.ToString(dt_yh.Rows[0]["姓名"]);%>            
+            <span><%=yh_name %></span>           
 
             先生/女士，您好
         </div>

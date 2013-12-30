@@ -2,7 +2,7 @@
           
        供应商新增材料页面	   
        文件名：czclym.aspx 
-       传入参数:无	   
+       传入参数:无	 (应该要传入供应商id)  
 	   
 -->
 
@@ -27,10 +27,9 @@
 </head>
 
 <script language="javascript">
-    //发送ajax有问题,待处理
-
-
-    function updateFL(id) {
+    //一级分类发送ajax 更新的是小类的名称 文件名是:xzclym2.aspx
+    function updateFL(id) 
+	{
 
         var xmlhttp;
         if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -43,15 +42,101 @@
             
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 
-                document.getElementById("ejfl").innerHTML = xmlhttp.responseText;
+                document.getElementById("ejflname").innerHTML = xmlhttp.responseText;
             }
         }
         xmlhttp.open("GET", "xzclym2.aspx?id=" + id, true);
         xmlhttp.send();
               
     }
+       //二级分类发送ajax 更新的是品牌的名称 和材料属性的名称
+	   //文件名是xzclym3.aspx 和 xzclymSX.aspx
+      function updateCLFL(id) 
+	{
 
-    
+        var xmlhttp;
+		var xmlhttp1;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+			xmlhttp1 = new XMLHttpRequest();
+        }
+        else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			 xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                
+                document.getElementById("brand").innerHTML = xmlhttp.responseText;
+				
+            }
+        }
+        xmlhttp.open("GET", "xzclym3.aspx?id=" + id, true);
+        xmlhttp.send();
+		
+		
+        xmlhttp1.open("GET", "xzclymSX.aspx?id=" + id, true);
+        xmlhttp1.send();
+		xmlhttp1.onreadystatechange = function () {
+            
+            if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200) {
+                
+               	//document.getElementById("sx_name").innerHTML = xmlhttp1.responseText;
+				var array = new Array();
+				array = xmlhttp1.responseText;
+				
+				
+				var sxname_array = new Array();   //属性名称
+				var sxcode_array = new Array();   //属性编码
+				var sxid_array = new Array();     //属性id
+				
+				for(var i=0;i<array.length;i++)
+			    {
+				  alert(array); 
+				}
+				
+            }
+        }
+              
+    }
+	
+	
+	//属性名称ajax 更新的是属性值 文件名是:xzclymSX2.aspx
+	//更新的是规格型号 文件名是:xzclymSX3.aspx  (规格型号应该是文本框才合理)
+    function update_clsx(id) 
+	{
+        var xmlhttp1;
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+			xmlhttp1 = new XMLHttpRequest();
+        }
+        else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                
+                document.getElementById("cl_value").innerHTML = xmlhttp.responseText;
+            }
+        }
+        xmlhttp.open("GET", "xzclymSX2.aspx?id=" + id, true);
+        xmlhttp.send();
+		
+		 xmlhttp1.open("GET", "xzclymSX3.aspx?id=" + id, true);
+        xmlhttp1.send();
+		xmlhttp1.onreadystatechange = function () {
+            
+            if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200) {
+                //alert("aaa");
+               	document.getElementById("cl_type").innerHTML = xmlhttp1.responseText;
+            }
+        }
+              
+    }
 
 
 </script>
@@ -59,46 +144,31 @@
 
 <script runat="server">  
         
-    public List<OptionItem> Items1 { get; set; }
-    public List<OptionItem> Items2 { get; set; }
+    public List<OptionItem> Items1 { get; set; }    
     public class OptionItem
     {
         public string Name { get; set; }  //下拉列表显示名属性
         public string GroupsCode { get; set; }  //下拉列表分类编码属性
-        public string SelectedString { get; set; }
-        public string Value { get; set; }
+      
 
     }
-    protected DataTable dt = new DataTable();  //材料分类大类
-    protected DataTable dt1 = new DataTable();  //材料分类小类
-    protected DataTable dt2 = new DataTable();  //要选择的品牌名称(品牌字典)
+    protected DataTable dt_clfl = new DataTable();  //材料分类大类    
+    
     protected void Page_Load(object sender, EventArgs e)
     {
         string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
         SqlConnection conn = new SqlConnection(constr);
-        SqlDataAdapter da = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'", conn);
-        DataSet ds = new DataSet();
-        da.Fill(ds, "材料分类表");
-        dt = ds.Tables[0];
-
-        string type = Request["id"];   //获取大类穿过来的分类编码
-        SqlDataAdapter da1 = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where left(分类编码,2)='"+type+"' and len(分类编码)='4'", conn);
-        DataSet ds1 = new DataSet();
-        da1.Fill(ds1, "材料分类表");
-        dt1 = ds1.Tables[0];
-
-        string gys_id = Request["gys_id"];
-        SqlDataAdapter da2 = new SqlDataAdapter("select 品牌名称 from 品牌字典 where scs_id='" + gys_id + "' ", conn);
-        DataSet ds2 = new DataSet();
-        da2.Fill(ds2, "材料分类表");
-        dt2 = ds2.Tables[0];
-
+        SqlDataAdapter da_clfl = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'", conn);
+        DataSet ds_clfl = new DataSet();
+        da_clfl.Fill(ds_clfl, "材料分类表");
+        dt_clfl = ds_clfl.Tables[0];     
+      
 
         this.Items1 = new List<OptionItem>();  //数据表DataTable转集合  
-        this.Items2 = new List<OptionItem>();
-        for (int x = 0; x < dt.Rows.Count; x++)
+        
+        for (int x = 0; x < dt_clfl.Rows.Count; x++)
         {
-            DataRow dr = dt.Rows[x];
+            DataRow dr = dt_clfl.Rows[x];
 
             if (Convert.ToString(dr["分类编码"]).Length == 2)
             {
@@ -107,44 +177,7 @@
                 item.GroupsCode = Convert.ToString(dr["分类编码"]);
                 this.Items1.Add(item);   //将大类存入集合
             }
-        }
-
-        for (int x = 0; x < dt1.Rows.Count; x++)
-        {
-            DataRow dr = dt1.Rows[x];
-            if (Convert.ToString(dr["分类编码"]).Length == 4)
-            {
-                OptionItem item1 = new OptionItem();
-                item1.Name = Convert.ToString(dr["显示名字"]);
-                item1.GroupsCode = Convert.ToString(dr["分类编码"]);
-                this.Items2.Add(item1);
-            }
-        }
-
-
-
-
-        if (Request.Form["clname"] != null)
-        {
-            conn.Open();
-            //string code = Request.QueryString["code"]; //获取分类编码 把材料信息和相应的分类编码插入到材料表中
-            string clname = Request.Form["clname"];  //材料名称
-            string brand = Request.Form["brand"];    //品牌名称
-            string cltype = Request.Form["cltype"];          //规格型号
-            string measure = Request.Form["measure"];        //计量单位
-            string volumetric = Request.Form["volumetric"];  //单位体积
-            string instruction = Request.Form["instruction"];  //说明 
-            string ejflname = Request.Form["ejflname"];        //分类名称 				
-
-            string sql1 = " insert into 材料表(显示名,品牌名称,规格型号,计量单位,单位体积,说明,是否启用,分类名称,updatetime)values('" + clname + "','" + brand + "','" + cltype + "','" + measure + "','" + volumetric + "','" + instruction + "',1,'" + ejflname + "','getdate()') ";
-            SqlCommand cmd3 = new SqlCommand(sql1, conn);
-            int ret1 = (int)cmd3.ExecuteNonQuery();
-            string sql2 = " update 材料表 set gys_id='61' where gys_id is null ";   //待处理
-            SqlCommand cmd2 = new SqlCommand(sql2, conn);
-            int ret = (int)cmd2.ExecuteNonQuery();
-            conn.Close();
-
-        }
+        }    
 
     }				
  
@@ -160,12 +193,10 @@
     <div class="fxsxx">
         <span class="fxsxx1">请选择您要添加的材料信息</span>
         <%string gys_id = Request["gys_id"];%>
-        <form action="xzclym.aspx?gys_id=<%=gys_id%>" method="get">
+          <form action="xzclym4.aspx?gys_id=134" method="post" >
 
             <div class="xz1">
                 <div class="xza">
-
-
 
                     <span class="xz2"><a href="#">大类</a></span>
                     <select id="drop1" name="drop1" onchange="updateFL(this.options[this.options.selectedIndex].value)">
@@ -176,10 +207,10 @@
                 </div>
                 <div class="xza">
                     <span class="xz2"><a href="#">小类</a></span>
-                    <select id="ejfl" name="drop" class="fux">
-                        <% foreach(var v  in Items2){%>
-                        <option value="<%=v.Name%>&<%=v.GroupsCode%>"><%=v.Name%></option>
-                        <%}%>
+                    <select id="ejflname" name="ejflname" class="fux" onchange="updateCLFL(this.options[this.options.selectedIndex].value)">
+                        
+                        <option value="0">请选择小类</option>
+                    
                     </select>
                 </div>
 
@@ -195,31 +226,52 @@
                 <dl>
                     <dd>材料名字：</dd>
                     <dt>
-                        <input name="clname" type="text" class="fxsxx3" value="<%=Request.Form["clname"] %>" /></dt>
+                        <input name="cl_name" type="text" class="fxsxx3" value="<%=Request.Form["cl_name"] %>" /></dt>
 
                     <dd>品    牌：</dd>
                     <dt>
-                        <select name="brand" style="width: 300px">
-                            <%foreach(System.Data.DataRow row in dt2.Rows){%>
-                            <option value="<%=row["品牌名称"].ToString() %>"><%=row["品牌名称"].ToString()%></option>
-                            <%}%>
+                        <select name="brand" id="brand" style="width: 300px">
+                            
+                            <option value="0">请选择品牌</option>
+                           
                         </select></dt>
 
-                    <dd>型号：</dd>
+                    <dd>属性名称：</dd>
                     <dt>
-                        <input name="cltype" type="text" class="fxsxx3" value="<%=Request.Form["cltype"] %>" /></dt>
-                    <dd>适用场所：</dd>
+                        <select name="sx_name" id="sx_name" style="width: 300px" onchange="update_clsx(this.options[this.options.selectedIndex].value)">
+                                                                             
+                            <option value="0">请选择属性名称</option>
+                           
+                        </select></dt>
+						
+                    <dd>属性值：</dd>
                     <dt>
-                        <input name="" type="text" class="fxsxx3" value="<%=Request.Form["gysid"] %>" /></dt>
+                        <select name="cl_value" id="cl_value" style="width: 300px"  >
+                            
+                            <option value="0">请选择属性值</option>
+                           
+                        </select></dt>
+						
+					<dd>规格型号：</dd>
+                    <dt>
+                        <select name="cl_type" id="cl_type" style="width: 300px">
+                            
+                            <option value="0">请选择规格型号</option>
+                           
+                        </select></dt>	
+						
                     <dd>计量单位：</dd>
                     <dt>
-                        <input name="bit" type="text" class="fxsxx3" value="<%=Request.Form["bit"] %>" /></dt>
+                        <input name="cl_bit" type="text" class="fxsxx3" value="<%=Request.Form["bit"] %>" /></dt>
                     <dd>单位体积：</dd>
                     <dt>
-                        <input name="volumetric" type="text" class="fxsxx3" value="<%=Request.Form["volumetric"] %>" /></dt>
+                        <input name="cl_volumetric" type="text" class="fxsxx3" value="<%=Request.Form["volumetric"] %>" /></dt>
+				    <dd>单位重量：</dd>
+                    <dt>
+                        <input name="cl_height" type="text" class="fxsxx3" value="<%=Request.Form["cl_height"] %>" /></dt>
                     <dd>说明：</dd>
                     <dt>
-                        <input name="instruction" type="text" class="fxsxx3" value="<%=Request.Form["instruction"] %>" /></dt>
+                        <input name="cl_instruction" type="text" class="fxsxx3" value="<%=Request.Form["instruction"] %>" /></dt>
                 </dl>
             </div>
 

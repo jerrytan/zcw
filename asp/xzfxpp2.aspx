@@ -28,9 +28,7 @@
 				SqlCommand cmd_insert= new SqlCommand(str_insert, conn);
                 cmd_insert.ExecuteNonQuery();	
 			
-                conn.Close();
-
-    
+                conn.Close();    
             }	                    
 		
      %>
