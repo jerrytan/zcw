@@ -31,7 +31,8 @@
       <%
    
         HttpCookie QQ_id = Request.Cookies["QQ_id"];   
-        if (QQ_id != null)
+        Object logout = Session["logout"];  
+        if (QQ_id != null && logout == null)
         {
             //Response.Write("openid is " + openId.Value + "<p>");
 

@@ -15,7 +15,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=GBK" />
-    <title>众材网-----面向建筑装饰企业的公装材料库</title>
+    <title>众材网-----面向建筑装饰企业的公装材料库和供应商信息库</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
 </head>
 
