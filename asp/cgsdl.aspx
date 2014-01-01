@@ -16,7 +16,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
-        data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/gysdl2.aspx" charset="utf8"></script>
+        data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/cgsdl2.aspx" charset="utf8"></script>
 
     <title>采购商登陆</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />

@@ -30,7 +30,7 @@
     
 </script>
 
-<body onload="QQ_logout()" >
+<body >
 
     <div class="dlqq">
         <div class="dlqq1">
@@ -54,9 +54,8 @@
             <a style="color: Red" onclick="clickMe()">登出成功，点击我将回到主页。 </a>
         <script>
             function clickMe() {
-                
+                QQ_logout();          
                 window.opener.location.href= "index.aspx";
-                window.opener.location.reload();
                 window.close();
             }
         </script>

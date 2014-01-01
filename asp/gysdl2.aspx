@@ -21,20 +21,22 @@
         if (QC.Login.check()) {//如果已登录  
             QC.Login.getMe(function (openId, accessToken) {
                 //alert(["当前登录用户的", "openId为：" + openId, "accessToken为：" + accessToken].join("\n！"));
-                alert("尊敬的客户，您好，您已经用QQ号登陆成功，确认后自动返回。");
+                //alert("尊敬的供应商，您好，您已经用QQ号登陆成功，确认后自动返回。");
                 //using cookie to store openId
 
                 
-				var exdate=new Date();
-				exdate.setDate(exdate.getDate()+1);
+				//var exdate=new Date();
+				//exdate.setDate(exdate.getDate()+1);
 				//var cookieStr = "QQ_id=" + openId + ";expires=" + exdate.toGMTString();
 				var cookieStr = "QQ_id=" + openId;
 				//alert(cookieStr);
 				document.cookie = cookieStr;
 				window.close();
 				opener.close();
-				opener.opener.location.reload();
-                //opener.location.reload();
+				opener.opener.location.href="gyszym.aspx";
+				//alert(opener.opener.location.href);
+				//opener.opener.location.reload();
+
             });
             
         }
