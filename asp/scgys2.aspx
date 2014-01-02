@@ -14,7 +14,9 @@
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" charset="utf8" data-callback="true"></script>
 </head>
 <body>
-
+<%
+        Session["logout"] = null;
+    %>
     <script type="text/javascript">
         if (QC.Login.check()) {//如果已登录  
             QC.Login.getMe(function (openId, accessToken) {

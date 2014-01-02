@@ -30,9 +30,30 @@
             <%
    
         HttpCookie QQ_id = Request.Cookies["QQ_id"];
+        Object logout = Session["logout"];
         String  gys_id = Request["gys_id"];
+		
+		//Response.Write("QQ_id is " + QQ_id.Value + "<p>");
+		
+		if ((QQ_id == null ) || (QQ_id != null && logout!= null ))
+		{
+			
+			//Response.Write("openid is empty");
+            %>
+            <span class="dlzi">尊敬的采购商，您好! </span>
+            <span class="dlzi">请点击右边按钮登陆！</span>
+            <span class="dlzi2" id="qqLoginBtn"></span>
+            <script type="text/javascript">
+                QC.Login({
+                    btnId: "qqLoginBtn" //插入按钮的节点id  
 
-        if (QQ_id != null)
+                });
+
+            </script>
+            <img src="images/wz_03.jpg">
+            <%
+        
+        } else
         {
             //Response.Write("QQ_id is " + QQ_id.Value + "<p>");
 
@@ -110,27 +131,11 @@
 
 			Response.Write("<span class='dlzi'>尊敬的采购商，您好!</span>");
             Response.Write("<span class='dlzi'>该供应商信息已被收藏成功！</span>");
-            Response.Write("<span class='dlzi'><a href='sclb.aspx' target='_blank'>您可以点击查看已收藏的所有信息。</a></span>");
+            Response.Write("<span class='dlzi'><a href='cgsgl_2.aspx' target='_blank'>您可以点击查看已收藏的所有信息。</a></span>");
             Response.Write("<span class='dlzi' onclick='window.close()'>关闭此窗口</span>");
 
 
-        }
-        else
-        {
-            //Response.Write("openid is empty");
-            %>
-            <span class="dlzi">尊敬的采购商，您好! </span>
-            <span class="dlzi">请点击右边按钮登陆！</span>
-            <span class="dlzi2" id="qqLoginBtn"></span>
-            <script type="text/javascript">
-                QC.Login({
-                    btnId: "qqLoginBtn" //插入按钮的节点id  
-
-                });
-
-            </script>
-            <img src="images/wz_03.jpg">
-            <%
+        
         }
     
             %>

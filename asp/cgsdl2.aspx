@@ -26,9 +26,6 @@
         Session["logout"] = null;
     %>
 
-<form action="zjyh.aspx" method=post name="form1">
-<input type=hidden name="QQ_id" id="QQid" />
-
     <script type="text/javascript">
         if (QC.Login.check()) {//如果已登录
             QC.Login.getMe(function(openId, accessToken) {
@@ -39,8 +36,7 @@
                 var cookieStr = "QQ_id=" + openId;
                 //alert(cookieStr);
                 document.cookie = cookieStr;
-                document.getElementById("QQid").value = openId;
-                document.form1.submit();
+                
                 window.close();
                 opener.close();
                 opener.opener.location.href = "cgsgl_2.aspx";
