@@ -100,7 +100,7 @@
     //-->
     </script>
 </head>
-
+    
 <body>
 
     <!-- 头部开始-->
@@ -123,10 +123,48 @@
   public List<CLObject> Cllist { get; set; }
   public List<GYSObject> Gyslist { get; set; }
   public Boolean userIsVIP = false;
+  
 
   protected DataTable dt = new DataTable(); //取一级分类名称
+  protected String yh_id;
   protected void Page_Load(object sender, EventArgs e)
   {
+        
+        String QQid = Request.Cookies["QQ_id"].Value;
+
+        String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+        SqlConnection conn = new SqlConnection(constr);
+        String str_checkuserexist = "select count(*) from 用户表 where QQ_id = '"+QQid+"'";
+        SqlCommand cmd_checkuserexist = new SqlCommand(str_checkuserexist, conn);
+        conn.Open();
+        Object obj_checkuserexist = cmd_checkuserexist.ExecuteScalar();
+        
+        if (obj_checkuserexist != null) 
+        {
+             int count = Convert.ToInt32(obj_checkuserexist);
+             if (count ==0 )  //qq_id 不存在，需要增加用户表
+             {
+
+                   String str_insertuser = "insert into 用户表 (QQ_id) VALUES ('"+ QQid+"')";
+                   SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);         
+                   cmd_insertuser.ExecuteNonQuery();
+                   String str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+QQid+"') where QQ_id = '"+QQid+"'";
+                   SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
+                   cmd_updateuser.ExecuteNonQuery();                  
+                  
+              }
+              SqlDataAdapter da = new SqlDataAdapter("select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='"+QQid+"'", conn);
+              DataSet ds = new DataSet();
+              da.Fill(ds, "用户表");           
+              DataTable dt = ds.Tables[0];
+              yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);
+              Session["yh_id"] = yh_id;
+                      
+               
+         }
+         conn.Close();
+                
+    
         listFollowCLIDs();
   }
   protected void listFollowCLIDs()
@@ -136,7 +174,7 @@
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
     
-    string yh_id ;
+   
     yh_id = Session["yh_id"].ToString();
     //yh_id ="20";
   	string querySQL = 
