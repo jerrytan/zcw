@@ -19,9 +19,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=8ee0deb4c10c8fb4be0ac652f83e8f5d"></script>
     <title>材料供应商信息</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+	#allmap {width:400px;height:300px;border:#ccc solid 1px;}
+</style>
 </head>
 
 <body>
@@ -49,6 +53,7 @@
 		protected DataTable dt_clxx = new DataTable(); //现货供应(材料表)
         protected String gys_id;
         protected String gys_type;
+		protected String gys_addr;
 
 
         protected void Page_Load(object sender, EventArgs e)
@@ -128,9 +133,10 @@
                 <img src="images/133123_03.jpg" /></span>
             <div class="gycs">
 
-                <% foreach(System.Data.DataRow row in dt_gysxx.Rows){%>
+                <% foreach(System.Data.DataRow row in dt_gysxx.Rows){
+				   gys_addr = row["联系地址"].ToString();%>
                 <p>厂名：<%=row["供应商"].ToString() %></p>
-                <p>地址：<%=row["联系地址"].ToString() %></p>
+                <p>地址：<%=gys_addr %></p>
                 <p>联系人：<%=row["联系人"].ToString() %></p>
                 <p>联系电话：<%=row["联系人手机"].ToString() %></p>
                 <%}%>
@@ -138,7 +144,30 @@
             <div class="gyan"><a href="#">本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>
             <div class="gyan1"><a href="" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
         </div>
+		
+		<div class="gydl">
+            <div class="dlpp">地理位置</div>
+			<div id="allmap"></div>
+<script type="text/javascript">
 
+// 百度地图API功能
+var map = new BMap.Map("allmap");
+var point = new BMap.Point(116.331398,39.897445);
+map.centerAndZoom(point,15);
+// 创建地址解析器实例
+var myGeo = new BMap.Geocoder();
+// 将地址解析结果显示在地图上,并调整地图视野
+myGeo.getPoint("<%=gys_addr %>", function(point){
+  if (point) {
+    map.centerAndZoom(point, 13);
+    map.addOverlay(new BMap.Marker(point));
+  }
+}, "<%=gys_addr %>");
+</script>
+                    
+            
+        </div>
+		
         <!-- 首页 供应商信息 结束-->
 
         <% if (gys_type.Equals("分销商")) 
