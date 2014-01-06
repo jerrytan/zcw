@@ -41,16 +41,19 @@
 			//String yh_id = "29"; 	 //获取表单的用户id	
             if(yh_id!="")
 			{
-              String str_gysxx = "select 公司名称,公司地址,公司电话,公司主页,手机,类型,QQ号码,姓名 from 用户表 where  yh_id='"+yh_id+"' ";
+              String str_gysxx = "select 公司名称,公司地址,公司电话,公司主页,手机,类型,QQ号码,姓名,是否验证通过 from 用户表 where  yh_id='"+yh_id+"' ";
               SqlDataAdapter da_yh = new SqlDataAdapter(str_gysxx, conn);
 			  DataSet ds_yh = new DataSet();
               da_yh.Fill(ds_yh, "用户表");
-              dt_yh = ds_yh.Tables[0]; 
+              dt_yh = ds_yh.Tables[0]; 		
               
             }			
             	
         }
+		
+		   
 </script>
+
 
 <body>
 
@@ -65,6 +68,35 @@
 <div class="gybtl"><img src="images/www_03.jpg" /></div>
 <div class="gybtr">
 <dl>
+<%
+              foreach(System.Data.DataRow row in dt_yh.Rows)
+			   {
+			     if(Convert.ToString(row["公司名称"])!="")
+				 {
+			      if(Convert.ToString(row["是否验证通过"])=="")
+				  {
+				     Response.Write("请耐心等候,您的资料正在审核当中,我方工作人员会尽快给您答复!");
+                     
+				  }
+				  if(Convert.ToString(row["是否验证通过"])=="通过")
+				  {
+				     Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领.");
+					 
+					 
+				  }
+				  if(Convert.ToString(row["是否验证通过"])=="不通过")
+				  {
+				     Response.Write("审核未通过,请继续完善信息!");
+				  } 
+				 }
+			   }           
+             
+			 
+%>
+<span>
+<span id="msg" style="color:Red"></span>
+<dd></dd><dt></dt>
+
 <dd>贵公司名称：</dd>  <dt><input name="gys_name" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /></dt>
 <dd>贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司地址"] %>"/></dt>
 <dd>贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
@@ -92,12 +124,12 @@
 <span class="gybtan">
     
 	<!--
-	<%string yh_id = Convert.ToString(Session["yh_id"]);     //获取session中的用户id%>
+	
     <a href="" onclick="formsubmit()"><img src="images/aaaa_03.jpg" /></a>
 	-->
 	
 	<input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" value=""/>
-    <input type="submit" value="保存" />
+    <input type="submit" value="保存" OnClick="updateFL()"/>
 	</span></div>
 	
 </div>

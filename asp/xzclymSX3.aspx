@@ -1,7 +1,4 @@
-<!--   
-      文件名:xzclymSX3.aspx
-      传入参数: id (分类属性id)
--->
+
 	  
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
@@ -23,8 +20,10 @@
 			DataSet ds_flsx_id = new DataSet();
 			da_flsx_id.Fill(ds_flsx_id,"材料分类属性值表");
 			DataTable dt_flsx_id = ds_flsx_id.Tables[0];	
-            string clflsx_id1 = Convert.ToString(dt_flsx_id.Rows[0]["属性值"]);	  //获取分类编码	         
+            string clflsx_id1 = Convert.ToString(dt_flsx_id.Rows[0]["属性值"]);	  //获取分类编码
+            Response.Write(clflsx_id1);
+			
             //Response.Write("<input type="text">"+clflsx_id+"</input>");
             //Response.Write(clflsx_id);
-	        Response.Write("<option value=''>"+clflsx_id1+"</option>");
+	        //Response.Write("<option value=''>"+clflsx_id1+"</option>");
 %>

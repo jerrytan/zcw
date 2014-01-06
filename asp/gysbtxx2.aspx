@@ -48,35 +48,28 @@
 			 {              			 
               conn.Open();
               //更新用户表			  
-			  string sql_yhxx = "update  用户表 set 公司名称='"+gys_name+"',公司地址='"+gys_address+"',"
+			  string sql_yhxx = "update  用户表 set updatetime=(select getdate()), 公司名称='"+gys_name+"',公司地址='"+gys_address+"',"
 			  +"公司主页='"+gys_homepage+"',公司电话='"+gys_phone+"',姓名='"+user_name+"',手机='"+user_phone+"', "
 			  +"QQ号码='"+user_qq+"',类型='"+scs_type+"' where yh_id='"+yh_id+"' ";
 			  SqlCommand cmd_gysbtxx = new SqlCommand(sql_yhxx,conn);
-			  int ret = (int)cmd_gysbtxx.ExecuteNonQuery();				  
-			
-			  		  
+			  int ret = (int)cmd_gysbtxx.ExecuteNonQuery();	 		  
               
-              //string sql_yhgx = "update 用户表 set 是否验证通过='通过',手机='"+user_phone+"',等级='"+user_name+"' where yh_id='"+yh_id+"' ";
-              //SqlCommand cmd_yhxx = new SqlCommand (sql_yhgx,conn);	
-              //int ret2 = (int)cmd_yhxx.ExecuteNonQuery();
+             
               conn.Close();			  
-              Response.Write("请耐心等待,我方工作人员会尽快给您回复!");
-
-              //string sql = "select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' ";
-			  //SqlDataAdapter da_gysxx = new SqlDataAdapter(sql, conn);
-			  //DataSet ds_gysxx = new DataSet();
-              //da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
-              //dt_gysxx = ds_gysxx.Tables[0]; 		  
-              			  
+              
+             
+            
              }  
-			//string gys_id = dt_gysxx.Rows[0]["gys_id"].ToString();
-            //Response.Redirect("gyszym.aspx?gys_id="+gys_id+" ");
-            Response.Redirect("gyszym.aspx");			
+		    
+		    //Response.Write("请耐心等待,我方工作人员会尽快给您回复!");
+            //Response.Redirect("gyszym.aspx");			
         }
 
     </script>
-
+    
 
    
 </body>
+<a style="color: Red"  onclick=window.location.href="gyszym.aspx">信息已保存成功,等待审核,请返回! </a>
+
 </html>

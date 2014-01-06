@@ -40,10 +40,10 @@
             String yh_id = Convert.ToString(Session["yh_id"]);
          
 			
-            String str_gysxx = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,gys_id from 材料供应商信息表 where  yh_id='"+yh_id+"' ";
+            String str_gysxx = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,gys_id from 材料供应商信息表 where  yh_id='"+yh_id+"' ";
             SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
 			DataSet ds_gysxx = new DataSet();
-            da_gysxx.Fill(ds_gysxx, "品牌字典");
+            da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
             dt_gysxx = ds_gysxx.Tables[0]; 
 
             if (dt_gysxx.Rows.Count == 0) Response.Redirect("gyszym.aspx");
@@ -81,7 +81,7 @@
                         <input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" /></dt>
                     <dd>贵公司地址：</dd>
                     <dt>
-                        <input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地址"] %>"/></dt>
+                        <input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系地址"] %>"/></dt>
                     <dd>贵公司电话：</dd>
                     <dt>
                         <input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>"/></dt>

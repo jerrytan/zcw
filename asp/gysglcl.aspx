@@ -102,60 +102,92 @@
 
 <script runat="server">
 
-        public List<FLObject> Items { get; set; }  //存放材料编码和分类编码的集合
-		public class FLObject
-        { //属性
-        public string ClCode { get; set; }  //分类编码
-        public string ClName { get; set; }  //材料名
-       		
-        }
+          public List<FLObject_yj> Items1 { get; set; }
+          public List<FLObject_ej> Items2 { get; set; }
+          public List<CLObject> Cllist { get; set; }
+		  
+		  public class CLObject
+          { //属性
+  	        public string Cl_flbm { get; set; }  //分类编码(4位)
+            public string Cl_Name { get; set; }  //具体的材料名称 
+            public string Cl_id { get; set; }
+          }
+		  
+		  public class FLObject_yj
+          {  //属性
+  	         public string flbm { get; set; }
+             public string YJfl_name { get; set; }             
+          }
+		  
+		  public class FLObject_ej
+          { //属性
+  	         public string Ej_flbm { get; set; }   
+             public string Ejfl_Name { get; set; }     
+          }
+  
+          
 
-        protected DataTable dt = new DataTable(); //根据供应商id查询显示名,分类编码(材料表)
-        protected DataTable dt1 = new DataTable(); //取二级分类显示名称(材料分类表)
-		protected DataTable dt2 = new DataTable();  //具体材料名称(材料表)
-		protected DataTable dt3 = new DataTable();  //材料一级分类名称(材料表)
+        protected DataTable dt_cl = new DataTable();    //根据供应商id查询显示名,分类编码(材料表)
+        protected DataTable dt_yjfl = new DataTable();  //取一级分类显示名称(材料分类表)
+		protected DataTable dt_ejfl = new DataTable();  //取二级分类显示名称(材料分类表)
+		
         protected void Page_Load(object sender, EventArgs e)
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);            
-			string gys_id = Request["gys_id"];
-            SqlDataAdapter da = new SqlDataAdapter("select  显示名,分类编码 from 材料表 where gys_id='"+gys_id+"' ", conn);
-            DataSet ds = new DataSet();
-            da.Fill(ds, "材料表");           
-            dt = ds.Tables[0];
+			//string gys_id = Request["gys_id"];
+			string gys_id = "134";
+            SqlDataAdapter da_cl = new SqlDataAdapter("select cl_id,显示名,分类编码 from 材料表 where gys_id='"+gys_id+"' ", conn);
+            DataSet ds_cl = new DataSet();
+            da_cl.Fill(ds_cl, "材料表");           
+            dt_cl = ds_cl.Tables[0];
 			
-			////数据表DataTable转集合                  
-            this.Items = new List<FLObject>();
-			for(int x=0;x<dt.Rows.Count;x++)
+			////数据表DataTable转集合                   
+            this.Cllist = new List<CLObject>();
+			for(int x=0;x<dt_cl.Rows.Count;x++)
             {
-			    DataRow dr2 = dt.Rows[x]; 		      
-			    FLObject item = new FLObject();
-                item.ClName = Convert.ToString(dr2["显示名"]);
-                item.ClCode = Convert.ToString(dr2["分类编码"]); //根据供应商id查询分类编码加入类的属性(分类编码长度为4位)
-                this.Items.Add(item);              				 //加入集合
+			    DataRow dr2 = dt_cl.Rows[x]; 		      
+			    CLObject item = new CLObject();
+                item.Cl_Name = Convert.ToString(dr2["显示名"]);   //具体的材料名字
+                item.Cl_flbm = Convert.ToString(dr2["分类编码"]); //根据供应商id查询分类编码加入类的属性(分类编码长度为4位)
+				item.Cl_id = Convert.ToString(dr2["Cl_id"]);
+                this.Cllist.Add(item);              				 //加入集合
 		    } 
-			foreach(var v in this.Items)    //遍历集合
+			foreach(var v in this.Cllist)    //遍历集合
 			{
-			   if(v.ClCode.ToString()!=null&Convert.ToString(v.ClCode).Length==4)
+			   if(v.Cl_flbm.ToString()!=null&Convert.ToString(v.Cl_flbm).Length==4)
 			   {
-			   string code = v.ClCode.ToString().Substring(0, 2);	//取分类编码前两位再次进行查询 最终获得一级分类的名字填充到表table3		
-			   SqlDataAdapter da3 = new SqlDataAdapter("select  显示名字 from 材料分类表 where 分类编码='"+code+"' ", conn);
-               DataSet ds3 = new DataSet();
-               da3.Fill(ds3, "材料分类表");           
-               dt3 = ds3.Tables[0];
+			   string code = v.Cl_flbm.ToString().Substring(0, 2);	//取分类编码前两位再次进行查询 最终获得一级分类的名字填充到表table3		
+			   SqlDataAdapter da_yjfl = new SqlDataAdapter("select  显示名字 from 材料分类表 where 分类编码='"+code+"' ", conn);
+               DataSet ds_yjfl = new DataSet();
+               da_yjfl.Fill(ds_yjfl, "材料分类表");           
+               dt_yjfl = ds_yjfl.Tables[0];
 			   }
 			}
+			this.Items1 = new List<FLObject_yj>();
+			for(int x=0;x<dt_yjfl.Rows.Count;x++)
+            {
+			    DataRow dr = dt_yjfl.Rows[x]; 		      
+			    FLObject_yj item = new FLObject_yj();
+                item.YJfl_name = Convert.ToString(dr["显示名字"]);   //一级分类名称                
+                this.Items1.Add(item);              				 //加入集合
+		    } 
 			
 			//取二级分类名称
-			SqlDataAdapter da1 = new SqlDataAdapter("select 显示名字 from 材料分类表 where  分类编码 in(select 分类编码 from 材料表 where gys_id='"+gys_id+"' )", conn);
-            DataSet ds1 = new DataSet();
-            da1.Fill(ds1, "材料分类表");            
-            dt1 = ds1.Tables[0];
-			//取具体材料名称
-			SqlDataAdapter da2 = new SqlDataAdapter("select 显示名 from 材料表 where gys_id='"+gys_id+"' ", conn);
-            DataSet ds2 = new DataSet();
-            da2.Fill(ds2, "材料表");            
-            dt2 = ds2.Tables[0];                      
+			SqlDataAdapter da_ejfl = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where  分类编码 in(select 分类编码 from 材料表 where gys_id='"+gys_id+"' )", conn);
+            DataSet ds_ejfl = new DataSet();
+            da_ejfl.Fill(ds_ejfl, "材料分类表");            
+            dt_ejfl = ds_ejfl.Tables[0];
+			
+			this.Items2 = new List<FLObject_ej>();
+			for(int x=0;x<dt_ejfl.Rows.Count;x++)
+            {
+			    DataRow dr = dt_ejfl.Rows[x]; 		      
+			    FLObject_ej item = new FLObject_ej();
+                item.Ejfl_Name = Convert.ToString(dr["显示名字"]);   //二级分类名称 
+                item.Ej_flbm = Convert.ToString(dr["分类编码"]);     //二级分类编码 				
+                this.Items2.Add(item);              				 //加入集合
+		    }		                    
 		
         }
 
@@ -170,25 +202,56 @@
 
 <div class="dlqqz1"><img src="images/sccp.jpg" /></div>
 <span class="dlqqz4"><img src="images/wz_03.jpg" width="530" height="300" /></span>
-<div class="dlqqz2"><div id="menu">
+<div class="dlqqz2">
+<div id="menu">
 
- <%foreach(System.Data.DataRow row in dt3.Rows){%>
- <h1 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /><%=row["显示名字"].ToString() %> &gt;</a></h1>
- <%}%>
- 
- <span class="no"> 
- 
-  <%foreach(System.Data.DataRow row in dt1.Rows){%>
-  <h2 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)">+ <%=row["显示名字"].ToString() %></a></a></h2>
-  <%}%>
-  
-  <ul class="no">
-  <%foreach(System.Data.DataRow row in dt2.Rows){%>
-   <a href="javascript:void(0)"><%=row["显示名"].ToString() %><input type="checkbox" name="" id="checkbox" class="ck" /> 选中</a>
-   <%}%>
-  </ul>
-  
- </span>
+ <% 
+ 	   int firstlevel = 0;
+     foreach (var menu1 in this.Items1){
+                    %>
+                    <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)">
+                        <img src="images/biao2.jpg" /><%=menu1.YJfl_name%> &gt;</a></h1>
+                    <span class="no">
+                        <% 
+ 	    int secondlevel = 0;
+ 		  foreach (var menu2 in this.Items2){
+ 	   	  
+                        %>
+                        <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )"><a href="javascript:void(0)">+ <%=menu2.Ejfl_Name%></a></h2>
+                        <ul class="no">
+                          <!--  	
+                            protected DataTable dt_cls = new DataTable(); 							
+							string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+                            SqlConnection conn = new SqlConnection(constr);            
+			                //string gys_id = Request["gys_id"];
+			                string gys_id = "134";
+                            SqlDataAdapter da_cls = new SqlDataAdapter("select cl_id,显示名,分类编码 from 材料表 where gys_id='134' ", conn);
+                            DataSet ds_cls = new DataSet();
+                            da_cls.Fill(ds_cls, "材料表");           
+                            dt_cls = ds_cls.Tables[0];
+							
+							-->
+							<%
+                            foreach (var me in this.Cllist){
+      	        
+                            %>
+                            <a href="javascript:void(0)"><input type="checkbox" name="clid" value="" />选中</a>
+                            <% 	
+   			    
+   		    }
+   		    secondlevel++;
+                            %>
+                        </ul>
+                        <% 	
+         
+  	}
+                        %>
+                    </span>
+                    <% 
+ 		firstlevel++;
+   } 
+                    %>
+
         
  <h1 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> 一级菜单B &gt;</a></h1>
  <span class="no">
