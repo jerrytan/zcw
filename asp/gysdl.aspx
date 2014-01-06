@@ -29,7 +29,7 @@
     <div class="dlqq">
         <div class="dlqq1">
       <%
-   
+        
         HttpCookie QQ_id = Request.Cookies["QQ_id"];   
         Object logout = Session["logout"];  
         if (QQ_id != null && logout == null)

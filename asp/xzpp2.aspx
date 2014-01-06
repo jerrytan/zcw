@@ -6,7 +6,7 @@
             String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
 
-            string yjfl_id = Request["id"];   //获取大类穿过来的分类编码
+            string yjfl_id = Request["id"];   //获取大类传过来的分类编码
 
             SqlDataAdapter da_ejfl = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where left(分类编码,2)='"+yjfl_id+"'and len(分类编码)='4'", conn);
             DataSet ds_ejfl = new DataSet();

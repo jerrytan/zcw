@@ -43,9 +43,9 @@
     <div class="gyzy0">
         <div class="gyzy">
             尊敬的
-			<%string yh_name = Convert.ToString(dt_yh.Rows[0]["姓名"]);%>            
-            <span><%=yh_name %></span>           
-
+			<%foreach(System.Data.DataRow row in this.dt_yh.Rows){%>            
+            <span><%=row["姓名"].ToString() %></span>           
+            <%}%>
             先生/女士，您好
         </div>
     </div>

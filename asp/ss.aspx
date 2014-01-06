@@ -27,6 +27,7 @@
 
           protected DataTable dt_clss = new DataTable();   //搜索的产品(材料表)   
           protected DataTable dt_cl_page = new DataTable();  //对搜索的材料进行分页
+		  protected DataTable dt_clss_name = new DataTable();  //查询所有材料分类表中的显示名字,分类编码
 		  
 		  private const int Page_Size = 4; //每页的记录数量
 		  private int current_page=1;
@@ -44,7 +45,27 @@
 		     string key_ss = Request["sou"];  //获取搜索文本框中的值
              string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
              SqlConnection conn = new SqlConnection(constr);
-             SqlDataAdapter da_clss = new SqlDataAdapter("select 显示名,规格型号,cl_id from 材料表 where 显示名 like '%"+key_ss+"%'" , conn);
+			 
+			 SqlDataAdapter da_clss_name = new SqlDataAdapter("select  显示名字,分类编码 from 材料分类表 " , conn);
+             DataSet ds_clss_name = new DataSet();
+             da_clss_name.Fill(ds_clss_name, "材料表");
+             dt_clss_name = ds_clss_name.Tables[0];
+			 foreach(System.Data.DataRow row in dt_clss_name.Rows)
+			 {
+			    //判断如果与材料分类表中的分类名称相匹配跳转到一级或二级页面
+			    if(key_ss==Convert.ToString(row["显示名字"])&Convert.ToString(row["分类编码"]).Length ==2)
+				{
+				   Response.Redirect("yjfl.aspx?name="+row["分类编码"].ToString()+" ");
+				   return;
+				}
+			    if(key_ss==Convert.ToString(row["显示名字"])&Convert.ToString(row["分类编码"]).Length ==4)
+				{
+				   Response.Redirect("ejfl.aspx?name="+row["分类编码"].ToString()+" ");
+				   return;
+				}
+			 }
+			 
+             SqlDataAdapter da_clss = new SqlDataAdapter("select top 10 显示名,规格型号,cl_id ,访问计数 from 材料表 where 显示名 like '%"+key_ss+"%'order by 访问计数 desc" , conn);
              DataSet ds_clss = new DataSet();
              da_clss.Fill(ds_clss, "材料表");
              dt_clss = ds_clss.Tables[0];  
@@ -260,7 +281,7 @@
 </div>
 
 
-
+<!-- 最受欢迎的这种材料-->
 <div class="pxright0">
 <div class="pxright">
 <div class="pxright1">

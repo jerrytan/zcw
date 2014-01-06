@@ -39,23 +39,29 @@
 			this.Items = new List<Option_SX>();  //数据表DataTable转集合  
 			for(int x=0;x<dt_flsx.Rows.Count;x++)
             {
-                 DataRow dr2 = dt_flsx.Rows[x];                 
+                 DataRow dr2 = dt_flsx.Rows[x];              
                   
 		         Option_SX item = new Option_SX();
-				 item.SX_name = Convert.ToString(dr2["属性名称"]);
-                 //item.SX_code = Convert.ToString(dr2["属性编码"]);
-                 //item.SX_id = Convert.ToString(dr2["flsx_id"]);
+				 item.SX_name = Convert.ToString(dr2["属性名称"]);   //将属性名称存入集合
+                 item.SX_code = Convert.ToString(dr2["属性编码"]);
+                 item.SX_id = Convert.ToString(dr2["flsx_id"]);
                  this.Items.Add(item);                
 			}
 			
 			string jsonStr = serializer.Serialize(Items); 
 			Response.Clear(); 
-			Response.Write(jsonStr); 
+			Response.Write(jsonStr);   //向前端xzclym.aspx输出json字符串
 			Response.End();
+			
+		
+			
+		
 			//Response.Write("<option value='0'>请选择属性名称</option>");
             //foreach(System.Data.DataRow row in dt_flsx.Rows) 
             //{
-               // Response.Write("<option value='"+row["flsx_id"]+"'>"+row["属性名称"]+"</option>");
+                //Response.Write("<option value='"+row["flsx_id"]+"'>"+row["属性名称"]+"</option>");
+			    
             //}
+			
     }
 </script>

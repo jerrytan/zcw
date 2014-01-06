@@ -26,13 +26,24 @@
                     
 			        string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
                     SqlConnection conn = new SqlConnection(constr);
-                    string str_wrl_gys = "select 供应商,gys_id from 材料供应商信息表 where yh_id is null ";
+					string yh_id = Convert.ToString(Session["yh_id"]);
+					
+					string str_yh = "select 类型 from 用户表 where yh_id ='"+ yh_id+"' ";
+                    SqlDataAdapter da_yh = new SqlDataAdapter(str_yh, conn);
+                    DataSet ds_yh = new DataSet();
+                    da_yh.Fill(ds_yh, "材料供应商信息表");
+                    DataTable dt_yh = ds_yh.Tables[0];
+					string gys_type = Convert.ToString(dt_yh.Rows[0]["类型"]);
+					
+					//根据用户输入的类型(生产商/供应商)查询相关的供应商
+                    string str_wrl_gys = "select 供应商,gys_id from 材料供应商信息表 where 单位类型='"+gys_type+"' "
+					+"and yh_id is null or yh_id='' ";
                     SqlDataAdapter da_wrl_gys = new SqlDataAdapter(str_wrl_gys, conn);
                     DataSet ds_wrl_gys = new DataSet();
                     da_wrl_gys.Fill(ds_wrl_gys, "材料供应商信息表");
                     dt_wrl_gys = ds_wrl_gys.Tables[0];	
 
-			        string yh_id = Convert.ToString(Session["yh_id"]);    
+			            
                     
                     string str_yrl_gys = "select 供应商,gys_id from 材料供应商信息表 where yh_id ='"+ yh_id+"'";
                     SqlDataAdapter da_yrl_gys = new SqlDataAdapter(str_yrl_gys, conn);
@@ -113,10 +124,15 @@
 
    <div class="rlcs4"> <span class="rlcs5">查询结果</span>
        <select name="gys" id="gyslist">
-      <%foreach (System.Data.DataRow row in dt_wrl_gys.Rows)
-      { %>
+      <%
+	       
+           
+	       foreach (System.Data.DataRow row in dt_wrl_gys.Rows)
+           { 
+	  
+	  %>
         <span class="rlcs6"><option name="list" value="<%=row["gys_id"].ToString() %>" class="ck"/><%=row["供应商"].ToString() %></span>
-    <%} %>
+      <%}%>
        </select>
 
    <a  onclick="send_request()" ></div> <img src="images/rl_03.jpg" /></a>
@@ -128,8 +144,8 @@
     <span><img src="images/www_03.jpg" /></span>
     </div>
   </div>
-
   </div>
+
 </form>
 
 
@@ -145,7 +161,7 @@
 
 
 
-</div>
+
 
 
 </body>

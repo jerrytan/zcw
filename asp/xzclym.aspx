@@ -69,7 +69,7 @@
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 
                 document.getElementById("brand").innerHTML = xmlhttp.responseText;
-				
+			
             }
         }
         xmlhttp.open("GET", "xzclym3.aspx?id=" + id, true);
@@ -82,30 +82,44 @@
             
             if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200) {
                 
-               	//document.getElementById("sx_name").innerHTML = xmlhttp1.responseText;
-				var array = new Array();
-				array = xmlhttp1.responseText;
+               	//document.getElementById("sx_name").innerHTML = xmlhttp1.responseText;				
+		
+				
+				var array = new Array();           //声明数组
+		 		array = xmlhttp1.responseText;     //接收返回的json字符串
+				
+		        var json = array;
+                var myobj=eval(json);              //将返回的JSON字符串转成JavaScript对象 
 				
 				
-				var sxname_array = new Array();   //属性名称
-				var sxcode_array = new Array();   //属性编码
-				var sxid_array = new Array();     //属性id
 				
-				for(var i=0;i<array.length;i++)
-			    {
-				  alert(array); 
-				}
+                for(var i=0;i<myobj.length;i++){  //遍历			
+			
+				 var json= document.getElementById('sx_names');
+                 json.options.add(new Option(myobj[i].SX_name, myobj[i].SX_id));  //下拉框显示属性名称
+
+                 var json_code= document.getElementById('sx_codes');     //下拉框显示属性编码
+                 json_code.options.add(new Option(myobj[i].SX_code,myobj[i].SX_code));	
+
+                 var json_id= document.getElementById('sx_id');       //下拉框显示属性id
+                 json_id.options.add(new Option(myobj[i].SX_id,myobj[i].SX_id));				 
 				
-            }
+               
+                }       
+		
+              } 	
+
+           }
         }
               
-    }
+    
 	
 	
 	//属性名称ajax 更新的是属性值 文件名是:xzclymSX2.aspx
 	//更新的是规格型号 文件名是:xzclymSX3.aspx  (规格型号应该是文本框才合理)
     function update_clsx(id) 
 	{
+	    
         var xmlhttp1;
         var xmlhttp;
         if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -116,28 +130,55 @@
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 			xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.onreadystatechange = function () {
+        
+        xmlhttp.open("GET", "xzclymSX2.aspx?id=" + id, true);
+        xmlhttp.send();
+		xmlhttp.onreadystatechange = function () {
             
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 
-                document.getElementById("cl_value").innerHTML = xmlhttp.responseText;
+                //document.getElementById("cl_value").innerHTML = xmlhttp.responseText;
+				
+				var array = new Array();           //声明数组
+		 		array = xmlhttp.responseText;     //接收替换返回的json字符串
+				
+		        var json = array;
+                var myobj=eval(json);              //将返回的JSON字符串转成JavaScript对象 			
+				
+				
+                for(var i=0;i<myobj.length;i++){  //遍历			
+			
+				 var json= document.getElementById('cl_value');
+                 json.options.add(new Option(myobj[i].SXZ_name,myobj[i].SXZ_name));  //下拉框显示属性值
+
+                 var json_code= document.getElementById('cl_number');     //下拉框显示属性编号
+                 json_code.options.add(new Option(myobj[i].SXZ_code,myobj[i].SXZ_code));	
+
+                 var json_id= document.getElementById('cl_ids');       //下拉框显示属性值id
+                 json_id.options.add(new Option(myobj[i].SXZ_id,myobj[i].SXZ_id));				 
+				
+               
+                }  
             }
         }
-        xmlhttp.open("GET", "xzclymSX2.aspx?id=" + id, true);
-        xmlhttp.send();
 		
 		 xmlhttp1.open("GET", "xzclymSX3.aspx?id=" + id, true);
         xmlhttp1.send();
 		xmlhttp1.onreadystatechange = function () {
             
             if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200) {
-                //alert("aaa");
-               	document.getElementById("cl_type").innerHTML = xmlhttp1.responseText;
+                
+				var ggxh_value = xmlhttp1.responseText;
+				
+               	document.getElementById("cl_type").value = ggxh_value;
             }
         }
               
     }
+            
+		
 
+			
 
 </script>
 
@@ -207,7 +248,7 @@
                 </div>
                 <div class="xza">
                     <span class="xz2"><a href="#">小类</a></span>
-                    <select id="ejflname" name="ejflname" class="fux" onchange="updateCLFL(this.options[this.options.selectedIndex].value)">
+                    <select id="ejflname" name="ejflname" class="fux"  onchange="updateCLFL(this.options[this.options.selectedIndex].value)">
                         
                         <option value="0">请选择小类</option>
                     
@@ -238,11 +279,28 @@
 
                     <dd>属性名称：</dd>
                     <dt>
-                        <select name="sx_name" id="sx_name" style="width: 300px" onchange="update_clsx(this.options[this.options.selectedIndex].value)">
-                                                                             
+                        <select name="sx_names" id="sx_names" style="width: 300px" onchange="update_clsx(this.options[this.options.selectedIndex].value)">
+                                                                       
                             <option value="0">请选择属性名称</option>
-                           
+						
                         </select></dt>
+						
+						<dd>属性编码：</dd>
+                    <dt>
+                        <select name="sx_codes" id="sx_codes" style="width: 300px" >
+                                                                       
+                            <option value="0">请选择属性编码</option>
+						
+                        </select></dt>
+						
+						<dd>属性id：</dd>
+                    <dt>
+                        <select name="sx_id" id="sx_id" style="width: 300px" >
+                                                                       
+                            <option value="0">属性id</option>
+						
+                        </select></dt>
+						
 						
                     <dd>属性值：</dd>
                     <dt>
@@ -252,20 +310,32 @@
                            
                         </select></dt>
 						
-					<dd>规格型号：</dd>
+					<dd>属性值编号：</dd>
                     <dt>
-                        <select name="cl_type" id="cl_type" style="width: 300px">
+                        <select name="cl_number" id="cl_number" style="width: 300px"  >
                             
-                            <option value="0">请选择规格型号</option>
+                            <option value="0">编号</option>
                            
-                        </select></dt>	
+                        </select></dt>
+						
+					<dd>属性值ID号：</dd>
+                    <dt>
+                        <select name="cl_ids" id="cl_ids" style="width: 300px"  >
+                            
+                            <option value="0">属性值id</option>
+                           
+                        </select></dt>
+						
+					<dd>规格型号：</dd>                    
+                    <dt>
+                        <input name="cl_type" type="text" id="cl_type" class="fxsxx3" value="<%=Request.Form["cl_type"] %>" /></dt>					
 						
                     <dd>计量单位：</dd>
                     <dt>
-                        <input name="cl_bit" type="text" class="fxsxx3" value="<%=Request.Form["bit"] %>" /></dt>
+                        <input name="cl_bit" type="text" class="fxsxx3" value="<%=Request.Form["cl_bit"] %>" /></dt>
                     <dd>单位体积：</dd>
                     <dt>
-                        <input name="cl_volumetric" type="text" class="fxsxx3" value="<%=Request.Form["volumetric"] %>" /></dt>
+                        <input name="cl_volumetric" type="text" class="fxsxx3" value="<%=Request.Form["cl_volumetric"] %>" /></dt>
 				    <dd>单位重量：</dd>
                     <dt>
                         <input name="cl_height" type="text" class="fxsxx3" value="<%=Request.Form["cl_height"] %>" /></dt>
@@ -314,19 +384,11 @@
             </div>
         </form>
     </div>
-    </div>
-
-
-
-
+ 
 
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->
-
-
-
-
 
 </body>
 </html>
