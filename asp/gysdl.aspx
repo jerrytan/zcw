@@ -60,6 +60,8 @@
                            String str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+QQ_id.Value+"') where QQ_id = '"+QQ_id.Value+"'";
                            SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
                            cmd_updateuser.ExecuteNonQuery();
+						   
+						   
                       }
                                      
                 }

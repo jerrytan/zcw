@@ -22,9 +22,7 @@
 <body>
 
 
-    <script runat="server">
-
-        protected DataTable dt_gysxx = new  DataTable();  //供应商补填信息(材料供应商信息表)            
+    <script runat="server">                 
         
 		
         protected void Page_Load(object sender, EventArgs e)
@@ -45,20 +43,29 @@
 			 
 			 
 			 if(gys_name!="")
-			 {              			 
-              conn.Open();
-              //更新用户表			  
+			 {             		              			  
+			  string passed_gys;	  				  
+              SqlDataAdapter da_gyssq = new SqlDataAdapter("select 是否验证通过 from 用户表 where yh_id='"+yh_id+"' ", conn);
+              DataSet ds_gyssq = new DataSet();
+			  DataTable dt_gyssq = new DataTable();
+              da_gyssq.Fill(ds_gyssq, "用户表");           
+              dt_gyssq = ds_gyssq.Tables[0];
+              passed_gys = Convert.ToString(dt_gyssq.Rows[0]["是否验证通过"]);                              	
+	          if(passed_gys.Equals("通过"))
+			  {
+				       return;
+		      }
+		
+			  //更新用户表			  
 			  string sql_yhxx = "update  用户表 set updatetime=(select getdate()), 公司名称='"+gys_name+"',公司地址='"+gys_address+"',"
 			  +"公司主页='"+gys_homepage+"',公司电话='"+gys_phone+"',姓名='"+user_name+"',手机='"+user_phone+"', "
-			  +"QQ号码='"+user_qq+"',类型='"+scs_type+"' where yh_id='"+yh_id+"' ";
+			  +"QQ号码='"+user_qq+"',类型='"+scs_type+"',是否验证通过='待审核' where yh_id='"+yh_id+"' ";
+			  conn.Open();
 			  SqlCommand cmd_gysbtxx = new SqlCommand(sql_yhxx,conn);
-			  int ret = (int)cmd_gysbtxx.ExecuteNonQuery();	 		  
-              
-             
-              conn.Close();			  
-              
-             
-            
+			  int ret = (int)cmd_gysbtxx.ExecuteNonQuery();
+				   
+       
+              conn.Close();	                                       
              }  
 		    
 		    //Response.Write("请耐心等待,我方工作人员会尽快给您回复!");

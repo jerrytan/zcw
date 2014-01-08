@@ -218,7 +218,7 @@
 
     <%foreach(System.Data.DataRow row in this.dt_cl_page.Rows){%>
     <div class="dlspxt">
-    <a href="#">
+    <a href="clxx.aspx?cl_id=<%=row["cl_id"]%>">
      <%
 					string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
                     SqlConnection con = new SqlConnection(connString);
@@ -288,7 +288,7 @@
 <ul>
 
    <%foreach(System.Data.DataRow row in this.dt_clss.Rows){%>
-   <li><a href="#"><%=row["显示名"].ToString()%></a></li>
+   <li><a href="clxx.aspx?cl_id=<%=row["cl_id"]%>"><%=row["显示名"].ToString()%></a></li>
    <%}%>
 
 </ul>

@@ -44,12 +44,8 @@
                     dt_wrl_gys = ds_wrl_gys.Tables[0];	
 
 			            
-                    
-                    string str_yrl_gys = "select 供应商,gys_id from 材料供应商信息表 where yh_id ='"+ yh_id+"'";
-                    SqlDataAdapter da_yrl_gys = new SqlDataAdapter(str_yrl_gys, conn);
-                    DataSet ds_yrl_gys = new DataSet();
-                    da_yrl_gys.Fill(ds_yrl_gys, "材料供应商信息表");
-                    dt_yrl_gys = ds_yrl_gys.Tables[0];	                
+                  
+                    	                
                }
 	                  
         
@@ -101,15 +97,75 @@
 <!-- 头部2结束-->
 
 <%
+                    string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+                    SqlConnection conn = new SqlConnection(constr);
+                    //查询供应商申请表 如果审批通过,显示被认领的供应商
+					string yh_id = Convert.ToString(Session["yh_id"]);
+					string str_select = "select count(*) from 供应商申请表 where yh_id = '"+yh_id +"'";
+					conn.Open();
+					SqlCommand cmd_select = new SqlCommand(str_select, conn);                           
+					Object obj_checkexist_gysid = cmd_select.ExecuteScalar();
+					conn.Close();
+					
+					string gys_spjg = "";
+                    if (obj_checkexist_gysid != null) 
+                    {
+                        int count = Convert.ToInt32(obj_checkexist_gysid);
+                        if (count !=0 )  //供应商申请有记录 直接查询 是否审批通过
+                        {        
+                            
+                            String gyssq_select = "select gys_id, 审批结果 from 供应商申请表 where yh_id = '"+yh_id +"'";							
+                            SqlDataAdapter da_gyssq = new SqlDataAdapter (gyssq_select,conn);
+					        DataSet ds_gysxx = new DataSet();
+					        da_gyssq.Fill(ds_gysxx,"供应商申请表");					
+					        DataTable dt_gysxx = ds_gysxx.Tables[0];
+					        gys_spjg = Convert.ToString(dt_gysxx.Rows[0]["审批结果"]);
+							string gys_id = Convert.ToString(dt_gysxx.Rows[0]["gys_id"]);
+                            if(gys_spjg.Equals("通过"))	
+							{
+							   //更新材料供应商信息表
+                               String str_updateuser = "update 材料供应商信息表 set yh_id = '"+yh_id +"' where gys_id = '"+gys_id+"'";
+							   conn.Open();
+                               SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
+                               cmd_updateuser.ExecuteNonQuery();
+							   conn.Close();
+							
+							   string str_yrl_gys = "select 供应商,gys_id,联系地址 from 材料供应商信息表 where yh_id ='"+ yh_id+"'";
+                               SqlDataAdapter da_yrl_gys = new SqlDataAdapter(str_yrl_gys, conn);
+                               DataSet ds_yrl_gys = new DataSet();
+                               da_yrl_gys.Fill(ds_yrl_gys, "材料供应商信息表");
+                               dt_yrl_gys = ds_yrl_gys.Tables[0];			   						                                                    
+                    
+							}
+                            if(gys_spjg.Equals("不通过"))	
+							{
+							   String str_updateuser = "update 材料供应商信息表 set yh_id = '' where gys_id = '"+gys_id+"'";
+							   conn.Open();
+                               SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
+                               cmd_updateuser.ExecuteNonQuery();
+							   
+							   //验证不通过,同时希望用户从新认领厂商,所以把原有的记录从供应商申请表中清除掉
+							   String str_delete = "delete 供应商申请表  where gys_id = '"+gys_id+"'";							  
+                               SqlCommand cmd_delete = new SqlCommand(str_delete, conn);         
+                               cmd_delete.ExecuteNonQuery();
+							   conn.Close();
+							}
+                        }
+					         
+                    }
+%>
+
+<%
   if(dt_yrl_gys.Rows.Count > 0)  //已经有认领的供应商了
   {
   %>
-    <div class="rlcs"><span class="rlcszi">您已经在本站认领的供应商如下</span></div>
+    <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">您已经在本站认领的供应商如下:</span></div>
     <%foreach (System.Data.DataRow row in dt_yrl_gys.Rows)
       { %>
         <span class="rlcszi"><a href="gysxx.aspx?gys_id=<%=row["gys_id"].ToString()%>"><%=row["供应商"].ToString() %></a></span>
+		<span class="rlcszi"><%=row["联系地址"].ToString() %></span>
     <%} %>
-    <div class="rlcs1">
+    <div class="rlcs1"></div>
   <%
   }
   
@@ -117,6 +173,26 @@
 
 <form id="form1" >
   <div class="rlcs"><span class="rlcszi">您可以认领信息已经在本站的生产厂商， 流程如下图</span><img src="images/www_03.jpg" /></div>
+  <span class="rlcszi">  
+  <%
+		   	      if(gys_spjg!="")	
+                  {				  
+				    if(gys_spjg.Equals("通过"))
+				    {
+				       Response.Write("恭喜您!审核已通过,可以管理生产厂商信息,管理材料信息等相关操作!!");
+				    }	
+				    if(gys_spjg.Equals("不通过"))
+				    {
+				       Response.Write("您认领的生产厂商信息不准确!请重新认领!");
+				    }	
+			        if(gys_spjg.Equals("待审核"))
+				    {
+				       Response.Write("您认领的生产厂商信息已经提交,正在审核当中,请耐心等待!");
+				    }
+				  }
+		
+  %>
+  </span>
   <div class="rlcs1">
   <div class="rlcs2"><input name="sou1" type="text" class="sou1" /><a href="#"><img src="images/ccc_03.jpg" /></a></div>
   <div class="rlcs3">
@@ -124,12 +200,9 @@
 
    <div class="rlcs4"> <span class="rlcs5">查询结果</span>
        <select name="gys" id="gyslist">
-      <%
-	       
-           
+      <%                 
 	       foreach (System.Data.DataRow row in dt_wrl_gys.Rows)
-           { 
-	  
+           { 	  
 	  %>
         <span class="rlcs6"><option name="list" value="<%=row["gys_id"].ToString() %>" class="ck"/><%=row["供应商"].ToString() %></span>
       <%}%>
@@ -144,7 +217,7 @@
     <span><img src="images/www_03.jpg" /></span>
     </div>
   </div>
-  </div>
+
 
 </form>
 

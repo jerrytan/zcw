@@ -1,9 +1,8 @@
 <!--
       供应商主页面 管理认领厂商页面 管理供应商 管理分销商页面 供应商管理材料页面 
 	  文件名:  gyszym.aspx   
-      传入参数:无	   
-      
-   
+      传入参数:无	  
+         
 -->
 
 <%@ Register Src="include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
@@ -40,17 +39,37 @@
 			DataTable dt = new DataTable();
             da.Fill(ds, "用户表");           
             dt = ds.Tables[0];
-            String yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);
-			
-			
-			
-			
+            String yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);									
 			
 			
 			
             Session["yh_id"] = yh_id;      //用户yh_id 存入session中
 			String passed = Convert.ToString(dt.Rows[0]["是否验证通过"]);			
             String name=  Convert.ToString(dt.Rows[0]["姓名"]);
+			
+			//(供应商申请)的yh_id 是在认领厂商之后更新的
+			conn.Open();
+			string str_gyssq = "select count(*) from 供应商申请表 where yh_id='"+yh_id+"'";
+			SqlCommand cmd_select = new SqlCommand(str_gyssq, conn);                           
+		    Object obj_checkexist_yhid = cmd_select.ExecuteScalar();
+			conn.Close();
+			String passed_gys="";
+            if (obj_checkexist_yhid != null) 
+            {
+			    int count = Convert.ToInt32(obj_checkexist_yhid);
+                if (count !=0 )  //如果(供应商申请)不更新 就没有yh_id 往下不执行
+                {
+				  
+                  SqlDataAdapter da_gyssq = new SqlDataAdapter("select 审批结果 from 供应商申请表 where yh_id='"+yh_id+"' ", conn);
+                  DataSet ds_gyssq = new DataSet();
+			      DataTable dt_gyssq = new DataTable();
+                  da_gyssq.Fill(ds_gyssq, "供应商申请");           
+                  dt_gyssq = ds_gyssq.Tables[0];
+                  passed_gys = Convert.ToString(dt_gyssq.Rows[0]["审批结果"]);                              	
+	            }
+		    }
+			
+			
 	%>
 
     <div class="gyzy1">
@@ -62,11 +81,18 @@
 		<span style="color: Red;font-size:16px">
 		<%
 		    foreach(System.Data.DataRow row in dt.Rows)
-			{	    			      
+			{	    
+                  if(passed_gys.Equals("通过"))  
+                  {
+				     Response.Write("恭喜您!厂商已认领成功,可以进行管理.");					 
+				  }	
+				  if(!passed_gys.Equals("通过"))
+				  {
 				  if(Convert.ToString(row["是否验证通过"])=="通过")
 				  {
 				     Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领.");
-				  }					 
+				  }	
+                  }				  
 			} 
 		%>
 		</span>
@@ -96,28 +122,9 @@
     </div>
     <% }%>
 
-	
 		<%
-	        //(供应商申请)的yh_id 是在认领厂商之后更新的
-			conn.Open();
-			string str_gyssp = "select count(*) from 供应商申请 where yh_id='"+yh_id+"'";
-			SqlCommand cmd_select = new SqlCommand(str_gyssp, conn);                           
-		    Object obj_checkexist_yhid = cmd_select.ExecuteScalar();
-			conn.Close();
-            if (obj_checkexist_yhid != null) 
-            {
-			    int count = Convert.ToInt32(obj_checkexist_yhid);
-                if (count !=0 )  //如果(供应商申请)不更新 就没有yh_id 往下不执行
-                {
-				  
-                  SqlDataAdapter da_gyssq = new SqlDataAdapter("select 审批结果 from 供应商申请 where yh_id='"+yh_id+"' ", conn);
-                  DataSet ds_gyssq = new DataSet();
-			      DataTable dt_gyssq = new DataTable();
-                  da_gyssq.Fill(ds_gyssq, "供应商申请");           
-                  dt_gyssq = ds_gyssq.Tables[0];
-                  String passed_gys = Convert.ToString(dt_gyssq.Rows[0]["审批结果"]);                              	
-	
-	             if (!passed_gys.Equals("通过")){	
+	        
+	             if (passed_gys==""&passed.Equals("通过")||passed_gys.Equals("待审核")){	
 	     %>
 	     <div class="gyzy2">
              <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>
@@ -127,7 +134,7 @@
         
          </div>
 	    <%}
-	 else{ %>
+	   if (passed_gys.Equals("通过")){ %>
         <div class="gyzy2">
             <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>
             <span class="zyy1"><a href="glscsxx.aspx">管理生厂商信息</a></span>
@@ -136,7 +143,7 @@
         </div>
 
 	
-    <%}}} %>
+    <%} %>
    
 
     <div>
