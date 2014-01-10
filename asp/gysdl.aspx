@@ -61,12 +61,22 @@
                            SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
                            cmd_updateuser.ExecuteNonQuery();
 						   
-						   
+						     
                       }
-                                     
+                                    
                 }
-
-                Response.Redirect("gyszym.aspx");
+				//确认QQ_id不为空 才连接的供应商主页面
+			   string str_select = "select QQ_id from 用户表 where QQ_id = '"+QQ_id.Value+"'";
+               SqlDataAdapter da_select = new SqlDataAdapter(str_select,conn);
+               DataSet ds_ = new DataSet();
+			   DataTable dt_ = new DataTable();
+               da_select.Fill(ds_, "用户表");           
+               dt_ = ds_.Tables[0];
+               string passed_ = Convert.ToString(dt_.Rows[0]["QQ_id"]);
+               if(passed_!="")
+               {			   
+                 Response.Redirect("gyszym.aspx");  
+               }
             	
             }
             catch (Exception ex){

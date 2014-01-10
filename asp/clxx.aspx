@@ -121,9 +121,12 @@
 <ul id=idSlider class=slider>
   <div style="POSITION: relative">
      
-    
+    <%
+	foreach(System.Data.DataRow row in dt_images.Rows){
+	if(dt_images.Rows[0]["存放地址"]!="")
+	{%>
       <a ><img  src="<%=dt_images.Rows[0]["存放地址"].ToString()%>" width=320 height=300 id="bigImage"></a>
-    
+    <%}}%>
   </div>
   
 </ul>

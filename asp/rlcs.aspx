@@ -35,16 +35,13 @@
                     DataTable dt_yh = ds_yh.Tables[0];
 					string gys_type = Convert.ToString(dt_yh.Rows[0]["类型"]);
 					
-					//根据用户输入的类型(生产商/供应商)查询相关的供应商
+					//根据用户输入的类型(生产商/分销商)查询相关的供应商
                     string str_wrl_gys = "select 供应商,gys_id from 材料供应商信息表 where 单位类型='"+gys_type+"' "
-					+"and yh_id is null or yh_id='' ";
+					+"and yh_id is null or 单位类型='"+gys_type+"' and yh_id='' ";
                     SqlDataAdapter da_wrl_gys = new SqlDataAdapter(str_wrl_gys, conn);
                     DataSet ds_wrl_gys = new DataSet();
                     da_wrl_gys.Fill(ds_wrl_gys, "材料供应商信息表");
-                    dt_wrl_gys = ds_wrl_gys.Tables[0];	
-
-			            
-                  
+                    dt_wrl_gys = ds_wrl_gys.Tables[0];				                             
                     	                
                }
 	                  

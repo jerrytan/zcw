@@ -5,15 +5,15 @@
        
 -->
 
-
-
 <%@ Register Src="include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
 
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
+<%@ Import Namespace="System.IO" %>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -67,24 +67,7 @@
 </script>
 
     <script src="Scripts/jquery-1.4.1-vsdoc.js" type="text/javascript"></script>
-    <script type="text/javascript" language="javascript">
-         $(document).ready(function () {        
-            //删除复选框被选中的材料
-            $("#btnDeleteBatch").click(function () {
-                var count = $(":checkbox.ck:checked").size();
-                if (count == 0) {
-                    window.alert("请选择删除的材料!");
-                    return;
-                }
-                $(":checkbox.ck:checked").each(function () {  //遍历选中的复选框
-				$(this).parent().parent()remove();
-  
-                    
-                });
-            });
-        });  
-          
-            
+    <script type="text/javascript" language="javascript">                       
 		
 
      		
@@ -105,6 +88,7 @@
           public List<FLObject_yj> Items1 { get; set; }
           public List<FLObject_ej> Items2 { get; set; }
           public List<CLObject> Cllist { get; set; }
+		  public Boolean userIsVIP = false;
 		  
 		  public class CLObject
           { //属性
@@ -130,13 +114,25 @@
         protected DataTable dt_cl = new DataTable();    //根据供应商id查询显示名,分类编码(材料表)
         protected DataTable dt_yjfl = new DataTable();  //取一级分类显示名称(材料分类表)
 		protected DataTable dt_ejfl = new DataTable();  //取二级分类显示名称(材料分类表)
+		protected void Page_Load(object sender, EventArgs e)
+		{
+		   Products_gys_cl();
+		}
 		
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Products_gys_cl()
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);            
-			//string gys_id = Request["gys_id"];
-			string gys_id = "134";
+			String yh_id = Convert.ToString(Session["yh_id"]);   //获取session中yh_id
+			
+			//根据用户id 查询供应商id
+			SqlDataAdapter da_gys = new SqlDataAdapter("select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' ", conn);
+            DataSet ds_gys = new DataSet();
+            da_gys.Fill(ds_gys, "材料供应商信息表");           
+            DataTable dt_gys = ds_gys.Tables[0];
+			string gys_id = Convert.ToString(dt_gys.Rows[0]["gys_id"]);
+			
+			//根据供应商id 查询材料信息
             SqlDataAdapter da_cl = new SqlDataAdapter("select cl_id,显示名,分类编码 from 材料表 where gys_id='"+gys_id+"' ", conn);
             DataSet ds_cl = new DataSet();
             da_cl.Fill(ds_cl, "材料表");           
@@ -157,7 +153,7 @@
 			{
 			   if(v.Cl_flbm.ToString()!=null&Convert.ToString(v.Cl_flbm).Length==4)
 			   {
-			   string code = v.Cl_flbm.ToString().Substring(0, 2);	//取分类编码前两位再次进行查询 最终获得一级分类的名字填充到表table3		
+			   string code = v.Cl_flbm.ToString().Substring(0, 2);	//取分类编码前两位再次进行查询 最终获得一级分类的名字	
 			   SqlDataAdapter da_yjfl = new SqlDataAdapter("select  显示名字 from 材料分类表 where 分类编码='"+code+"' ", conn);
                DataSet ds_yjfl = new DataSet();
                da_yjfl.Fill(ds_yjfl, "材料分类表");           
@@ -188,15 +184,118 @@
                 item.Ej_flbm = Convert.ToString(dr["分类编码"]);     //二级分类编码 				
                 this.Items2.Add(item);              				 //加入集合
 		    }		                    
-		
-        }
-
-  
+		    CancelFollowButton.Attributes.Add("onClick", "return confirm('您确定要删除该选中的材料吗？');");
+        } 
+          
+          protected void dumpFollowCLs(object sender, EventArgs e)
+          {
+  	         string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+             SqlConnection conn = new SqlConnection(constr);             
+  	         string yh_id = Session["yh_id"].ToString();
+			 
+			 //根据用户id 查询供应商id
+			 SqlDataAdapter da_gys = new SqlDataAdapter("select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' ", conn);
+             DataSet ds_gys = new DataSet();
+             da_gys.Fill(ds_gys, "材料供应商信息表");           
+             DataTable dt_gys = ds_gys.Tables[0];
+			 string gys_id = Convert.ToString(dt_gys.Rows[0]["gys_id"]);
+  	         
+			 //根据gys_id 查询材料表相关的数据 以便导出excel 表格
+  	         string query_cl_gys = "select*from 材料表 where gys_id='"+gys_id+"' ";
+  	
+  	         SqlDataAdapter da = new SqlDataAdapter(query_cl_gys, conn);
+             DataSet clds = new DataSet();
+             da.Fill(clds, "材料表");              
+             DataTable cldt = new DataTable();
+             cldt = clds.Tables[0];
+             outToExcel(cldt);
+         }
+		 
+		    private StringBuilder  AppendCSVFields(StringBuilder argSource, string argFields)
+            {
+  	          return argSource.Append(argFields.Replace(",", " ").Trim()).Append(",");
+            }
+			public static void DownloadFile(HttpResponse argResp, StringBuilder argFileStream, string strFileName)
+            {
+		      try
+		       {
+  		          string strResHeader = "attachment; filename=" + Guid.NewGuid().ToString() + ".csv";
+   	 	          if (!string.IsNullOrEmpty(strFileName))
+   	 	          {
+   	 		        strResHeader = "inline; filename=" + strFileName;
+  	 	          }
+  	 	          argResp.AppendHeader("Content-Disposition", strResHeader);//attachment说明以附件下载，inline说明在线打开
+   	 	          argResp.ContentType = "application/ms-excel";
+   	 	          argResp.ContentEncoding = Encoding.GetEncoding("GB2312"); 
+   	 	          argResp.Write(argFileStream);
+  	           }
+   	          catch (Exception ex)
+  	           {
+  	 	         throw ex;
+   	           }
+            }
+		    public void outToExcel(DataTable followcls) 
+		    {  	
+              StringWriter swCSV = new StringWriter();
+              StringBuilder sbText = new StringBuilder();
+              for (int i = 0; i < followcls.Columns.Count; i++)
+              {
+        	     AppendCSVFields(sbText,followcls.Columns[i].ColumnName);
+              }
+              sbText.Remove(sbText.Length - 1, 1);
+              swCSV.WriteLine(sbText.ToString());
+        
+              for (int i = 0; i < followcls.Rows.Count; i++)
+              {
+        	     sbText.Clear();
+        	     for (int j = 0; j < followcls.Columns.Count; j++)
+                 {
+          	       AppendCSVFields(sbText,followcls.Rows[i][j].ToString());
+                 }
+                 sbText.Remove(sbText.Length - 1, 1);
+        	     swCSV.WriteLine(sbText.ToString());
+              }
+              string fileName = Path.GetRandomFileName();
+              DownloadFile(Response, swCSV.GetStringBuilder(), fileName +".csv");
+              swCSV.Close();
+              Response.End();
+           }
    
 </script>
 
 
 
+<form id="form1" runat="server">
+
+<script runat="server">
+          void Delete_cl(object sender, EventArgs e)
+          {
+		    
+  	        string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+            SqlConnection conn = new SqlConnection(constr);
+            conn.Open();
+  	        String yh_id = Convert.ToString(Session["yh_id"]);   //获取session中yh_id
+			
+			//根据用户id 查询供应商id
+			SqlDataAdapter da_gys = new SqlDataAdapter("select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' ", conn);
+            DataSet ds_gys = new DataSet();
+            da_gys.Fill(ds_gys, "材料供应商信息表");           
+            DataTable dt_gys = ds_gys.Tables[0];
+			string gys_id = Convert.ToString(dt_gys.Rows[0]["gys_id"]);
+  	        
+  	        //获取复选框选中的cl_id
+  	        string clidstr =Request.Form["clid"];
+  	        
+			//通过获取的供应商id和cl_id进行删除
+  	        string str_cancelfollow = "delete 材料表 where gys_id ='" +  gys_id + "' and cl_id in (" + clidstr + ")" ;
+  	        SqlCommand cmd_cancelfollow = new SqlCommand(str_cancelfollow, conn);         
+            cmd_cancelfollow.ExecuteNonQuery();
+    
+   
+  	        conn.Close();
+            Products_gys_cl();
+         }
+</script>
 
 <div class="dlqqz">
 
@@ -207,85 +306,100 @@
 
  <% 
  	   int firstlevel = 0;
-     foreach (var menu1 in this.Items1){
+       foreach (var menu1 in this.Items1){
                     %>
                     <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)">
-                        <img src="images/biao2.jpg" /><%=menu1.YJfl_name%> &gt;</a></h1>
+                    <img src="images/biao2.jpg" /><%=menu1.YJfl_name%> &gt;</a></h1>
                     <span class="no">
-                        <% 
- 	    int secondlevel = 0;
- 		  foreach (var menu2 in this.Items2){
+                    <% 
+ 	                  int secondlevel = 0;
+ 		              foreach (var menu2 in this.Items2){
  	   	  
-                        %>
+                    %>
                         <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )"><a href="javascript:void(0)">+ <%=menu2.Ejfl_Name%></a></h2>
                         <ul class="no">
-                          <!--  	
-                            protected DataTable dt_cls = new DataTable(); 							
+                          <% 
+                            //二级下的分类产品要根据,具体的二级分类编码进行查询						  
+                            							
 							string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-                            SqlConnection conn = new SqlConnection(constr);            
-			                //string gys_id = Request["gys_id"];
-			                string gys_id = "134";
-                            SqlDataAdapter da_cls = new SqlDataAdapter("select cl_id,显示名,分类编码 from 材料表 where gys_id='134' ", conn);
+                            SqlConnection conn = new SqlConnection(constr); 
+                            String yh_id = Convert.ToString(Session["yh_id"]);   //获取session中yh_id							
+			                
+							//根据用户id 查询供应商id
+			                SqlDataAdapter da_gys = new SqlDataAdapter("select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' ", conn);
+                            DataSet ds_gys = new DataSet();
+                            da_gys.Fill(ds_gys, "材料供应商信息表");           
+                            DataTable dt_gys = ds_gys.Tables[0];
+							
+			                string gys_id = Convert.ToString(dt_gys.Rows[0]["gys_id"]);
+							string flbm = menu2.Ej_flbm;
+							
+                            SqlDataAdapter da_cls = new SqlDataAdapter("select cl_id,显示名,分类编码 from 材料表 where gys_id='"+gys_id+"'and 分类编码='"+flbm+"' ", conn);
                             DataSet ds_cls = new DataSet();
                             da_cls.Fill(ds_cls, "材料表");           
-                            dt_cls = ds_cls.Tables[0];
-							
-							-->
-							<%
-                            foreach (var me in this.Cllist){
+                            DataTable dt_cls = ds_cls.Tables[0];
+						
+                            foreach (System.Data.DataRow row in dt_cls.Rows){
       	        
                             %>
-                            <a href="javascript:void(0)"><input type="checkbox" name="clid" value="" />选中</a>
-                            <% 	
-   			    
-   		    }
-   		    secondlevel++;
+                            <a href="javascript:void(0)"><%=row["显示名"].ToString()%><input type="checkbox" name="clid" value="<%=row["cl_id"]%>" />选中</a>                            
+							<%    			    
+   		                     }
+   		       secondlevel++;
                             %>
                         </ul>
-                        <% 	
-         
-  	}
+                        <% 	         
+  	                       }
                         %>
                     </span>
                     <% 
  		firstlevel++;
-   } 
+                     } 
                     %>
 
         
- <h1 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /> 一级菜单B &gt;</a></h1>
+ 
  <span class="no">
-  <h2 onClick="javascript:ShowMenu(this,0)"><a href="javascript:void(0)">+ 二级菜单B_1</a></h2>
-  <ul class="no">
-   <a href="javascript:void(0)">三级菜单B_0 <input type="checkbox" name="checkbox" id="checkbox" class="c"/> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_1 <input type="checkbox" name="checkbox" id="checkbox" class="c"/> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_2 <input type="checkbox" name="checkbox" id="checkbox" class="ck"/> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_3 <input type="checkbox" name="checkbox" id="checkbox" class="ck"/> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_4 <input type="checkbox" name="checkbox" id="checkbox" class="ck"/> 选中</a>
-  </ul>
-  <h2 onClick="javascript:ShowMenu(this,1)"><a href="javascript:void(0)">+ 二级菜单B_2</a></h2>
-  <ul class="no">
-   <a href="javascript:void(0)">三级菜单B_0 <input type="checkbox" name="checkbox" id="checkbox" class="ck"/> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_1 <input type="checkbox" name="checkbox" id="checkbox" class="ck"/> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_2 <input type="checkbox" name="checkbox" id="checkbox" class="ck"/> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_3 <input type="checkbox" name="checkbox" id="checkbox" class="ck"/> 选中</a>
-   <a href="javascript:void(0)">三级菜单B_4 <input type="checkbox" name="checkbox" id="checkbox" class="ck"/> 选中</a>
-  </ul>
+ 
+
  </span>
   
 </div></div>
 <div class="dlqqz3">
-<%string gys_id=Request["gys_id"];%>
+
 <a href="xzclym.aspx"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;
-<a id="btnDeleteBatch" onclick="" href="#"><img src="images/scxzcl.jpg" border="0" /></a></div>
+
+<!--
+<a id="btnDeleteBatch" onclick="Delete_cl" href="#"><img src="images/scxzcl.jpg" border="0" /></a>
+-->
+<asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="Delete_cl" />
+
+</div>
 </div>
 
 
 <div class="dlex">
-<div class="dlex1">全部导出为EXCEL（VIP显示为选择数据进入自身内部系统）</div>
+            <%
+	if (userIsVIP){
+            %>            
+                <div class="dlex1">
+                    <asp:Button runat="server" ID="button1" Text="选择数据进入自身内部系统" OnClick="dumpFollowCLs" />
+                </div>
+            
+            <%
+	}else {
+            %>
+            
+            <div class="dlex1">
+                您可以把你管理的材料数据导出为excel，供下线使用
+                <asp:Button runat="server" ID="button2" Text="全部导出为EXCEL" OnClick="dumpFollowCLs" />
+            </div>
+            <%
+	}	
+            %>
 
 </div>
-
+</form> 
 
 <!--  footer 开始-->
 <!-- #include file="static/footer.aspx" -->
