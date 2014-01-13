@@ -9,8 +9,8 @@
                            
                protected void Page_Load(object sender, EventArgs e)
                {  
-                    String gys_id = Convert.ToString(Request["gys_id"]);  
-                    String yh_id = Convert.ToString(Session["yh_id"]); 	 //获取表单的用户id                  
+                    String gys_id = Convert.ToString(Request["gys_id"]);   //获取下拉框穿过来的供应商id 
+                    String yh_id = Convert.ToString(Session["yh_id"]); 	   //获取表单的用户id                  
 
 			        string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
                     SqlConnection conn = new SqlConnection(constr);

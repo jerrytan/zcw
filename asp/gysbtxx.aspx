@@ -61,8 +61,14 @@
         }
 		else if(document.form1.gys_homepage.value=="")
         {
-         alert("贵公司电话不能为空,请填写!");
+         alert("贵公司的主页不能为空,请填写");
          document.form1.gys_homepage.focus();
+         return false;
+        }
+		else if(document.form1.gys_phone.value=="")
+        {
+         alert("贵公司电话不能为空,请填写!");
+         document.form1.gys_phone.focus();
          return false;
         }
 		else if(document.form1.user_name.value=="")
@@ -141,7 +147,7 @@
 
 <dd>*贵公司名称：</dd>  <dt><input name="gys_name" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /></dt>
 <dd>*贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司地址"] %>"/></dt>
-<dd>&nbsp贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
+<dd>*贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
 <dd>*贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司电话"] %>"/></dt>
 
 <dd>&nbsp贵公司是：</dd>    

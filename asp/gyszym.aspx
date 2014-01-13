@@ -28,49 +28,68 @@
     <!-- 头部2开始-->
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部2结束-->
-    <%
-	        HttpCookie QQ_id = Request.Cookies["QQ_id"];
-            string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            
-			
-            SqlDataAdapter da = new SqlDataAdapter("select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='"+QQ_id.Values+"' ", conn);
-            DataSet ds = new DataSet();
-			DataTable dt = new DataTable();
-            da.Fill(ds, "用户表");           
-            dt = ds.Tables[0];
-            String yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);									
-			
-			
-			
-            Session["yh_id"] = yh_id;      //用户yh_id 存入session中
-			String passed = Convert.ToString(dt.Rows[0]["是否验证通过"]);			
-            String name=  Convert.ToString(dt.Rows[0]["姓名"]);
-			
-			//(供应商申请)的yh_id 是在认领厂商之后更新的
-			conn.Open();
-			string str_gyssq = "select count(*) from 供应商申请表 where yh_id='"+yh_id+"'";
-			SqlCommand cmd_select = new SqlCommand(str_gyssq, conn);                           
-		    Object obj_checkexist_yhid = cmd_select.ExecuteScalar();
-			conn.Close();
-			String passed_gys="";
-            if (obj_checkexist_yhid != null) 
+
+
+    <% 
+        String QQid = Request.Cookies["QQ_id"].Value;   //首先获取cookie中的QQ_id
+		
+        string yh_id = "";
+        String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+        SqlConnection conn = new SqlConnection(constr);
+        String str_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + QQid + "'";
+        SqlCommand cmd_checkuserexist = new SqlCommand(str_checkuserexist, conn);
+        conn.Open();
+        Object obj_checkuserexist = cmd_checkuserexist.ExecuteScalar();
+
+        if (obj_checkuserexist != null)
+        {
+            int count = Convert.ToInt32(obj_checkuserexist);
+            if (count == 0)  //qq_id 不存在，需要增加用户表
             {
-			    int count = Convert.ToInt32(obj_checkexist_yhid);
-                if (count !=0 )  //如果(供应商申请)不更新 就没有yh_id 往下不执行
-                {
-				  
-                  SqlDataAdapter da_gyssq = new SqlDataAdapter("select 审批结果 from 供应商申请表 where yh_id='"+yh_id+"' ", conn);
-                  DataSet ds_gyssq = new DataSet();
-			      DataTable dt_gyssq = new DataTable();
-                  da_gyssq.Fill(ds_gyssq, "供应商申请");           
-                  dt_gyssq = ds_gyssq.Tables[0];
-                  passed_gys = Convert.ToString(dt_gyssq.Rows[0]["审批结果"]);                              	
-	            }
-		    }
-			
-			
-	%>
+
+                String str_insertuser = "insert into 用户表 (QQ_id) VALUES ('" + QQid + "')";
+                SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);
+                cmd_insertuser.ExecuteNonQuery();
+                String str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + QQid + "')"
+				+",updatetime=(select getdate())where QQ_id = '" + QQid + "'";
+                SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);
+                cmd_updateuser.ExecuteNonQuery();
+
+            }
+
+        }
+        SqlDataAdapter da = new SqlDataAdapter("select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='" + QQid + "'", conn);
+        DataSet ds = new DataSet();
+        da.Fill(ds, "用户表");
+        DataTable dt = ds.Tables[0];
+        yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);
+        Session["yh_id"] = yh_id;
+        String passed = Convert.ToString(dt.Rows[0]["是否验证通过"]);
+        String name = Convert.ToString(dt.Rows[0]["姓名"]);
+        
+        //(供应商申请)的yh_id 是在认领厂商之后更新的
+       
+        
+        string str_gyssq = "select count(*) from 供应商申请表 where yh_id='" + yh_id + "'";
+        SqlCommand cmd_select = new SqlCommand(str_gyssq, conn);
+        Object obj_checkexist_yhid = cmd_select.ExecuteScalar();
+        conn.Close();
+        String passed_gys = "";
+        if (obj_checkexist_yhid != null)
+        {
+            int count = Convert.ToInt32(obj_checkexist_yhid);
+            if (count != 0)  //如果(供应商申请)不更新 就没有yh_id 往下不执行
+            {
+
+                SqlDataAdapter da_gyssq = new SqlDataAdapter("select 审批结果 from 供应商申请表 where yh_id='" + yh_id + "' ", conn);
+                DataSet ds_gyssq = new DataSet();
+                DataTable dt_gyssq = new DataTable();
+                da_gyssq.Fill(ds_gyssq, "供应商申请");
+                dt_gyssq = ds_gyssq.Tables[0];
+                passed_gys = Convert.ToString(dt_gyssq.Rows[0]["审批结果"]);
+            }
+        }	
+    %>
 
     <div class="gyzy1">
         <span class="zy1">身份信息经过我方工作人员确认后，您可以认领已有的供应商，或者增加新的供应商信息，还可以添加新产品信息（图1)
