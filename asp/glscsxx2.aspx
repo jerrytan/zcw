@@ -32,29 +32,70 @@
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
 			string gys_id = Request["gys_id"];          
-			conn.Open();
+			
                 string companyname = Request["companyname"];   //公司名字
                 string address = Request["address"];            //地址
                 string tel = Request.Form["tel"];               //电话
                 string homepage = Request.Form["homepage"];     //主页
-                string fax = Request["fax"];                    //传真              
+                string fax = Request["fax"];                    //传真  
+				string area = Request["area"];                  //地区
                 string description = Request.Form["description"];  //公司简介
                 string name = Request.Form["name"];                //联系人
                 string phone = Request.Form["phone"];              //联系人手机
-                
-                if (gys_id != "")
-                {
-                    string sql = "update  材料供应商信息表 set 供应商='" + companyname + "',地址='" + address + "',电话='" + tel + "',主页='" + homepage + "',传真='" + fax + "',联系人='" + name + "',联系人手机='" + phone + "' where gys_id ='"+gys_id+"'";
-                    //Response.Write(sql);
-                    SqlCommand cmd2 = new SqlCommand(sql, conn);
-                    int ret = (int)cmd2.ExecuteNonQuery();
-                }
+				string Business_Scope = Request.Form["Business_Scope"];   //经营范围
 				
-				conn.Close();
-                Response.Write("保存成功");
-                Response.Redirect("glscsxx.aspx");
-            }
+				if(gys_id!="")
+				{
+				  string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id='"+gys_id+"' ";
+				  SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);
+                  conn.Open();
+                  Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();
+
+                  if (obj_check_gys_exist != null)
+                  {
+                    int count = Convert.ToInt32(obj_check_gys_exist);
+                    if (count == 0)  
+                    {
+                       string str_insert = "insert into 供应商临时修改表 (gys_id)values('"+gys_id+"')";
+				       
+				       SqlCommand cmd_insert = new SqlCommand(str_insert,conn);
+				       cmd_insert.ExecuteNonQuery();
+				  
+				       string str_update = "update 供应商临时修改表 set 贵公司名称='"+companyname+"',贵公司地址='"+address+"',"
+				       +"贵公司电话='"+tel+"',贵公司主页='"+homepage+"',贵公司地区='"+area+"',贵公司传真='"+fax+"',是否启用='1',"
+				       +"联系人姓名='"+name+"',联系人电话='"+phone+"',单位类型='生产商',经营范围='"+Business_Scope+"',"
+				       +"审批结果='待审核',updatetime=(select getdate()) where gys_id='"+gys_id+"' ";
+				       SqlCommand cmd_update = new SqlCommand(str_update,conn);
+				       cmd_update.ExecuteNonQuery();                        
+
+                    }
+
+                  }
+				 
+				  conn.Close();				  
+				}
+				
+				
+                
+				
+                //Response.Write("保存成功");
+                //Response.Redirect("glscsxx.aspx");
+        }
 </script>
-
-
+<body>
+<a style="color: Red"  onclick=window.location.href="glscsxx.aspx">您更新的信息已提交,等待审核,请返回! </a>
+</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

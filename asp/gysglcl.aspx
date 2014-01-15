@@ -367,7 +367,7 @@
 </div></div>
 <div class="dlqqz3">
 
-<a href="xzclym.aspx"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;&nbsp;
+<a href="xzclym.aspx"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;
 
 <!--
 <a id="btnDeleteBatch" onclick="Delete_cl" href="#"><img src="images/scxzcl.jpg" border="0" /></a>

@@ -4,7 +4,6 @@
        传入参数：无    
 -->
 
-
 <%@ Register Src="include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
 
 <%@ Import Namespace="System.Data" %>
@@ -29,34 +28,34 @@
 
        
         protected DataTable dt_gysxx = new DataTable();  //分销商信息(材料供应商信息表)
-        protected DataTable dt_ppxx = new DataTable();  //分销商信息(材料供应商信息表)
+        protected DataTable dt_ppxx = new DataTable();   //分销商信息(材料供应商信息表)
         protected String gys_id;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
-            conn.Open();
-            String yh_id = Convert.ToString(Session["yh_id"]);
-         
+            
+            String yh_id = Convert.ToString(Session["yh_id"]);         
 			
-            String str_gysxx = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,gys_id from 材料供应商信息表 where  yh_id='"+yh_id+"' ";
+            String str_gysxx = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='"+yh_id+"' ";
             SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
 			DataSet ds_gysxx = new DataSet();
             da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
-            dt_gysxx = ds_gysxx.Tables[0]; 
+            dt_gysxx = ds_gysxx.Tables[0];
+           		
 
             if (dt_gysxx.Rows.Count == 0) Response.Redirect("gyszym.aspx");
+			    
+		
 
+            
             gys_id = dt_gysxx.Rows[0]["gys_id"].ToString();
 							
 			SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='"+gys_id+"' ", conn);
             DataSet ds_ppxx = new DataSet();
             da_ppxx.Fill(ds_ppxx, "品牌字典");
-            dt_ppxx = ds_ppxx.Tables[0];   
-			       
-            conn.Close();              
-            
+            dt_ppxx = ds_ppxx.Tables[0];  			                                        
         }
 
        		
@@ -72,7 +71,65 @@
 
     <form id="update_scs" name="update_scs" action="glscsxx2.aspx" method="post">
         <div class="fxsxx">
-            <span class="fxsxx1">贵公司的详细信息如下</span>
+		   <%
+			string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+            SqlConnection conn = new SqlConnection(constr);
+            
+            String yh_id = Convert.ToString(Session["yh_id"]);         
+			
+            String str_gysxx = "select gys_id from 材料供应商信息表 where  yh_id='"+yh_id+"' ";
+            SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
+			DataSet ds_gysxx = new DataSet();
+            da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
+            DataTable dt_gysxxs = ds_gysxx.Tables[0];
+            string gysid = Convert.ToString(dt_gysxxs.Rows[0]["gys_id"]);	
+            
+			    
+		    string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id='"+gysid+"' ";
+		    SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);
+            conn.Open();
+            Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();
+
+            if (obj_check_gys_exist != null)
+            {
+               int count = Convert.ToInt32(obj_check_gys_exist);
+               if (count != 0)  
+               {
+			    string str_select = "select 审批结果 from 供应商临时修改表 where gys_id='"+gys_id+"'";
+			    SqlDataAdapter da_select = new SqlDataAdapter (str_select,conn);
+			    DataSet ds_select = new DataSet();
+			    da_select.Fill(ds_select,"供应商临时修改表");
+			    DataTable dt_select = ds_select.Tables[0];
+			    string sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]); 
+			    if(sp_result!="")
+			    {
+                  if (sp_result.Equals("通过"))
+                  {
+                     string sql = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商临时修改表 where where gys_id='"+gys_id+"'),"
+				     +"地址=(select 贵公司地址 from 供应商临时修改表 where where gys_id='"+gys_id+"'),电话=(select 贵公司电话 from 供应商临时修改表 where where gys_id='"+gys_id+"'),"
+					 +"主页=(select 贵公司主页 from 供应商临时修改表 where where gys_id='"+gys_id+"'),传真=(select 贵公司传真 from 供应商临时修改表 where where gys_id='"+gys_id+"'),"
+				     +"联系人=(select 联系人姓名 from 供应商临时修改表 where where gys_id='"+gys_id+"'),联系人手机=(select 联系人电话 from 供应商临时修改表 where where gys_id='"+gys_id+"'),"
+					 +"经营范围=(select 经营范围 from 供应商临时修改表 where where gys_id='"+gys_id+"') where gys_id ='"+gys_id+"'";
+                     conn.Open();
+                     SqlCommand cmd2 = new SqlCommand(sql, conn);
+                     int ret = (int)cmd2.ExecuteNonQuery();
+				     conn.Close();
+                  }
+			      if (sp_result.Equals("不通过"))
+                  {
+                     string sql_delete = "delete  供应商临时修改表 where gys_id ='"+gys_id+"' ";
+					
+                     conn.Open();
+                     SqlCommand cmd_delete = new SqlCommand(sql_delete, conn);
+                     int ret = (int)cmd_delete.ExecuteNonQuery();
+			         conn.Close();
+                  }
+			    }
+              }
+			}
+			%>
+		    
+            <span class="fxsxx1">贵公司的详细信息如下:</span>
 
             <div class="fxsxx2">
                 <dl>
@@ -96,7 +153,7 @@
                         <input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地区名称"] %>"/></dt>
                     
 
-                    <!--
+   <!--
      <dd>贵公司logo：</dd>
     <dt><span class="hhh1"><img src="images/wwwq_03.jpg" /></span> <span class="hhh"><img src="images/eqwew.jpg" /></span></dt>
      <dd>贵公司图片：</dd>
@@ -115,6 +172,11 @@
                     <dd>联系人电话：</dd>
                     <dt>
                         <input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人手机"] %>" />
+
+                    </dt>
+					 <dd>经营范围：</dd>
+                    <dt>
+                        <input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" />
 
                     </dt>
 
@@ -182,12 +244,7 @@
 
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
-    <!-- footer 结束-->
-
-
-
-
-   
+    <!-- footer 结束-->  
 
 
 

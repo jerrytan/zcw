@@ -93,7 +93,7 @@
             da2.Fill(ds2, "材料分类表"); 
             dt2 = ds2.Tables[0];      
   
-            SqlDataAdapter da3 = new SqlDataAdapter("select 显示名,cl_id from 材料表 where left(材料编码,2)='"+name+"' ", conn);             
+            SqlDataAdapter da3 = new SqlDataAdapter("select distinct top 10 显示名,cl_id from 材料表 where left(材料编码,2)='"+name+"' ", conn);             
 			DataSet ds3 = new DataSet();
             da3.Fill(ds3, "材料表"); 
             dt3 = ds3.Tables[0]; 

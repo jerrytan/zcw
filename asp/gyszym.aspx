@@ -92,11 +92,10 @@
     %>
 
     <div class="gyzy1">
-        <span class="zy1">身份信息经过我方工作人员确认后，您可以认领已有的供应商，或者增加新的供应商信息，还可以添加新产品信息（图1)
+        <span class="zy1">&nbsp&nbsp &nbsp&nbsp 身份信息经过我方工作人员确认后，您可以认领已有的供应商，或者增加新的供应商信息，还可以添加新产品信息（图1)
 		<p>
 	    </p>
-		&nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp 
-		&nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp 
+		&nbsp&nbsp &nbsp&nbsp &nbsp&nbsp  
 		<span style="color: Red;font-size:16px">
 		<%
 		    foreach(System.Data.DataRow row in dt.Rows)
