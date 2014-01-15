@@ -133,7 +133,7 @@
 			string gys_id = Convert.ToString(dt_gys.Rows[0]["gys_id"]);
 			
 			//根据供应商id 查询材料信息
-            SqlDataAdapter da_cl = new SqlDataAdapter("select cl_id,显示名,分类编码 from 材料表 where gys_id='"+gys_id+"' ", conn);
+            SqlDataAdapter da_cl = new SqlDataAdapter("select cl_id,显示名,分类编码 from 材料表 where gys_id='"+gys_id+"'and 是否启用='1' ", conn);
             DataSet ds_cl = new DataSet();
             da_cl.Fill(ds_cl, "材料表");           
             dt_cl = ds_cl.Tables[0];
@@ -170,7 +170,8 @@
 		    } 
 			
 			//取二级分类名称
-			SqlDataAdapter da_ejfl = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where  分类编码 in(select 分类编码 from 材料表 where gys_id='"+gys_id+"' )", conn);
+			SqlDataAdapter da_ejfl = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where  "
+			+"分类编码 in(select 分类编码 from 材料表 where gys_id='"+gys_id+"'and 是否启用='1' )", conn);
             DataSet ds_ejfl = new DataSet();
             da_ejfl.Fill(ds_ejfl, "材料分类表");            
             dt_ejfl = ds_ejfl.Tables[0];
@@ -287,7 +288,7 @@
   	        string clidstr =Request.Form["clid"];
   	        
 			//通过获取的供应商id和cl_id进行删除
-  	        string str_cancelfollow = "delete 材料表 where gys_id ='" +  gys_id + "' and cl_id in (" + clidstr + ")" ;
+  	        string str_cancelfollow = "update 材料表 set 是否启用='0' where gys_id ='" +  gys_id + "' and cl_id in (" + clidstr + ")" ;
   	        SqlCommand cmd_cancelfollow = new SqlCommand(str_cancelfollow, conn);         
             cmd_cancelfollow.ExecuteNonQuery();
     

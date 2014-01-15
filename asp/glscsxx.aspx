@@ -37,7 +37,7 @@
             SqlConnection conn = new SqlConnection(constr);
             
             String yh_id = Convert.ToString(Session["yh_id"]);         
-			
+			//认领厂商成功,根据用户id 查询认领的供应商信息
             String str_gysxx = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='"+yh_id+"' ";
             SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
 			DataSet ds_gysxx = new DataSet();
@@ -71,6 +71,7 @@
 
     <form id="update_scs" name="update_scs" action="glscsxx2.aspx" method="post">
         <div class="fxsxx">
+		   <span class="fxsxx1">
 		   <%
 			string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
@@ -84,17 +85,17 @@
             DataTable dt_gysxxs = ds_gysxx.Tables[0];
             string gysid = Convert.ToString(dt_gysxxs.Rows[0]["gys_id"]);	
             
-			    
+			conn.Open();   
 		    string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id='"+gysid+"' ";
-		    SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);
-            conn.Open();
+		    SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);            
             Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();
+			conn.Close();
 
             if (obj_check_gys_exist != null)
             {
                int count = Convert.ToInt32(obj_check_gys_exist);
                if (count != 0)  
-               {
+               {  //如果 供应商临时修改表 有记录 查询审批结果
 			    string str_select = "select 审批结果 from 供应商临时修改表 where gys_id='"+gys_id+"'";
 			    SqlDataAdapter da_select = new SqlDataAdapter (str_select,conn);
 			    DataSet ds_select = new DataSet();
@@ -104,16 +105,19 @@
 			    if(sp_result!="")
 			    {
                   if (sp_result.Equals("通过"))
-                  {
-                     string sql = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商临时修改表 where where gys_id='"+gys_id+"'),"
-				     +"地址=(select 贵公司地址 from 供应商临时修改表 where where gys_id='"+gys_id+"'),电话=(select 贵公司电话 from 供应商临时修改表 where where gys_id='"+gys_id+"'),"
-					 +"主页=(select 贵公司主页 from 供应商临时修改表 where where gys_id='"+gys_id+"'),传真=(select 贵公司传真 from 供应商临时修改表 where where gys_id='"+gys_id+"'),"
-				     +"联系人=(select 联系人姓名 from 供应商临时修改表 where where gys_id='"+gys_id+"'),联系人手机=(select 联系人电话 from 供应商临时修改表 where where gys_id='"+gys_id+"'),"
-					 +"经营范围=(select 经营范围 from 供应商临时修改表 where where gys_id='"+gys_id+"') where gys_id ='"+gys_id+"'";
+                  {  
+				  
+				     //如果审批通过 说明修改的供应商信息有效 把 供应商临时修改表 有效数据更新到材料供应商信息表
+                     string sql = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商临时修改表 where  gys_id='"+gys_id+"'),"
+				     +"地址=(select 贵公司地址 from 供应商临时修改表 where  gys_id='"+gys_id+"'),电话=(select 贵公司电话 from 供应商临时修改表 where  gys_id='"+gys_id+"'),"
+					 +"主页=(select 贵公司主页 from 供应商临时修改表 where gys_id='"+gys_id+"'),传真=(select 贵公司传真 from 供应商临时修改表 where  gys_id='"+gys_id+"'),"
+				     +"联系人=(select 联系人姓名 from 供应商临时修改表 where  gys_id='"+gys_id+"'),联系人手机=(select 联系人电话 from 供应商临时修改表 where gys_id='"+gys_id+"'),"
+					 +"经营范围=(select 经营范围 from 供应商临时修改表 where  gys_id='"+gys_id+"') where gys_id ='"+gys_id+"'";
                      conn.Open();
                      SqlCommand cmd2 = new SqlCommand(sql, conn);
                      int ret = (int)cmd2.ExecuteNonQuery();
 				     conn.Close();
+					 Response.Write("恭喜您!您修改的数据已经保存,更新!");
                   }
 			      if (sp_result.Equals("不通过"))
                   {
@@ -123,12 +127,13 @@
                      SqlCommand cmd_delete = new SqlCommand(sql_delete, conn);
                      int ret = (int)cmd_delete.ExecuteNonQuery();
 			         conn.Close();
+					 Response.Write("您提交修改的数据不合理,请认真填写后在提交!");
                   }
 			    }
               }
 			}
 			%>
-		    
+		    </span>
             <span class="fxsxx1">贵公司的详细信息如下:</span>
 
             <div class="fxsxx2">
