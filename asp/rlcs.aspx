@@ -152,10 +152,10 @@
 							}
 							if(gys_spjg.Equals("待审核"))	
 							{			  							
-							   string dsh_gys = "select 供应商,gys_id,联系地址 from 材料供应商信息表 where yh_id ='"+ yh_id+"'";
+							   string dsh_gys = "select 供应商,gys_id,联系地址 from 供应商申请表 where yh_id ='"+ yh_id+"'";
                                SqlDataAdapter da_dsh_gys = new SqlDataAdapter(dsh_gys, conn);
                                DataSet dsh_yrl_gys = new DataSet();
-                               da_dsh_gys.Fill(dsh_yrl_gys, "材料供应商信息表");
+                               da_dsh_gys.Fill(dsh_yrl_gys, "供应商申请表");
                                dt_dsh_gys = dsh_yrl_gys.Tables[0];				                                                
                             }
                         }
@@ -181,7 +181,7 @@
 
 <form id="form1" >
   <div class="rlcs"><span class="rlcszi">您可以认领信息已经在本站的生产厂商， 流程如下图</span><img src="images/www_03.jpg" /></div>
-  <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">
+ 
    
   <% 
                   	
@@ -189,12 +189,18 @@
                   {				  
 				    if(gys_spjg.Equals("通过"))
 				    {
-				       Response.Write("恭喜您!审核已通过,可以管理生产厂商信息,管理材料信息等相关操作!!");
-					   
+	%>				
+					   <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">
+				       <%Response.Write("恭喜您!审核已通过,可以管理生产厂商信息,管理材料信息等相关操作!!");%>
+					   </span></div>     
+	<%				   
 				    }	
 				    if(gys_spjg.Equals("不通过"))
 				    {
-				       Response.Write("您认领的生产厂商信息不准确!请重新认领!");
+	%>				   <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">
+				      <% Response.Write("您认领的生产厂商信息不准确!请重新认领!"); %>
+					   </span></div> 
+	<%				   
 				    }	
 			        if(gys_spjg.Equals("待审核"))
 				    {
@@ -206,19 +212,19 @@
 					
 					 <%  foreach (System.Data.DataRow row in dt_dsh_gys.Rows)
                     { %>
-                    <div class="rlcs">
+                    <span class="rlcszi" style="color:Blue;font-size:12px">
 					<a class="rlcszi" style="color:Blue;font-size:12px" href="gysxx.aspx?gys_id=<%=row["gys_id"]%>"><%=row["供应商"].ToString() %></a>
-					</div> 
+					</span>
 		
 		            
                     <%} %>
 					   <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">
-                 	   Response.Write("并且您认领的信息已提交,请耐心等待,我方工作人员会尽快给您回复.");			
+                 	<%   Response.Write("并且您认领的信息已提交,请耐心等待,我方工作人员会尽快给您回复."); %>			
 					   </span></div>
 				 <%   }
 				  }
 		        %>
-        </div>        
+               
  
 
 

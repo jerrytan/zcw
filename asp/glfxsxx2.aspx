@@ -88,50 +88,78 @@
 				else
 				{
 				   //如果用户"没有"点击glfxsxx.aspx 下拉框 就修改分销商信息,那么就执行如下代码,进行修改
-				   String yh_id = Convert.ToString(Session["yh_id"]);   //获取用户id  76
+				   String yh_id = Convert.ToString(Session["yh_id"]);   //获取用户id  76  获取的用户id有可能是生产商
             
-			       string str_gys_id = "select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' " ;//查询供应商id	127		
+			       string str_gys_id = "select 单位类型, gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' " ;//查询供应商id	127		
                    SqlDataAdapter da_gys_id = new SqlDataAdapter(str_gys_id, conn);
 			       DataSet ds_gys_id = new DataSet();
                    da_gys_id.Fill(ds_gys_id, "材料供应商信息表");
                    DataTable dt_gys_id = ds_gys_id.Tables[0];
 			       string str_gysid = Convert.ToString(dt_gys_id.Rows[0]["gys_id"]);   //获取供应商id  127
-			
-			       string str_pp_id = "select pp_id from 品牌字典 where scs_id='"+str_gysid+"' "; //查询品牌id		
-                   SqlDataAdapter da_pp_id = new SqlDataAdapter(str_pp_id, conn);
-			       DataSet ds_pp_id = new DataSet();
-                   da_pp_id.Fill(ds_pp_id, "品牌字典");
-                   DataTable dt_pp_id = ds_pp_id.Tables[0];
-			       string str_ppid = Convert.ToString(dt_pp_id.Rows[0]["pp_id"]);   //获取品牌id  185
-				   
-				 
-				   
-				   string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id in "
-				   +"(select top 1 fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')"; //有几个分销商,就有几个fxs_id,取第一个  139
-				   SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);
-                  
-                   Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();
-                   
-                   if (obj_check_gys_exist != null)
-                   {
+				   string str_gys_type = Convert.ToString(dt_gys_id.Rows[0]["单位类型"]);   
+				   if(str_gys_type.Equals("分销商"))
+				   {
+				      string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id='"+str_gysid+"' ";
 				     
-                     int count = Convert.ToInt32(obj_check_gys_exist);
-                     if (count == 0)  
-                     { 
-                         //string str_fxs_id = "select gys_id from 供应商临时修改表 where gys_id in "
-				         //+"(select fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')";
-						
-                         //SqlDataAdapter da_fxs_id = new SqlDataAdapter(str_fxs_id, conn);
-			             //DataSet ds_fxs_id = new DataSet();
-                         //da_fxs_id.Fill(ds_fxs_id, "供应商临时修改表");
-                         //DataTable dt_fxs_id = ds_fxs_id.Tables[0];
-					     //string gysid = Convert.ToString(dt_fxs_id.Rows[0]["gys_id"]);  //如果用户没有点击下拉框就修改数据 获取fxs_id					 
-                         string str_insert = "insert into 供应商临时修改表 (gys_id)select top 1 fxs_id from 分销商和品牌对应关系表 "
-						 +"where pp_id='"+str_ppid+"'";
+				      SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);                  
+                      Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();
+                   
+                      if (obj_check_gys_exist != null)
+                      {				     
+                           int count = Convert.ToInt32(obj_check_gys_exist);
+                           if (count == 0)  
+                           {                     				                          
+						       string str_insert = "insert into 供应商临时修改表 (gys_id)values('"+str_gysid+"')";
 				       
-				        SqlCommand cmd_insert = new SqlCommand(str_insert,conn);
-				        cmd_insert.ExecuteNonQuery();
-				      }
+				               SqlCommand cmd_insert = new SqlCommand(str_insert,conn);
+				               cmd_insert.ExecuteNonQuery();
+				           }
+				           string str_update = "update 供应商临时修改表 set 贵公司名称='"+companyname+"',贵公司地址='"+address+"',"
+				           +"贵公司电话='"+tel+"',贵公司主页='"+homepage+"',贵公司地区='"+area+"',贵公司传真='"+fax+"',是否启用='1',"
+				           +"联系人姓名='"+name+"',联系人电话='"+phone+"',单位类型='分销商',经营范围='"+Business_Scope+"',"
+				           +"审批结果='待审核',updatetime=(select getdate()) where gys_id='"+str_gysid+"'";
+						   
+					  
+				           SqlCommand cmd_update = new SqlCommand(str_update,conn);
+				           cmd_update.ExecuteNonQuery();                                        
+                       }			 				    
+				   }
+			       if(str_gys_type.Equals("生产商"))
+				   {
+			          string str_pp_id = "select pp_id from 品牌字典 where scs_id='"+str_gysid+"' "; //查询品牌id		
+                      SqlDataAdapter da_pp_id = new SqlDataAdapter(str_pp_id, conn);
+			          DataSet ds_pp_id = new DataSet();
+                      da_pp_id.Fill(ds_pp_id, "品牌字典");
+                      DataTable dt_pp_id = ds_pp_id.Tables[0];
+			          string str_ppid = Convert.ToString(dt_pp_id.Rows[0]["pp_id"]);   //获取品牌id  185		   				 
+				   
+				      string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id in "
+				      +"(select top 1 fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')"; //有几个分销商,就有几个fxs_id,取第一个  139
+				      SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);
+                  
+                      Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();
+                   
+                      if (obj_check_gys_exist != null)
+                      {
+				     
+                        int count = Convert.ToInt32(obj_check_gys_exist);
+                        if (count == 0)  
+                        { 
+                           //string str_fxs_id = "select gys_id from 供应商临时修改表 where gys_id in "
+				           //+"(select fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')";
+						
+                           //SqlDataAdapter da_fxs_id = new SqlDataAdapter(str_fxs_id, conn);
+			               //DataSet ds_fxs_id = new DataSet();
+                           //da_fxs_id.Fill(ds_fxs_id, "供应商临时修改表");
+                           //DataTable dt_fxs_id = ds_fxs_id.Tables[0];
+					       //string gysid = Convert.ToString(dt_fxs_id.Rows[0]["gys_id"]);  //如果用户没有点击下拉框就修改数据 获取fxs_id					 
+                         
+						   string str_insert = "insert into 供应商临时修改表 (gys_id)select top 1 fxs_id from 分销商和品牌对应关系表 "
+						   +"where pp_id='"+str_ppid+"'";
+				       
+				           SqlCommand cmd_insert = new SqlCommand(str_insert,conn);
+				           cmd_insert.ExecuteNonQuery();
+				        }
 				        string str_update = "update 供应商临时修改表 set 贵公司名称='"+companyname+"',贵公司地址='"+address+"',"
 				        +"贵公司电话='"+tel+"',贵公司主页='"+homepage+"',贵公司地区='"+area+"',贵公司传真='"+fax+"',是否启用='1',"
 				        +"联系人姓名='"+name+"',联系人电话='"+phone+"',单位类型='分销商',经营范围='"+Business_Scope+"',"
@@ -139,18 +167,13 @@
 						+"(select top 1 fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')";
 					  
 				        SqlCommand cmd_update = new SqlCommand(str_update,conn);
-				        cmd_update.ExecuteNonQuery();                        
-
-                    
-
-                   }
-				 
-				  
+				        cmd_update.ExecuteNonQuery();                                        
+                      }			 				  
+				 }
 				}
 				conn.Close();
 				
-                //Response.Write("保存成功");
-                //Response.Redirect("glfxsxx.aspx");
+              
             }
 </script>
 <body>

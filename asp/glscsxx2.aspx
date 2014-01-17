@@ -59,17 +59,14 @@
                        string str_insert = "insert into 供应商临时修改表 (gys_id)values('"+gys_id+"')";
 				       
 				       SqlCommand cmd_insert = new SqlCommand(str_insert,conn);
-				       cmd_insert.ExecuteNonQuery();
-				  
-				       string str_update = "update 供应商临时修改表 set 贵公司名称='"+companyname+"',贵公司地址='"+address+"',"
-				       +"贵公司电话='"+tel+"',贵公司主页='"+homepage+"',贵公司地区='"+area+"',贵公司传真='"+fax+"',是否启用='1',"
-				       +"联系人姓名='"+name+"',联系人电话='"+phone+"',单位类型='生产商',经营范围='"+Business_Scope+"',"
-				       +"审批结果='待审核',updatetime=(select getdate()) where gys_id='"+gys_id+"' ";
-				       SqlCommand cmd_update = new SqlCommand(str_update,conn);
-				       cmd_update.ExecuteNonQuery();                        
-
+				       cmd_insert.ExecuteNonQuery();			 		                          
                     }
-
+                    string str_update = "update 供应商临时修改表 set 贵公司名称='"+companyname+"',贵公司地址='"+address+"',"
+				    +"贵公司电话='"+tel+"',贵公司主页='"+homepage+"',贵公司地区='"+area+"',贵公司传真='"+fax+"',是否启用='1',"
+				    +"联系人姓名='"+name+"',联系人电话='"+phone+"',单位类型='生产商',经营范围='"+Business_Scope+"',"
+				    +"审批结果='待审核',updatetime=(select getdate()) where gys_id='"+gys_id+"' ";
+				    SqlCommand cmd_update = new SqlCommand(str_update,conn);
+				    cmd_update.ExecuteNonQuery(); 
                   }
 				 
 				  conn.Close();				  

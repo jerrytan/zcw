@@ -26,8 +26,7 @@
 
 <script type="text/javascript" language="javascript">
 
-        function Update_gys(id) {
-          
+        function Update_gys(id) {          
             
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
@@ -93,31 +92,40 @@
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
             String yh_id = Convert.ToString(Session["yh_id"]);   //获取用户id
-            
-			string str_gys_id = "select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' " ;//查询供应商id			
-            SqlDataAdapter da_gys_id = new SqlDataAdapter(str_gys_id, conn);
-			DataSet ds_gys_id = new DataSet();
-            da_gys_id.Fill(ds_gys_id, "材料供应商信息表");
-            DataTable dt_gys_id = ds_gys_id.Tables[0];
-			string str_gysid = Convert.ToString(dt_gys_id.Rows[0]["gys_id"]);   //获取供应商id
 			
-			string str_pp_id = "select pp_id from 品牌字典 where scs_id='"+str_gysid+"' "; //查询品牌id		
-            SqlDataAdapter da_pp_id = new SqlDataAdapter(str_pp_id, conn);
-			DataSet ds_pp_id = new DataSet();
-            da_pp_id.Fill(ds_pp_id, "品牌字典");
-            DataTable dt_pp_id = ds_pp_id.Tables[0];
-			string str_ppid = Convert.ToString(dt_pp_id.Rows[0]["pp_id"]);   //获取品牌id
+			String str_type = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='"+yh_id+"' ";  //查询单位类型
+			SqlDataAdapter da_type = new SqlDataAdapter(str_type, conn);
+			DataSet ds_type = new DataSet();
+            da_type.Fill(ds_type, "材料供应商信息表");
+            DataTable dt_type = ds_type.Tables[0];
+			string gys_type = Convert.ToString(dt_type.Rows[0]["单位类型"]);
+			string gys_type_id = Convert.ToString(dt_type.Rows[0]["gys_id"]);  //供应商id   141
+			if (gys_type.Equals("生产商"))
+			{
+              string str_gys_id = "select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' " ;//查询供应商id			
+              SqlDataAdapter da_gys_id = new SqlDataAdapter(str_gys_id, conn);
+			  DataSet ds_gys_id = new DataSet();
+              da_gys_id.Fill(ds_gys_id, "材料供应商信息表");
+              DataTable dt_gys_id = ds_gys_id.Tables[0];
+			  string str_gysid = Convert.ToString(dt_gys_id.Rows[0]["gys_id"]);   //获取供应商id
 			
-			string str_fxs_id = "select fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"' "; //查询分销商id		
-            SqlDataAdapter da_fxs_id = new SqlDataAdapter(str_fxs_id, conn);
-			DataSet ds_fxs_id = new DataSet();
-            da_fxs_id.Fill(ds_fxs_id, "分销商和品牌对应关系表");
-            DataTable dt_fxs_id = ds_fxs_id.Tables[0];
+			  string str_pp_id = "select pp_id from 品牌字典 where scs_id='"+str_gysid+"' "; //查询品牌id		
+              SqlDataAdapter da_pp_id = new SqlDataAdapter(str_pp_id, conn);
+			  DataSet ds_pp_id = new DataSet();
+              da_pp_id.Fill(ds_pp_id, "品牌字典");
+              DataTable dt_pp_id = ds_pp_id.Tables[0];
+			  string str_ppid = Convert.ToString(dt_pp_id.Rows[0]["pp_id"]);   //获取品牌id
+			
+			  string str_fxs_id = "select fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"' "; //查询分销商id		
+              SqlDataAdapter da_fxs_id = new SqlDataAdapter(str_fxs_id, conn);
+			  DataSet ds_fxs_id = new DataSet();
+              da_fxs_id.Fill(ds_fxs_id, "分销商和品牌对应关系表");
+              DataTable dt_fxs_id = ds_fxs_id.Tables[0];
 			
 			
-            this.Items2 = new List<GYS_Objects>();
-            for(int x=0;x<dt_fxs_id.Rows.Count;x++)
-            {
+              this.Items2 = new List<GYS_Objects>();
+              for(int x=0;x<dt_fxs_id.Rows.Count;x++)
+              {
                 DataRow dr2 = dt_fxs_id.Rows[x];                                 		     
  			    GYS_Object item = new GYS_Object();                
                 item.Sid = Convert.ToString(dr2["fxs_id"]);    //将不同的fxs_id存入集合
@@ -133,27 +141,44 @@
                 ite.Gys_name = Convert.ToString(dt.Rows[0]["供应商"]);  //没循环一次 把循环的分销商存入集合
                 ite.Gys_sid = Convert.ToString(dt.Rows[0]["gys_id"]);
                 this.Items2.Add(ite); 
+			  }
+            
+            
+			  string str_fxsid = Convert.ToString(dt_fxs_id.Rows[0]["fxs_id"]);   //获取第一个分销商id			
+			  //根据不同的分销商id 查询不同的分销商信息
+              String str_gysxx = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='"+str_fxsid+"' ";
+              SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
+			  DataSet ds_gysxx = new DataSet();
+              da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
+              dt_gysxx = ds_gysxx.Tables[0];
+			  
+			  SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='"+str_fxsid+"' ", conn);
+              DataSet ds_ppxx = new DataSet();
+              da_ppxx.Fill(ds_ppxx, "分销商和品牌对应关系表");
+              dt_ppxx = ds_ppxx.Tables[0]; 
 			}
-            
-            
-			string str_fxsid = Convert.ToString(dt_fxs_id.Rows[0]["fxs_id"]);   //获取第一个分销商id			
-			//根据不同的分销商id 查询不同的分销商信息
-            String str_gysxx = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='"+str_fxsid+"' ";
-            SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
-			DataSet ds_gysxx = new DataSet();
-            da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
-            dt_gysxx = ds_gysxx.Tables[0];
-
-			
+			if (gys_type.Equals("分销商"))
+			{
+               //如果是分销商信息 直接根据yh_id 查询供应商信息 
+               String str_gysxx = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id "
+			   +"from 材料供应商信息表 where  yh_id='"+yh_id+"' ";
+               SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
+			   DataSet ds_gysxx = new DataSet();
+               da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
+               dt_gysxx = ds_gysxx.Tables[0];
+			   string fxs_id = Convert.ToString(dt_gysxx.Rows[0]["gys_id"]);
+			   
+			   SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='"+fxs_id+"' ", conn);
+               DataSet ds_ppxx = new DataSet();
+               da_ppxx.Fill(ds_ppxx, "分销商和品牌对应关系表");
+               dt_ppxx = ds_ppxx.Tables[0];  
+			}
            
             if (dt_gysxx.Rows.Count == 0) 
 			Response.Redirect("gyszym.aspx");
-            //gys_id = dt_gysxx.Rows[0]["gys_id"].ToString();
+          
     						
-			SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='"+str_fxsid+"' ", conn);
-            DataSet ds_ppxx = new DataSet();
-            da_ppxx.Fill(ds_ppxx, "分销商和品牌对应关系表");
-            dt_ppxx = ds_ppxx.Tables[0];   
+			 
 			       
             conn.Close();              
             
@@ -181,79 +206,128 @@
 		  if(id=="")
 		  {
             String yh_id = Convert.ToString(Session["yh_id"]);   //获取用户id   76         
-			string str_gys_id = "select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' " ;//查询供应商id			
+			string str_gys_id = "select 单位类型, gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' " ;//查询供应商id			
             SqlDataAdapter da_gys_id = new SqlDataAdapter(str_gys_id, conn);
 		    DataSet ds_gys_id = new DataSet();
             da_gys_id.Fill(ds_gys_id, "材料供应商信息表");
             DataTable dt_gys_id = ds_gys_id.Tables[0];
 			string str_gysid = Convert.ToString(dt_gys_id.Rows[0]["gys_id"]);   //获取供应商id   127
+			string str_gysid_type = Convert.ToString(dt_gys_id.Rows[0]["单位类型"]);
 			
-			string str_pp_id = "select pp_id from 品牌字典 where scs_id='"+str_gysid+"' "; //查询品牌id		
-            SqlDataAdapter da_pp_id = new SqlDataAdapter(str_pp_id, conn);
-			DataSet ds_pp_id = new DataSet();
-            da_pp_id.Fill(ds_pp_id, "品牌字典");
-            DataTable dt_pp_id = ds_pp_id.Tables[0];
-			string str_ppid = Convert.ToString(dt_pp_id.Rows[0]["pp_id"]);   //获取品牌id	185
+			
+			if(str_gysid_type.Equals("生产商"))
+			{
+			   string str_pp_id = "select pp_id from 品牌字典 where scs_id='"+str_gysid+"' "; //查询品牌id		
+               SqlDataAdapter da_pp_id = new SqlDataAdapter(str_pp_id, conn);
+			   DataSet ds_pp_id = new DataSet();
+               da_pp_id.Fill(ds_pp_id, "品牌字典");
+               DataTable dt_pp_id = ds_pp_id.Tables[0];
+			   string str_ppid = Convert.ToString(dt_pp_id.Rows[0]["pp_id"]);   //获取品牌id	185
             
 			   
-		    string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id in "    //139
-			+"(select top 1 fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')";
-		    SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);            
-            Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();
+		       string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id in "    //139
+			   +"(select top 1 fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')";
+		       SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);            
+               Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();
 		
 
-            if (obj_check_gys_exist != null)
-            {
-               int count = Convert.ToInt32(obj_check_gys_exist);
-               if (count != 0)  
-               {  //如果 供应商临时修改表 有记录 查询审批结果
-			    string str_select = "select 审批结果,gys_id from 供应商临时修改表 where gys_id in "  //139
-				+"(select top 1 fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')";
-			    SqlDataAdapter da_select = new SqlDataAdapter (str_select,conn);
-			    DataSet ds_select = new DataSet();
-			    da_select.Fill(ds_select,"供应商临时修改表");
-			    DataTable dt_select = ds_select.Tables[0];
-			    string sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);   //通过
-				string gysid = Convert.ToString(dt_select.Rows[0]["gys_id"]);    //139
-			    if(sp_result!="")
-			    {
-                  if (sp_result.Equals("通过"))
-                  {  
+               if (obj_check_gys_exist != null)
+               {
+                  int count = Convert.ToInt32(obj_check_gys_exist);
+                  if (count != 0)  
+                  {  //如果 供应商临时修改表 有记录 查询审批结果
+			         string str_select = "select 审批结果,gys_id from 供应商临时修改表 where gys_id in "  //139
+				     +"(select top 1 fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')";
+			         SqlDataAdapter da_select = new SqlDataAdapter (str_select,conn);
+			         DataSet ds_select = new DataSet();
+			         da_select.Fill(ds_select,"供应商临时修改表");
+			         DataTable dt_select = ds_select.Tables[0];
+			         string sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);   //通过
+				     string gysid = Convert.ToString(dt_select.Rows[0]["gys_id"]);    //139
+			         if(sp_result!="")
+			         {
+                      if (sp_result.Equals("通过"))
+                      {  
 				  
-				     //如果审批通过 说明修改的供应商信息有效 把 供应商临时修改表 有效数据更新到材料供应商信息表
-                     string sql = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
-				     +"地址=(select 贵公司地址 from 供应商临时修改表 where  gys_id='"+gysid+"'),电话=(select 贵公司电话 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
-					 +"主页=(select 贵公司主页 from 供应商临时修改表 where gys_id='"+gysid+"'),传真=(select 贵公司传真 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
-				     +"联系人=(select 联系人姓名 from 供应商临时修改表 where  gys_id='"+gysid+"'),联系人手机=(select 联系人电话 from 供应商临时修改表 where gys_id='"+gysid+"'),"
-					 +"经营范围=(select 经营范围 from 供应商临时修改表 where  gys_id='"+gysid+"') where gys_id ='"+gysid+"'";
+				         //如果审批通过 说明修改的供应商信息有效 把 供应商临时修改表 有效数据更新到材料供应商信息表
+                         string sql = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
+				         +"地址=(select 贵公司地址 from 供应商临时修改表 where  gys_id='"+gysid+"'),电话=(select 贵公司电话 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
+					     +"主页=(select 贵公司主页 from 供应商临时修改表 where gys_id='"+gysid+"'),传真=(select 贵公司传真 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
+				         +"联系人=(select 联系人姓名 from 供应商临时修改表 where  gys_id='"+gysid+"'),联系人手机=(select 联系人电话 from 供应商临时修改表 where gys_id='"+gysid+"'),"
+					     +"经营范围=(select 经营范围 from 供应商临时修改表 where  gys_id='"+gysid+"') where gys_id ='"+gysid+"'";
                      
-                     SqlCommand cmd2 = new SqlCommand(sql, conn);
-                     int ret = (int)cmd2.ExecuteNonQuery();
+                         SqlCommand cmd2 = new SqlCommand(sql, conn);
+                         int ret = (int)cmd2.ExecuteNonQuery();
 				     
-					 Response.Write("恭喜您!!您修改的数据已经保存,更新!");
-                  }
-			      if (sp_result.Equals("不通过"))
-                  {
-                     string sql_delete = "delete  供应商临时修改表 where gys_id ='"+gys_id+"' ";
-					
-                     
-                     SqlCommand cmd_delete = new SqlCommand(sql_delete, conn);
-                     int ret = (int)cmd_delete.ExecuteNonQuery();
+					     Response.Write("恭喜您!!您修改的数据已经保存,更新!");
+                      }
+			          if (sp_result.Equals("不通过"))
+                      {
+                         string sql_delete = "delete  供应商临时修改表 where gys_id ='"+gys_id+"' ";			                     
+                         SqlCommand cmd_delete = new SqlCommand(sql_delete, conn);
+                         int ret = (int)cmd_delete.ExecuteNonQuery();
 			         
-					 Response.Write("您提交修改的数据不合理,请认真填写后在提交!");
+					    Response.Write("您提交修改的数据不合理,请认真填写后在提交!");
+                      }
+			        }
                   }
-			    }
-              }
+			   }     
 			}
-		  }
-		  else
+			if(str_gysid_type.Equals("分销商"))
+			{		             			   
+		      string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id='"+str_gysid+"' ";
+		      SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);            
+              Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();	
+              if (obj_check_gys_exist != null)
+              {
+                 int count = Convert.ToInt32(obj_check_gys_exist);
+                 if (count != 0)  
+                 {  //如果 供应商临时修改表 有记录 查询审批结果
+			        string str_select = "select 审批结果,gys_id from 供应商临时修改表 where gys_id='"+str_gysid+"' ";
+				
+			        SqlDataAdapter da_select = new SqlDataAdapter (str_select,conn);
+			        DataSet ds_select = new DataSet();
+			        da_select.Fill(ds_select,"供应商临时修改表");
+			        DataTable dt_select = ds_select.Tables[0];
+			        string sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);   //通过
+				    string gysid = Convert.ToString(dt_select.Rows[0]["gys_id"]);    //139
+			        if(sp_result!="")
+			        {
+                      if (sp_result.Equals("通过"))
+                      {  				  
+				        //如果审批通过 说明修改的供应商信息有效 把 供应商临时修改表 有效数据更新到材料供应商信息表
+                        string sql = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
+				        +"地址=(select 贵公司地址 from 供应商临时修改表 where  gys_id='"+gysid+"'),电话=(select 贵公司电话 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
+					    +"主页=(select 贵公司主页 from 供应商临时修改表 where gys_id='"+gysid+"'),传真=(select 贵公司传真 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
+				        +"联系人=(select 联系人姓名 from 供应商临时修改表 where  gys_id='"+gysid+"'),联系人手机=(select 联系人电话 from 供应商临时修改表 where gys_id='"+gysid+"'),"
+					    +"经营范围=(select 经营范围 from 供应商临时修改表 where  gys_id='"+gysid+"') where gys_id ='"+gysid+"'";
+                     
+                        SqlCommand cmd2 = new SqlCommand(sql, conn);
+                        int ret = (int)cmd2.ExecuteNonQuery();
+				     
+					    Response.Write("恭喜您!!您修改的数据已经保存,更新!");
+                      }
+			         if (sp_result.Equals("不通过"))
+                     {
+                       string sql_delete = "delete  供应商临时修改表 where gys_id ='"+gys_id+"' ";			
+                     
+                       SqlCommand cmd_delete = new SqlCommand(sql_delete, conn);
+                       int ret = (int)cmd_delete.ExecuteNonQuery();
+			         
+					   Response.Write("您提交修改的数据不合理,请认真填写后在提交!");
+                     }
+			       }
+                 }
+			  }
+			}
+			
+		 }
+		else
 		  {
 		    string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id='"+id+"' ";
 			
 		    SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);            
-            Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();
-			
-
+            Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();	
             if (obj_check_gys_exist != null)
             {
                int count = Convert.ToInt32(obj_check_gys_exist);
@@ -299,19 +373,33 @@
 		  }
 		  conn.Close();
 		%>
-	    </span>
-		
-		<div class="zjgxs">                                
-			<select name="" class="fug" style="width:200px" onchange="Update_gys(this.options[this.options.selectedIndex].value)">
+	    </span>		                                
 			
-			<%foreach(var v in Items2){%>
+			
+			<%	
+            String user_id = Convert.ToString(Session["yh_id"]);   //获取用户id 			
+			String str_type = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='"+user_id+"' ";  //查询单位类型
+			SqlDataAdapter da_type = new SqlDataAdapter(str_type, conn);
+			DataSet ds_type = new DataSet();
+            da_type.Fill(ds_type, "材料供应商信息表");
+            DataTable dt_type = ds_type.Tables[0];
+			string gys_type = Convert.ToString(dt_type.Rows[0]["单位类型"]);
+			string gys_type_id = Convert.ToString(dt_type.Rows[0]["gys_id"]);  //供应商id   141
+			//如果是分销商就没有下拉列表
+			if (gys_type.Equals("生产商"))
+			{
+			  foreach(var v in Items2){
+			
+			%>
+			<div class="zjgxs">
+			<select name="" class="fug" style="width:200px" onchange="Update_gys(this.options[this.options.selectedIndex].value)">
 			<option value="<%=v.Gys_sid%>"><%=v.Gys_name%></option>
 			<%}%>
 			
 			</select> 
 			<span class="zjgxs1"><a href="#">增加新的供销商</a></span>
 			</div>
-			
+			<%}%>
             <span class="fxsxx1">贵公司的详细信息如下:</span>		
 
             <div class="fxsxx2">
