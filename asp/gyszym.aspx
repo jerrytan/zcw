@@ -51,7 +51,7 @@
                 SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);
                 cmd_insertuser.ExecuteNonQuery();
                 String str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + QQid + "')"
-				+",updatetime=(select getdate())where QQ_id = '" + QQid + "'";
+				+",updatetime=(select getdate()),注册时间=(select getdate())where QQ_id = '" + QQid + "'";
                 SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);
                 cmd_updateuser.ExecuteNonQuery();
 
@@ -70,7 +70,7 @@
         //(供应商申请)的yh_id 是在认领厂商之后更新的
        
         
-        string str_gyssq = "select count(*) from 供应商申请表 where yh_id='" + yh_id + "'";
+        string str_gyssq = "select count(*) from 供应商认领申请表 where yh_id='" + yh_id + "'";
         SqlCommand cmd_select = new SqlCommand(str_gyssq, conn);
         Object obj_checkexist_yhid = cmd_select.ExecuteScalar();
         conn.Close();
@@ -81,7 +81,7 @@
             if (count != 0)  //如果(供应商申请)不更新 就没有yh_id 往下不执行
             {
 
-                SqlDataAdapter da_gyssq = new SqlDataAdapter("select 审批结果 from 供应商申请表 where yh_id='" + yh_id + "' ", conn);
+                SqlDataAdapter da_gyssq = new SqlDataAdapter("select 审批结果 from 供应商认领申请表 where yh_id='" + yh_id + "' ", conn);
                 DataSet ds_gyssq = new DataSet();
                 DataTable dt_gyssq = new DataTable();
                 da_gyssq.Fill(ds_gyssq, "供应商申请");

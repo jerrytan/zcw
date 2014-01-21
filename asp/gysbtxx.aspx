@@ -59,12 +59,12 @@
          document.form1.gys_address.focus();
          return false;
         }
-		else if(document.form1.gys_homepage.value=="")
-        {
-         alert("贵公司的主页不能为空,请填写");
-         document.form1.gys_homepage.focus();
-         return false;
-        }
+		//else if(document.form1.gys_homepage.value=="")
+        //{
+         //alert("贵公司的主页不能为空,请填写");
+         //document.form1.gys_homepage.focus();
+         //return false;
+        //}
 		else if(document.form1.gys_phone.value=="")
         {
          alert("贵公司电话不能为空,请填写!");
@@ -110,8 +110,11 @@
 				 {
 			      if(Convert.ToString(row["是否验证通过"])==""||Convert.ToString(row["是否验证通过"])=="待审核")
 				  {
-				     Response.Write("请耐心等候,您的资料已提交,正在审核当中,我方工作人员会尽快给您答复!");
-                     Response.Write("<br>");								 
+				  
+				     Response.Write("请耐心等候,您的资料已提交,正在审核当中,我方工作");
+                     Response.Write("<br>");
+					 Response.Write("人员会尽快给您答复!");
+					 Response.Write("<br>");
 					 Response.Write("<dd>");
 					 Response.Write("您的信息如下:");
 					 Response.Write("</dd>");
@@ -147,8 +150,9 @@
 
 <dd>*贵公司名称：</dd>  <dt><input name="gys_name" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /></dt>
 <dd>*贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司地址"] %>"/></dt>
-<dd>*贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
 <dd>*贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司电话"] %>"/></dt>
+<dd>&nbsp贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="ggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
+
 
 <dd>&nbsp贵公司是：</dd>    
 <!--
@@ -182,7 +186,7 @@
 	<input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" value=""/>
     <input type="submit" value="保存" OnClick="Form_submit()"/>
 	</span></div>
-	
+	<dd><span class="gybtr">*号的为必填项,不能为空!</span></dd><dt></dt>
 </div>
 </form>
 

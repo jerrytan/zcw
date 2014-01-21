@@ -57,12 +57,11 @@
                            String str_insertuser = "insert into 用户表 (QQ_id) VALUES ('"+ QQ_id.Value+"')";
                            SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);         
                            cmd_insertuser.ExecuteNonQuery();
-                           String str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+QQ_id.Value+"') "
+                           String str_updateuser = "update 用户表 set 注册时间=(select getdate()),"
+						   +"yh_id = (select myId from 用户表 where QQ_id = '"+QQ_id.Value+"') "
  						   +"where QQ_id = '"+QQ_id.Value+"'";
                            SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
-                           cmd_updateuser.ExecuteNonQuery();
-                 
-                      
+                           cmd_updateuser.ExecuteNonQuery();                                   
                       }
                                     
                 }

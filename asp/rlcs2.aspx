@@ -18,7 +18,7 @@
 					
 					
 					
-					string str_select = "select count(*) from 供应商申请表 where yh_id = '"+yh_id +"'";
+					string str_select = "select count(*) from 供应商认领申请表 where yh_id = '"+yh_id +"'";
 					SqlCommand cmd_select = new SqlCommand(str_select, conn);                           
 					Object obj_checkexist_gysid = cmd_select.ExecuteScalar();
                     if (obj_checkexist_gysid != null) 
@@ -27,13 +27,13 @@
                         if (count ==0 )  //认领的供应商不存在
                         {        
                             //更新材料供应商信息表
-                            //String str_updateuser = "update 供应商申请表 set yh_id = '"+yh_id +"' where gys_id = '"+gys_id+"'";
+                            //String str_updateuser = "update 供应商认领申请表 set yh_id = '"+yh_id +"' where gys_id = '"+gys_id+"'";
                             //SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
                             //cmd_updateuser.ExecuteNonQuery();
 							
 							//用户验证通过,可以将yh_id插入供应商申请		             
 			                              	
-                            string yhid_insert = "insert into 供应商申请表(yh_id) values('"+yh_id+"')";
+                            string yhid_insert = "insert into 供应商认领申请表(yh_id) values('"+yh_id+"')";
                    　       SqlCommand cmd_insert= new SqlCommand(yhid_insert, conn);
 				            cmd_insert.ExecuteNonQuery();
 					 
@@ -61,7 +61,7 @@
 					
 					 
 					        //更新供应商申请表
-					        string sql_yhxx = "update  供应商申请表 set updatetime=(select getdate()),gys_id = '"+gys_id+"', "
+					        string sql_yhxx = "update  供应商认领申请表 set updatetime=(select getdate()),gys_id = '"+gys_id+"', "
 					        +"供应商='"+gys_name+"',主页='"+homepage+"',电话='"+tel+"',传真='"+fax+"',联系人='"+user_name+"', "
 					        +"联系人手机='"+user_phone+"',单位类型='"+gys_type+"',组织机构编号='"+zzjg_number+"',联系地址='"+lx_addrass+"',"
 					        +"经营范围='"+scope+"',地区名称='"+area+"',审批结果='待审核' where yh_id='"+yh_id+"' ";

@@ -110,15 +110,15 @@
             conn.Open();
             String yh_id = Convert.ToString(Session["yh_id"]);         
 			
-            String str_gysxx = "select 单位类型, gys_id from 材料供应商信息表 where  yh_id='"+yh_id+"' ";
-            SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
-			DataSet ds_gysxx = new DataSet();
-            da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
-            DataTable dt_gysxxs = ds_gysxx.Tables[0];
+            String str_gysxx_type = "select 单位类型, gys_id from 材料供应商信息表 where  yh_id='"+yh_id+"' ";
+            SqlDataAdapter da_gysxx_type = new SqlDataAdapter(str_gysxx_type, conn);
+			DataSet ds_gysxx_type = new DataSet();
+            da_gysxx_type.Fill(ds_gysxx_type, "材料供应商信息表");
+            DataTable dt_gysxxs = ds_gysxx_type.Tables[0];
             string gysid = Convert.ToString(dt_gysxxs.Rows[0]["gys_id"]);	  //141
 			string gys_types = Convert.ToString(dt_gysxxs.Rows[0]["单位类型"]);
 			
-			
+			string sp_result="";
 			if (gys_types.Equals("分销商"))
 			{             				
 				String str_gysxxs = "select top 1 pp_id from  分销商和品牌对应关系表 where pp_id in "
@@ -138,46 +138,63 @@
                 DataTable dt_gysxx_fxs = ds_gysxx_fxs.Tables[0];
                 string gysids = Convert.ToString(dt_gysxx_fxs.Rows[0]["gys_id"]);	  //128	
 				
-				string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id='"+gysids+"' ";
+				string sql_gys_id = "select count(*) from 供应商自己修改待审核表 where gys_id='"+gysids+"' ";
 		        SqlCommand cmd_checkuserexists = new SqlCommand(sql_gys_id, conn);            
                 Object obj_check_gys_exist = cmd_checkuserexists.ExecuteScalar();
 				if (obj_check_gys_exist != null)
             {
                int count = Convert.ToInt32(obj_check_gys_exist);
                if (count != 0)  
-               {  //如果 供应商临时修改表 有记录 查询审批结果
-			    string str_select = "select 审批结果 from 供应商临时修改表 where gys_id='"+gysids+"'";
+               {  //如果 供应商自己修改待审核表 有记录 查询审批结果
+			    string str_select = "select 审批结果 from 供应商自己修改待审核表 where gys_id='"+gysids+"'";
 			    SqlDataAdapter da_select = new SqlDataAdapter (str_select,conn);
 			    DataSet ds_select = new DataSet();
-			    da_select.Fill(ds_select,"供应商临时修改表");
+			    da_select.Fill(ds_select,"供应商自己修改待审核表");
 			    DataTable dt_select = ds_select.Tables[0];
-			    string sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]); 
+			    sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]); 
 			    if(sp_result!="")
 			    {
                   if (sp_result.Equals("通过"))
                   {  
 				  
-				     //如果审批通过 说明修改的供应商信息有效 把 供应商临时修改表 有效数据更新到材料供应商信息表
-                     string sql = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商临时修改表 where  gys_id='"+gysids+"'),"
-				     +"地址=(select 贵公司地址 from 供应商临时修改表 where  gys_id='"+gysids+"'),电话=(select 贵公司电话 from 供应商临时修改表 where  gys_id='"+gysids+"'),"
-					 +"主页=(select 贵公司主页 from 供应商临时修改表 where gys_id='"+gysids+"'),传真=(select 贵公司传真 from 供应商临时修改表 where  gys_id='"+gysids+"'),"
-				     +"联系人=(select 联系人姓名 from 供应商临时修改表 where  gys_id='"+gysids+"'),联系人手机=(select 联系人电话 from 供应商临时修改表 where gys_id='"+gysids+"'),"
-					 +"经营范围=(select 经营范围 from 供应商临时修改表 where  gys_id='"+gysids+"') where gys_id ='"+gysids+"'";
+				     //如果审批通过 说明修改的供应商信息有效 把 供应商自己修改待审核表 有效数据更新到材料供应商信息表
+                     string sql = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商自己修改待审核表 where  gys_id='"+gysids+"'),"
+				     +"地址=(select 贵公司地址 from 供应商自己修改待审核表 where  gys_id='"+gysids+"'),电话=(select 贵公司电话 from 供应商自己修改待审核表 where  gys_id='"+gysids+"'),"
+					 +"主页=(select 贵公司主页 from 供应商自己修改待审核表 where gys_id='"+gysids+"'),传真=(select 贵公司传真 from 供应商自己修改待审核表 where  gys_id='"+gysids+"'),"
+				     +"联系人=(select 联系人姓名 from 供应商自己修改待审核表 where  gys_id='"+gysids+"'),联系人手机=(select 联系人电话 from 供应商自己修改待审核表 where gys_id='"+gysids+"'),"
+					 +"地区名称=(select 贵公司地区 from 供应商自己修改待审核表 where gys_id='"+gysids+"'),"
+					 +"经营范围=(select 经营范围 from 供应商自己修改待审核表 where  gys_id='"+gysids+"') where gys_id ='"+gysids+"'";
                      
                      SqlCommand cmd2 = new SqlCommand(sql, conn);
                      int ret = (int)cmd2.ExecuteNonQuery();
+					 
+					 String str_gysxx = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='"+gysids+"' ";
+                     SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
+			         DataSet ds_gysxx = new DataSet();
+                     da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
+                     dt_gysxx = ds_gysxx.Tables[0];					 
 				     
 					 Response.Write("恭喜您!您修改的数据已经保存,更新!");
                   }
 			      if (sp_result.Equals("不通过"))
                   {
-                     string sql_delete = "delete  供应商临时修改表 where gys_id ='"+gys_id+"' ";
-					
+                     string sql_delete = "delete  供应商自己修改待审核表 where gys_id ='"+gys_id+"' ";					
                     
                      SqlCommand cmd_delete = new SqlCommand(sql_delete, conn);
                      int ret = (int)cmd_delete.ExecuteNonQuery();
 			         
 					 Response.Write("您提交修改的数据不合理,请认真填写后在提交!");
+                  }
+				  if (sp_result.Equals("待审核"))
+                  {
+                     String str_gysxx = "select 贵公司名称,贵公司地址,贵公司电话,贵公司主页,贵公司传真,贵公司地区,联系人姓名,联系人电话,"
+					 +"经营范围,gys_id  from 供应商自己修改待审核表 where  yh_id='"+yh_id+"'and 单位类型='分销商' ";
+                     SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
+			         DataSet ds_gysxx = new DataSet();
+                     da_gysxx.Fill(ds_gysxx, "供应商自己修改待审核表");
+                     dt_gysxx = ds_gysxx.Tables[0];
+			         
+					 Response.Write("审核当中!");
                   }
 			    }
               }
@@ -187,46 +204,63 @@
 			
              if (gys_types.Equals("生产商"))
 			{ 
-			    string sql_gys_id = "select count(*) from 供应商临时修改表 where gys_id='"+gysid+"' ";
+			    string sql_gys_id = "select count(*) from 供应商自己修改待审核表 where gys_id='"+gysid+"' ";
 		        SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);            
                 Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();
 				if (obj_check_gys_exist != null)
             {
                int count = Convert.ToInt32(obj_check_gys_exist);
                if (count != 0)  
-               {  //如果 供应商临时修改表 有记录 查询审批结果
-			    string str_select = "select 审批结果 from 供应商临时修改表 where gys_id='"+gysid+"'";
+               {  //如果 供应商自己修改待审核表 有记录 查询审批结果
+			    string str_select = "select 审批结果 from 供应商自己修改待审核表 where gys_id='"+gysid+"'";
 			    SqlDataAdapter da_select = new SqlDataAdapter (str_select,conn);
 			    DataSet ds_select = new DataSet();
-			    da_select.Fill(ds_select,"供应商临时修改表");
+			    da_select.Fill(ds_select,"供应商自己修改待审核表");
 			    DataTable dt_select = ds_select.Tables[0];
-			    string sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]); 
+			    sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]); 
 			    if(sp_result!="")
 			    {
                   if (sp_result.Equals("通过"))
                   {  
 				  
-				     //如果审批通过 说明修改的供应商信息有效 把 供应商临时修改表 有效数据更新到材料供应商信息表
-                     string sql = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
-				     +"地址=(select 贵公司地址 from 供应商临时修改表 where  gys_id='"+gysid+"'),电话=(select 贵公司电话 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
-					 +"主页=(select 贵公司主页 from 供应商临时修改表 where gys_id='"+gysid+"'),传真=(select 贵公司传真 from 供应商临时修改表 where  gys_id='"+gysid+"'),"
-				     +"联系人=(select 联系人姓名 from 供应商临时修改表 where  gys_id='"+gysid+"'),联系人手机=(select 联系人电话 from 供应商临时修改表 where gys_id='"+gysid+"'),"
-					 +"经营范围=(select 经营范围 from 供应商临时修改表 where  gys_id='"+gysid+"') where gys_id ='"+gysid+"'";
+				     //如果审批通过 说明修改的供应商信息有效 把 供应商自己修改待审核表 有效数据更新到材料供应商信息表
+                     string sql = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商自己修改待审核表 where  gys_id='"+gysid+"'),"
+				     +"地址=(select 贵公司地址 from 供应商自己修改待审核表 where  gys_id='"+gysid+"'),电话=(select 贵公司电话 from 供应商自己修改待审核表 where  gys_id='"+gysid+"'),"
+					 +"主页=(select 贵公司主页 from 供应商自己修改待审核表 where gys_id='"+gysid+"'),传真=(select 贵公司传真 from 供应商自己修改待审核表 where  gys_id='"+gysid+"'),"
+				     +"联系人=(select 联系人姓名 from 供应商自己修改待审核表 where  gys_id='"+gysid+"'),联系人手机=(select 联系人电话 from 供应商自己修改待审核表 where gys_id='"+gysid+"'),"
+					 +"地区名称=(select 贵公司地区 from 供应商自己修改待审核表 where gys_id='"+gysid+"'),"
+					 +"经营范围=(select 经营范围 from 供应商自己修改待审核表 where  gys_id='"+gysid+"') where gys_id ='"+gysid+"'";
                      
                      SqlCommand cmd2 = new SqlCommand(sql, conn);
                      int ret = (int)cmd2.ExecuteNonQuery();
 				     
+					 String str_gysxx = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='"+gysid+"' ";
+                     SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
+			         DataSet ds_gysxx = new DataSet();
+                     da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
+                     dt_gysxx = ds_gysxx.Tables[0];
 					 Response.Write("恭喜您!您修改的数据已经保存,更新!");
                   }
 			      if (sp_result.Equals("不通过"))
                   {
-                     string sql_delete = "delete  供应商临时修改表 where gys_id ='"+gys_id+"' ";
+                     string sql_delete = "delete  供应商自己修改待审核表 where gys_id ='"+gys_id+"' ";
 					
                     
                      SqlCommand cmd_delete = new SqlCommand(sql_delete, conn);
                      int ret = (int)cmd_delete.ExecuteNonQuery();
 			         
 					 Response.Write("您提交修改的数据不合理,请认真填写后在提交!");
+                  }
+				   if (sp_result.Equals("待审核"))
+                  {
+                     String str_gysxx = "select 贵公司名称,贵公司地址,贵公司电话,贵公司主页,贵公司传真,贵公司地区,联系人姓名,联系人电话,"
+					 +"经营范围,gys_id  from 供应商自己修改待审核表 where  yh_id='"+yh_id+"'and 单位类型='生产商' ";
+                     SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
+			         DataSet ds_gysxx = new DataSet();
+                     da_gysxx.Fill(ds_gysxx, "供应商自己修改待审核表");
+                     dt_gysxx = ds_gysxx.Tables[0];
+			         
+					 Response.Write("审核当中!");
                   }
 			    }
               }
@@ -244,22 +278,57 @@
                 <dl>
                     <dd>贵公司名称：</dd>
                     <dt>
-                        <input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" /></dt>
+					<%if (sp_result.Equals("待审核")){%>
+                        <input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" />
+						<%}else{%>
+						<input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" />
+						<%}%>
+					</dt>
+					
                     <dd>贵公司地址：</dd>
                     <dt>
-                        <input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系地址"] %>"/></dt>
+					<%if (sp_result.Equals("待审核")){%>
+                        <input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>"/>
+						<%}else{%>
+						<input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系地址"] %>"/>
+						<%}%>
+						</dt>
+						
                     <dd>贵公司电话：</dd>
                     <dt>
-                        <input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>"/></dt>
+					<%if (sp_result.Equals("待审核")){%>
+                        <input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>"/>
+						<%}else{%>
+						<input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>"/>
+						<%}%>
+						</dt>
+						
                     <dd>贵公司主页：</dd>
                     <dt>
-                        <input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["主页"] %>" /></dt>
+					<%if (sp_result.Equals("待审核")){%>
+                        <input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" />
+						<%}else{%>
+						<input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["主页"] %>" />
+						<%}%>
+						</dt>
+						
                     <dd>贵公司传真：</dd>
                     <dt>
-                        <input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["传真"] %>"/></dt>
+					<%if (sp_result.Equals("待审核")){%>
+                        <input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司传真"] %>"/>
+						<%}else{%>
+						<input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["传真"] %>"/>
+						<%}%>
+						</dt>
+						
                     <dd>贵公司地区：</dd>
                     <dt>
-                        <input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地区名称"] %>"/></dt>
+					<%if (sp_result.Equals("待审核")){%>
+                        <input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地区"] %>"/>
+						<%}else{%>
+						<input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地区名称"] %>"/>
+						<%}%>
+						</dt>
                     
 
    <!--
@@ -277,16 +346,29 @@
 
                     <dd>联系人姓名：</dd>
                     <dt>
-                        <input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人"] %>" /></dt>
+					<%if (sp_result.Equals("待审核")){%>
+                        <input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人姓名"] %>" />
+						<%}else{%>
+						<input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人"] %>" />
+						<%}%>
+						</dt>
+						
                     <dd>联系人电话：</dd>
                     <dt>
-                        <input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人手机"] %>" />
-
+					<%if (sp_result.Equals("待审核")){%>
+                        <input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人电话"] %>" />
+                        <%}else{%>
+						<input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人手机"] %>" />
+						<%}%>
                     </dt>
+					
 					 <dd>经营范围：</dd>
                     <dt>
+					<%if (sp_result.Equals("待审核")){%>
                         <input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" />
-
+                        <%}else{%>
+						<input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" />
+						<%}%>
                     </dt>
 
 

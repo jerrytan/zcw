@@ -51,7 +51,7 @@
               da_gyssq.Fill(ds_gyssq, "用户表");           
               dt_gyssq = ds_gyssq.Tables[0];
               passed_gys = Convert.ToString(dt_gyssq.Rows[0]["是否验证通过"]);                              	
-	          if(passed_gys.Equals("通过"))
+	          if(passed_gys.Equals("通过"))   //如果用户在平台验证通过后 再继续点击保存 不在修改用户信息 直接返回
 			  {
 				       return;
 		      }
@@ -59,7 +59,7 @@
 			  //更新用户表			  
 			  string sql_yhxx = "update  用户表 set updatetime=(select getdate()), 公司名称='"+gys_name+"',公司地址='"+gys_address+"',"
 			  +"公司主页='"+gys_homepage+"',公司电话='"+gys_phone+"',姓名='"+user_name+"',手机='"+user_phone+"', "
-			  +"QQ号码='"+user_qq+"',类型='"+scs_type+"',是否验证通过='待审核' where yh_id='"+yh_id+"' ";
+			  +"QQ号码='"+user_qq+"',类型='"+scs_type+"',是否验证通过='待审核',等级='普通用户' where yh_id='"+yh_id+"' ";
 			  conn.Open();
 			  SqlCommand cmd_gysbtxx = new SqlCommand(sql_yhxx,conn);
 			  int ret = (int)cmd_gysbtxx.ExecuteNonQuery();
