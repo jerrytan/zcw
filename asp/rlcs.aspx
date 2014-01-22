@@ -222,7 +222,7 @@
 					
 					
 					   <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">
-                 	<%   Response.Write("并且您认领的信息已提交,请耐心等待,我方工作人员会尽快给您回复."); %>			
+                 	<%   Response.Write("并且您申请的信息已提交,请耐心等待,我方工作人员会尽快给您回复."); %>			
 					   </span></div>
 				 <%   }
 				  }

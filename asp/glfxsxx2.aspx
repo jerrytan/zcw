@@ -146,14 +146,7 @@
                         int count = Convert.ToInt32(obj_check_gys_exist);
                         if (count == 0)  
                         { 
-                           //string str_fxs_id = "select gys_id from 供应商自己修改待审核表 where gys_id in "
-				           //+"(select fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')";
-						
-                           //SqlDataAdapter da_fxs_id = new SqlDataAdapter(str_fxs_id, conn);
-			               //DataSet ds_fxs_id = new DataSet();
-                           //da_fxs_id.Fill(ds_fxs_id, "供应商自己修改待审核表");
-                           //DataTable dt_fxs_id = ds_fxs_id.Tables[0];
-					       //string gysid = Convert.ToString(dt_fxs_id.Rows[0]["gys_id"]);  //如果用户没有点击下拉框就修改数据 获取fxs_id					 
+                           					 
                          
 						   string str_insert = "insert into 供应商自己修改待审核表 (gys_id)select top 1 fxs_id from 分销商和品牌对应关系表 "
 						   +"where pp_id='"+str_ppid+"'";
