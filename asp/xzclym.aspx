@@ -49,6 +49,8 @@
         xmlhttp.send();
               
     }
+	
+	
        //二级分类发送ajax 更新的是品牌的名称 和材料属性的名称
 	   //文件名是xzclym3.aspx 和 xzclymSX.aspx
       function updateCLFL(id) 

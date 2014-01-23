@@ -126,7 +126,7 @@
 			String yh_id = Convert.ToString(Session["yh_id"]);   //获取session中yh_id
 			
 			//根据用户id 查询供应商id
-			SqlDataAdapter da_gys = new SqlDataAdapter("select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' ", conn);
+			SqlDataAdapter da_gys = new SqlDataAdapter("select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' ", conn);   //141
             DataSet ds_gys = new DataSet();
             da_gys.Fill(ds_gys, "材料供应商信息表");           
             DataTable dt_gys = ds_gys.Tables[0];
@@ -343,7 +343,7 @@
                             foreach (System.Data.DataRow row in dt_cls.Rows){
       	        
                             %>
-                            <a href="javascript:void(0)"><%=row["显示名"].ToString()%><input type="checkbox" name="clid" value="<%=row["cl_id"]%>" />选中</a>                            
+                            <a href="clbj.aspx?cl_id=<%=row["cl_id"]%>"><%=row["显示名"].ToString()%></a><input type="checkbox" name="clid" value="<%=row["cl_id"]%>" />选中                           
 							<%    			    
    		                     }
    		       secondlevel++;
@@ -410,3 +410,6 @@
 
 </body>
 </html>
+
+
+
