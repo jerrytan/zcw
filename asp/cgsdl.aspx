@@ -25,17 +25,27 @@
     </script>
     <div class="dlqq">
         <div class="dlqq1">
-            <%
-   
-        HttpCookie QQ_id = Request.Cookies["CGS_QQ_ID"];   
-        Object cgs_yh_id = Session["CGS_YH_ID"];          
-        
-		if (QQ_id != null && cgs_yh_id != null) 	
+     <%
+        HttpCookie gys_QQ_id = Request.Cookies["GYS_QQ_ID"];   
+        Object gys_yh_id = Session["GYS_YH_ID"];     
+ 
+		if (gys_QQ_id != null && gys_yh_id != null) 	
         {
-            Response.Write("您已经登录，请返回。<p>");                            
+            Response.Write("您已经作为供应商登录，请返回。<p>");                            
         }
-        else
+        
+        else 
         {
+            HttpCookie cgs_QQ_id = Request.Cookies["CGS_QQ_ID"];   
+            Object cgs_yh_id = Session["CGS_YH_ID"];          
+        
+		    if (cgs_QQ_id != null && cgs_yh_id != null) 	
+            {
+                 Response.Write("您已经作为采购商登录，请返回。<p>");                            
+             }
+
+            else
+           {
            
             %>
             <span class="dlzi">尊敬的采购商用户，您好! </span><span class="dlzi">请点击右边按钮登陆！</span> <span
@@ -51,6 +61,7 @@
 
             <img src="images/wz_03.jpg">
             <%
+            }
         }
    
             %>
