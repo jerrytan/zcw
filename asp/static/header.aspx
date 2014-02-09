@@ -17,22 +17,35 @@
             <img src="images/sss_03.jpg" onclick="javascript:fsubmit(document.form1);">
         </form>
     </div>
+
+    
     <%
-			HttpCookie QQ_id = Request.Cookies["QQ_id"];
-            Object logout = Session["logout"];
-            
-			if ((QQ_id == null ) || (QQ_id != null && logout!= null ))
+            //供应商登陆或者登出
+			HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
+            Object gys_yh_id = Session["GYS_YH_ID"];            
+			if ((GYS_QQ_ID == null ) || (gys_yh_id == null ))
 			{
     %>
     <div class="anniu"><a onclick=clickMe("gysdl.aspx")>供应商登录</a></div>
+    <% } else {%>
+     <div class="anniu"><a onclick=clickMe("gysdc.aspx")>供应商登出</a></div>
+    <%		}%>
+
+    <%
+            //采购商登陆或者登出
+
+			HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+            Object cgs_yh_id = Session["CGS_YH_ID"];
+            
+			if ((CGS_QQ_ID == null ) || (cgs_yh_id == null))
+			{
+    %>
     <div class="anniu"><a onclick=clickMe("cgsdl.aspx")>采购商登录</a></div>
     <%      }else {%>
-    <div class="anniu">
-        <a onclick=clickMe("gysdc.aspx")>供应商登出</a>
-    </div>
+   
     
     <div class="anniu">
-         <a onclick=clickMe("gysdc.aspx")>采购商登出</a>
+         <a onclick=clickMe("cgsdc.aspx")>采购商登出</a>
     </div>
    
     <%		}%>

@@ -28,7 +28,7 @@
 				//var exdate=new Date();
 				//exdate.setDate(exdate.getDate()+1);
 				//var cookieStr = "QQ_id=" + openId + ";expires=" + exdate.toGMTString();
-				var cookieStr = "QQ_id=" + openId;
+				var cookieStr = "GYS_QQ_ID=" + openId;
 				//alert(cookieStr);
 				document.cookie = cookieStr;
 				window.close();

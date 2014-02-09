@@ -33,7 +33,7 @@
                 //alert("尊敬的供应商，您好，您已经用QQ号登陆成功，确认后自动返回。");
                 //using cookie to store openId
 
-                var cookieStr = "QQ_id=" + openId;
+                var cookieStr = "CGS_QQ_ID=" + openId;
                 //alert(cookieStr);
                 document.cookie = cookieStr;
                 

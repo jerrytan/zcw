@@ -27,14 +27,12 @@
         <div class="dlqq1">
             <%
    
-        HttpCookie QQ_id = Request.Cookies["QQ_id"];   
-        Object logout = Session["logout"];          
+        HttpCookie QQ_id = Request.Cookies["CGS_QQ_ID"];   
+        Object cgs_yh_id = Session["CGS_YH_ID"];          
         
-		if (QQ_id != null && logout == null) 	
+		if (QQ_id != null && cgs_yh_id != null) 	
         {
-            Response.Write("您已经登录，请返回。<p>");
-
-            
+            Response.Write("您已经登录，请返回。<p>");                            
         }
         else
         {

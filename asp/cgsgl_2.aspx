@@ -129,8 +129,9 @@
   protected String yh_id;
   protected void Page_Load(object sender, EventArgs e)
   {
-        
-        String QQid = Request.Cookies["QQ_id"].Value;
+       
+        String QQid = Request.Cookies["CGS_QQ_ID"].Value;
+
 
         String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
         SqlConnection conn = new SqlConnection(constr);
@@ -158,7 +159,7 @@
               da.Fill(ds, "用户表");           
               DataTable dt = ds.Tables[0];
               yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);
-              Session["yh_id"] = yh_id;
+              Session["CGS_YH_ID"] = yh_id;
                       
                
          }
@@ -175,7 +176,7 @@
     conn.Open();
     
    
-    yh_id = Session["yh_id"].ToString();
+    yh_id = Session["CGS_YH_ID"].ToString();
     //yh_id ="20";
   	string querySQL = 
   		"select distinct a.分类编码,a.显示名字 from 材料分类表 as a , " + 
@@ -290,7 +291,7 @@
   	string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
-  	string yh_id = Session["yh_id"].ToString();
+  	string yh_id = Session["CGS_YH_ID"].ToString();
   	//yh_id = "20";
   	string str_queryallcl = "select b.* from 采购商关注材料表 as  a ,材料表 as b " + 
   	                        " where a.yh_id='"  + yh_id + "'  and a.cl_id = b.cl_id " ;
@@ -371,7 +372,7 @@
     SqlConnection conn = new SqlConnection(constr);
     conn.Open();
   	string yh_id;
-  	yh_id = Session["yh_id"].ToString();
+  	yh_id = Session["CGS_YH_ID"].ToString();
   	//yh_id = "20";
   	string clidstr =Request.Form["clid"];
   	//clidstr = ",21,100";

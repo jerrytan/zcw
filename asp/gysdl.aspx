@@ -30,62 +30,14 @@
         <div class="dlqq1">
       <%
         
-        HttpCookie QQ_id = Request.Cookies["QQ_id"];   
-        Object logout = Session["logout"];  
-        if (QQ_id != null && logout == null)
-        {
-            //Response.Write("openid is " + openId.Value + "<p>");
-
-            //insert into db to store openid and its cl_id
-            String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            
-            try
-            {
-                
-                String str_checkuserexist = "select count(*) from 用户表 where QQ_id = '"+QQ_id.Value+"'";
-                SqlCommand cmd_checkuserexist = new SqlCommand(str_checkuserexist, conn);
-       
-                conn.Open();
-                Object obj_checkuserexist = cmd_checkuserexist.ExecuteScalar();
-                if (obj_checkuserexist != null) 
-                {
-                     int count = Convert.ToInt32(obj_checkuserexist);
-                     if (count ==0 )  //qq_id 不存在，需要增加用户表
-                     {
+        HttpCookie QQ_id = Request.Cookies["GYS_QQ_ID"];   
+        Object cgs_yh_id = Session["GYS_YH_ID"];          
         
-                           String str_insertuser = "insert into 用户表 (QQ_id) VALUES ('"+ QQ_id.Value+"')";
-                           SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);         
-                           cmd_insertuser.ExecuteNonQuery();
-                           String str_updateuser = "update 用户表 set 注册时间=(select getdate()),"
-						   +"yh_id = (select myId from 用户表 where QQ_id = '"+QQ_id.Value+"') "
- 						   +"where QQ_id = '"+QQ_id.Value+"'";
-                           SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
-                           cmd_updateuser.ExecuteNonQuery();                                   
-                      }
-                                    
-                }
-				//确认QQ_id不为空 才连接的供应商主页面
-			   string str_select = "select QQ_id from 用户表 where QQ_id = '"+QQ_id.Value+"'";
-               SqlDataAdapter da_select = new SqlDataAdapter(str_select,conn);
-               DataSet ds_ = new DataSet();
-			   DataTable dt_ = new DataTable();
-               da_select.Fill(ds_, "用户表");           
-               dt_ = ds_.Tables[0];
-               string passed_ = Convert.ToString(dt_.Rows[0]["QQ_id"]);
-               if(passed_!="")
-               {			   
-                 Response.Redirect("gyszym.aspx");  
-               }
-            	
-            }
-            catch (Exception ex){
-                throw(ex);
-            }
-            finally{
-                conn.Close();
-            }           
+		if (QQ_id != null && cgs_yh_id != null) 	
+        {
+            Response.Write("您已经登录，请返回。<p>");                            
         }
+        
         else
         {
             //Response.Write("openid is empty");
