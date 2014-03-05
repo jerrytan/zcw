@@ -34,7 +34,7 @@
 		HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
         Object cgs_yh_id = Session["CGS_YH_ID"];
             
-	    if ((CGS_QQ_ID == null ) || (cgs_yh_id == null))
+	    if ((CGS_QQ_ID == null ) && (cgs_yh_id == null))
 	    {
 		//Response.Write("QQ_id is " + QQ_id.Value + "<p>");
 		
