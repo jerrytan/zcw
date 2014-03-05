@@ -28,14 +28,12 @@
         <div class="dlqq1">
             <%
 		
-		HttpCookie QQ_id = Request.Cookies["QQ_id"];
-        Object logout = Session["logout"];
-        String  cl_id = Request["cl_id"];
 		
-		//Response.Write("QQ_id is " + QQ_id.Value + "<p>");
-		
-		if ((QQ_id == null ) || (QQ_id != null && logout!= null ))
-		{
+			HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+            Object cgs_yh_id = Session["CGS_YH_ID"];
+            String cl_id = Request["cl_id"];
+			if ((CGS_QQ_ID == null ) || (cgs_yh_id == null))
+			{
 			 //Response.Write("openid is empty");
             %>
             <span class="dlzi">尊敬的采购商，您好! </span>
@@ -64,7 +62,7 @@
             
             try{
                 //查询是否该QQid已经登录过
-                string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '"+QQ_id.Value+"'";
+                string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"'";
                 SqlCommand cmd_checkuserexist = new SqlCommand(str_checkuserexist, conn);
        
                 conn.Open();
@@ -75,17 +73,17 @@
                      if (count ==0 )  //qq_id 不存在，需要增加用户表
                      {
         
-                           String str_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('"+ QQ_id.Value+"')";
+                           String str_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('"+ CGS_QQ_ID.Value+"')";
                            SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);         
                            cmd_insertuser.ExecuteNonQuery();
 
-                           String str_updateyhid = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+QQ_id.Value+"') where QQ_id = '"+QQ_id.Value+"'";
+                           String str_updateyhid = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"') where QQ_id = '"+CGS_QQ_ID.Value+"'";
                            SqlCommand cmd_updateyhid = new SqlCommand(str_updateyhid, conn);         
                            cmd_updateyhid.ExecuteNonQuery();
                      }
 
                      //获得yh_id，QQ_id应该为
-                     String str_getyhid = "select myId from 用户表 where QQ_id ='"+ QQ_id.Value+"'";
+                     String str_getyhid = "select myId from 用户表 where QQ_id ='"+ CGS_QQ_ID.Value+"'";
                      SqlCommand cmd_getyhid = new SqlCommand(str_getyhid, conn);
                      Object res_yhid = cmd_getyhid.ExecuteScalar();
                      if (res_yhid != null) 

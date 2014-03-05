@@ -34,7 +34,7 @@
 			conn.Open();
 			
 			string gys_id = Request["gys_id"];   //获取表单提交过来的分销商id 
-			String yh_id = Convert.ToString(Session["yh_id"]);   //获取用户id
+			String yh_id = Convert.ToString(Session["GYS_YH_ID"]);   //获取用户id
 			
                 string companyname = Request["companyname"];   //公司名字
                 string address = Request["address"];            //地址
@@ -89,7 +89,7 @@
 				else
 				{
 				   //如果用户"没有"点击glfxsxx.aspx 下拉框 就修改分销商信息,那么就执行如下代码,进行修改
-				   //String yh_id = Convert.ToString(Session["yh_id"]);   //获取用户id  76  获取的用户id有可能是生产商
+				   //String yh_id = Convert.ToString(Session["GYS_YH_ID"]);   //获取用户id  76  获取的用户id有可能是生产商
             
 			       string str_gys_id = "select 单位类型, gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' " ;//查询供应商id	127		
                    SqlDataAdapter da_gys_id = new SqlDataAdapter(str_gys_id, conn);

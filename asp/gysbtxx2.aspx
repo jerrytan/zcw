@@ -29,7 +29,7 @@
         { 
              string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
              SqlConnection conn = new SqlConnection(constr);
-			 String yh_id = Convert.ToString(Session["yh_id"]); 	 //获取表单的用户id	 
+			 String yh_id = Convert.ToString(Session["GYS_YH_ID"]); 	 //获取表单的用户id	 
              //string yh_id = "26";
 			 
              string gys_name = Request["gys_name"];                  //公司名字

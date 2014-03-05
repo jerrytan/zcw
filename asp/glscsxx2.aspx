@@ -34,7 +34,7 @@
 			conn.Open();
 			
 			string gys_id = Request["gys_id"];                  //获取的供应商id
-			String yh_id = Convert.ToString(Session["yh_id"]);   //获取用户id
+			String yh_id = Convert.ToString(Session["GYS_YH_ID"]);   //获取用户id
 			
                 string companyname = Request["companyname"];   //公司名字
                 string address = Request["address"];            //地址

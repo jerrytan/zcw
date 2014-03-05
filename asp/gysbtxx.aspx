@@ -30,7 +30,7 @@
 			string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             
-            String yh_id = Convert.ToString(Session["yh_id"]); 	 //获取表单的用户id	 
+            String yh_id = Convert.ToString(Session["GYS_YH_ID"]); 	 //获取表单的用户id	 
 			//String yh_id = "29"; 	 //获取表单的用户id	
             if(yh_id!="")
 			{

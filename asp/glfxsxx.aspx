@@ -91,7 +91,7 @@
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
-            String yh_id = Convert.ToString(Session["yh_id"]);   //获取用户id
+            String yh_id = Convert.ToString(Session["GYS_YH_ID"]);   //获取用户id
 			
 			String str_type = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='"+yh_id+"' ";  //查询单位类型
 			SqlDataAdapter da_type = new SqlDataAdapter(str_type, conn);
@@ -207,7 +207,7 @@
           string id = Request["id"];    //获取glfxsxx2页面返回的供应商id
 		  if(id=="")
 		  {
-            String yh_id = Convert.ToString(Session["yh_id"]);   //获取用户id   90        
+            String yh_id = Convert.ToString(Session["GYS_YH_ID"]);   //获取用户id   90        
 			string str_gys_id = "select 单位类型, gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' " ;//查询供应商id			
             SqlDataAdapter da_gys_id = new SqlDataAdapter(str_gys_id, conn);
 		    DataSet ds_gys_id = new DataSet();
@@ -442,7 +442,7 @@
 			
 			
 			<%	
-            String user_id = Convert.ToString(Session["yh_id"]);   //获取用户id 			
+            String user_id = Convert.ToString(Session["GYS_YH_ID"]);   //获取用户id 			
 			String str_type = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='"+user_id+"' ";  //查询单位类型
 			SqlDataAdapter da_type = new SqlDataAdapter(str_type, conn);
 			DataSet ds_type = new DataSet();

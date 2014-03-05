@@ -27,7 +27,7 @@
                     
 			        string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
                     SqlConnection conn = new SqlConnection(constr);
-					string yh_id = Convert.ToString(Session["yh_id"]);
+					string yh_id = Convert.ToString(Session["GYS_YH_ID"]);
 					
 					string str_yh = "select 类型 from 用户表 where yh_id ='"+ yh_id+"' ";
                     SqlDataAdapter da_yh = new SqlDataAdapter(str_yh, conn);
@@ -100,7 +100,7 @@
                     string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
                     SqlConnection conn = new SqlConnection(constr);
                     //查询供应商申请表 如果审批通过,显示被认领的供应商
-					string yh_id = Convert.ToString(Session["yh_id"]);
+					string yh_id = Convert.ToString(Session["GYS_YH_ID"]);
 					string str_select = "select count(*) from 供应商认领申请表 where yh_id = '"+yh_id +"'";
 					conn.Open();
 					SqlCommand cmd_select = new SqlCommand(str_select, conn);                           

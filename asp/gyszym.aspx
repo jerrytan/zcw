@@ -31,7 +31,7 @@
 
 
     <% 
-        String QQid = Request.Cookies["GYS_QQ_id"].Value;   //首先获取cookie中的QQ_id
+        String QQid = Request.Cookies["GYS_QQ_ID"].Value;   //首先获取cookie中的QQ_id
 		
         string yh_id = "";
         String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
@@ -63,6 +63,8 @@
         da.Fill(ds, "用户表");
         DataTable dt = ds.Tables[0];
         yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);
+		
+		//need to set session value
         Session["GYS_YH_ID"] = yh_id;
         String passed = Convert.ToString(dt.Rows[0]["是否验证通过"]);
         String name = Convert.ToString(dt.Rows[0]["姓名"]);

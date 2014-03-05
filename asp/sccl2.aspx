@@ -25,7 +25,7 @@
                 alert("您好，您已经用QQ号登陆成功，确认后自动返回。");
                 //using cookie to store openId
 
-                document.cookie = "QQ_id=" + openId;
+                document.cookie = "CGS_QQ_id=" + openId;
                 opener.location.reload();
             });
             

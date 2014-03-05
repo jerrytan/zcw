@@ -123,7 +123,7 @@
         {
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);            
-			String yh_id = Convert.ToString(Session["yh_id"]);   //获取session中yh_id
+			String yh_id = Convert.ToString(Session["GYS_YH_ID"]);   //获取session中yh_id
 			
 			//根据用户id 查询供应商id
 			SqlDataAdapter da_gys = new SqlDataAdapter("select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' ", conn);   //141
@@ -192,7 +192,7 @@
           {
   	         string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
              SqlConnection conn = new SqlConnection(constr);             
-  	         string yh_id = Session["yh_id"].ToString();
+  	         string yh_id = Session["GYS_YH_ID"].ToString();
 			 
 			 //根据用户id 查询供应商id
 			 SqlDataAdapter da_gys = new SqlDataAdapter("select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' ", conn);
@@ -275,7 +275,7 @@
   	        string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
-  	        String yh_id = Convert.ToString(Session["yh_id"]);   //获取session中yh_id
+  	        String yh_id = Convert.ToString(Session["GYS_YH_ID"]);   //获取session中yh_id
 			
 			//根据用户id 查询供应商id
 			SqlDataAdapter da_gys = new SqlDataAdapter("select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' ", conn);
@@ -324,7 +324,7 @@
                             							
 							string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
                             SqlConnection conn = new SqlConnection(constr); 
-                            String yh_id = Convert.ToString(Session["yh_id"]);   //获取session中yh_id							
+                            String yh_id = Convert.ToString(Session["GYS_YH_ID"]);   //获取session中yh_id							
 			                
 							//根据用户id 查询供应商id
 			                SqlDataAdapter da_gys = new SqlDataAdapter("select gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' ", conn);

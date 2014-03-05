@@ -11,7 +11,7 @@
 <%
             String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);          
-            String yh_id = Session["yh_id"].ToString();
+            String yh_id = Session["GYS_YH_ID"].ToString();
          
 
             //É¾³ýÆ·ÅÆ

@@ -20,7 +20,7 @@
         protected void Page_Load(object sender, EventArgs e)
         {
             gys_id = Request["gys_id"].ToString();
-            yh_id = Session["yh_id"].ToString();
+            yh_id = Session["GYS_YH_ID"].ToString();
 
             String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);

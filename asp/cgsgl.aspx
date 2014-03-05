@@ -30,11 +30,11 @@
         <div class="dlqq1">
       <%
    
-        HttpCookie QQ_id = Request.Cookies["QQ_id"];
-        Object logout = Session["logout"];          
+        HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+        Object cgs_yh_id = Session["CGS_YH_ID"];        
        
-		if (QQ_id != null && logout == null) 	
-        {
+		if ((CGS_QQ_ID != null ) && (cgs_yh_id != null))
+			{
             //Response.Write("openid is " + openId.Value + "<p>");
 
             String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
@@ -42,7 +42,7 @@
             
             try{
                 //查询是否该QQid已经登录过
-                string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '"+QQ_id.Value+"'";
+                string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"'";
                 SqlCommand cmd_checkuserexist = new SqlCommand(str_checkuserexist, conn);
        
                 conn.Open();
@@ -53,10 +53,10 @@
                      if (count ==0 )  //qq_id 不存在，需要增加用户表
                      {
         
-                           String str_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('"+ QQ_id.Value+"')";
+                           String str_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('"+ CGS_QQ_ID.Value+"')";
                            SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);         
                            cmd_insertuser.ExecuteNonQuery();
-                           String str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+QQ_id.Value+"') where QQ_id = '"+QQ_id.Value+"')";
+                           String str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"') where QQ_id = '"+CGS_QQ_ID.Value+"')";
                            SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
                            cmd_updateuser.ExecuteNonQuery();
                       }
@@ -64,7 +64,7 @@
                 }
 
                 //write yh_id to session
-                string str_getyhid = "select yh_id from 用户表 where QQ_id = '"+QQ_id.Value+"'";
+                string str_getyhid = "select yh_id from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"'";
                 SqlCommand cmd_getyhid = new SqlCommand(str_getyhid, conn);
                 String yh_id = cmd_getyhid.ExecuteScalar().ToString();
                 Session["yh_id"]=yh_id;

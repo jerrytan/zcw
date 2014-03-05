@@ -40,8 +40,8 @@
   SqlConnection conn = new SqlConnection(constr);
   conn.Open();
   string yh_id ;
-  //yh_id= Session["yh_id"].ToString();
-  yh_id="20";
+  yh_id= Session["CGS_YH_ID"].ToString();
+  //yh_id="20";
   string queryUserInfo = "select * from ”√ªß±Ì where yh_id='" + yh_id + "'";
   SqlDataAdapter da = new SqlDataAdapter(queryUserInfo, conn);
   DataSet ds = new DataSet();

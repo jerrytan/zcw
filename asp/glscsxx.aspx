@@ -89,7 +89,7 @@
             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             
-            String yh_id = Convert.ToString(Session["yh_id"]);         
+            String yh_id = Convert.ToString(Session["GYS_YH_ID"]);         
 			//认领厂商成功,根据用户id 查询认领的供应商信息
 			
 			String str_type = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='"+yh_id+"' ";  //查询单位类型
@@ -184,7 +184,7 @@
 			string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
             SqlConnection conn = new SqlConnection(constr);
             conn.Open();
-            String yh_id = Convert.ToString(Session["yh_id"]);         
+            String yh_id = Convert.ToString(Session["GYS_YH_ID"]);         
 			
             String str_gysxx_type = "select 单位类型, gys_id from 材料供应商信息表 where  yh_id='"+yh_id+"' ";
             SqlDataAdapter da_gysxx_type = new SqlDataAdapter(str_gysxx_type, conn);
