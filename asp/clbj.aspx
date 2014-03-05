@@ -236,6 +236,9 @@
                     <dd>说明：</dd>
                     <dt>
                         <input name="cl_instruction" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["说明"] %>" /></dt>
+					<dd>报价：</dd>
+					<dt>
+						<input name="cl_instruction" type="text" class="fxsxx3" value="" /></dt>
                 </dl>
 </div>
 
