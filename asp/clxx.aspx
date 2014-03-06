@@ -21,6 +21,8 @@
 <title>材料信息详情页</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
+<script src="js/SJLD.js" type="text/javascript"></script>
+ 
 </head>
 
 <body>
@@ -181,11 +183,28 @@
 </div>
 
 <div class="xx8">
-<div class="xx9"><div class="fxs1">
-<select name="" class="fu1"><option>华北</option></select>  
+<div class="xx9">
+<div class="fxs1">
+<!-- <select name="" class="fu1"><option>华北</option></select>   
 <select name="" class="fu2"><option>北京</option></select>省（市）
     <select name="" class="fu3"><option>石家庄</option></select> 地区
-	<select name="" class="fu4"><option>市区</option></select> 区（县） </div>
+	<select name="" class="fu4"><option>市区</option></select> 区（县） 
+	 -->
+	 <select id="s1" class="fu1"><option></option></select> 省（市）
+	<select id="s2" class="fu2"><option></option></select> 地级市
+    <select id="s3" class="fu3"><option>市、县级市、县</option></select> 市、县级市、县
+	<script  language ="javascript" > 
+<!--
+    //** Power by Fason(2004-3-11) 
+    //** Email:fason_pfx@hotmail.com
+    var s = ["s1", "s2", "s3"];
+    var opt0 = ["省份", "地级市", "市、县级市、县"];
+    for (i = 0; i < s.length - 1; i++)
+        document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
+    change(0);
+//--> 
+</script> 
+	</div>
 	<% foreach(System.Data.DataRow row in dt_fxsxx.Rows){%>
     <div class="fxs2">
        <ul>
