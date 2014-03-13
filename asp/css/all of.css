@@ -154,8 +154,8 @@
 
 /* 采购商补填信息页面 */
 
-.gytb{ width:980px; height:auto; float:left; margin-top:30px;}
-.gybtl{ width:510px; height:415px; float:left; margin:0 20px 0 0; display:inline;}
+.gytb{ width:1000px; height:auto; float:left; margin-top:30px;}
+.gybtl{ width:510px; height:415px; float:left; margin:0 20px 0 0; }
 .gybtr{ width:450px; height:auto; float:left; }
 .gybtr dl{ width:100%; height:auto; float:left;}
 .gybtr dd{ width:130px; height:24px; float:left; margin-top:10px; line-height:24px; }
