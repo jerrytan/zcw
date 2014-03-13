@@ -17,24 +17,22 @@
             public string Type { get; set; }
             public string Manufacturers { get; set; }
         }
-        protected DataTable dt = new DataTable(); //最受关注的供应商(材料供应商信息表)	
+        protected DataTable dt_Most10cp = new DataTable(); //最受关注的供应商(材料供应商信息表)
+        protected DataConn dc = new DataConn();	
         protected void Page_Load(object sender, EventArgs e)
         {
 		    if (!Page.IsPostBack)
             {
-                string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-                SqlConnection conn = new SqlConnection(constr);
-                conn.Open();
-                SqlDataAdapter da = new SqlDataAdapter("select distinct top 10 供应商 ,gys_id,单位类型 from 材料供应商信息表 where 是否启用=1 order by gys_id", conn);
-                DataSet ds = new DataSet();
-                da.Fill(ds, "材料供应商信息表");
-                conn.Close();
-                dt = ds.Tables[0];
+                DataSet ds_Most10cp = new DataSet();
+                string str_Sql ="select distinct top 10 供应商 ,gys_id,单位类型 from 材料供应商信息表 where 是否启用=1 order by gys_id";  
+                string str_Table = "材料供应商信息表";
+                dt_Most10cp = dc.DataPileDT(str_Sql,ds_Most10cp,str_Table);
+
 			
 			    this.Items = new List<Manufacturer>();
-                for (int x = 0; x < dt.Rows.Count; x++)
+                for (int x = 0; x < dt_Most10cp.Rows.Count; x++)
                 {
-                    DataRow dr = dt.Rows[x];
+                    DataRow dr = dt_Most10cp.Rows[x];
                     Manufacturer mf = new Manufacturer();
                     mf.Manufacturers = Convert.ToString(dr["供应商"]);
                     mf.Type = Convert.ToString(dr["单位类型"]);

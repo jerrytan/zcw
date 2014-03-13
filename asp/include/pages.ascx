@@ -6,22 +6,30 @@
 <%@ Import Namespace="System.Web" %>
 
 <script runat="server">
-        protected DataTable dt = new DataTable();
-		
+		protected DataConn dc = new DataConn();
+        
         protected void Page_Load(object sender, EventArgs e)
-        {
-            string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            conn.Open();         
-            string strr = "select count(wz_id),标题,发表时间 from 文章表 where 文档类型='材料发现' group by wz_id,标题,发表时间  ";
-            SqlCommand cmd = new SqlCommand(strr, conn);
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {                
-                int str = (int)dr.GetInt32(0);
-                OutputBySize(str);
+        {        
+            string str_Sql = "select count(wz_id),标题,发表时间 from 文章表 where 文档类型='材料发现' group by wz_id,标题,发表时间  ";
+            try
+            {
+                SqlDataReader dr = dc.sqlDataReader(str_Sql);
+                while (dr.Read())
+                {                
+                    int str = (int)dr.GetInt32(0);
+                    OutputBySize(str);
+                }
             }
-           conn.Close(); 
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                dc.Close();
+            }
+
+            
         }
 
                public string OutputBySize(int _intTotalPage)//分页函数

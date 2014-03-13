@@ -13,17 +13,14 @@
 
 
 <script runat="server">  
-        protected DataTable dt = new DataTable();
+        protected DataTable dt_Top10ppmc = new DataTable();
+        protected DataConn dc = new DataConn();
         protected void Page_Load(object sender, EventArgs e)
         {
-            string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            conn.Open();
-            SqlDataAdapter da = new SqlDataAdapter("select distinct top 10 品牌名称 ,pp_id from 品牌字典 where 是否启用=1 ", conn);
-            DataSet ds = new DataSet();
-            da.Fill(ds, "品牌字典");
-            conn.Close();
-            dt = ds.Tables[0];	
+            DataSet ds_Top10ppmc = new DataSet();
+            string str_Sql = "select distinct top 10 品牌名称 ,pp_id from 品牌字典 where 是否启用=1 ";
+            string str_Table = "品牌字典";
+            dt_Top10ppmc = dc.DataPileDT(str_Sql,ds_Top10ppmc,str_Table);
         }	
  
 </script>
@@ -33,7 +30,7 @@
 
         <ul>
 
-            <% foreach(System.Data.DataRow row in dt.Rows){%>
+            <% foreach(System.Data.DataRow row in dt_Top10ppmc.Rows){%>
             <li><a href="ppxx.aspx?pp_id=<%=row["pp_id"]%>"><%=row["品牌名称"].ToString() %></a></li>
             <% } %>
         </ul>

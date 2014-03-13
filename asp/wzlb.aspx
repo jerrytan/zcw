@@ -15,7 +15,7 @@
 <%@ Import Namespace="System.Web" %>
 <%@ Import Namespace="System.Web.UI" %>
 <%@ Import Namespace="System.Text" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//dtD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/dtD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
@@ -37,12 +37,14 @@
     <!-- banner 结束-->
 
     <script runat="server">        
+        private DataConn dc_obj = new DataConn();
         private const int Page_Size = 10; //每页的记录数量
         private int current_page=1;//当前默认页为第一页
         int pageCount_page; 
         protected DataTable dt_content = new DataTable();
-        
+        private int i_count=0;
         public List<OptionItem> Items { get; set; }
+
         public class OptionItem
         {
             public string Text { get; set; }
@@ -65,6 +67,7 @@
                 p = 1;
             }
             current_page = p;
+
             //从查询字符串中获取"总页数"参数
             string strC = Request.QueryString["c"];
             if(string.IsNullOrEmpty(strC))
@@ -90,22 +93,19 @@
             this.SetNavLink(p, c);              
         }
        
+        protected string LinkFirst= ""; //首页
         protected string LinkPrev = ""; //上页
         protected string LinkNext = ""; //下页
         protected string LinkLast = ""; //尾页     
+
         //设置导航链接 currentPage:当前页号 pageCount:总页数 
         private void SetNavLink(int currentPage, int pageCount)
         {
-            string path = Request.Path;        
-            if(currentPage>1)
-            { 
-                LinkPrev = currentPage != 1 ? string.Format("p={0}",currentPage - 1) : "";                          
-            }
-            else if(currentPage<pageCount)
-            {
-                LinkNext = currentPage != pageCount ? string.Format("p={0}",currentPage + 1) : "";
-            }
-            LinkLast = currentPage != pageCount ? string.Format("p={0}",pageCount) : "";    
+            string path = Request.Path;   
+            LinkFirst = "1";
+            LinkPrev = string.Format("p={0}",currentPage - 1);
+            LinkNext = string.Format("p={0}",currentPage + 1);
+            LinkLast = string.Format("p={0}",pageCount);
             this.Items = new List<OptionItem>();
             for (int i = 1; i <= pageCount; i++)
             {      
@@ -117,9 +117,10 @@
             }
       
         }
+        //根据参数,获取数据库中分页存储过程的结果
         private DataTable GetProductFormDB(int begin, int end ,string type)
-        {
-            string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;         
+        {         
+            string connString = ConfigurationManager.ConnectionStrings["DBServerName"].ConnectionString;         
             SqlCommand cmd = new SqlCommand("wz_Paging");
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add("@begin", SqlDbType.Int).Value = begin;  //开始页第一条记录
@@ -139,21 +140,19 @@
         //从数据库获取记录的总数量
         private int GetProductCount()
         {
-            string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            string str_type = Request["id"];   //获取传过来的文档类型参数
-            string str_sql = "select count(wz_Id) from 文章表 where 文档类型='"+str_type+"' ";
-            SqlCommand cmd = new SqlCommand(str_sql);
-            using (SqlConnection conn = new SqlConnection(connString))
+            
+            try
             {
-                cmd.Connection = conn;
-                conn.Open();
-                object obj = cmd.ExecuteScalar();
-                conn.Close();
-                int i_count = (int)obj;
-                return i_count;
+                string str_type = Request["id"];   //获取传过来的文档类型参数
+                string str_sql = "select count(wz_Id) from 文章表 where 文档类型='"+str_type+"' ";
+                i_count = dc_obj.GetRowCount(str_sql);  //根据sql语句得到表记录条数
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return i_count;
         } 
-
     </script>
 
     <div class="xw">
@@ -172,22 +171,10 @@
         <!-- 页码开始-->
         <div class="fy2">
             <div class="fy3">
-                <% if(current_page!=1) { %>
-                <a href="wzlb.aspx?<%=LinkPrev%>&id=<%=str_id%>" class="p">上一页</a>
-                <% } %>
-                <a href="wzlb.aspx?p=1&id=<%=str_id%>" class="p">1</a>
-                <% if(pageCount_page>1) { %>
-                <a href="wzlb.aspx?p=2&id=<%=str_id%>" class="p">2</a>
-                <% } %>
-                <% if(pageCount_page>2) { %>
-                <a href="wzlb.aspx?p=3&id=<%=str_id%>" class="p">3···</a>
-                <% } %>
-                <% if(current_page<pageCount_page) { %>
-                <a href="wzlb.aspx?<%=LinkNext %>&id=<%=str_id%>" class="p">下一页</a>
-                <% } %>
-                <% if(current_page!=pageCount_page) { %>
-                <a href="wzlb.aspx?<%=LinkLast %>&id=<%=str_id%>" class="p">尾页</a>
-                <% } %>
+                <a href="wzlb.aspx?<%=LinkFirst %>&id=<%=str_id %>"class="p">首页</a>
+                <a href="wzlb.aspx?<%=LinkPrev %>%id=<%=str_id %>" class="p">上一页</a>
+                <a href="wzlb.aspx?<%=LinkNext %>%id=<%=str_id %>" class="p">下一页</a>
+                <a href="wzlb.aspx?<%=LinkLast %>%id=<%=str_id %>" class="p">尾页</a>
                 直接到第  
                 <select onchange="window.location=this.value" name="" class="p">
                 <% foreach (var v in this.Items)

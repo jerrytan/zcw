@@ -12,37 +12,29 @@
 
 <script runat="server">
 
-        protected DataTable dt = new DataTable();
-        protected DataTable dt1 = new DataTable();
-        protected DataTable dt2 = new DataTable();
-        protected DataTable dt3 = new DataTable();
-		
+        protected DataTable dt_Clfx = new DataTable();
+        protected DataTable dt_Cldg = new DataTable();
+        protected DataTable dt_Clpc = new DataTable();
+        protected DataTable dt_Clbk = new DataTable();
+		protected DataConn dc = new DataConn();
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            conn.Open();
-            SqlDataAdapter da = new SqlDataAdapter("select wz_id,标题 from 文章表 where 文档类型='材料发现' ", conn);
-            DataSet ds = new DataSet();
-            da.Fill(ds, "文章表");            
-            dt = ds.Tables[0];	
+            DataSet ds_Clfx = new DataSet();
+            DataSet ds_Cldg = new DataSet();
+            DataSet ds_Clpc = new DataSet();
+            DataSet ds_Clbk = new DataSet();
 
-            SqlDataAdapter da1 = new SqlDataAdapter("select wz_id,标题 from 文章表 where 文档类型='材料导购' ", conn);
-            DataSet ds1 = new DataSet();
-            da1.Fill(ds1, "文章表");            
-            dt1 = ds1.Tables[0];
-
-	        SqlDataAdapter da2 = new SqlDataAdapter("select wz_id,标题 from 文章表 where 文档类型='材料评测' ", conn);
-            DataSet ds2 = new DataSet();
-            da2.Fill(ds2, "文章表");            
-            dt2 = ds2.Tables[0];
-			
-	        SqlDataAdapter da3 = new SqlDataAdapter("select wz_id,标题 from 文章表 where 文档类型='材料百科' ", conn);
-            DataSet ds3 = new DataSet();
-            da3.Fill(ds3, "文章表");            
-            dt3 = ds3.Tables[0];		
-            conn.Close();			
-		
+            string str_SqlClfx = "select wz_id,标题 from 文章表 where 文档类型='材料发现' ";
+            string str_SqlCldg = "select wz_id,标题 from 文章表 where 文档类型='材料导购' ";
+	        string str_SqlCldc = "select wz_id,标题 from 文章表 where 文档类型='材料评测' ";
+	        string str_SqlClbk = "select wz_id,标题 from 文章表 where 文档类型='材料百科' ";
+            string str_Table = "文章表";	
+            
+            dt_Clfx =  dc.DataPileDT(str_SqlClfx,ds_Clfx,str_Table);
+            dt_Cldg =  dc.DataPileDT(str_SqlCldg,ds_Cldg,str_Table);
+            dt_Clpc =  dc.DataPileDT(str_SqlCldc,ds_Clpc,str_Table);
+            dt_Clbk =  dc.DataPileDT(str_SqlClbk,ds_Clbk,str_Table);
         }
 </script>
 
@@ -58,7 +50,7 @@
     </div>
     <div class="clfx3">
         <ul>
-            <% foreach(System.Data.DataRow row in dt.Rows){%>
+            <% foreach(System.Data.DataRow row in dt_Clfx.Rows){%>
             <li><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
 
 
@@ -79,7 +71,7 @@
     </div>
     <div class="clfx3">
         <ul>
-            <% foreach(System.Data.DataRow row in dt1.Rows){%>
+            <% foreach(System.Data.DataRow row in dt_Cldg.Rows){%>
             <li><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
 
 
@@ -100,7 +92,7 @@
     </div>
     <div class="clfx3">
         <ul>
-            <% foreach(System.Data.DataRow row in dt2.Rows){%>
+            <% foreach(System.Data.DataRow row in dt_Clpc.Rows){%>
             <li><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
 
             <% } %>
@@ -119,7 +111,7 @@
     </div>
     <div class="clfx3">
         <ul>
-            <% foreach(System.Data.DataRow row in dt3.Rows){%>
+            <% foreach(System.Data.DataRow row in dt_Clbk.Rows){%>
             <li><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
 
             <% } %>

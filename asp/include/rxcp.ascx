@@ -12,19 +12,14 @@
 
 <script runat="server">        
 	
-        protected DataTable dt_cltp = new DataTable();   //材料名字,存放地址(材料多媒体信息表)        
+        protected DataTable dt_Cltp = new DataTable();   //材料名字,存放地址(材料多媒体信息表)  
+        protected DataConn dc = new DataConn();      
         protected void Page_Load(object sender, EventArgs e)
-        {		      
-            string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            conn.Open();
-            SqlDataAdapter da_cltp = new SqlDataAdapter("select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片' and 大小='小' and cl_id in(select cl_id from 材料表 where 类型='主打')", conn);
-            DataSet ds_cltp = new DataSet();
-            da_cltp.Fill(ds_cltp, "材料多媒体信息表");            
-            dt_cltp = ds_cltp.Tables[0];     		
-			
-          
-		   
+        {	
+            DataSet ds_Cltp = new DataSet();	      
+            string str_Sql = "select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片' and 大小='小' and cl_id in(select cl_id from 材料表 where 类型='主打')";
+            string str_Table = "材料多媒体信息表";            
+            dt_Cltp = dc.DataPileDT(str_Sql,ds_Cltp,str_Table);	
         }		
         
 </script>
@@ -45,7 +40,7 @@
                         <table cellpadding="2" cellspacing="0" border="0" class="tu1">
 						
                             <tr align="center">
-                                <%foreach(System.Data.DataRow row in this.dt_cltp.Rows){%>
+                                <%foreach(System.Data.DataRow row in this.dt_Cltp.Rows){%>
                                 <td>
                                     <div class="pii"><a href="clxx.aspx?cl_id=<%=row["cl_id"].ToString()%>">
                                         <img src="<%=row["存放地址"].ToString() %>" width="167" height="159" /><%=row["材料名称"].ToString() %></a></div>

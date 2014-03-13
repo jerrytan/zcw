@@ -15,16 +15,14 @@
          
 		 
 
-        protected DataTable dt = new DataTable();   //材料名字,存放地址(材料多媒体信息表)        
+        protected DataTable dt_ClMedia = new DataTable();   //材料名字,存放地址(材料多媒体信息表)
+        protected DataConn dc = new DataConn();        
         protected void Page_Load(object sender, EventArgs e)
         {		      
-            string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            conn.Open();
-            SqlDataAdapter da = new SqlDataAdapter("select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片' and 大小='大'", conn);
-            DataSet ds = new DataSet();
-            da.Fill(ds, "材料多媒体信息表");            
-            dt = ds.Tables[0];     		
+            string str_Sql = "select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片' and 大小='大'";
+            DataSet ds_ClMedia = new DataSet();
+            string str_Table = "材料多媒体信息表";            
+            dt_ClMedia = dc.DataPileDT(str_Sql,ds_ClMedia,str_Table);     		
 			
           
 		   
@@ -38,15 +36,15 @@
         var imgtext = new Array();
         var imgLink = new Array();
 	<% 
-		 Response.Write("imgUrl[1] = '"+dt.Rows[0]["存放地址"].ToString()+"';\n");
-		 Response.Write("imgtext[1] = '"+dt.Rows[0]["材料名称"].ToString()+"'\n");
-		 Response.Write("imgLink[1] = 'clxx.aspx?cl_id="+dt.Rows[0]["cl_id"].ToString()+"';\n"); 
-		 Response.Write("imgUrl[2] = '"+dt.Rows[1]["存放地址"].ToString()+"';\n");
-		 Response.Write("imgtext[2] = '"+dt.Rows[1]["材料名称"].ToString()+"';\n");
-		 Response.Write("imgLink[2] = 'clxx.aspx?cl_id="+dt.Rows[1]["cl_id"].ToString()+"';\n");       
-		 Response.Write("imgUrl[3] = '"+dt.Rows[2]["存放地址"].ToString()+"';\n");
-		 Response.Write("imgtext[3] = '"+dt.Rows[2]["材料名称"].ToString()+"';\n");
-		 Response.Write("imgLink[3] = 'clxx.aspx?cl_id="+dt.Rows[2]["cl_id"].ToString()+"';\n");       
+		 Response.Write("imgUrl[1] = '"+dt_ClMedia.Rows[0]["存放地址"].ToString()+"';\n");
+		 Response.Write("imgtext[1] = '"+dt_ClMedia.Rows[0]["材料名称"].ToString()+"'\n");
+		 Response.Write("imgLink[1] = 'clxx.aspx?cl_id="+dt_ClMedia.Rows[0]["cl_id"].ToString()+"';\n"); 
+		 Response.Write("imgUrl[2] = '"+dt_ClMedia.Rows[1]["存放地址"].ToString()+"';\n");
+		 Response.Write("imgtext[2] = '"+dt_ClMedia.Rows[1]["材料名称"].ToString()+"';\n");
+		 Response.Write("imgLink[2] = 'clxx.aspx?cl_id="+dt_ClMedia.Rows[1]["cl_id"].ToString()+"';\n");       
+		 Response.Write("imgUrl[3] = '"+dt_ClMedia.Rows[2]["存放地址"].ToString()+"';\n");
+		 Response.Write("imgtext[3] = '"+dt_ClMedia.Rows[2]["材料名称"].ToString()+"';\n");
+		 Response.Write("imgLink[3] = 'clxx.aspx?cl_id="+dt_ClMedia.Rows[2]["cl_id"].ToString()+"';\n");       
 		     
 		%>
 

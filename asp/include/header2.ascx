@@ -12,25 +12,20 @@
 <%@ Import Namespace="System.Web" %>
 
 <script runat="server">
-            
-
-        protected DataTable dt_yh = new DataTable(); //用户名字(用户表)    	
+           
+        protected DataTable dt_Yh = new DataTable(); //用户名字(用户表)    	
+        protected DataConn  dc = new DataConn();
         protected void Page_Load(object sender, EventArgs e)
         {
             HttpCookie QQ_id = Request.Cookies["QQ_id"];
             if (QQ_id != null )
             {
-            string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            conn.Open();
-            SqlDataAdapter da_yh = new SqlDataAdapter("select 姓名 from 用户表 where QQ_id='"+QQ_id.Value+"'", conn);
-            DataSet ds_yh = new DataSet();
-            da_yh.Fill(ds_yh, "用户表");           
-            dt_yh = ds_yh.Tables[0];
+            string str_Sql = "select 姓名 from 用户表 where QQ_id='"+QQ_id.Value+"'";
+            DataSet ds_Yh = new DataSet();
+            string str_Table = "用户表";           
+            dt_Yh = dc.DataPileDT(str_Sql,ds_Yh,str_Table);
             }
 		}	      
-	
-
 
 </script>
 
