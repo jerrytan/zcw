@@ -1,38 +1,19 @@
 /* CSS Document */
 
-	body
-	{ 
-		font-family: "ËÎÌå"; 
-		font-size:12px; 
-		color:#707070; 
-		width:100%; 
-		text-align:center;
-		margin:0 auto;
-		padding:0;
-		border:none; 
-		background:url(../images/body.jpg);
-	}
-	dl,dt,dd,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,img,p,a,div,br,span,input,textarea,usermap,area,map
-	{
-		margin:0;
-		padding:0;
-		border:0;
-		list-style:none;
-		outline:none;
-	}
-	a
-	{
-		color:#707070; 
-		text-decoration:none;
-	}
-.box{ width:1000px; height:auto; text-align:left; margin:0 auto;}
+body{ font-family: "ËÎÌå"font-size:12px; color:#707070; width:100%;  text-align:center; border:none; background:url(../images/body.jpg);}
+dl,dt,dd,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,img,p,a,div,br,span,input,textarea,usermap,area,map{margin:0;padding:0;border:0;list-style:none;outline:none;}
+
+a{ color:#707070; text-decoration:none;}
+
+
+.box{ width:1000px; height:auto; text-align:left; margin:0 auto; }
 .top{ width:100%; height:1px; float:left; margin-top:1px; border-bottom:#FF0000 solid 1px;}
 .logo{ width:235px; height:106px; float:left;}
 .sous{ width:614px; height:30px; float:left; margin:21px 0 0 10px; display:inline; background:url(../images/weq03.jpg);}
 .sous img{ float:right; margin:1px 10px 0 0; display:inline;}
 .sou{ width:500px; height:28px; float:left; line-height:30px; margin:1px 0 0 5px; display:inline;}
 .anniu{ width:77px; height:18px; float:right; margin:8px 32px 0 0; display:inline; font-family: "ËÎÌå"; color:#FFFFFF; text-align:center; line-height:18px; background:url(../images/anniu_03.jpg);}
-.anniu a{color:#FFFFFF;}
+.anniu a{color:#FFFFFF;cursor:pointer}
 .dh{ width:763px; height:40px; float:left; margin-top:8px; background:url(../images/dh_03.jpg);}
 .dh ul{ width:752px; height:40px; float:left; margin-left:11px; display:inline;}
 .dh li{ width:94px; height:40px; float:left; font-family: "Î¢ÈíÑÅºÚ"; font-size:16px; color:#FFFFFF; text-align:center; line-height:40px;}
@@ -56,7 +37,7 @@
 
 .center{ width:536px; height:auto; float:left; margin-left:10px; display:inline;}
 .qyjs{ width:536px; height:227px; float:left; margin:10px 0 0 0;}
-.gd{ width:120px; height:16px; float:right; margin:10px 0 0 0; display:inline; font-size:14px; padding:0 0 0 410px; display:inline;}
+.gd{ width:120px; height:16px; float:right; margin:10px 0 0 0; display:inline; font-size:14px; padding:0 0 0 10px; display:inline;}
 .gd a{ color:#0066FF;}
 
 .clfx{ width:244px; height:auto; float:left; margin:20px 14px 0 10px; display:inline;}
