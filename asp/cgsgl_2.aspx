@@ -56,8 +56,7 @@
         {
             s_QQid = Request.Cookies["CGS_QQ_ID"].Value.ToString();
         }
-       s_QQid = "77D21A51DF16E77A3062D0655B6D0372";
-
+      
         sSQL = "select count(*) from ”√ªß±Ì where QQ_id = '" + s_QQid + "'";
 
         int count = Convert.ToInt32(objConn.DBLook(sSQL));

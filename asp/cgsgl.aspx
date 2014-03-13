@@ -36,8 +36,8 @@
             if (Request.Cookies["CGS_QQ_ID"]!=null&&Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
             {
                 sCGS_QQ_id=Request.Cookies["CGS_QQ_ID"].Value.ToString();
-            }       
-            sCGS_QQ_id = "77D21A51DF16E77A3062D0655B6D0372";
+            }      
+            
             if (sCGS_QQ_id!="")
             {
                 try
