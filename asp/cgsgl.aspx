@@ -1,9 +1,9 @@
 <!--
         采购商管理页面
         文件名：cgsgl.ascx
-        传入参数：无
+        传入参数：QQ_ID  登陆后的QQ Id
                
-    -->
+ -->
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
@@ -25,77 +25,52 @@
 
 <body>
     
-    </script>
     <div class="dlqq">
         <div class="dlqq1">
       <%
-   
-        HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
-        Object cgs_yh_id = Session["CGS_YH_ID"];        
-       
-		if ((CGS_QQ_ID != null ) && (cgs_yh_id != null))
-			{
-            //Response.Write("openid is " + openId.Value + "<p>");
-
-            String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            
-            try{
-                //查询是否该QQid已经登录过
-                string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"'";
-                SqlCommand cmd_checkuserexist = new SqlCommand(str_checkuserexist, conn);
-       
-                conn.Open();
-                Object obj_checkuserexist = cmd_checkuserexist.ExecuteScalar();
-                if (obj_checkuserexist != null) 
-                {
-                     int count = Convert.ToInt32(obj_checkuserexist);
-                     if (count ==0 )  //qq_id 不存在，需要增加用户表
-                     {
         
-                           String str_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('"+ CGS_QQ_ID.Value+"')";
-                           SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);         
-                           cmd_insertuser.ExecuteNonQuery();
-                           String str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"') where QQ_id = '"+CGS_QQ_ID.Value+"')";
-                           SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);         
-                           cmd_updateuser.ExecuteNonQuery();
-                      }
-                                     
-                }
-
-                //write yh_id to session
-                string str_getyhid = "select yh_id from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"'";
-                SqlCommand cmd_getyhid = new SqlCommand(str_getyhid, conn);
-                String yh_id = cmd_getyhid.ExecuteScalar().ToString();
-                Session["yh_id"]=yh_id;
-
-                Response.Redirect("cgsgl_2.aspx");
-
-                
-            	
-            }
-            catch (Exception ex){
-                throw(ex);
-            }
-            finally{
-                conn.Close();
-            }           
-        }
-        else
+        public string sCGS_QQ_id = "";
+        public DataConn objConn = new DataConn();
+        protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Redirect("cgsdl.aspx");
-          
+            if (Request.Cookies["CGS_QQ_ID"]!=null&&Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
+            {
+                sCGS_QQ_id=Request.Cookies["CGS_QQ_ID"].Value.ToString();
+            }       
+            sCGS_QQ_id = "77D21A51DF16E77A3062D0655B6D0372";
+            if (sCGS_QQ_id!="")
+            {
+                try
+                {
+                    /*查询是否该QQid已经登录过*/
+                    string s_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + sCGS_QQ_id + "'";
+                    int i_count =Convert.ToInt32(objConn.DBLook(s_checkuserexist));
+                    /* qq_id 不存在，需要增加用户表*/
+                    if (i_count == 0) 
+                    {
+                        string s_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('" +sCGS_QQ_id + "')";
+                        objConn.ExecuteSQL(s_insertuser,false);
+                        string s_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" +sCGS_QQ_id + "') where QQ_id = '" + sCGS_QQ_id + "')";
+                        objConn.ExecuteSQL(s_updateuser,false);
+                    }
+                    /*获取用户id 放入session */
+                    string s_getyhid = "select yh_id from 用户表 where QQ_id = '" + sCGS_QQ_id + "'";
+                    string yh_id = objConn.DBLook(s_getyhid);
+                    Session["yh_id"] = yh_id;
+                    //Response.Redirect("cgsgl_2.aspx");
+                }
+                catch (Exception ex)
+                {             
+                }
+            }
+            else
+            {
+                Response.Redirect("cgsdl.aspx");
+            }
         }
-    
             %>
             
         </div>
     </div>
-
-
-
-
-
-
 </body>
 </html>
