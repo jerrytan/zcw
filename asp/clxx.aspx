@@ -106,7 +106,7 @@
 </script>
 
 <div class="sc">
-<div class="sc1"><a href="index.aspx">首页 ></a>&nbsp&nbsp&nbsp
+<div class="sc1"><a href="index.aspx">首页 ></a>
 
 <% foreach(System.Data.DataRow row in dt_flxx.Rows){%>
  <a href="#"><%=row["显示名字"].ToString() %></a>
@@ -182,7 +182,7 @@
 </div>
 </div>
 
-<div class="xx8">
+<div class="xx8" >
 <div class="xx9">
 <div class="fxs1">
 <!-- <select name="" class="fu1"><option>华北</option></select>   
