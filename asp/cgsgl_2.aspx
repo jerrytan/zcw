@@ -58,8 +58,8 @@
         }
       
         sSQL = "select count(*) from 用户表 where QQ_id = '" + s_QQid + "'";
-
-        int count = Convert.ToInt32(objConn.DBLook(sSQL));
+		string s_Count=objConn.DBLook(sSQL);
+        int count = Convert.ToInt32(s_Count);
             if (count == 0)  //qq_id 不存在，需要增加用户表
             {
 
