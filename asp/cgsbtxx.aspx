@@ -110,7 +110,6 @@
 			<span class="gybtan"><asp:ImageButton ID="updateButtion" ImageUrl="images/aaaa_03.jpg"  OnClick="updateUserInfo" runat="server" /></span>
 		</div>
 	</div>
-	</form>
 
 	<div>
 	<!-- 关于我们 广告服务 投诉建议 开始-->
