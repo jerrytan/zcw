@@ -44,7 +44,8 @@
                 {
                     /*查询是否该QQid已经登录过*/
                     string s_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + sCGS_QQ_id + "'";
-                    int i_count =Convert.ToInt32(objConn.DBLook(s_checkuserexist));
+					string s_Count=objConn.DBLook(s_checkuserexist);
+                    int i_count =Convert.ToInt32(s_Count);
                     /* qq_id 不存在，需要增加用户表*/
                     if (i_count == 0) 
                     {

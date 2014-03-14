@@ -35,76 +35,72 @@
 
     <!-- 文章首页 开始-->
     <script runat="server">                         
- 	    protected DataTable dt_wz = new DataTable();  //文章表
-        protected DataTable dt_wzhnr = new DataTable();  //文章和内容相关表
-        protected DataTable dt_wzhcs = new DataTable();  //文章和厂商相关表
-        protected DataTable dt_wzhcl = new DataTable();  //文章和材料相关表
+ 	    protected DataTable dt_Wz = new DataTable();  //文章表
+        protected DataTable dt_Wzhnr = new DataTable();  //文章和内容相关表
+        protected DataTable dt_Wzhcs = new DataTable();  //文章和厂商相关表
+        protected DataTable dt_Wzhcl = new DataTable();  //文章和材料相关表
         protected int total_pages = 1;
         protected int current_page = 1;
-        protected string wz_id;
+        protected string wz_Id;
+        protected DataConn dc = new DataConn();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            conn.Open();
-            wz_id=Request["wz_id"];  //获取文章id
-            SqlDataAdapter da = new SqlDataAdapter("select distinct 标题,作者, wz_id from 文章表 where wz_id='"+wz_id+"'", conn);            
-            DataSet ds = new DataSet();
-            da.Fill(ds, "文章表");        
-            dt_wz = ds.Tables[0];
+            
+            wz_Id=Request["wz_id"];  //获取文章id
+            string str_SqlWz = "select distinct 标题,作者, wz_id from 文章表 where wz_id='"+wz_Id+"'";            
+            DataSet ds_Wz = new DataSet();
+            string str_WzTable = "文章表";        
+            dt_Wz = dc.DataPileDT(str_SqlWz,ds_Wz,str_WzTable); 
 
-            SqlDataAdapter da2 = new SqlDataAdapter("select 厂商名称,gys_id from 文章和厂商相关表 where wz_id='"+wz_id+"'", conn);            
-            DataSet ds2 = new DataSet();
-            da2.Fill(ds2, "文章和厂商相关表");        
-            dt_wzhcs = ds2.Tables[0];
+            string str_SqlWzhcs = "select 厂商名称,gys_id from 文章和厂商相关表 where wz_id='"+wz_Id+"'";            
+            DataSet ds_Wzhcs = new DataSet();
+            string str_WzhcsTable = "文章和厂商相关表";        
+            dt_Wzhcs = dc.DataPileDT(str_SqlWzhcs,ds_Wzhcs,str_WzhcsTable);
 
-            SqlDataAdapter da3 = new SqlDataAdapter("select 产品名称,cl_id from 文章和材料表相关表 where wz_id='"+wz_id+"' ", conn);            
-            DataSet ds3 = new DataSet();
-            da3.Fill(ds3, "文章和材料表相关表");        
-            dt_wzhcl = ds3.Tables[0];   
+            string str_SqlWzhcl = "select 产品名称,cl_id from 文章和材料表相关表 where wz_id='"+wz_Id+"'";            
+            DataSet ds_Wzhcl = new DataSet();
+            string str_WzhclTable = "文章和材料表相关表";        
+            dt_Wzhcl = dc.DataPileDT(str_SqlWzhcl,ds_Wzhcl,str_WzhclTable);    
 
             string page = Request["p"];
             if (page != null) 
 			{	
 				current_page = int.Parse(page);   
             }    
-            string strr="select 页面内容, 页面编号, wz_id from 文章和内容相关表 where wz_id='"+wz_id+"' and 页面编号='"+ current_page+"'";  
-            SqlDataAdapter da1 = new SqlDataAdapter(strr, conn);            
-            DataSet ds1 = new DataSet();
-            da1.Fill(ds1, "文章和内容相关表");   
-            dt_wzhnr = ds1.Tables[0];
+            string str_SqlWzhnr = "select 页面内容, 页面编号, wz_id from 文章和内容相关表 where wz_id='"+wz_Id+"' and 页面编号='"+ current_page+"'";            
+            DataSet ds_Wzhnr = new DataSet();
+            string str_WzhnrTable = "文章和内容相关表";   
+            dt_Wzhnr = dc.DataPileDT(str_SqlWzhnr,ds_Wzhnr,str_WzhnrTable); 
 
-            string total_sql_str = "select count(*) from 文章和内容相关表 where wz_id='"+wz_id+"'";
-            SqlCommand cmd = new SqlCommand(total_sql_str,conn);
-            Object result = cmd.ExecuteScalar();
+            string str_SqlWzhnrTotal = "select count(*) from 文章和内容相关表 where wz_id='"+wz_Id+"'";
+            object result = dc.ExecuteSingleValue(str_SqlWzhnrTotal);
             if (result != null) 
             {
                 total_pages = int.Parse(Convert.ToString(result));
             }             
-            conn.Close();
         }
     </script>
 
     <div class="xwn">
         <div class="xwn1"><a href="index.aspx" class="p1">首页 ></a>正文</div>
         <div class="xwleft">
-            <% foreach(System.Data.DataRow row in dt_wz.Rows){%>
+            <% foreach(System.Data.DataRow row in dt_Wz.Rows){%>
             <div class="xwleft1"><%=row["标题"].ToString() %></div>
             <div class="xwleft2">作者：<%=row["作者"].ToString() %></div>
 
-            <% foreach(System.Data.DataRow row2 in dt_wzhnr.Rows){%>
+            <% foreach(System.Data.DataRow row2 in dt_Wzhnr.Rows){%>
             <div class="xwleft3"><%=row2["页面内容"].ToString() %></div>
             <%}%>
 		<center>
 			<div>
 				<div class="fy3">
 					<% if(total_pages >1 && current_page !=1) { %>
-					<a href="wzxq.aspx?wz_id=<%=wz_id %>&p=<%=current_page-1%>" class="p">上一页</a>
+					<a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page-1%>" class="p">上一页</a>
 					<% } %>
               
 					<% if(current_page<total_pages ) { %>
-					<a href="wzxq.aspx?wz_id=<%=wz_id %>&p=<%=current_page+1%>" class="p">下一页</a>
+					<a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page+1%>" class="p">下一页</a>
 					<% } %>
 				</div>   
 			</div>
@@ -115,10 +111,10 @@
 
         <div class="xwright">
             <!-- 相关厂商列表 开始-->
-            <% if (dt_wzhcs.Rows != null & dt_wzhcs.Rows.Count >0 ) {  %>                
+            <% if (dt_Wzhcs.Rows != null & dt_Wzhcs.Rows.Count >0 ) {  %>                
             <div class="xwright1">
                 <ul>
-                    <%foreach(System.Data.DataRow row in dt_wzhcs.Rows){%>
+                    <%foreach(System.Data.DataRow row in dt_Wzhcs.Rows){%>
                     <li><a href="gysxx.aspx?gys_id=<%=row["gys_id"]%>"><%=row["厂商名称"].ToString()%></a></li>
                     <%}%>
                 </ul>
@@ -127,10 +123,10 @@
             <!-- 相关厂商列表 结束-->
 
             <!-- 相关产品列表 开始-->
-             <% if (dt_wzhcl.Rows != null & dt_wzhcl.Rows.Count >0 ) {  %>
+             <% if (dt_Wzhcl.Rows != null & dt_Wzhcl.Rows.Count >0 ) {  %>
             <div class="xwright1">
                 <ul>
-                    <%foreach(System.Data.DataRow row in dt_wzhcl.Rows){%>
+                    <%foreach(System.Data.DataRow row in dt_Wzhcl.Rows){%>
                     <li><a href="clxx.aspx?cl_id=<% =row["cl_id"]%>"><%=row["产品名称"].ToString()%></a></li>
                     <%}%>
                 </ul>
