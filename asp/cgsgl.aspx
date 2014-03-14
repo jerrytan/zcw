@@ -24,12 +24,8 @@
 </head>
 
 <body>
-    
-    <div class="dlqq">
-        <div class="dlqq1">
-      <%
-        
-        public string sCGS_QQ_id = "";
+    <script runat="server">
+      public string sCGS_QQ_id = "";
         public DataConn objConn = new DataConn();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -37,7 +33,6 @@
             {
                 sCGS_QQ_id=Request.Cookies["CGS_QQ_ID"].Value.ToString();
             }      
-            
             if (sCGS_QQ_id!="")
             {
                 try
@@ -58,7 +53,7 @@
                     string s_getyhid = "select yh_id from ÓÃ»§±í where QQ_id = '" + sCGS_QQ_id + "'";
                     string yh_id = objConn.DBLook(s_getyhid);
                     Session["yh_id"] = yh_id;
-                    //Response.Redirect("cgsgl_2.aspx");
+                    Response.Redirect("cgsgl_2.aspx");
                 }
                 catch (Exception ex)
                 {             
@@ -69,8 +64,10 @@
                 Response.Redirect("cgsdl.aspx");
             }
         }
-            %>
-            
+    </script>
+    <div class="dlqq">
+        <div class="dlqq1">
+    
         </div>
     </div>
 </body>

@@ -50,7 +50,6 @@
         {
             s_yh_id = Session["CGS_YH_ID"].ToString();
         }
-        s_yh_id = "99";
         if (!IsPostBack)
         {           
             sSQL = "select * from 用户表 where yh_id='" + s_yh_id + "'";
@@ -74,18 +73,6 @@
         {
             s_yh_id = Session["yh_id"].ToString();
         }
-        s_yh_id = "99";
-        if (file1.PostedFile.FileName.ToString().Trim() != "")
-        {       
-
-            string file=file1.PostedFile.FileName.ToString().Trim();
-            System.IO.FileStream fstream = new System.IO.FileStream(file, System.IO.FileMode.Open, System.IO.FileAccess.Read);
-            byte[] byData = new byte[fstream.Length];
-            fstream.Read(byData, 0, System.Convert.ToInt32(fstream.Length));
-            fstream.Close();
-            sSQL = "update 用户表 set 资质证明='" + byData + "' where yh_id='" + s_yh_id + "'";
-            objConn.ExecuteSQL(sSQL, false);
-        }
         sSQL   = " update 用户表 " +
                 " set 手机='" +this.contactortel.Value + "', " +
                 " 姓名='" +this.contactorname.Value + "',  " +
@@ -97,27 +84,27 @@
         objConn.ExecuteSQL(sSQL,true);
     }
 	</script>
-	
-	<div class="dlqq">
-		<div class="dlex">
-			<div class="dlex2">
-				<span class="dlex3">您的信息如下，如需更改请单击更改按钮</span>
-				<dl>						
-					<dd>公司名称：</dd><dt><input id="companyname" name="companyname" type="text"   runat="server" /></dt>
-					<dd>公司地址：</dd><dt><input id="companyaddress" name="companyaddress" type="text"  runat="server" /></dt>
-					<dd>公司电话：</dd><dt><input id="companytel" name="companytel" type="text"  runat="server"/></dt>
-					<dd>您的姓名：</dd><dt><input id="contactorname" name="contactorname" runat="server"/></dt>
-					<dd>您的电话：</dd><dt><input id="contactortel" name="contactortel0" runat="server"/></dt>
-					<dd>您的QQ号：</dd><dt><input id="QQ_id" name="contactortel" runat="server"/></dt>
-					<dd>您的执照：</dd><dt><img src="images/qqqq_03.jpg" /></dt>
-					<dd>您的资质：</dd><dt><img src="images/qqqq_03.jpg" /></dt>
-				</dl>
-				<asp:Label ID="label1" runat="server" Text="" />
-				<span class="gg"><asp:ImageButton ID="updateButtion" ImageUrl="images/12ff_03.jpg"  OnClick="updateUserInfo" runat="server" /></span>
-			</div>
-		</div>
-	</div>
-
+	<form runat="server">
+	    <div class="cgdlqq">
+		    <div class="cgdlex">
+			    <div class="cgdlex2">
+				    <span class="cgdlex3">您的信息如下，如需更改请单击更改按钮</span>
+				    <dl>						
+					    <dd>公司名称：</dd><dt><input class="cgdlex2text" id="companyname" name="companyname" type="text"   runat="server" /></dt>
+					    <dd>公司地址：</dd><dt><input class="cgdlex2text"  id="companyaddress" name="companyaddress" type="text"  runat="server" /></dt>
+					    <dd>公司电话：</dd><dt><input class="cgdlex2text"  id="companytel" name="companytel" type="text"  runat="server"/></dt>
+					    <dd>您的姓名：</dd><dt><input class="cgdlex2text"  id="contactorname" name="contactorname" runat="server"/></dt>
+					    <dd>您的电话：</dd><dt><input class="cgdlex2text"  id="contactortel" name="contactortel0" runat="server"/></dt>
+					    <dd>您的QQ号：</dd><dt><input class="cgdlex2text"  id="QQ_id" name="contactortel" runat="server"/></dt>
+					    <dd style="width:800px">您的执照：</dd><dt style="height:auto"><img src="images/qqqq_03.jpg" /></dt>
+					    <dd style="width:800px">您的资质：</dd><dt style="height:auto"><img src="images/qqqq_03.jpg" /></dt>
+				    </dl>
+				    <asp:Label ID="label1" runat="server" Text="" />
+				    <span class="cggg"><asp:ImageButton ID="updateButtion" ImageUrl="images/12ff_03.jpg"  OnClick="updateUserInfo" runat="server" /></span>
+			    </div>
+		    </div>
+	    </div>
+    </form>
 <div>
 <!-- 关于我们 广告服务 投诉建议 开始-->
 <!-- #include file="static/aboutus.aspx" -->

@@ -3,7 +3,6 @@
     文件名：cgsbtxx.aspx
     传入参数：Session["yh_id"]  用户id               
 -->
-<%@ Page Language="C#" AutoEventWireup="true"%>
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 
 <%@ Import Namespace="System.Data" %>
@@ -25,29 +24,32 @@
 </head>
 
 <body>
-
-	<!-- 头部开始-->
-	<!-- #include file="static/header.aspx" -->
-	<!-- 头部结束-->
-
-
-	<!-- 导航开始-->
-	<uc1:Menu1 ID="Menu1" runat="server" />
-	<!-- 导航结束-->
+ <!-- 头部开始-->
+    <!-- #include file="static/header.aspx" -->
+    <!-- 头部结束-->
 
 
-	<!-- banner开始-->
-	<!-- #include file="static/banner.aspx" -->
-	<!-- banner 结束-->
+    <!-- 导航开始-->
+    <uc1:Menu1 ID="Menu1" runat="server" />
+    <!-- 导航结束-->
 
-	<script runat="server">
+
+    <!-- banner开始-->
+    <!-- #include file="static/banner.aspx" -->
+    <!-- banner 结束-->
+
+    <script runat="server">
 	public string s_yh_id = "";
     public DataConn objConn = new DataConn();
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
-            s_yh_id= Session["yh_id"].ToString();
+            if (Session["yh_id"]!=null&&Session["yh_id"].ToString()!="")
+            {
+                s_yh_id = Session["yh_id"].ToString();
+            }
+            
             string sSQL_yh = "select * from 用户表 where yh_id='" + s_yh_id + "'";
             DataTable dt_yh = new DataTable();
             dt_yh = objConn.GetDataTable(sSQL_yh);
@@ -91,26 +93,28 @@
     }
 		</script>
 
-	<div class="gytb">
+<form runat="server">
+	
+	<div class="cggytb">
 
-		<div class="gybtl"><img src="images/www_03.jpg" /></div>
-		<div class="gybtr">
+		<div class="cggybtl"><img src="images/www_03.jpg" /></div>
+		<div class="cggybtr">
 			<dl>
-				<dd>贵公司名称：</dd>  	<dt><input id="companyname" name="companyname" type="text" class="ggg" runat="server"  /></dt>
-				<dd>贵公司地址：</dd>  	<dt><input id="companyaddress" name="companyaddress" type="text" class="ggg" runat="server" /></dt>
+				<dd>贵公司名称：</dd>  	<dt><input id="companyname" name="companyname" type="text" class="cgggg" runat="server"  /></dt>
+				<dd>贵公司地址：</dd>  	<dt><input id="companyaddress" name="companyaddress" type="text" class="cgggg" runat="server" /></dt>
 				<dd>贵公司电话：</dd>  	<dt><input id="companytel" name="companytel" type="text" class="ggg" runat="server" /></dt>
 				<dd>贵公司是：</dd>    		<dt><input  id="scs" name="select" type="radio" value="生产商" runat="server" validationgroup="select" />生产商  
 											<input id="gxs"  runat="server" name="select"  type="radio" value="供销商" validationgroup="select" />供销商 </dt>
-				<dd>您的姓名：</dd>    		<dt><input  id="contactorname" name="contactorname" type="text" class="ggg" runat="server"/></dt>
-				<dd>您的电话：</dd>    		<dt><input id="contactortel" name="contactortel" type="text" class="ggg"  runat="server"/></dt>			
-				<dd>您的QQ号码：</dd>   	<dt><input id="contactorqqid" name="contactorqqid" type="text" class="ggg" runat="server" /></dt>
+				<dd>您的姓名：</dd>    		<dt><input  id="contactorname" name="contactorname" type="text" class="cgggg" runat="server"/></dt>
+				<dd>您的电话：</dd>    		<dt><input id="contactortel" name="contactortel" type="text" class="cgggg"  runat="server"/></dt>			
+				<dd>您的QQ号码：</dd>   	<dt><input id="contactorqqid" name="contactorqqid" type="text" class="cgggg" runat="server" /></dt>
 				<dd>贵公司的营业执照： 	</dd><dt><input name="" type="text" class="ggg" /> <a href="#"><img src="images/sc_03.jpg" /></a></dt>
 				<dd>贵公司的资质证书： 	</dd><dt><input name="" type="text" class="ggg" /> <a href="#"><img src="images/sc_03.jpg" /></a></dt>
 			</dl>
-			<span class="gybtan"><asp:ImageButton ID="updateButtion" ImageUrl="images/aaaa_03.jpg"  OnClick="updateUserInfo" runat="server" /></span>
+			<span class="cggybtan"><asp:ImageButton runat="server" ID="updateButtion" ImageUrl="images/aaaa_03.jpg"  OnClick="updateUserInfo"  /></span>
 		</div>
 	</div>
-
+</form>
 	<div>
 	<!-- 关于我们 广告服务 投诉建议 开始-->
 	<!-- #include file="static/aboutus.aspx" -->
