@@ -42,7 +42,7 @@
                             <tr align="center">
                                 <%foreach(System.Data.DataRow row in this.dt_Cltp.Rows){%>
                                 <td>
-                                    <div class="pii"><a href="clxx.aspx?cl_id=<%=row["cl_id"].ToString()%>">
+                                    <div class="pii"><a  style="font-size:12px;width:180px;" href="clxx.aspx?cl_id=<%=row["cl_id"].ToString()%>" >
                                         <img src="<%=row["存放地址"].ToString() %>" width="167" height="159" /><%=row["材料名称"].ToString() %></a></div>
                                 </td>
                                 <%}%>
