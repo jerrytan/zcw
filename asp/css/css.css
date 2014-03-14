@@ -1,6 +1,6 @@
 /* CSS Document */
 
-body{ font-family: "ËÎÌו"font-size:12px; color:#707070; width:100%;  text-align:center; border:none; background:url(../images/body.jpg);}
+body{ font-family: "ËÎÌו";font-size:12px; color:#707070; width:100%;  text-align:center; border:none; background:url(../images/body.jpg);}
 dl,dt,dd,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,img,p,a,div,br,span,input,textarea,usermap,area,map{margin:0;padding:0;border:0;list-style:none;outline:none;}
 
 a{ color:#707070; text-decoration:none;}
@@ -25,7 +25,7 @@ a{ color:#707070; text-decoration:none;}
 .gz{ width:222px; height:370px; float:left; margin:10px 0 0 0; background:url(../images/cail_03.jpg);}
 .wz{ width:222px; height:300px; margin:52px 0 0 0;}
 .wz ul{ width:160px; height:300px; margin:0 auto;}
-.wz li{ width:160px; height:30px; float:left;  line-height:30px;}
+.wz li{ width:160px; height:30px; float:left;  line-height:30px; overflow:hidden }
 
 
 .gz1{ width:222px; height:370px; float:left; margin:10px 0 0 0; background:url(../images/gongy_03.jpg);}
@@ -37,7 +37,7 @@ a{ color:#707070; text-decoration:none;}
 
 .center{ width:536px; height:auto; float:left; margin-left:10px; display:inline;}
 .qyjs{ width:536px; height:227px; float:left; margin:10px 0 0 0;}
-.gd{ width:120px; height:16px; float:right; margin:10px 0 0 0; display:inline; font-size:14px; padding:0 0 0 10px; display:inline;}
+.gd{ width:536px; height:16px; float:right; margin:10px 0 0 0; display:inline; font-size:14px; padding:0 0 0 410px; text-align:right; display:inline;}
 .gd a{ color:#0066FF;}
 
 .clfx{ width:244px; height:auto; float:left; margin:20px 14px 0 10px; display:inline;}
@@ -90,7 +90,7 @@ a{ color:#707070; text-decoration:none;}
 .ggfw3 a:hover{ color:#0066FF;}
 
 
-.foot{ width:1000px; height:auto; float:left; border-top:#FF0000 solid 2px; margin-top:30px; padding:0 0 30px 0;}
+.foot{ width:1000px; height:auto; float:left; border-top:#FF0000 solid 2px; margin-top:30px; padding:0 0 30px;}
 .foot2{ width:1000px; height:auto; float:left; text-align:center; line-height:36px;}
 .foot2 a{ color:#707070;}
 .foot p{ text-align:center; line-height:24px;}
