@@ -1,5 +1,5 @@
 <!--
-        页面名称：	采购商管理页面
+        页面名称：	采购商关注材料管理页
         文件名：	cgsgl_2.ascx
         传入参数：	QQid 用于根据QQid取相关信息
                
@@ -250,7 +250,7 @@
                                 {
                         %>
                         <input type="checkbox" name="clid" value='<%=dr_cl["cl_id"].ToString()%>' />
-                        <a href="javascript:void(0)">
+                        <a  href='clxx.aspx?cl_id=<%=dr_cl["cl_id"].ToString() %>'>
                             <%=dr_cl["显示名"].ToString().Trim()%></a><br/>
                         <% 	
    			                    }
