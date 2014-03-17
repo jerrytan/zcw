@@ -2,7 +2,7 @@
         页面名称：	采购商关注材料管理页
         文件名：	cgsgl_2.ascx
         传入参数：	QQid 用于根据QQid取相关信息
-               
+         author：张新颖      
 -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 

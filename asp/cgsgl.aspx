@@ -2,7 +2,7 @@
         采购商管理页面
         文件名：cgsgl.ascx
         传入参数：QQ_ID  登陆后的QQ Id
-               
+         author：张新颖      
  -->
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>

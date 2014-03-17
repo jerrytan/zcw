@@ -2,7 +2,7 @@
         页面名称：	采购商信息页面
         文件名：	cgsgl_3.ascx
         传入参数：	QQid 用于根据QQid取相关信息
-               
+        author：张新颖      
 -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 
@@ -46,9 +46,9 @@
     public DataConn objConn = new DataConn();
 	protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["CGS_YH_ID"] != null && Session["CGS_YH_ID"].ToString() != "")
+        if (Session["yh_id"] != null && Session["yh_id"].ToString() != "")
         {
-            s_yh_id = Session["CGS_YH_ID"].ToString();
+            s_yh_id = Session["yh_id"].ToString();
         }
         if (!IsPostBack)
         {           

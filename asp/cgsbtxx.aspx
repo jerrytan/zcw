@@ -1,7 +1,8 @@
 <!--
     采购商补填信息页面
     文件名：cgsbtxx.aspx
-    传入参数：Session["yh_id"]  用户id               
+    传入参数：Session["yh_id"]  用户id 
+	author：张新颖
 -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 
@@ -74,8 +75,11 @@
     }
 
     protected void updateUserInfo(object sender, EventArgs e)
-    {
-        s_yh_id = Session["yh_id"].ToString();
+    {      
+		if(Session["yh_id"]!=null&&Session["yh_id"].ToString()!="") 
+		{
+		  s_yh_id = Session["yh_id"].ToString();
+		}
         string s_lx="";
         if (this.gxs.Checked)
         {
