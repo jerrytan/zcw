@@ -1,8 +1,9 @@
 <!--
         品牌详情页面
         文件名：ppxx.ascx
-        传入参数：pp_id    品牌编号           
-    -->
+        传入参数：pp_id    品牌编号
+        负责人:任武           
+-->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>

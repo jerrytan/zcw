@@ -3,7 +3,7 @@
         文件名：wzxq.ascx
         传入参数：p     列表页数
                   wz_id    文章类型
-               
+        负责人:任武
 -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 <%@ Import Namespace="System.Data" %>

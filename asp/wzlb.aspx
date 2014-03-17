@@ -4,7 +4,7 @@
         传入参数：
                 p    列表页数
                 id    文章类型
-               
+        负责人:  任武
 -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 <%@ Register Src="include/pages.ascx" TagName="pages1" TagPrefix="uc2" %>
@@ -38,12 +38,12 @@
 
     <script runat="server">        
         private DataConn dc_obj = new DataConn();
-        private const int Page_Size = 10; //每页的记录数量
+        private const int Page_Size = 5; //每页的记录数量
         private int current_page=1;//当前默认页为第一页
-        int pageCount_page; 
+        int pageCount_page; //总页数
         protected DataTable dt_content = new DataTable();
         private int i_count=0;
-        public List<OptionItem> Items { get; set; }
+        public List<OptionItem> Items { get; set; }//用于跳转页面
 
         public class OptionItem
         {
@@ -120,32 +120,25 @@
         //根据参数,获取数据库中分页存储过程的结果
         private DataTable GetProductFormDB(int begin, int end ,string type)
         {         
-            string connString = ConfigurationManager.ConnectionStrings["DBServerName"].ConnectionString;         
-            SqlCommand cmd = new SqlCommand("wz_Paging");
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@begin", SqlDbType.Int).Value = begin;  //开始页第一条记录
-            cmd.Parameters.Add("@end", SqlDbType.Int).Value = end;  //开始页最后一条记录
-            cmd.Parameters.Add("@文档类型", SqlDbType.VarChar,20).Value = type; //传材料编码给材料表,执行存储过程
-            SqlDataAdapter sda = new SqlDataAdapter(cmd);            
-            using (SqlConnection conn = new SqlConnection(connString))
+            SqlParameter [] spt = new SqlParameter[]
             {
-                cmd.Connection = conn;
-                conn.Open();
-                sda.Fill(dt_content);
-                conn.Close();
-            }
-            return dt_content;
+                new SqlParameter("@begin",begin),
+                new SqlParameter("@end",end),
+                new SqlParameter("@文档类型",type)
+            };
+            return dt_content = dc_obj.ExecuteProcForTable("wz_Paging",spt);
         }
 
         //从数据库获取记录的总数量
         private int GetProductCount()
         {
-            
             try
             {
                 string str_type = Request["id"];   //获取传过来的文档类型参数
-                string str_sql = "select count(wz_Id) from 文章表 where 文档类型='"+str_type+"' ";
-                i_count = dc_obj.GetRowCount(str_sql);  //根据sql语句得到表记录条数
+                //string str_sql = "select count(wz_Id) from 文章表 where 文档类型='"+str_type+"' ";
+                //i_count = Convert.ToInt32(dc_obj.DBLook(str_sql));  //根据sql语句得到表记录条数
+                string str_sql = "select wz_Id from 文章表 where 文档类型='"+str_type+"' order by 发表时间 ";
+                i_count = dc_obj.GetRowCount(str_sql);
             }
             catch (Exception e)
             {
@@ -169,12 +162,17 @@
         <!-- 首页 文章列表 结束-->
         
         <!-- 页码开始-->
-        <div class="fy2">
+       <div class="fy2">
             <div class="fy3">
+               <%-- <%if(current_page==1){%>
                 <a href="wzlb.aspx?<%=LinkFirst %>&id=<%=str_id %>"class="p">首页</a>
-                <a href="wzlb.aspx?<%=LinkPrev %>%id=<%=str_id %>" class="p">上一页</a>
-                <a href="wzlb.aspx?<%=LinkNext %>%id=<%=str_id %>" class="p">下一页</a>
-                <a href="wzlb.aspx?<%=LinkLast %>%id=<%=str_id %>" class="p">尾页</a>
+                <%} %>
+                <% else if(current_page>1 && current_page< pageCount_page) {%>
+                <a href="wzlb.aspx?<%=LinkPrev %>&id=<%=str_id %>" class="p">上一页</a>
+                <a href="wzlb.aspx?<%=LinkNext %>&id=<%=str_id %>" class="p">下一页</a>
+                <% }else if(current_page == pageCount_page){ %>
+                <a href="wzlb.aspx?<%=LinkLast %>&id=<%=str_id %>" class="p">末页</a>
+                <%} %>
                 直接到第  
                 <select onchange="window.location=this.value" name="" class="p">
                 <% foreach (var v in this.Items)
@@ -182,7 +180,7 @@
                     <option value="<%=v.Value %>&id=<%=str_id%>" <%=v.SelectedString %>><%=v.Text %></option>
                 <%} %>
                 </select>
-                页
+                页--%>
             </div>
         </div>
         <!-- 页码结束-->

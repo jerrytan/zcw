@@ -2,7 +2,7 @@
         供应商信息页面
         文件名：gysxx.ascx
         传入参数：gys_id    供应商编号
-               
+        负责人:任武       
     -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 <%@ Import Namespace="System.Data" %>
