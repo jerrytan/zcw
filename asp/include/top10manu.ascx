@@ -1,7 +1,8 @@
-﻿<!--
+﻿   <!--
         十大厂商，用于头部
         文件名：top10manu.ascx
-        传入参数：无        
+        传入参数：无
+        owner:丁传宇        
     -->
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>

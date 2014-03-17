@@ -2,6 +2,7 @@
 	所有页面使用的底部页面
 	文件名：footer.aspx
 	传入参数：无
+    owner:丁传宇
 -->
 <div class="foot">
     <span class="foot2"><a href="#">网站合作</a>  |<a href="#"> 内容监督</a> | <a href="#">商务咨询</a> |  <a href="#">投诉建议010-87654321</a> </span>

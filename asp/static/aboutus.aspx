@@ -2,6 +2,7 @@
 	关于我们, 所有页面使用的底部
 	文件名：aboutus.aspx
 	传入参数：无
+    owner:丁传宇
 -->
 <div class="gywm">
     <div class="gywm1">

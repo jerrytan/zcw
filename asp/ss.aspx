@@ -2,6 +2,7 @@
            搜索页
            文件名为:ss.aspx
 		   传入参数为: 搜索文本框中的值
+           owner:丁传宇
 -->
 
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>

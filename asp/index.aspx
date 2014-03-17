@@ -2,6 +2,7 @@
 	首页
 	文件名：index.aspx
 	传入参数：无
+    owner:丁传宇
 -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 <%@ Register Src="include/Top10manu.ascx" TagName="Top10manu" TagPrefix="uc2" %>

@@ -2,8 +2,10 @@
         文章列表，用于头部
         文件名：clfx.ascx
         传入参数：无
+        owner:丁传宇
         
     -->
+
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
@@ -20,15 +22,15 @@
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DataSet ds_Clfx = new DataSet();
-            DataSet ds_Cldg = new DataSet();
-            DataSet ds_Clpc = new DataSet();
-            DataSet ds_Clbk = new DataSet();
+            DataSet ds_Clfx = new DataSet();//材料发现
+            DataSet ds_Cldg = new DataSet();//材料导购
+            DataSet ds_Clpc = new DataSet();//材料评测
+            DataSet ds_Clbk = new DataSet();//材料百科
 
-            string str_SqlClfx = "select wz_id,标题 from 文章表 where 文档类型='材料发现' ";
-            string str_SqlCldg = "select wz_id,标题 from 文章表 where 文档类型='材料导购' ";
-	        string str_SqlCldc = "select wz_id,标题 from 文章表 where 文档类型='材料评测' ";
-	        string str_SqlClbk = "select wz_id,标题 from 文章表 where 文档类型='材料百科' ";
+            string str_SqlClfx = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料发现' and 是否上头条='是' order by updatetime desc ";
+            string str_SqlCldg = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料导购' and 是否上头条='是' order by updatetime desc ";
+	        string str_SqlCldc = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料评测' and 是否上头条='是' order by updatetime desc ";
+	        string str_SqlClbk = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料百科' and 是否上头条='是' order by updatetime desc ";
             string str_Table = "文章表";	
             
             dt_Clfx =  dc.DataPileDT(str_SqlClfx,ds_Clfx,str_Table);
@@ -38,7 +40,7 @@
         }
 </script>
 
-
+<div class="clfx_cldg" style=" width:536px; margin:0 0; padding:0 0; clear:both;">
 <div class="clfx">
     <div class="clfx1">
         <div class="clfx2">
@@ -60,7 +62,7 @@
 </div>
 
 
-<div class="clfx">
+<div class="clfx" >
     <div class="clfx1">
         <div class="clfx2">
             <img src="images/biao_03.jpg" />
@@ -79,8 +81,9 @@
         </ul>
     </div>
 </div>
+</div>
 
-
+<div class="clpc_clbk" style=" width:536px; margin:0 0; padding:0 0; clear:both;">
 <div class="clfx">
     <div class="clfx1">
         <div class="clfx2">
@@ -117,4 +120,5 @@
             <% } %>
         </ul>
     </div>
+</div>
 </div>

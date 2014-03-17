@@ -2,6 +2,7 @@
 	热销产品， 首页使用
 	文件名：rxcp.aspx
 	传入参数：无
+    owner:丁传宇
 -->
 
 <%@ Import Namespace="System.Data" %>
