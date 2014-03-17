@@ -1,7 +1,8 @@
 <!--
         材料详情页面
-        文件名：clxx.ascx
+        文件名：clxx.aspx
         传入参数：cl_id
+        owner:丁传宇
                
     -->
 
