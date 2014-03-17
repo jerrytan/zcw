@@ -504,7 +504,7 @@ public class DataConn : System.Web.UI.Page
     public DataTable ExecuteProcForTable(string strProcName, SqlParameter[] coll)
     {
         DataTable dt = null;
-        DataSet ds = null;
+        DataSet ds =new DataSet();
         SqlCommand objcom = new SqlCommand();
         SqlDataAdapter objadapter;
         try
