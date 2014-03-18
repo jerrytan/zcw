@@ -134,10 +134,29 @@
             s_yh_id = Session["CGS_YH_ID"].ToString();
         }
 
-       sSQL = "select b.* from 采购商关注材料表 as  a ,材料表 as b  where a.yh_id='" + s_yh_id + "'  and a.cl_id = b.cl_id ";
-       dt = null;
-        dt = objConn.GetDataTable(sSQL);
-        outToExcel(dt);
+         sSQL="select QQ号码,手机,类型,姓名,公司名称,公司地址,公司主页,公司电话 from 用户表 where yh_id='"+s_yh_id+"'";
+        DataTable dt_yhbt=objConn.GetDataTable(sSQL);
+        if(dt_yhbt!=null&&dt_yhbt.Rows.Count>0)
+        {
+            string user_type=dt_yhbt.Rows[0]["类型"].ToString();
+            string tel=dt_yhbt.Rows[0]["手机"].ToString();
+            string name=dt_yhbt.Rows[0]["姓名"].ToString();
+            string com_name=dt_yhbt.Rows[0]["公司名称"].ToString();
+            string com_add=dt_yhbt.Rows[0]["公司地址"].ToString();
+            string com_tel=dt_yhbt.Rows[0]["公司电话"].ToString();
+            if(user_type!=""&&tel!=""&&name!=""&&com_name!=""&&com_add!=""&&com_tel!="")
+            {
+                 sSQL = "select b.* from 采购商关注材料表 as  a ,材料表 as b  where a.yh_id='" + s_yh_id + "'  and a.cl_id = b.cl_id ";
+                 dt = null;
+                 dt = objConn.GetDataTable(sSQL);
+                 outToExcel(dt);
+            }
+            else
+            {
+                 Response.Redirect("cgsbtxx.aspx");
+            }
+
+        }
     }
     private StringBuilder AppendCSVFields(StringBuilder argSource, string argFields)
     {

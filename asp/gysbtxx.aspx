@@ -164,13 +164,10 @@
 <dd>贵公司的营业执照： </dd><dt><input name="gys_license" type="file" class="ggg" /> 
     <a href=""><img src="images/sc_03.jpg" /></a></dt>
 -->
-	
+	<input name="gysgys_id" type="hidden" id="gys_id" class="fxsxx3" value=""/>
+    <dd style="width:300px; color:Red">*号的为必填项,不能为空!</dd>
+    <dt style="width:100%; text-align:center;"><input type="submit" value="保存"/></dt>
 </dl>
-<span class="gybtan">
-	<input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" value=""/>
-    <input type="submit" value="保存" />
-	</span></div>
-	<dd><span class="gysgybtr">*号的为必填项,不能为空!</span></dd><dt></dt>
 </div>
 </form>
 
