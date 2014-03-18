@@ -163,9 +163,9 @@
   <dd>编码:</dd>
   <dt><%=row["材料编码"].ToString() %></dt>
   <%}%>
-
+  
  </dl>
- <span class="xx4" onclick="sc_login(<%=cl_id %>)"><a href="" onclick="NewWindow(<%=cl_id %>)">请收藏，便于查找</a></span></div>
+ <span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;"  onclick="sc_login(<%=cl_id %>)"><a href="" onclick="NewWindow(<%=cl_id %>)">请收藏，便于查找</a></span></div>
 </div>
 
 <div class="xx5"><img src="images/sst_03.jpg" />
