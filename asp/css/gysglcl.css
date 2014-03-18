@@ -1,0 +1,10 @@
+﻿ #menu { width:200px; margin:auto;}
+ #menu h1 { font-size:12px;margin-top:1px; font-weight:100}
+ #menu h2 { padding-left:15px; font-size:12px; font-weight:100}
+ #menu ul { padding-left:15px; height:100px;overflow:auto; font-weight:100}
+ #menu a { display:block; padding:5px 0 3px 10px; text-decoration:none; overflow:hidden;}
+ #menu a:hover{ color:#000;}
+ #menu .no {display:none;}
+ #menu .h1 a{color:#000;}
+ #menu .h2 a{color:#000;}
+ #menu  h1 a{color:#000;}
