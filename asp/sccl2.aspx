@@ -2,7 +2,7 @@
         材料收藏，QQ登陆页面
         文件名：sccl2.ascx
         传入参数：无
-               
+		author:张新颖               
     -->
 <%@ Page Language="C#" AutoEventWireup="true" %>
 

@@ -2,7 +2,7 @@
         材料收藏页面
         文件名：sccl.ascx
         传入参数：cl_id   材料id
-               
+        author:张新颖       
     -->
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
@@ -53,76 +53,61 @@
         }
         else
         {
+			 DataConn objConn=new DataConn();
            //Response.Write("QQ_id is " + QQ_id.Value + "<p>");
-
-            String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-
             string yh_id="错误";
-            
-            try{
-                //查询是否该QQid已经登录过
-                string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"'";
-                SqlCommand cmd_checkuserexist = new SqlCommand(str_checkuserexist, conn);
-       
-                conn.Open();
-                Object res_checkuserexist = cmd_checkuserexist.ExecuteScalar();
-                if (res_checkuserexist != null) 
+            string s_count1="";
+            try
+			{
+				//查询是否该QQid已经登录过
+				string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"'";
+                s_count1=objConn.DBLook(str_checkuserexist);               
+                if (s_count1 != "") 
                 {
-                     int count = Convert.ToInt32(res_checkuserexist);
-                     if (count ==0 )  //qq_id 不存在，需要增加用户表
-                     {
-        
-                           String str_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('"+ CGS_QQ_ID.Value+"')";
-                           SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);         
-                           cmd_insertuser.ExecuteNonQuery();
+                    int count = Convert.ToInt32(s_count1);
+                    if (count ==0 )  //qq_id 不存在，需要增加用户表
+                    {
+                        string str_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('"+ CGS_QQ_ID.Value+"')";
+                        objConn.ExecuteSQL(str_insertuser,false);
 
-                           String str_updateyhid = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"') where QQ_id = '"+CGS_QQ_ID.Value+"'";
-                           SqlCommand cmd_updateyhid = new SqlCommand(str_updateyhid, conn);         
-                           cmd_updateyhid.ExecuteNonQuery();
+                        string str_updateyhid = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '"+CGS_QQ_ID.Value+"') where QQ_id = '"+CGS_QQ_ID.Value+"'";
+                        objConn.ExecuteSQL(str_updateyhid,true);
                      }
 
                      //获得yh_id，QQ_id应该为
-                     String str_getyhid = "select myId from 用户表 where QQ_id ='"+ CGS_QQ_ID.Value+"'";
-                     SqlCommand cmd_getyhid = new SqlCommand(str_getyhid, conn);
-                     Object res_yhid = cmd_getyhid.ExecuteScalar();
-                     if (res_yhid != null) 
+                     string str_getyhid = "select myId from 用户表 where QQ_id ='"+ CGS_QQ_ID.Value+"'";
+                     DataTable dt_yh=objConn.GetDataTable(str_getyhid);
+                     if(dt_yh!=null&&dt_yh.Rows.Count>0)
                      {
-                         yh_id = Convert.ToString(res_yhid);
+                        yh_id=dt_yh.Rows[0]["yh_id"].ToString();
                      }
 
                     
                   
                       //先判断“采购商关注材料表”是否有该记录，如果没有，则插入
                       string str_checkexist = "select count(*) from 采购商关注材料表 where yh_id = '"+yh_id+"' and cl_id ='"+cl_id+"'";
-                      SqlCommand cmd_checkexist = new SqlCommand(str_checkexist, conn);
-                      int res_checkexist = Convert.ToInt32(cmd_checkexist.ExecuteScalar());
+                      string s_count="";
+                      s_count=objConn.DBLook(str_checkexist);
                       if (res_checkexist !=1 ) 
                       {
-                       
-                          String str_getcl = "select 显示名,材料编码 from 材料表 where cl_id ='"+cl_id+"'";
-                          SqlDataAdapter da_cl = new SqlDataAdapter(str_getcl, conn);
-                          DataSet ds_cl = new DataSet();
-                          da_cl.Fill(ds_cl, "材料表");            
-                          DataTable dt_cl = ds_cl.Tables[0];
-                          String str_clname = Convert.ToString(dt_cl.Rows[0]["显示名"]);
-                          String str_clcode = Convert.ToString(dt_cl.Rows[0]["材料编码"]);
-                      
-                          String str_addcl = "insert into 采购商关注材料表 (yh_id,cl_id,材料名称,材料编码) values ('"+yh_id+"','"+cl_id+"','"+str_clname+"','"+str_clcode+"')";
-                          SqlCommand cmd_addcl = new SqlCommand(str_addcl, conn); 
-                          cmd_addcl.ExecuteNonQuery();
+						  string str_getcl = "select 显示名,材料编码 from 材料表 where cl_id ='"+cl_id+"'";
+                          DataTable dt_cl = objConn.GetDataTable(str_getcl);
+						  string str_clname="";
+						  string str_clcode="";
+						  if(dt_cl!=null&&dt_cl.Rows.Count()>0)
+						  {
+							str_clname = dt_cl.Rows[0]["显示名"].ToString();
+							str_clcode = dt_cl.Rows[0]["材料编码"].ToString();
+						  }
+                          string str_addcl = "insert into 采购商关注材料表 (yh_id,cl_id,材料名称,材料编码) values ('"+yh_id+"','"+cl_id+"','"+str_clname+"','"+str_clcode+"')";
+                          objConn.ExecuteSQL(str_addcl,true);
                        }
                      
                 }
             }
             catch (Exception ex){
                 Response.Write(ex);
-            }
-            finally{
-                conn.Close();
-            }           
-
-           
+            }          
 
 			Response.Write("<span class='dlzi'>尊敬的采购商，您好!</span>");
             Response.Write("<span class='dlzi'>该材料已被收藏成功！</span>");
