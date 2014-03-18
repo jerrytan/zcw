@@ -2,6 +2,7 @@
     供应商登陆后操作页面公共的头部
     文件：header2.ascx
     传入参数：无
+    owner:丁传宇
 
 -->
 
@@ -20,10 +21,8 @@
             HttpCookie QQ_id = Request.Cookies["QQ_id"];
             if (QQ_id != null )
             {
-            string str_Sql = "select 姓名 from 用户表 where QQ_id='"+QQ_id.Value+"'";
-            DataSet ds_Yh = new DataSet();
-            string str_Table = "用户表";           
-            dt_Yh = dc.DataPileDT(str_Sql,ds_Yh,str_Table);
+            string str_Sql = "select 姓名 from 用户表 where QQ_id='"+QQ_id.Value+"'";           
+            dt_Yh = dc.GetDataTable(sttr_Sql);
             }
 		}	      
 
@@ -38,7 +37,7 @@
     <div class="gyzy0">
         <div class="gyzy">
             尊敬的
-			<%foreach(System.Data.DataRow row in this.dt_yh.Rows){%>            
+			<%foreach(System.Data.DataRow row in dt_Yh.Rows){%>            
             <span><%=row["姓名"].ToString() %></span>           
             <%}%>
             先生/女士，您好

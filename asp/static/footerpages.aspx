@@ -1,3 +1,11 @@
+    <!--
+        文章的分页
+	    文件名：footerpages.aspx
+	    传入参数：无
+        owner:丁传宇
+
+    -->
+
 <%-- 材料发现内容页码--%>
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
