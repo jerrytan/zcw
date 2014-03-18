@@ -93,7 +93,7 @@
     <!--  footer ¿ªÊ¼-->
     <script type="text/javascript"><!--//--><![CDATA[//><!--
     function menuFix() {
-        var sfEls = document.getElementById("nav").getElementsByTagName("li");
+        var sfEls = document.getElementById("nav").getElementsByTagName("li")[0];
         for (var i = 0; i < sfEls.length; i++) {
             sfEls[i].onmouseover = function () {
                 this.className += (this.className.length > 0 ? " " : "") + "sfhover";
@@ -131,7 +131,7 @@
     </script>
     <script type="text/javascript"><!--//--><![CDATA[//><!--
     function menuFix() {
-        var sfEls = document.getElementById("nav").getElementsByTagName("li");
+        var sfEls = document.getElementById("nav").getElementsByTagName("li")[0];
         for (var i = 0; i < sfEls.length; i++) {
             sfEls[i].onmouseover = function () {
                 this.className += (this.className.length > 0 ? " " : "") + "sfhover";
