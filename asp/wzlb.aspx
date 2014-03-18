@@ -7,7 +7,6 @@
         负责人:  任武
 -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
-<%@ Register Src="include/pages.ascx" TagName="pages1" TagPrefix="uc2" %>
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
@@ -60,6 +59,7 @@
             {
                 strP = "1";
             }
+            
             int p;
             bool b1 = int.TryParse(strP, out p);
             if (b1 == false)
@@ -70,7 +70,7 @@
 
             //从查询字符串中获取"总页数"参数
             string strC = Request.QueryString["c"];
-            if(string.IsNullOrEmpty(strC))
+            if(string.IsNullOrEmpty(strC))//首次从数据中获取总记录数
             {
                 double recordCount = this.GetProductCount(); //134
                 double d1 = recordCount / Page_Size; //13.4
@@ -85,27 +85,17 @@
                 c = 1;
             }
             pageCount_page = c;
+
             //计算/查询分页数据
             int begin = (p - 1) * Page_Size + 1;
             int end = p * Page_Size;
-	        string type = Request["id"];   //获取传过来的文档类型参数
+            string type = Request["id"];   //获取传过来的文档类型参数
             dt_content = this.GetProductFormDB(begin,end,type);
             this.SetNavLink(p, c);              
         }
-       
-        protected string LinkFirst= ""; //首页
-        protected string LinkPrev = ""; //上页
-        protected string LinkNext = ""; //下页
-        protected string LinkLast = ""; //尾页     
-
         //设置导航链接 currentPage:当前页号 pageCount:总页数 
         private void SetNavLink(int currentPage, int pageCount)
-        {
-            string path = Request.Path;   
-            LinkFirst = "1";
-            LinkPrev = string.Format("p={0}",currentPage - 1);
-            LinkNext = string.Format("p={0}",currentPage + 1);
-            LinkLast = string.Format("p={0}",pageCount);
+        {  
             this.Items = new List<OptionItem>();
             for (int i = 1; i <= pageCount; i++)
             {      
@@ -135,10 +125,8 @@
             try
             {
                 string str_type = Request["id"];   //获取传过来的文档类型参数
-                //string str_sql = "select count(wz_Id) from 文章表 where 文档类型='"+str_type+"' ";
-                //i_count = Convert.ToInt32(dc_obj.DBLook(str_sql));  //根据sql语句得到表记录条数
                 string str_sql = "select wz_Id from 文章表 where 文档类型='"+str_type+"' order by 发表时间 ";
-                i_count = dc_obj.GetRowCount(str_sql);
+                i_count = dc_obj.GetRowCount(str_sql); //
             }
             catch (Exception e)
             {
@@ -164,14 +152,22 @@
         <!-- 页码开始-->
        <div class="fy2">
             <div class="fy3">
-               <%-- <%if(current_page==1){%>
-                <a href="wzlb.aspx?<%=LinkFirst %>&id=<%=str_id %>"class="p">首页</a>
+                <% if(current_page<=1 ) {%> 
+                    <a href="wzlb.aspx?p=<%=1 %>&id=<%=str_id %>"class="p">首页</a>
+                    <a href="wzlb.aspx?p=<%=current_page+1 %>&id=<%=str_id %>" class="p">下一页</a>
+                    <a href="wzlb.aspx?p=<%=pageCount_page %>&id=<%=str_id %>" class="p">末页</a>
                 <%} %>
-                <% else if(current_page>1 && current_page< pageCount_page) {%>
-                <a href="wzlb.aspx?<%=LinkPrev %>&id=<%=str_id %>" class="p">上一页</a>
-                <a href="wzlb.aspx?<%=LinkNext %>&id=<%=str_id %>" class="p">下一页</a>
-                <% }else if(current_page == pageCount_page){ %>
-                <a href="wzlb.aspx?<%=LinkLast %>&id=<%=str_id %>" class="p">末页</a>
+                    
+                <% else if(!(current_page<=1)&&!(current_page == pageCount_page)){ %>
+                    <a href="wzlb.aspx?p=<%=1 %>&id=<%=str_id %>"class="p">首页</a>
+                    <a href="wzlb.aspx?p=<%=current_page-1 %>&id=<%=str_id %>" class="p">上一页</a>
+                    <a href="wzlb.aspx?p=<%=current_page+1 %>&id=<%=str_id %>" class="p">下一页</a>
+                     <a href="wzlb.aspx?p=<%=pageCount_page %>&id=<%=str_id %>" class="p">末页</a>
+                <%}%>
+                <% else if(current_page == pageCount_page){ %>
+                    <a href="wzlb.aspx?p=<%=1 %>&id=<%=str_id %>"class="p">首页</a>
+                    <a href="wzlb.aspx?p=<%=current_page-1 %>&id=<%=str_id %>" class="p">上一页</a>
+                    <a href="wzlb.aspx?p=<%=pageCount_page %>&id=<%=str_id %>" class="p">末页</a>
                 <%} %>
                 直接到第  
                 <select onchange="window.location=this.value" name="" class="p">
@@ -180,7 +176,7 @@
                     <option value="<%=v.Value %>&id=<%=str_id%>" <%=v.SelectedString %>><%=v.Text %></option>
                 <%} %>
                 </select>
-                页--%>
+                页
             </div>
         </div>
         <!-- 页码结束-->
