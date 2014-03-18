@@ -1,7 +1,8 @@
 <!--
       供应商主页面 管理认领厂商页面 管理供应商 管理分销商页面 供应商管理材料页面 
 	  文件名:  gyszym.aspx   
-      传入参数:无	  
+      传入参数:QQ_id 
+	  author:张新颖
          
 -->
 
@@ -29,66 +30,59 @@
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部2结束-->
 
-
-    <% 
-        String QQid = Request.Cookies["GYS_QQ_ID"].Value;   //首先获取cookie中的QQ_id
-		
-        string yh_id = "";
-        String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-        SqlConnection conn = new SqlConnection(constr);
-        String str_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + QQid + "'";
-        SqlCommand cmd_checkuserexist = new SqlCommand(str_checkuserexist, conn);
-        conn.Open();
-        Object obj_checkuserexist = cmd_checkuserexist.ExecuteScalar();
-
-        if (obj_checkuserexist != null)
+  <% 
+         DataConn objConn=new DataConn();
+         string s_QQ_id="";
+        if ( Request.Cookies["QQ_id"]!=null&& Request.Cookies["QQ_id"].Value.ToString()!="")
         {
-            int count = Convert.ToInt32(obj_checkuserexist);
+             s_QQ_id= Request.Cookies["QQ_id"].Value.ToString();
+        }
+        string s_yh_id = "";
+        string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + s_QQ_id + "'";
+        string s_Count=objConn.DBLook(str_checkuserexist);    
+        if (s_Count != "")
+        {
+            int count = Convert.ToInt32(s_Count);
             if (count == 0)  //qq_id 不存在，需要增加用户表
             {
-
-                String str_insertuser = "insert into 用户表 (QQ_id) VALUES ('" + QQid + "')";
-                SqlCommand cmd_insertuser = new SqlCommand(str_insertuser, conn);
-                cmd_insertuser.ExecuteNonQuery();
-                String str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + QQid + "')"
-				+",updatetime=(select getdate()),注册时间=(select getdate())where QQ_id = '" + QQid + "'";
-                SqlCommand cmd_updateuser = new SqlCommand(str_updateuser, conn);
-                cmd_updateuser.ExecuteNonQuery();
-
+                string str_insertuser = "insert into 用户表 (QQ_id) VALUES ('" + s_QQ_id + "')";
+                objConn.ExecuteSQL(str_insertuser,false);
+                string str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + s_QQ_id + "')"
+				+",updatetime=(select getdate()),注册时间=(select getdate())where QQ_id = '" + s_QQ_id + "'";
+                objConn.ExecuteSQL(str_updateuser,true);
             }
-
         }
-        SqlDataAdapter da = new SqlDataAdapter("select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='" + QQid + "'", conn);
-        DataSet ds = new DataSet();
-        da.Fill(ds, "用户表");
-        DataTable dt = ds.Tables[0];
-        yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);
-		
-		//need to set session value
-        Session["GYS_YH_ID"] = yh_id;
-        String passed = Convert.ToString(dt.Rows[0]["是否验证通过"]);
-        String name = Convert.ToString(dt.Rows[0]["姓名"]);
-        
-        //(供应商申请)的yh_id 是在认领厂商之后更新的
-       
-        
-        string str_gyssq = "select count(*) from 供应商认领申请表 where yh_id='" + yh_id + "'";
-        SqlCommand cmd_select = new SqlCommand(str_gyssq, conn);
-        Object obj_checkexist_yhid = cmd_select.ExecuteScalar();
-        conn.Close();
-        String passed_gys = "";
-        if (obj_checkexist_yhid != null)
+        string s_SQL="select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='" + s_QQ_id + "'";      
+        DataTable dt_yh = objConn.GetDataTable(s_SQL);
+         string passed="";
+          string name="";
+        if(dt_yh!=null&&dt_yh.Rows.Count>0)
         {
-            int count = Convert.ToInt32(obj_checkexist_yhid);
+            s_yh_id =dt_yh.Rows[0]["yh_id"].ToString();
+            passed = dt_yh.Rows[0]["是否验证通过"].ToString();
+            name = dt_yh.Rows[0]["姓名"].ToString();
+		}
+		//need to set session value
+        Session["GYS_YH_ID"] = s_yh_id;
+
+        //(供应商申请)的yh_id 是在认领厂商之后更新的
+
+        string str_gyssq = "select count(*) from 供应商认领申请表 where yh_id='" + s_yh_id + "'";
+        string s_count="";
+        s_count=objConn.DBLook(str_gyssq);
+        string passed_gys = "";
+        if (s_count != "")
+        {
+            int count = Convert.ToInt32(s_count);
             if (count != 0)  //如果(供应商申请)不更新 就没有yh_id 往下不执行
             {
-
-                SqlDataAdapter da_gyssq = new SqlDataAdapter("select 审批结果 from 供应商认领申请表 where yh_id='" + yh_id + "' ", conn);
-                DataSet ds_gyssq = new DataSet();
-                DataTable dt_gyssq = new DataTable();
-                da_gyssq.Fill(ds_gyssq, "供应商申请");
-                dt_gyssq = ds_gyssq.Tables[0];
-                passed_gys = Convert.ToString(dt_gyssq.Rows[0]["审批结果"]);
+                string sSQL="select 审批结果 from 供应商认领申请表 where yh_id='" + s_yh_id + "' ";              
+                DataTable dt_gyssq = new DataTable();              
+                dt_gyssq = objConn.GetDataTable(sSQL);
+                if(dt_gyssq!=null&&dt_gyssq.Rows.Count>0)
+                {
+                    passed_gys =dt_gyssq.Rows[0]["审批结果"].ToString();
+                }
             }
         }	
     %>
@@ -100,7 +94,7 @@
 		&nbsp&nbsp &nbsp&nbsp &nbsp&nbsp  
 		<span style="color: Red;font-size:16px">
 		<%
-		    foreach(System.Data.DataRow row in dt.Rows)
+		    foreach(System.Data.DataRow row in dt_yh.Rows)
 			{	    
                   if(passed_gys.Equals("通过"))  
                   {
@@ -108,25 +102,23 @@
 				  }	
 				  if(!passed_gys.Equals("通过"))
 				  {
-				  if(Convert.ToString(row["是否验证通过"])=="通过")
-				  {
-				     Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领.");
-				  }	
+					  if(Convert.ToString(row["是否验证通过"])=="通过")
+					  {
+						 Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领.");
+					  }	
                   }				  
 			} 
 		%>
 		</span>
 		</span>
-        
-		
 		<span class="zy2">
-            <img src="images/aaa_06.jpg" />图1</span> <span class="zy2">
-                <img src="images/aaa_06.jpg" />图2</span>
+            <img src="images/aaa_06.jpg" />图1
+		</span> 
+		<span class="zy2">
+            <img src="images/aaa_06.jpg" />图2
+		</span>
 			
-    </div>
-	
-		
-		
+    </div>	
 
     <%                   
 		    if (!passed.Equals("通过"))
@@ -164,6 +156,7 @@
 
 	
     <%} %>
+   
    
 
     <div>
