@@ -46,9 +46,9 @@
     {
         if (!IsPostBack)
         {
-            if (Session["yh_id"]!=null&&Session["yh_id"].ToString()!="")
+            if (Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="")
             {
-                s_yh_id = Session["yh_id"].ToString();
+                s_yh_id = Session["CGS_YH_ID"].ToString();
             }
             
             string sSQL_yh = "select * from ”√ªß±Ì where yh_id='" + s_yh_id + "'";
@@ -76,9 +76,9 @@
 
     protected void updateUserInfo(object sender, EventArgs e)
     {      
-		if(Session["yh_id"]!=null&&Session["yh_id"].ToString()!="") 
+		if(Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="") 
 		{
-		  s_yh_id = Session["yh_id"].ToString();
+		  s_yh_id = Session["CGS_YH_ID"].ToString();
 		}
         string s_lx="";
         if (this.gxs.Checked)
