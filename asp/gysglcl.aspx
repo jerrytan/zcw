@@ -245,7 +245,7 @@
  </span>
   
 </div></div>
-<div class="dlqqz3">
+<div class="dlqqz3" style="width:260px;">
 
 <a href="xzclym.aspx"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;
 

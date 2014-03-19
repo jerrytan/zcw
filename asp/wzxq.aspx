@@ -45,8 +45,7 @@
         protected DataConn dc = new DataConn();
 
         protected void Page_Load(object sender, EventArgs e)
-        {
-            
+        {         
             wz_Id=Request["wz_id"];  //获取文章id
             string str_SqlWz = "select distinct 标题,作者, wz_id from 文章表 where wz_id='"+wz_Id+"'";            
             DataSet ds_Wz = new DataSet();
@@ -74,7 +73,7 @@
             dt_Wzhnr = dc.DataPileDT(str_SqlWzhnr,ds_Wzhnr,str_WzhnrTable); 
 
             string str_SqlWzhnrTotal = "select count(*) from 文章和内容相关表 where wz_id='"+wz_Id+"'";
-            object result = dc.ExecuteSingleValue(str_SqlWzhnrTotal);
+            object result = dc.DBLook(str_SqlWzhnrTotal);
             if (result != null) 
             {
                 total_pages = int.Parse(Convert.ToString(result));

@@ -73,6 +73,36 @@
         {
             s_yh_id = Session["yh_id"].ToString();
         }
+		if (this.contactortel.Value == "")
+        {
+            objConn.MsgBox(this.Page, "手机不能为空,请填写!");
+            this.contactortel.Focus();
+            return;
+        }
+        if (this.contactorname.Value == "")
+        {
+            objConn.MsgBox(this.Page, "姓名不能为空,请填写!");
+            this.contactorname.Focus();
+            return;
+        }
+        if (this.companyname.Value == "")
+        {
+            objConn.MsgBox(this.Page, "公司名称不能为空,请填写!");
+            this.companyname.Focus();
+            return;
+        }
+        if (this.companyaddress.Value == "")
+        {
+            objConn.MsgBox(this.Page, "公司地址不能为空,请填写!");
+            this.companyaddress.Focus();
+            return;
+        }
+        if (this.companytel.Value == "")
+        {
+            objConn.MsgBox(this.Page, "公司电话不能为空,请填写!");
+            this.companytel.Focus();
+            return;
+        }
         sSQL   = " update 用户表 " +
                 " set 手机='" +this.contactortel.Value + "', " +
                 " 姓名='" +this.contactorname.Value + "',  " +

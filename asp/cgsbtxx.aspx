@@ -46,9 +46,9 @@
     {
         if (!IsPostBack)
         {
-            if (Session["yh_id"]!=null&&Session["yh_id"].ToString()!="")
+            if (Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="")
             {
-                s_yh_id = Session["yh_id"].ToString();
+                s_yh_id = Session["CGS_YH_ID"].ToString();
             }
             
             string sSQL_yh = "select * from 用户表 where yh_id='" + s_yh_id + "'";
@@ -76,9 +76,9 @@
 
     protected void updateUserInfo(object sender, EventArgs e)
     {      
-		if(Session["yh_id"]!=null&&Session["yh_id"].ToString()!="") 
+		if(Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="") 
 		{
-		  s_yh_id = Session["yh_id"].ToString();
+		  s_yh_id = Session["CGS_YH_ID"].ToString();
 		}
         string s_lx="";
         if (this.gxs.Checked)
@@ -88,6 +88,36 @@
         else if (this.scs.Checked)
         {
             s_lx = "生产商";
+        }
+		    if (this.contactortel.Value == "")
+        {
+            objConn.MsgBox(this.Page, "手机不能为空,请填写!");
+            this.contactortel.Focus();
+            return;
+        }
+        if (this.contactorname.Value == "")
+        {
+            objConn.MsgBox(this.Page, "姓名不能为空,请填写!");
+            this.contactorname.Focus();
+            return;
+        }
+        if (this.companyname.Value == "")
+        {
+            objConn.MsgBox(this.Page, "公司名称不能为空,请填写!");
+            this.companyname.Focus();
+            return;
+        }
+        if (this.companyaddress.Value == "")
+        {
+            objConn.MsgBox(this.Page, "公司地址不能为空,请填写!");
+            this.companyaddress.Focus();
+            return;
+        }
+        if (this.companytel.Value == "")
+        {
+            objConn.MsgBox(this.Page, "公司电话不能为空,请填写!");
+            this.companytel.Focus();
+            return;
         }
         string s_updateUserinfo = " update 用户表   set 手机='" +this.contactortel.Value + "', 姓名='" +this.contactorname.Value +
                                   "',公司名称='" + this.companyname.Value + "',公司地址='"+this.companyaddress.Value+

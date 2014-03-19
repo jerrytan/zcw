@@ -704,5 +704,16 @@ public class DataConn : System.Web.UI.Page
     }
 
     #endregion
-  
+    /// <summary>
+    /// 简单提示框  20140318  小张添加
+    /// </summary>
+    public void MsgBox(Page webform, string msg)
+    {
+        if (!webform.IsStartupScriptRegistered("msg"))
+        {
+            string strScript;
+            strScript = "<SCRIPT LANGUAGE='JScript'>window.alert('" + msg + "')</SCRIPT>";
+            webform.RegisterStartupScript("msg", strScript);
+        }
+    }
 }
