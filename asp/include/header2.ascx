@@ -22,7 +22,7 @@
             if (QQ_id != null )
             {
             string str_Sql = "select 姓名 from 用户表 where QQ_id='"+QQ_id.Value+"'";           
-            dt_Yh = dc.GetDataTable(sttr_Sql);
+            dt_Yh = dc.GetDataTable(str_Sql);
             }
 		}	      
 
