@@ -47,30 +47,22 @@
         protected void Page_Load(object sender, EventArgs e)
         {         
             wz_Id=Request["wz_id"];  //获取文章id
-            string str_SqlWz = "select distinct 标题,作者, wz_id from 文章表 where wz_id='"+wz_Id+"'";            
-            DataSet ds_Wz = new DataSet();
-            string str_WzTable = "文章表";        
-            dt_Wz = dc.DataPileDT(str_SqlWz,ds_Wz,str_WzTable); 
+            string str_SqlWz = "select distinct 标题,作者, wz_id from 文章表 where wz_id='"+wz_Id+"'";                   
+            dt_Wz = dc.GetDataTable(str_SqlWz); 
 
-            string str_SqlWzhcs = "select 厂商名称,gys_id from 文章和厂商相关表 where wz_id='"+wz_Id+"'";            
-            DataSet ds_Wzhcs = new DataSet();
-            string str_WzhcsTable = "文章和厂商相关表";        
-            dt_Wzhcs = dc.DataPileDT(str_SqlWzhcs,ds_Wzhcs,str_WzhcsTable);
+            string str_SqlWzhcs = "select 厂商名称,gys_id from 文章和厂商相关表 where wz_id='"+wz_Id+"'";                  
+            dt_Wzhcs = dc.GetDataTable(str_SqlWzhcs);
 
-            string str_SqlWzhcl = "select 产品名称,cl_id from 文章和材料表相关表 where wz_id='"+wz_Id+"'";            
-            DataSet ds_Wzhcl = new DataSet();
-            string str_WzhclTable = "文章和材料表相关表";        
-            dt_Wzhcl = dc.DataPileDT(str_SqlWzhcl,ds_Wzhcl,str_WzhclTable);    
+            string str_SqlWzhcl = "select 产品名称,cl_id from 文章和材料表相关表 where wz_id='"+wz_Id+"'";                    
+            dt_Wzhcl = dc.GetDataTable(str_SqlWzhcl);    
 
             string page = Request["p"];
             if (page != null) 
 			{	
 				current_page = int.Parse(page);   
             }    
-            string str_SqlWzhnr = "select 页面内容, 页面编号, wz_id from 文章和内容相关表 where wz_id='"+wz_Id+"' and 页面编号='"+ current_page+"'";            
-            DataSet ds_Wzhnr = new DataSet();
-            string str_WzhnrTable = "文章和内容相关表";   
-            dt_Wzhnr = dc.DataPileDT(str_SqlWzhnr,ds_Wzhnr,str_WzhnrTable); 
+            string str_SqlWzhnr = "select 页面内容, 页面编号, wz_id from 文章和内容相关表 where wz_id='"+wz_Id+"' and 页面编号='"+ current_page+"'";             
+            dt_Wzhnr = dc.GetDataTable(str_SqlWzhnr); 
 
             string str_SqlWzhnrTotal = "select count(*) from 文章和内容相关表 where wz_id='"+wz_Id+"'";
             object result = dc.DBLook(str_SqlWzhnrTotal);

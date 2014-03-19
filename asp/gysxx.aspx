@@ -38,9 +38,9 @@
 		protected DataTable dt_gysxx = new DataTable(); //供应商信息(材料供应商信息表)
 		protected DataTable dt_ppxx = new DataTable(); //代理品牌(品牌字典)
 		protected DataTable dt_clxx = new DataTable(); //现货供应(材料表)
-        protected string gys_id;
-        protected string gys_type;
-		protected string gys_addr;
+        protected string gys_id;    //供应商id
+        protected string gys_type;  //供应商类型：生产商和分销商
+		protected string gys_addr;  //供应商地址
         protected DataConn dc = new DataConn();
 
         protected void Page_Load(object sender, EventArgs e)
@@ -49,10 +49,8 @@
             {          
 			    gys_id = Request["gys_id"];   //获取供应商id                      
 			
-			    string str_sqlclgys = "select 供应商,单位类型,联系人,联系人手机,联系地址 from 材料供应商信息表 where  gys_id='"+gys_id+"'";
-                DataSet ds_gysxx = new DataSet();
-                string str_clgystable = "材料供应商信息表";            
-                dt_gysxx = dc.DataPileDT(str_sqlclgys,ds_gysxx,str_clgystable);
+			    string str_sqlclgys = "select 供应商,单位类型,联系人,联系人手机,联系地址 from 材料供应商信息表 where  gys_id='"+gys_id+"'";            
+                dt_gysxx = dc.GetDataTable(str_sqlclgys);
 
                 //访问计数加1
                 String str_updatecounter = "update 材料供应商信息表 set 访问计数 = (select 访问计数 from 材料供应商信息表 where gys_id = '"+ gys_id +"')+1 where gys_id = '"+ gys_id +"'";
@@ -60,38 +58,29 @@
 
 
                 //获得供应商的单位类型，生产商还是分销商
-                Response.Write(dt_gysxx.Rows[0]["单位类型"]);
                 gys_type = Convert.ToString(dt_gysxx.Rows[0]["单位类型"]);		
                 
                 //分销商为代理品牌和正在销售材料
                 if(gys_type.Equals("分销商")) 
                 {
                     //获得代理品牌信息
-			        string str_sqldlppxx = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where fxs_id='"+gys_id+"'";
-                    DataSet ds_ppxx = new DataSet();
-                    string str_fxshpptable = "分销商和品牌对应关系表";            
-                    dt_ppxx = dc.DataPileDT(str_sqldlppxx,ds_ppxx,str_fxshpptable);
+			        string str_sqldlppxx = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where fxs_id='"+gys_id+"'";           
+                    dt_ppxx = dc.GetDataTable(str_sqldlppxx);
 			
                     //获得正在分销的材料列表
-			        string str_sqlfxcl = "select 显示名,cl_id from 材料表 where pp_id in(select pp_id from  分销商和品牌对应关系表 where fxs_id ='"+gys_id+"') ";
-                    DataSet ds_clxx = new DataSet();
-                    string str_cltable = "材料表";            
-                    dt_clxx = dc.DataPileDT(str_sqlfxcl,ds_clxx,str_cltable);
+			        string str_sqlfxcl = "select 显示名,cl_id from 材料表 where pp_id in(select pp_id from  分销商和品牌对应关系表 where fxs_id ='"+gys_id+"') ";           
+                    dt_clxx = dc.GetDataTable(str_sqlfxcl);
                 }
                 else  //生厂商则显示旗下品牌和它的分销商
                 {
                      //获取品牌信息
-			        string str_sqlppxx = "select 品牌名称,pp_id from 品牌字典 where 是否启用 = '1' and scs_id='"+gys_id+"'";
-                    DataSet ds_ppxx = new DataSet();
-                    string str_ppzdtable = "品牌字典";            
-                    dt_ppxx = dc.DataPileDT(str_sqlppxx,ds_ppxx,str_ppzdtable);
+			        string str_sqlppxx = "select 品牌名称,pp_id from 品牌字典 where 是否启用 = '1' and scs_id='"+gys_id+"'";           
+                    dt_ppxx = dc.GetDataTable(str_sqlppxx);
 			
                     //获取分销商信息
 			        //子查询嵌套 先根据传过来的gys_id查品牌名称  再从品牌字典里查复合条件的gys_id 最后根据复合条件的gys_id查分销商信息
-			        string str_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )";
-                    DataSet ds_fxsxx = new DataSet();
-                    string str_ccgystable = "材料供应商信息表";            
-                    dt_fxsxx = dc.DataPileDT(str_fxsxx,ds_fxsxx,str_ccgystable);
+			        string str_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )";          
+                    dt_fxsxx = dc.GetDataTable(str_fxsxx);
                 }
             }		
         }
@@ -177,7 +166,7 @@
                 </a>
             <%}%>
             </div>
-        <% }else { %>
+        <% }else {  //生产商%>
             <!-- 公司旗下品牌 开始-->
             <div class="gydl">
             <div class="dlpp">公司旗下品牌</div>
@@ -199,6 +188,7 @@
                 <select id="s1" name="" class="fu1">
                     <option></option>
                 </select>
+                地区
                 <select id="s2" name="" class="fu2">
                     <option></option>
                 </select>
