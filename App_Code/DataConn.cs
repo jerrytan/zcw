@@ -586,36 +586,7 @@ public class DataConn : System.Web.UI.Page
         objDataAdapter.Fill(objset, strtable);
         Close();
     }
-    /// <summary>
-    /// 返回指定查询SQL,数据源和源表的DataTable对象
-    /// </summary>
-    /// <param name="strSql">sql语句</param>
-    /// <param name="objSet">数据源</param>
-    /// <param name="strTable">源表的名称</param>
-    /// <returns>返回DataTable对象</returns>
-    public DataTable DataPileDT(string strSql, DataSet objSet, string strTable)
-    {
-        DataTable dt = null;
-        SqlDataAdapter spa = null;
-        spa = new SqlDataAdapter(strSql,objConn);
-        try
-        {
-            spa.Fill(objSet, strTable);
-            if (objSet != null && objSet.Tables.Count > 0)
-            {
-                dt = objSet.Tables[0];
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
-        finally
-        {
-            Close();
-        }
-        return dt;
-    }
+
 
     /// <summary>
     /// 执行操作型SQL，并返回自动增值ID
