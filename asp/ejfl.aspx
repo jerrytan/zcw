@@ -269,7 +269,7 @@
             </div>
             <div class="ppxz">
                 <div class="ppxz1">更多：</div>
-                <div class="ppxz2"></a> <a href="#">属性1</a> <a href="#">属性2</a> <a href="#">属性3</a></div>
+                <div class="ppxz2"><a href="#">属性1</a> <a href="#">属性2</a> <a href="#">属性3</a></div>
             </div>
 
             <div class="dlspx">
@@ -325,7 +325,7 @@
 
         <div class="pxright0">
             <div class="pxright">
-                <div class="pxright1">
+                <div class="pxright1" style=" text-align:left; padding-left:0px !important; padding-left:20px">
                     <ul>
 
                         <% foreach(System.Data.DataRow row in dt3.Rows){%>
@@ -343,7 +343,7 @@
 
 
     <div class="fy2">
-        <div class="fy3">
+        <div class="fy3" style=" width:420px; padding-left:0% !important; padding-left:73%">
 		    <%string name = Request["name"];%>
             <% if(current_page!=1) { %>
             <a href="ejfl.aspx?<%=cpPrev %>&name=<%=name%>" class="p">上一页</a>
