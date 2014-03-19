@@ -42,30 +42,22 @@
         {
                 
 			string pp_id = Request["pp_id"];  //获取传过来的pp_id
-            string str_sqlppxx = "select 品牌名称,scs_id  from 品牌字典 where pp_id='"+pp_id+"'";
-            DataSet ds_ppxx = new DataSet();
-            string str_ppzdtable = "品牌字典";            
-            dt_ppxx = objdc.DataPileDT(str_sqlppxx,ds_ppxx,str_ppzdtable);				
+            string str_sqlppxx = "select 品牌名称,scs_id  from 品牌字典 where pp_id='"+pp_id+"'";      
+            dt_ppxx = objdc.GetDataTable(str_sqlppxx);				
 
              //访问计数加1
             string str_updatecounter = "update 品牌字典 set 访问计数 = (select 访问计数 from 品牌字典 where pp_id = '"+ pp_id +"')+1 where pp_id = '"+ pp_id +"'";
             objdc.ExecuteSQL(str_updatecounter,true);
 
-			string str_clgystable = "材料供应商信息表";
-            string str_sqlscsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in (select scs_id from 品牌字典 where pp_id='"+pp_id+"' )";
-            DataSet ds_scsxx = new DataSet();            
-            dt_scsxx = objdc.DataPileDT(str_sqlscsxx,ds_scsxx,str_clgystable);			
+            string str_sqlscsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in (select scs_id from 品牌字典 where pp_id='"+pp_id+"' )";   
+            dt_scsxx = objdc.GetDataTable(str_sqlscsxx);			
 			
             //获得该品牌的分销信息
-			//string BrandsName=Request["BrandsName"];
-            string str_sqlfxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='"+pp_id+"')";
-            DataSet ds_fxsxx = new DataSet();           
-            dt_fxsxx = objdc.DataPileDT(str_sqlfxsxx,ds_fxsxx,str_clgystable);
+            string str_sqlfxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='"+pp_id+"')";           
+            dt_fxsxx = objdc.GetDataTable(str_sqlfxsxx);
 			
-			string str_sqlclxx = "select 显示名 ,规格型号,cl_id from 材料表 where pp_id='"+pp_id+"'  ";
-            DataSet ds_clxx  = new DataSet();
-            string str_cltable = "材料表 ";         
-            dt_clxx = objdc.DataPileDT(str_sqlclxx,ds_clxx,str_cltable);
+			string str_sqlclxx = "select 显示名 ,规格型号,cl_id from 材料表 where pp_id='"+pp_id+"'  ";        
+            dt_clxx = objdc.GetDataTable(str_sqlclxx);
         }	       
     </script>
     <div class="gysxx">
@@ -137,11 +129,10 @@
             {%>
             <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">
                 <div class="ppcp">
-                    <%
-					    
+                    <%	    
                         string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"+row["cl_id"]+"' and 大小='小'";
                         string imgsrc= "images/222_03.jpg";
-                        object result = objdc.ExecuteSingleValue(str_sqltop1);
+                        object result = objdc.DBLook(str_sqltop1);
                         if (result != null) {
                             imgsrc = result.ToString();
                         }

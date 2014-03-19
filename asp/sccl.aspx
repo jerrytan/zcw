@@ -79,7 +79,7 @@
                      DataTable dt_yh=objConn.GetDataTable(str_getyhid);
                      if(dt_yh!=null&&dt_yh.Rows.Count>0)
                      {
-                        yh_id=dt_yh.Rows[0]["yh_id"].ToString();
+                        yh_id=dt_yh.Rows[0]["myID"].ToString();
                      }
 
                     
@@ -88,13 +88,15 @@
                       string str_checkexist = "select count(*) from 采购商关注材料表 where yh_id = '"+yh_id+"' and cl_id ='"+cl_id+"'";
                       string s_count="";
                       s_count=objConn.DBLook(str_checkexist);
-                      if (res_checkexist !=1 ) 
+					  int count1;
+					  count1= Convert.ToInt32(s_count);
+                      if (count1 !=1 ) 
                       {
 						  string str_getcl = "select 显示名,材料编码 from 材料表 where cl_id ='"+cl_id+"'";
                           DataTable dt_cl = objConn.GetDataTable(str_getcl);
 						  string str_clname="";
 						  string str_clcode="";
-						  if(dt_cl!=null&&dt_cl.Rows.Count()>0)
+						  if(dt_cl!=null&&dt_cl.Rows.Count>0)
 						  {
 							str_clname = dt_cl.Rows[0]["显示名"].ToString();
 							str_clcode = dt_cl.Rows[0]["材料编码"].ToString();
@@ -113,6 +115,7 @@
             Response.Write("<span class='dlzi'>该材料已被收藏成功！</span>");
             Response.Write("<span class='dlzi'><a href='cgsgl.aspx' target='_blank'>您可以点击查看已收藏的所有信息。</a></span>");
             Response.Write("<span class='dlzi' onclick='window.close()'>关闭此窗口</span>");
+			Response.Write("<meta http-equiv='Refresh' content='4;URL=cgsgl.aspx' /> ");
 
         }
     

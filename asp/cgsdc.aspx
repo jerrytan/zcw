@@ -48,7 +48,7 @@
 			Session.Remove("CGS_YH_ID");
             		     
 		}
-       
+        Response.Write("<meta http-equiv='Refresh' content='1;URL=index.aspx' /> ");
 %>
             <a style="color: Red" onclick="clickMe()">登出成功，点击我将回到主页。 </a>
         <script>
