@@ -46,9 +46,9 @@
     public DataConn objConn = new DataConn();
 	protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["yh_id"] != null && Session["yh_id"].ToString() != "")
+        if (Session["CGS_YH_ID"] != null && Session["CGS_YH_ID"].ToString() != "")
         {
-            s_yh_id = Session["yh_id"].ToString();
+            s_yh_id = Session["CGS_YH_ID"].ToString();
         }
         if (!IsPostBack)
         {           
@@ -69,9 +69,9 @@
 }
     protected void updateUserInfo(object sender, EventArgs e)
     {
-        if (Session["yh_id"]!=null&&Session["yh_id"].ToString()!="")
+        if (Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="")
         {
-            s_yh_id = Session["yh_id"].ToString();
+            s_yh_id = Session["CGS_YH_ID"].ToString();
         }
 		if (this.contactortel.Value == "")
         {
