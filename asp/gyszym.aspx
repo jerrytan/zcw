@@ -30,9 +30,13 @@
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部2结束-->
 
-  <% 
+    <% 
+   DataTable dt_yh=new  DataTable();
         DataConn objConn=new DataConn();
          string s_QQ_id="";
+         string passed="";
+         string name="";
+         string passed_gys = "";
         if ( Request.Cookies["QQ_id"]!=null&& Request.Cookies["QQ_id"].Value.ToString()!="")
         {
              s_QQ_id= Request.Cookies["QQ_id"].Value.ToString();
@@ -62,9 +66,8 @@
                 }
             }
             string s_SQL="select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='" + s_QQ_id + "'";      
-            DataTable dt_yh = objConn.GetDataTable(s_SQL);
-             string passed="";
-              string name="";
+             dt_yh = objConn.GetDataTable(s_SQL);
+             
             if(dt_yh!=null&&dt_yh.Rows.Count>0)
             {
                 s_yh_id =dt_yh.Rows[0]["yh_id"].ToString();
@@ -76,15 +79,6 @@
 
             //(供应商申请)的yh_id 是在认领厂商之后更新的
 
-            string str_gyssq = "select count(*) from 供应商认领申请表 where yh_id='" + s_yh_id + "'";
-            string s_count="";
-            s_count=objConn.DBLook(str_gyssq);
-            string passed_gys = "";
-            if (s_count != "")
-            {
-                int count = Convert.ToInt32(s_count);
-                if (count != 0)  //如果(供应商申请)不更新 就没有yh_id 往下不执行
-                {
                     string sSQL="select 审批结果 from 供应商认领申请表 where yh_id='" + s_yh_id + "' ";              
                     DataTable dt_gyssq = new DataTable();              
                     dt_gyssq = objConn.GetDataTable(sSQL);
@@ -92,8 +86,7 @@
                     {
                         passed_gys =dt_gyssq.Rows[0]["审批结果"].ToString();
                     }
-                }
-            }
+              
        }
        else
        {

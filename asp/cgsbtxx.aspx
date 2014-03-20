@@ -123,7 +123,10 @@
                                   "',公司名称='" + this.companyname.Value + "',公司地址='"+this.companyaddress.Value+
                                   "',公司电话='" + this.companytel.Value + "',QQ号码='"+this.contactorqqid.Value+
                                   "',类型='"+s_lx+"' where yh_id='" + s_yh_id + "'";
-        objConn.ExecuteSQL(s_updateUserinfo, true);
+         if(!objConn.ExecuteSQL(s_updateUserinfo, true))
+        {
+            objConn.MsgBox(this.Page, "更新失败，请重试！");
+        }
     }
 		</script>
 

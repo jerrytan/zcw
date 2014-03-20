@@ -94,80 +94,81 @@
 
 <div class="gysgybtl"><img src="images/www_03.jpg" /></div>
 <div class="gysgybtr">
-<dl>
+	<dl>
 
-<span>
-<span id="msg" style="color:Red;font-size:14px">
-<%
-  foreach(System.Data.DataRow row in dt_yh.Rows)
-   {
-	 if(Convert.ToString(row["公司名称"])!="")
-	 {
-		  if(Convert.ToString(row["是否验证通过"])==""||Convert.ToString(row["是否验证通过"])=="待审核")
-		  {				  
-			 Response.Write("请耐心等候,您的资料已提交,正在审核当中,我方工作");
-			 Response.Write("<br>");
-			 Response.Write("人员会尽快给您答复!");
-			 Response.Write("<br>");
-			 Response.Write("<dd>");
-			 Response.Write("您的信息如下:");
-			 Response.Write("</dd>");
-			 Response.Write("<dt>");
-			 Response.Write("</dt>");
-		  }
-		  if(Convert.ToString(row["是否验证通过"])=="通过")
-		  {
-			 Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领.");				 
-			 Response.Write("<br>");								 
-			 Response.Write("<dd>");
-			 Response.Write("您的信息如下:");
-			 Response.Write("</dd>");
-			 Response.Write("<dt>");
-			 Response.Write("</dt>");
-		  }
-		  if(Convert.ToString(row["是否验证通过"])=="不通过")
-		  {
-			 Response.Write("审核未通过,请继续完善信息!");
-			 Response.Write("<br>");								 
-			 Response.Write("<dd>");
-			 Response.Write("您的信息如下:");
-			 Response.Write("</dd>");
-			 Response.Write("<dt>");
-			 Response.Write("</dt>");
-		  } 
-	 }
-   }                   
-			 
-%>
-</span>
-
-
-<dd>*贵公司名称：</dd>  <dt><input name="gys_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /></dt>
-<dd>*贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司地址"] %>"/></dt>
-<dd>*贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司电话"] %>"/></dt>
-<dd>&nbsp;贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
+		<span id="msg" style="color:Red;font-size:14px">
+		<%
+		  foreach(System.Data.DataRow row in dt_yh.Rows)
+		   {
+			 if(Convert.ToString(row["公司名称"])!="")
+			 {
+				  if(Convert.ToString(row["是否验证通过"])==""||Convert.ToString(row["是否验证通过"])=="待审核")
+				  {				  
+					 Response.Write("请耐心等候,您的资料已提交,正在审核当中,我方工作");
+					 Response.Write("<br>");
+					 Response.Write("人员会尽快给您答复!");
+					 Response.Write("<br>");
+					 Response.Write("<dd>");
+					 Response.Write("您的信息如下:");
+					 Response.Write("</dd>");
+					 Response.Write("<dt>");
+					 Response.Write("</dt>");
+				  }
+				  if(Convert.ToString(row["是否验证通过"])=="通过")
+				  {
+					 Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领.");				 
+					 Response.Write("<br>");								 
+					 Response.Write("<dd>");
+					 Response.Write("您的信息如下:");
+					 Response.Write("</dd>");
+					 Response.Write("<dt>");
+					 Response.Write("</dt>");
+				  }
+				  if(Convert.ToString(row["是否验证通过"])=="不通过")
+				  {
+					 Response.Write("审核未通过,请继续完善信息!");
+					 Response.Write("<br>");								 
+					 Response.Write("<dd>");
+					 Response.Write("您的信息如下:");
+					 Response.Write("</dd>");
+					 Response.Write("<dt>");
+					 Response.Write("</dt>");
+				  } 
+			 }
+		   }                   
+					 
+		%>
+		</span>
 
 
-<dd>&nbsp;贵公司是：</dd>    
-                            <dt>
-								<select name="scs_type" id="scs_type" style="width: 120px; color: Blue">
-									<option value="生产商">生产商</option>
-									<option value="分销商">分销商</option>                        
-								</select>
-							</dt>
+	<dd>*贵公司名称：</dd>  <dt><input name="gys_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /></dt>
+	<dd>*贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司地址"] %>"/></dt>
+	<dd>*贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司电话"] %>"/></dt>
+	<dd>&nbsp;贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
 
-<dd>*您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"] %>"/></dt>
-<dd>*您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["手机"] %>"/></dt>
-<dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"]%>"/></dt>
 
-<!--
-<dd>贵公司的营业执照： </dd><dt><input name="gys_license" type="file" class="ggg" /> 
-    <a href=""><img src="images/sc_03.jpg" /></a></dt>
--->
-	<input name="gysgys_id" type="hidden" id="gys_id" class="fxsxx3" value=""/>
-    <dd style="width:300px; color:Red">*号的为必填项,不能为空!</dd>
-    <dt style="width:100%; text-align:center;"><input type="submit" value="保存"/></dt>
-</dl>
+	<dd>&nbsp;贵公司是：</dd>    
+								<dt>
+									<select name="scs_type" id="scs_type" style="width: 120px; color: Blue">
+										<option value="生产商">生产商</option>
+										<option value="分销商">分销商</option>                        
+									</select>
+								</dt>
+
+	<dd>*您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"] %>"/></dt>
+	<dd>*您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["手机"] %>"/></dt>
+	<dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"]%>"/></dt>
+
+	<!--
+	<dd>贵公司的营业执照： </dd><dt><input name="gys_license" type="file" class="ggg" /> 
+		<a href=""><img src="images/sc_03.jpg" /></a></dt>
+	-->
+		<input name="gysgys_id" type="hidden" id="gys_id" class="fxsxx3" value=""/>
+		<dd style="width:300px; color:Red">*号的为必填项,不能为空!</dd>
+		<dt style="width:100%; text-align:center;"><input type="submit" value="保存"/></dt>
+		
+	</dl>
+</div>
 </div>
 </form>
 

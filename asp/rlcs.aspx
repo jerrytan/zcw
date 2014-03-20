@@ -39,50 +39,56 @@
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
         string gys_type = "";
-        sSQL = "select 类型 from 用户表 where yh_id ='" + s_yh_id + "' ";
-        DataTable dt_yh = objConn.GetDataTable(sSQL);
-        if (dt_yh != null && dt_yh.Rows.Count > 0)
-        {
-            gys_type = dt_yh.Rows[0]["类型"].ToString();
-        }
+		if(s_yh_id!="")
+		{
+			sSQL = "select 类型 from 用户表 where yh_id ='" + s_yh_id + "' ";
+			DataTable dt_yh = objConn.GetDataTable(sSQL);
+			if (dt_yh != null && dt_yh.Rows.Count > 0)
+			{
+				gys_type = dt_yh.Rows[0]["类型"].ToString();
+			}
 
-        //根据用户输入的类型(生产商/分销商)查询相关的供应商
-        sSQL = "select 供应商,gys_id from 材料供应商信息表 where 单位类型='" + gys_type + "' and yh_id is null or 单位类型='" + gys_type + "' and yh_id='' ";
-        dt_wrl_gys = objConn.GetDataTable(sSQL);
-        sSQL = "select count(*) from 供应商认领申请表 where yh_id = '" + s_yh_id + "'";
-        string s_count = objConn.DBLook(sSQL);
-        int count = Convert.ToInt32(s_count);
-        if (count != 0)
-        {
-            sSQL = "select gys_id, 审批结果 from 供应商认领申请表 where yh_id = '" + s_yh_id + "'";
-            DataTable dt_gysxx = objConn.GetDataTable(sSQL);
-            if (dt_gysxx != null && dt_gysxx.Rows.Count > 0)
-            {
-                s_spjg = dt_gysxx.Rows[0]["审批结果"].ToString();
-                s_gys_id = dt_gysxx.Rows[0]["gys_id"].ToString();
-                if (s_spjg == "通过")
-                {
-                    sSQL = "update 材料供应商信息表 set yh_id = '" + s_yh_id + "' where gys_id = '" + s_gys_id + "'";
-                    objConn.ExecuteSQL(sSQL, false);
-                    sSQL = "select 供应商,gys_id,联系地址 from 材料供应商信息表 where yh_id ='" + s_yh_id + "'";
-                    dt_yrl_gys = objConn.GetDataTable(sSQL);
-                }
-                else if (s_spjg == "不通过")
-                {
-                    sSQL = "update 材料供应商信息表 set yh_id = '' where gys_id = '" + s_gys_id + "'";
-                    objConn.ExecuteSQL(sSQL, false);
-                    //验证不通过,同时希望用户从新认领厂商,所以把原有的记录从供应商申请表中清除掉
-                    sSQL = "delete 供应商认领申请表  where gys_id = '" + s_gys_id + "'";
-                    objConn.ExecuteSQL(sSQL, true);
-                }
-                else if (s_spjg == "待审核")
-                {
-                    sSQL = "select 供应商,gys_id,联系地址 from 供应商认领申请表 where yh_id ='" + s_yh_id + "'";
-                    dt_dsh_gys = objConn.GetDataTable(sSQL);
-                }
-            }
-        }
-
+			//根据用户输入的类型(生产商/分销商)查询相关的供应商
+			sSQL = "select 供应商,gys_id from 材料供应商信息表 where 单位类型='" + gys_type + "' and yh_id is null or 单位类型='" + gys_type + "' and yh_id='' ";
+			dt_wrl_gys = objConn.GetDataTable(sSQL);
+			sSQL = "select count(*) from 供应商认领申请表 where yh_id = '" + s_yh_id + "'";
+			string s_count = objConn.DBLook(sSQL);
+			int count = Convert.ToInt32(s_count);
+			if (count != 0)
+			{
+				sSQL = "select gys_id, 审批结果 from 供应商认领申请表 where yh_id = '" + s_yh_id + "'";
+				DataTable dt_gysxx = objConn.GetDataTable(sSQL);
+				if (dt_gysxx != null && dt_gysxx.Rows.Count > 0)
+				{
+					s_spjg = dt_gysxx.Rows[0]["审批结果"].ToString();
+					s_gys_id = dt_gysxx.Rows[0]["gys_id"].ToString();
+					if (s_spjg == "通过")
+					{
+						sSQL = "update 材料供应商信息表 set yh_id = '" + s_yh_id + "' where gys_id = '" + s_gys_id + "'";
+						objConn.ExecuteSQL(sSQL, false);
+						sSQL = "select 供应商,gys_id,联系地址 from 材料供应商信息表 where yh_id ='" + s_yh_id + "'";
+						dt_yrl_gys = objConn.GetDataTable(sSQL);
+					}
+					else if (s_spjg == "不通过")
+					{
+						sSQL = "update 材料供应商信息表 set yh_id = '' where gys_id = '" + s_gys_id + "'";
+						objConn.ExecuteSQL(sSQL, false);
+						//验证不通过,同时希望用户从新认领厂商,所以把原有的记录从供应商申请表中清除掉
+						sSQL = "delete 供应商认领申请表  where gys_id = '" + s_gys_id + "'";
+						objConn.ExecuteSQL(sSQL, true);
+					}
+					else if (s_spjg == "待审核")
+					{
+						sSQL = "select 供应商,gys_id,联系地址 from 供应商认领申请表 where yh_id ='" + s_yh_id + "'";
+						dt_dsh_gys = objConn.GetDataTable(sSQL);
+					}
+				}
+			}
+		}
+		else
+		{
+			objConn.MsgBox(this.Page,"QQ_ID不存在！请重新登录");
+		}
     }
      protected void CkeckCompany(object sender, EventArgs e)
     {

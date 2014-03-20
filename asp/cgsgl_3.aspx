@@ -111,7 +111,10 @@
                 " 公司电话='"+this.companytel.Value+"',"+
                 " QQ号码='"+this.QQ_id.Value+"'"+
                 " where yh_id='" + s_yh_id + "'";
-        objConn.ExecuteSQL(sSQL,true);
+        if (!objConn.ExecuteSQL(sSQL, true))
+        {
+            objConn.MsgBox(this.Page, "更新失败，请重试！");
+        }
     }
 	</script>
 	<form runat="server">
