@@ -56,32 +56,39 @@
                 String str_updatecounter = "update 材料供应商信息表 set 访问计数 = (select 访问计数 from 材料供应商信息表 where gys_id = '"+ gys_id +"')+1 where gys_id = '"+ gys_id +"'";
                 dc.ExecuteSQL(str_updatecounter,true);      
 
+                //对数据进行判断
+                if(dt_gysxx!=null && dt_gysxx.Rows.Count>0)
+                {
+                    //获得供应商的单位类型，生产商还是分销商
+                    gys_type = Convert.ToString(dt_gysxx.Rows[0]["单位类型"]);		
+                 }
 
-                //获得供应商的单位类型，生产商还是分销商
-                gys_type = Convert.ToString(dt_gysxx.Rows[0]["单位类型"]);		
-                
-                //分销商为代理品牌和正在销售材料
-                if(gys_type.Equals("分销商")) 
+                //判断gys_type是否为空
+                if(!string.IsNullOrEmpty(gys_type))
                 {
-                    //获得代理品牌信息
-			        string str_sqldlppxx = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where fxs_id='"+gys_id+"'";           
-                    dt_ppxx = dc.GetDataTable(str_sqldlppxx);
+                    //分销商为代理品牌和正在销售材料
+                    if(gys_type.Equals("分销商")) 
+                    {
+                        //获得代理品牌信息
+			            string str_sqldlppxx = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where fxs_id='"+gys_id+"'";           
+                        dt_ppxx = dc.GetDataTable(str_sqldlppxx);
 			
-                    //获得正在分销的材料列表
-			        string str_sqlfxcl = "select 显示名,cl_id from 材料表 where pp_id in(select pp_id from  分销商和品牌对应关系表 where fxs_id ='"+gys_id+"') ";           
-                    dt_clxx = dc.GetDataTable(str_sqlfxcl);
-                }
-                else  //生厂商则显示旗下品牌和它的分销商
-                {
-                     //获取品牌信息
-			        string str_sqlppxx = "select 品牌名称,pp_id from 品牌字典 where 是否启用 = '1' and scs_id='"+gys_id+"'";           
-                    dt_ppxx = dc.GetDataTable(str_sqlppxx);
+                        //获得正在分销的材料列表
+			            string str_sqlfxcl = "select 显示名,cl_id from 材料表 where pp_id in(select pp_id from  分销商和品牌对应关系表 where fxs_id ='"+gys_id+"') ";           
+                        dt_clxx = dc.GetDataTable(str_sqlfxcl);
+                    }
+                    else   //生厂商则显示旗下品牌和它的分销商
+                    {
+                        //获取品牌信息
+			            string str_sqlppxx = "select 品牌名称,pp_id from 品牌字典 where 是否启用 = '1' and scs_id='"+gys_id+"'";           
+                        dt_ppxx = dc.GetDataTable(str_sqlppxx);
 			
-                    //获取分销商信息
-			        //子查询嵌套 先根据传过来的gys_id查品牌名称  再从品牌字典里查复合条件的gys_id 最后根据复合条件的gys_id查分销商信息
-			        string str_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )";          
-                    dt_fxsxx = dc.GetDataTable(str_fxsxx);
-                }
+                        //获取分销商信息
+			            //子查询嵌套 先根据传过来的gys_id查品牌名称  再从品牌字典里查复合条件的gys_id 最后根据复合条件的gys_id查分销商信息
+			            string str_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )";          
+                        dt_fxsxx = dc.GetDataTable(str_fxsxx);
+                    }
+                }        
             }		
         }
     </script>

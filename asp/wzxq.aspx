@@ -86,13 +86,22 @@
 		<center>
 			<div>
 				<div class="fy3">
-					<% if(total_pages >1 && current_page !=1) { %>
+                    <% if(current_page == 1) {%>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=1" class="p">��ҳ</a>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page+1%>" class="p">��һҳ</a>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=total_pages%>" class="p">ĩҳ</a>
+                    <%} %>
+					<% if(current_page !=1 && current_page!=total_pages) { %>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=1" class="p">��ҳ</a>
 					<a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page-1%>" class="p">��һҳ</a>
-					<% } %>
-              
-					<% if(current_page<total_pages ) { %>
 					<a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page+1%>" class="p">��һҳ</a>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=total_pages%>" class="p">ĩҳ</a>
 					<% } %>
+                    <% if(current_page==total_pages){ %>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=1" class="p">��ҳ</a>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page-1%>" class="p">��һҳ</a
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=total_pages%>" class="p">ĩҳ</a>
+                    <% } %>
 				</div>   
 			</div>
 		</center>

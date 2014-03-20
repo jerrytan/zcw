@@ -143,13 +143,19 @@
         <div class="xw2">
             <dl><% foreach(System.Data.DataRow row in dt_content.Rows){%>
                 <dd><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>">·<%=row["标题"].ToString() %></a></dd>
-                <dt><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>"><%=row["发表时间"].ToString() %></a></dt>
+                <%
+                    string str_time = row["发表时间"].ToString();
+                    string[] str_times = str_time.Split(' ');
+                    string str_fbtime = str_times[0];
+                 %>
+                <dt><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>"><%=str_fbtime %></a></dt>
                 <% } %>
             </dl>
         </div>
         <!-- 首页 文章列表 结束-->
         
         <!-- 页码开始-->
+       <div style="text-align:center"> <!--加入div控制分页居中-->
        <div class="fy2">
             <div class="fy3">
                 <% if(current_page<=1 ) {%> 
@@ -178,6 +184,7 @@
                 </select>
                 页
             </div>
+        </div>
         </div>
         <!-- 页码结束-->
     </div>
