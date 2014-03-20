@@ -1,3 +1,10 @@
+       <!-- 
+            文章分页
+            文件名：pages.ascx
+            传入参数：无
+            owner:丁传宇
+        -->
+
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>

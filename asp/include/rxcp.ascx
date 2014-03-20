@@ -16,11 +16,9 @@
         protected DataTable dt_Cltp = new DataTable();   //材料名字,存放地址(材料多媒体信息表)  
         protected DataConn dc = new DataConn();      
         protected void Page_Load(object sender, EventArgs e)
-        {	
-            DataSet ds_Cltp = new DataSet();	      
-            string str_Sql = "select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片' and 大小='小' and cl_id in(select cl_id from 材料表 where 类型='主打')";
-            string str_Table = "材料多媒体信息表";            
-            dt_Cltp = dc.DataPileDT(str_Sql,ds_Cltp,str_Table);	
+        {	     
+            string str_Sql = "select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片' and 大小='小' and cl_id in(select cl_id from 材料表 where 类型='主打')";         
+            dt_Cltp = dc.GetDataTable(str_Sql);	
         }		
         
 </script>

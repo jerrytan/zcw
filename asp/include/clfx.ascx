@@ -22,21 +22,15 @@
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DataSet ds_Clfx = new DataSet();//材料发现
-            DataSet ds_Cldg = new DataSet();//材料导购
-            DataSet ds_Clpc = new DataSet();//材料评测
-            DataSet ds_Clbk = new DataSet();//材料百科
-
             string str_SqlClfx = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料发现' and 是否上头条='是' order by updatetime desc ";
             string str_SqlCldg = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料导购' and 是否上头条='是' order by updatetime desc ";
 	        string str_SqlCldc = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料评测' and 是否上头条='是' order by updatetime desc ";
 	        string str_SqlClbk = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料百科' and 是否上头条='是' order by updatetime desc ";
-            string str_Table = "文章表";	
             
-            dt_Clfx =  dc.DataPileDT(str_SqlClfx,ds_Clfx,str_Table);
-            dt_Cldg =  dc.DataPileDT(str_SqlCldg,ds_Cldg,str_Table);
-            dt_Clpc =  dc.DataPileDT(str_SqlCldc,ds_Clpc,str_Table);
-            dt_Clbk =  dc.DataPileDT(str_SqlClbk,ds_Clbk,str_Table);
+            dt_Clfx =  dc.GetDataTable(str_SqlClfx);
+            dt_Cldg =  dc.GetDataTable(str_SqlCldg);
+            dt_Clpc =  dc.GetDataTable(str_SqlCldc);
+            dt_Clbk =  dc.GetDataTable(str_SqlClbk);
         }
 </script>
 

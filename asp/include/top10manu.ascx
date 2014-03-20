@@ -24,10 +24,8 @@
         {
 		    if (!Page.IsPostBack)
             {
-                DataSet ds_Most10cp = new DataSet();
-                string str_Sql ="select distinct top 10 供应商 ,gys_id,单位类型 from 材料供应商信息表 where 是否启用=1 order by gys_id";  
-                string str_Table = "材料供应商信息表";
-                dt_Most10cp = dc.DataPileDT(str_Sql,ds_Most10cp,str_Table);
+                string str_Sql ="select distinct top 10 供应商 ,gys_id,单位类型 from 材料供应商信息表 where 是否启用=1 order by gys_id";  ;
+                dt_Most10cp = dc.GetDataTable(str_Sql);
 
 			
 			    this.Items = new List<Manufacturer>();

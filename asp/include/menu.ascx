@@ -24,19 +24,15 @@
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DataSet ds_1Top7 = new DataSet();
-            DataSet ds_2All = new DataSet();
-            DataSet ds_1After7 = new DataSet();
-            string str_Table = "材料分类表";
 
             //暂时只显示人工挑选的7个，12-10 add by 谭中意
             string str_Sql1Top7 = "select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 in (08,07,02,04,05,01,06) order by 分类编码 desc";
 			string str_Sql2All = "select distinct  显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=4 ";
 			string str_1After7 = "select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 not in(08,07,02,04,05,01,06 )";
             
-            dt_1Top7 = dc.DataPileDT(str_Sql1Top7,ds_1Top7,str_Table);
-            dt_2All = dc.DataPileDT(str_Sql2All,ds_2All,str_Table);
-            dt_1Top7 = dc.DataPileDT(str_Sql1Top7,ds_1After7,str_Table);
+            dt_1Top7 = dc.GetDataTable(str_Sql1Top7);
+            dt_2All = dc.GetDataTable(str_Sql2All);
+            dt_1Top7 = dc.GetDataTable(str_Sql1Top7);
 
             
             ////数据表DataTable转集合                  
