@@ -52,22 +52,29 @@
     public int firstlevel;
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
+ if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
         {
             s_QQid = Request.Cookies["CGS_QQ_ID"].Value.ToString();
         }
-      
-        sSQL = "select count(*) from 用户表 where QQ_id = '" + s_QQid + "'";
-		string s_Count=objConn.DBLook(sSQL);
-        int count = Convert.ToInt32(s_Count);
+        if(s_QQid!="")
+        {
+             sSQL = "select count(*) from 用户表 where QQ_id = '" + s_QQid + "'";
+		     string s_Count=objConn.DBLook(sSQL);
+              int count = Convert.ToInt32(s_Count);
             if (count == 0)  //qq_id 不存在，需要增加用户表
             {
 
                 sSQL = "insert into 用户表 (QQ_id) VALUES ('" + s_QQid + "')";
-                objConn.ExecuteSQL(sSQL,false);
+               if(!objConn.ExecuteSQL(sSQL,false))
+               {
+                  objConn.MsgBox(this.Page,"执行SQL语句失败"+sSQL);
+               }
 
                 sSQL = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + s_QQid + "') where QQ_id = '" + s_QQid + "'";
-                objConn.ExecuteSQL(sSQL,false);
+                if(!objConn.ExecuteSQL(sSQL,false))
+               {
+                  objConn.MsgBox(this.Page,"执行SQL语句失败"+sSQL);
+               }
 
             }
             sSQL="select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='" + s_QQid + "'";           
@@ -78,7 +85,12 @@
             }           
             Session["CGS_YH_ID"] = s_yh_id;
 
-        listFollowCLIDs();
+            listFollowCLIDs();
+        }
+        else
+        {
+            objConn.MsgBox(this.Page,"QQ_ID不存在，请重新登录！");
+        }
     }
     public DataTable dt_cgsgzcl_dl = new DataTable();
     public DataTable dt_cgsgzcl_xl = new DataTable();
