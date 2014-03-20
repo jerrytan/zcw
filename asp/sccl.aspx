@@ -21,6 +21,16 @@
     <title>收藏材料</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
+	<script  language="javascript" defer="defer">
+        function doload()
+        {
+            window.close();
+            opener.location.href = "cgsgl.aspx";
+        }
+		<%if(Request.Cookies["CGS_QQ_ID"]!=null) {%>
+			setTimeout("doload()",4000);
+		<%} %>
+    </script>
 </head>
 
 <body>
@@ -115,7 +125,7 @@
             Response.Write("<span class='dlzi'>该材料已被收藏成功！</span>");
             Response.Write("<span class='dlzi'><a href='cgsgl.aspx' target='_blank'>您可以点击查看已收藏的所有信息。</a></span>");
             Response.Write("<span class='dlzi' onclick='window.close()'>关闭此窗口</span>");
-			Response.Write("<meta http-equiv='Refresh' content='4;URL=cgsgl.aspx' /> ");
+			//Response.Write("<meta http-equiv='Refresh' content='4;URL=cgsgl.aspx' /> ");
 
         }
     

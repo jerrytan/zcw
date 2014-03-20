@@ -25,10 +25,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <script type="text/javascript" language="javascript">
-
-
+		<script  language="javascript" defer="defer">
+        var url = "gyszym.aspx";
+        function reload()
+        {
+            window.location.href = url;
+        }
+		<%if(Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
+		{%>
+			setTimeout("reload()",4000);
+		<%}%>
     </script>
+
 </head>
 <body>
 
@@ -53,7 +61,7 @@
              string user_qq = Request.Form["user_qq"];               //您的QQ号码
 			 string scs_type = Request.Form["scs_type"];             //供应商类型
 
-			 if(gys_name!="")
+			 if(s_yh_id!="")
 			 {             		              			  
 				  string passed_gys="";	  				  
 				  sSQL="select 是否验证通过 from 用户表 where yh_id='"+s_yh_id+"' ";         
@@ -75,6 +83,10 @@
 				  int ret =objConn.ExecuteSQLForCount(sSQL,true);
 											   
              }
+			 else
+			 {
+				Response.Redirect("gysdl.aspx");	
+			 }
 		    //Response.Write("请耐心等待,我方工作人员会尽快给您回复!");
             //Response.Redirect("gyszym.aspx");			
         }
