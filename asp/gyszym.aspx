@@ -29,8 +29,7 @@
     <!-- 头部2开始-->
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部2结束-->
-
-    <% 
+<%
    DataTable dt_yh=new  DataTable();
         DataConn objConn=new DataConn();
          string s_QQ_id="";
@@ -94,6 +93,7 @@
        }	
     %>
 
+
     <div class="gyzy1">
         <span class="zy1">&nbsp&nbsp &nbsp&nbsp 身份信息经过我方工作人员确认后，您可以认领已有的供应商，或者增加新的供应商信息，还可以添加新产品信息（图1)
 		<p>
@@ -127,8 +127,8 @@
 			
     </div>	
 
-    <%                   
-		    if (!passed.Equals("通过"))
+      <%                   
+		    if (passed!="通过")
             {
     %>
 
@@ -143,7 +143,7 @@
 
 		<%
 	        
-	             if (passed_gys==""&passed.Equals("通过")||passed_gys.Equals("待审核")){	
+	             if (passed.Equals("通过")&&(passed_gys==""||passed_gys.Equals("待审核"))){	
 	     %>
 	     <div class="gyzy2">
              <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>
@@ -153,7 +153,7 @@
         
          </div>
 	    <%}
-	   if (passed_gys.Equals("通过")){ %>
+	   if (passed_gys.Equals("通过")&&passed=="通过"){ %>
         <div class="gyzy2">
             <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>
             <span class="zyy1"><a href="glscsxx.aspx">管理生厂商信息</a></span>
@@ -163,6 +163,7 @@
 
 	
     <%} %>
+   
    
    
 
