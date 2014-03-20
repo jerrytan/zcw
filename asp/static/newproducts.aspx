@@ -14,19 +14,13 @@
 
 <script runat="server"> 
          
-		 
-
         protected DataTable dt_ClMedia = new DataTable();   //材料名字,存放地址(材料多媒体信息表)
         protected DataConn dc = new DataConn();        
         protected void Page_Load(object sender, EventArgs e)
         {		      
             string str_Sql = "select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片' and 大小='大'";
-            DataSet ds_ClMedia = new DataSet();
-            string str_Table = "材料多媒体信息表";            
-            dt_ClMedia = dc.DataPileDT(str_Sql,ds_ClMedia,str_Table);     		
-			
-          
-		   
+            DataSet ds_ClMedia = new DataSet();            
+            dt_ClMedia = dc.GetDataTable(str_Sql); 
         }		
         
 </script>
