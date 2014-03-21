@@ -36,9 +36,9 @@
          string passed="";
          string name="";
          string passed_gys = "";
-        if ( Request.Cookies["QQ_id"]!=null&& Request.Cookies["QQ_id"].Value.ToString()!="")
+        if ( Request.Cookies["GYS_QQ_ID"]!=null&& Request.Cookies["GYS_QQ_ID"].Value.ToString()!="")
         {
-             s_QQ_id= Request.Cookies["QQ_id"].Value.ToString();
+             s_QQ_id= Request.Cookies["GYS_QQ_ID"].Value.ToString();
         }
         if(s_QQ_id!="")
         {

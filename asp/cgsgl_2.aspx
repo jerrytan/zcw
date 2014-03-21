@@ -16,6 +16,7 @@
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
@@ -27,23 +28,21 @@
 </head>
     
 <body>
-
-    <!-- 头部开始-->
-    <!-- #include file="static/header.aspx" -->
-    <!-- 头部结束-->
-
-
-    <!-- 导航开始-->
-    <uc1:Menu1 ID="Menu1" runat="server" />
-    <!-- 导航结束-->
+<!-- 头部开始-->
+<!-- #include file="static/header.aspx" -->
+<!-- 头部结束-->
 
 
-    <!-- banner开始-->
-    <!-- #include file="static/banner.aspx" -->
-    <!-- banner 结束-->
+<!-- 导航开始-->
+<uc1:Menu1 ID="Menu1" runat="server" />
+<!-- 导航结束-->
+
+
+<!-- banner开始-->
+<!-- #include file="static/banner.aspx" -->
+<!-- banner 结束-->
 	 <script runat="server">  
- public Boolean userIsVIP = false;
-
+    public Boolean userIsVIP = false;
     protected string s_yh_id="";
     public string s_QQid = "";
     public DataConn objConn = new DataConn();
@@ -52,11 +51,11 @@
     public int firstlevel;
     protected void Page_Load(object sender, EventArgs e)
     {
- if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
+         if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
         {
             s_QQid = Request.Cookies["CGS_QQ_ID"].Value.ToString();
         }
-        if(s_QQid!="")
+      if(s_QQid!="")
         {
              sSQL = "select count(*) from 用户表 where QQ_id = '" + s_QQid + "'";
 		     string s_Count=objConn.DBLook(sSQL);
@@ -82,9 +81,29 @@
             if (dt!=null&&dt.Rows.Count>0)
             {
                 s_yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);
+                string vip=dt.Rows[0]["等级"].ToString();
+                if (vip=="VIP用户")
+                {
+                    userIsVIP = true;
+                }
             }           
             Session["CGS_YH_ID"] = s_yh_id;
+             if (!IsPostBack)
+            {           
+                sSQL = "select * from 用户表 where yh_id='" + s_yh_id + "'";
 
+                DataTable dt_userInfo = new DataTable();
+                dt_userInfo = objConn.GetDataTable(sSQL);
+                if (dt_userInfo != null && dt_userInfo.Rows.Count > 0)
+                {
+                    this.companyname.Value = dt_userInfo.Rows[0]["公司名称"].ToString();
+                    this.companytel.Value = dt_userInfo.Rows[0]["公司地址"].ToString();
+                    this.companyaddress.Value = dt_userInfo.Rows[0]["公司电话"].ToString();
+                    this.contactorname.Value = dt_userInfo.Rows[0]["姓名"].ToString();
+                    this.contactortel.Value = dt_userInfo.Rows[0]["手机"].ToString();
+                    this.QQ_id.Value = dt_userInfo.Rows[0]["QQ号码"].ToString();
+                } 
+            }
             listFollowCLIDs();
         }
         else
@@ -158,10 +177,18 @@
             string com_tel=dt_yhbt.Rows[0]["公司电话"].ToString();
             if(user_type!=""&&tel!=""&&name!=""&&com_name!=""&&com_add!=""&&com_tel!="")
             {
-                 sSQL = "select b.* from 采购商关注材料表 as  a ,材料表 as b  where a.yh_id='" + s_yh_id + "'  and a.cl_id = b.cl_id ";
-                 dt = null;
-                 dt = objConn.GetDataTable(sSQL);
-                 outToExcel(dt);
+             if (userIsVIP)
+                {
+                    
+                }
+                else
+                {
+                    sSQL = "select b.* from 采购商关注材料表 as  a ,材料表 as b  where a.yh_id='" + s_yh_id + "'  and a.cl_id = b.cl_id ";
+                    dt = null;
+                    dt = objConn.GetDataTable(sSQL);
+                    outToExcel(dt);
+                }
+              
             }
             else
             {
@@ -247,13 +274,63 @@
         objConn.ExecuteSQL(sSQL, true);
         listFollowCLIDs();
     }
-    </script>
 
+        protected void updateUserInfo(object sender, EventArgs e)
+    {
+        if (Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="")
+        {
+            s_yh_id = Session["CGS_YH_ID"].ToString();
+        }
+		if (this.contactortel.Value == "")
+        {
+            objConn.MsgBox(this.Page, "手机不能为空,请填写!");
+            this.contactortel.Focus();
+            return;
+        }
+        if (this.contactorname.Value == "")
+        {
+            objConn.MsgBox(this.Page, "姓名不能为空,请填写!");
+            this.contactorname.Focus();
+            return;
+        }
+        if (this.companyname.Value == "")
+        {
+            objConn.MsgBox(this.Page, "公司名称不能为空,请填写!");
+            this.companyname.Focus();
+            return;
+        }
+        if (this.companyaddress.Value == "")
+        {
+            objConn.MsgBox(this.Page, "公司地址不能为空,请填写!");
+            this.companyaddress.Focus();
+            return;
+        }
+        if (this.companytel.Value == "")
+        {
+            objConn.MsgBox(this.Page, "公司电话不能为空,请填写!");
+            this.companytel.Focus();
+            return;
+        }
+        sSQL   = " update 用户表 " +
+                " set 手机='" +this.contactortel.Value + "', " +
+                " 姓名='" +this.contactorname.Value + "',  " +
+                " 公司名称='"+this.companyname.Value+"',"+
+                " 公司地址='"+this.companyaddress.Value+"',"+
+                " 公司电话='"+this.companytel.Value+"',"+
+                " QQ号码='"+this.QQ_id.Value+"'"+
+                " where yh_id='" + s_yh_id + "'";
+        if (!objConn.ExecuteSQL(sSQL, true))
+        {
+            objConn.MsgBox(this.Page, "更新失败，请重试！");
+        }
+    }
+    </script>
+       <form id="form1" runat="server">
        <div class="dlqqz">
         <div class="dlqqz1">
             <img src="images/sccp.jpg" />
         </div>
-        <form id="form1" runat="server">
+        
         <div class="dlqqz2">
             <div id="menu">
                 <% 
@@ -340,8 +417,26 @@
         <%
 	}	
         %>
-        </form>
     </div>
+    <div class="cgdlqq">
+		    <div class="cgdlex">
+			    <div class="cgdlex2">
+				    <span class="cgdlex3">您的信息如下，如需更改请单击更改按钮</span>
+				    <dl>						
+					    <dd>公司名称：</dd><dt><input class="cgdlex2text" id="companyname" name="companyname" type="text"   runat="server" /></dt>
+					    <dd>公司地址：</dd><dt><input class="cgdlex2text"  id="companyaddress" name="companyaddress" type="text"  runat="server" /></dt>
+					    <dd>公司电话：</dd><dt><input class="cgdlex2text"  id="companytel" name="companytel" type="text"  runat="server"/></dt>
+					    <dd>您的姓名：</dd><dt><input class="cgdlex2text"  id="contactorname" name="contactorname" runat="server"/></dt>
+					    <dd>您的电话：</dd><dt><input class="cgdlex2text"  id="contactortel" name="contactortel0" runat="server"/></dt>
+					    <dd>您的QQ号：</dd><dt><input class="cgdlex2text"  id="QQ_id" name="contactortel" runat="server"/></dt>					  
+				    </dl>
+				    <asp:Label ID="label2" runat="server" Text="" />
+				    <span class="cggg"><asp:ImageButton ID="updateButtion" ImageUrl="images/12ff_03.jpg"  OnClick="updateUserInfo" runat="server" /></span>
+			    </div>
+		    </div>
+	    </div>
+        </form>
+            <div class="gyzy2"></div>
     <div>
         <!-- 关于我们 广告服务 投诉建议 开始-->
         <!-- #include file="static/aboutus.aspx" -->
