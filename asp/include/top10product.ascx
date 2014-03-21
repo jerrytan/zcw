@@ -16,7 +16,7 @@
         protected DataConn dc = new DataConn();
         protected void Page_Load(object sender, EventArgs e)
         { 
-            string str_Sql = "select top 10 显示名,cl_id,材料编码,fl_id,分类编码 from 材料表 order by 访问计数 desc ";
+            string str_Sql = "select top 10 显示名,cl_id,材料编码,fl_id,分类编码 from 材料表 where 是否启用=1 order by 访问计数 desc ";
 		    dt_Top10cp = dc.GetDataTable(str_Sql);
         }	
 		

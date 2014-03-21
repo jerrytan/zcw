@@ -22,10 +22,10 @@
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            string str_SqlClfx = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料发现' and 是否上头条='是' order by updatetime desc ";
-            string str_SqlCldg = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料导购' and 是否上头条='是' order by updatetime desc ";
-	        string str_SqlCldc = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料评测' and 是否上头条='是' order by updatetime desc ";
-	        string str_SqlClbk = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料百科' and 是否上头条='是' order by updatetime desc ";
+            string str_SqlClfx = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料发现' and 是否上头条='是' and 是否启用=1 order by 发表时间 desc ";
+            string str_SqlCldg = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料导购' and 是否上头条='是' and 是否启用=1 order by 发表时间 desc ";
+	        string str_SqlCldc = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料评测' and 是否上头条='是' and 是否启用=1 order by 发表时间 desc ";
+	        string str_SqlClbk = "select top 5 wz_id,标题 from 文章表 where 文档类型='材料百科' and 是否上头条='是' and 是否启用=1 order by 发表时间 desc ";
             
             dt_Clfx =  dc.GetDataTable(str_SqlClfx);
             dt_Cldg =  dc.GetDataTable(str_SqlCldg);
@@ -47,7 +47,7 @@
     <div class="clfx3">
         <ul>
             <% foreach(System.Data.DataRow row in dt_Clfx.Rows){%>
-            <li><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
+            <li style=" overflow:hidden"><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
 
 
             <% } %>
@@ -68,7 +68,7 @@
     <div class="clfx3">
         <ul>
             <% foreach(System.Data.DataRow row in dt_Cldg.Rows){%>
-            <li><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
+            <li style=" overflow:hidden"><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
 
 
             <% } %>
@@ -90,7 +90,7 @@
     <div class="clfx3">
         <ul>
             <% foreach(System.Data.DataRow row in dt_Clpc.Rows){%>
-            <li><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
+            <li style="overflow:hidden"><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
 
             <% } %>
         </ul>
@@ -109,7 +109,7 @@
     <div class="clfx3">
         <ul>
             <% foreach(System.Data.DataRow row in dt_Clbk.Rows){%>
-            <li><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
+            <li style=" overflow:hidden"><a href="wzxq.aspx?wz_id=<%=(int)row["wz_id"]%>"><%=row["标题"].ToString() %></a></li>
 
             <% } %>
         </ul>
