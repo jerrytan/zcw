@@ -184,10 +184,10 @@
 </div>
 
 <div class="xx8" >
-<div class="xx9">
+<div class="xx9" style=" margin:20px auto">
 <div class="fxs1">
-<!-- <select name="" class="fu1"><option>华北</option></select>   
-<select name="" class="fu2"><option>北京</option></select>省（市）
+<!--<select name="" class="fu1"><option>华北</option></select>   
+    <select name="" class="fu2"><option>北京</option></select>省（市）
     <select name="" class="fu3"><option>石家庄</option></select> 地区
 	<select name="" class="fu4"><option>市区</option></select> 区（县） 
 	 -->

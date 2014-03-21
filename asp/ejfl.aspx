@@ -213,18 +213,18 @@
         <div class="sc1">
             <a href="index.aspx">首页 ></a>&nbsp&nbsp&nbsp
 
- <% foreach(System.Data.DataRow row in dt.Rows){%>
+           <% foreach(System.Data.DataRow row in dt.Rows){%>
             <a href="yjfl.aspx?name=<%=row["分类编码"]%>"><%=row["显示名字"].ToString() %></a>
             <% } %>
  > 
- <% foreach(System.Data.DataRow row in dt1.Rows){%>
+            <% foreach(System.Data.DataRow row in dt1.Rows){%>
             <a href="#"><%=row["显示名字"].ToString() %></a>
             <% } %>
         </div>
 
         <div class="sc3">
-		
-            <%foreach(System.Data.DataRow row in this.dt_wz.Rows){
+		    <%
+               foreach(System.Data.DataRow row in this.dt_wz.Rows){
                String resume = row["摘要"].ToString();
                if (resume.Length > 40) {
                     resume = resume.Substring(0,40)+"...";
@@ -295,7 +295,6 @@
                     SqlConnection con = new SqlConnection(connString);
                     SqlCommand cmd = new SqlCommand("select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
                         +row["cl_id"]+"' and 大小='小'", con);
-
                     String imgsrc= "images/222_03.jpg";
                     using (con)
                     {
@@ -305,17 +304,15 @@
                              imgsrc = result.ToString();
                          }
                     }
-                    Response.Write("<img src="+imgsrc+ " width=150px height=150px />");
-                
-				
+                    Response.Write("<img src="+imgsrc+ " width=150px height=150px />");               
 				    %>
                     
                     <div class="dlspxt1">
-                        <span class="dlsl"><%=row["显示名"].ToString() %></span>
+                        <span class="dlsl" style="overflow:hidden"><%=row["显示名"].ToString() %></span>
                         <span class="dlspx3">
                             <input name="" type="checkbox" value="" class="ck" />
                             收藏</span>
-                        <span class="dlsgg">规格：<%=row["规格型号"].ToString() %></span>
+                        <span class="dlsgg" style="overflow:hidden">规格：<%=row["规格型号"].ToString() %></span>
                     </div>
             </div>
             <% } %>
@@ -329,7 +326,7 @@
                     <ul>
 
                         <% foreach(System.Data.DataRow row in dt3.Rows){%>
-                        <li><a href="clxx.aspx?cl_id=<%=row["cl_id"]%>"><%=row["显示名"].ToString() %></a></li>
+                        <li style="overflow:hidden"><a href="clxx.aspx?cl_id=<%=row["cl_id"]%>"><%=row["显示名"].ToString() %></a></li>
                         <%}%>
                     </ul>
 

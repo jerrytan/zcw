@@ -47,8 +47,7 @@
         <ul>
             <% foreach(var v  in  Items){%>
 
-            
-            <li><a href="gysxx.aspx?gys_id=<%=v.Gys_id%>"><%=v.Manufacturers %></a></li>
+            <li style="overflow:hidden"><a href="gysxx.aspx?gys_id=<%=v.Gys_id%>"><%=v.Manufacturers %></a></li>
 
             <%} %>
            

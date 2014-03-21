@@ -2,6 +2,7 @@
         材料一级分类列表页面
         文件名：yjfl.ascx
         传入参数：name
+        owner:丁传宇
                
     -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
@@ -11,6 +12,7 @@
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
+<%@ Import Namespace="System.Collections"%>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -36,6 +38,71 @@
     <title>一级分类</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript">
+//        //点击 最新 后发送ajax
+//        function createXmlHttp()
+//        {   //创建xhr对象
+//            var xhobj = false;
+//            try
+//            {
+//                xhobj = new ActiveXObject("Msxml2.XMLHTTP"); // ie msxml3.0+
+//            } catch (e)
+//            {
+//                try
+//                {
+//                    xhobj = new ActiveXObject("Microsoft.XMLHTTP"); //ie msxml2.6
+//                } catch (e2)
+//                {
+//                    xhobj = false;
+//                }
+//            }
+//            if (!xhobj && typeof XMLHttpRequest != 'undefined')
+//            {
+//                xhobj = new XMLHttpRequest(); // Firefox, Opera 8.0+, Safari
+//            }
+//            return xhobj;
+//        }
+//        //声明变量
+//        var xhr = false;
+//        //在浏览器加载完所有的页面资源后创建 异步对象
+//        $(document).ready(function ()
+//        {
+//            xhr = createXmlHttp();
+//        });
+//        //点击按钮时调用此方法，使用AJAX到服务器拿数据
+//        function doAjax()
+//        {
+//            var isLatest = true;
+//            var url = "../asp/yjfl.aspx?zuixin=isLatest";
+//            //设置参数
+//            xhr.open("GET", url, true);
+//            //设置回调函数
+//            xhr.onreadystatechange = watching;
+//            //发送
+//            xhr.send(null);
+//        }
+//        //回调函数
+//        function watching()
+//        {
+//            //alert(xhr.readyState);
+//            //检查 异步对象 的准备状态是否=4，如果等于4说明服务器已经将数据发回给异步对象了
+//            if (xhr.readyState == 4)
+//            {
+//                if (xhr.status == 200)
+//                {
+//                    //正常返回，判断服务器返回的状态码是否=200
+//                    var txt = xhr.responseText; //获得服务器返回的字符数据
+//                    window.alert(txt);
+//                }
+//                else
+//                {
+//                    window.alert("服务器出错！" + xhr.status);
+//                }
+//            }
+//        }
+    </script>
+
 </head>
 
 
@@ -140,7 +207,7 @@
             int end = p * Page_Size;
             dt1 = this.GetProductFormDB(begin, end,name);
             this.SetNavLink(p, c);   
-            		
+	
         }
       
         protected string cpPrev = "";
@@ -159,14 +226,12 @@
             this.Items = new List<OptionItem>();
             for (int i = 1; i <= pageCount; i++)  //下拉列表循环总得页数
             {
-               
                 OptionItem item = new OptionItem();
                 item.Text = i.ToString();                          
                 item.SelectedString = i == currentPage ? "selected='selected'" : string.Empty;
                 item.Value = string.Format("yjfl.aspx?p={0}", i);                
                 this.Items.Add(item);
             }
-      
         }
 
         private DataTable GetProductFormDB(int begin, int end, string name)
@@ -238,57 +303,66 @@
                 <div class="rh2"><%=resume %></div>
             </div>
 			<%}%>			
-           
         </div>
-
+       
         <div class="px0">
-            <div class="px">排序：  <a href="#">人气</a> <a href="#">最新</a></div>
+            <div class="px">排序：<a href="#">人气</a> <a id="zuixin" style=" cursor:pointer" onclick="doAjax()">最新</a></div>
         </div>
+      
 
+        <div class="pxleft"> 
+        
+           <%--根据ajax请求 对已取出来的分页数据表dt1按updatetime列降序排列 
+            Boolean b_isLatest=false;
+            string s_isLatest=Request["isLatest"];
+            if(!string.IsNullOrEmpty(s_isLatest))
+            {
+                Response.Write("ok");
+                b_isLatest=Convert.ToBoolean(s_isLatest);
+            }
+            if(b_isLatest=true)
+            {
+                DataView dv=dt1.DefaultView;
+                dv.Sort="updatetime DESC";
+                dt1=dv.ToTable();
+            }--%>
 
-        <div class="pxleft">
-		    
             <% foreach(System.Data.DataRow row in dt1.Rows)
                {%>
-            <div class="pxtu">
-                <a href="clxx.aspx?cl_id=<%=row["cl_id"]%>">
-				
-				<%
-					string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-                    SqlConnection con = new SqlConnection(connString);
-                    SqlCommand cmd = new SqlCommand("select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
-                        +row["cl_id"]+"' and 大小='小'", con);
-
-                    String imgsrc= "images/222_03.jpg";
-                    using (con)
-                    {
-                         con.Open();
-                         Object result = cmd.ExecuteScalar();
-                         if (result != null) {
-                             imgsrc = result.ToString();
-                         }
-                    }
-                    Response.Write("<img src="+imgsrc+ " width=150px height=150px />");
-                
-				
-				%>
-				</a>
+                <div class="pxtu">
+                    <a href="clxx.aspx?cl_id=<%=row["cl_id"]%>">
+				    <%
+					    string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
+                        SqlConnection con = new SqlConnection(connString);
+                        SqlCommand cmd;
+                        cmd=new SqlCommand("select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
+                                                            +row["cl_id"]+"' and 大小='小'", con);
+                        String imgsrc= "images/222_03.jpg";
+                        using (con)
+                        {
+                            con.Open();
+                            Object result = cmd.ExecuteScalar();
+                            if (result != null) 
+                            {
+                                imgsrc = result.ToString();
+                            }
+                        }
+                        Response.Write("<img src="+imgsrc+ " width=150px height=150px />") ;  
+				    %>
+                    </a>
                 <span class="pxtu1"><%=row["显示名"].ToString()%></span>
-               
-            </div>
-            <% } %>
-        </div>
-
-
+                </div>
+            <%}%>
+         </div>
         <!-- 石材规格页码 结束-->
 
         <!-- 最具人气的石材 开始-->
         <div class="pxright0">
             <div class="pxright">
-                <div class="pxright1">
+                <div class="pxright1" style=" text-align:left; padding-left:0px !important; padding-left:20px">
                     <ul>
                         <% foreach(System.Data.DataRow row in dt3.Rows){%>
-                        <li><a href="clxx.aspx?cl_id=<%=row["cl_id"]%>"><%=row["显示名"].ToString()%></a></li>
+                        <li style="overflow:hidden"><a href="clxx.aspx?cl_id=<%=row["cl_id"]%>"><%=row["显示名"].ToString()%></a></li>
                         <%}%>
                     </ul>
 
@@ -307,9 +381,9 @@
 
 
     <!-- 首页 石材首页 结束-->
-    <div>
+    <div >
         <div class="fy2">
-            <div class="fy3">
+            <div class="fy3" style=" width:420px; padding-left:0% !important; padding-left:73%">
                 <% if(current_page!=1) { %>
                 <a href="yjfl.aspx?<%=cpPrev %>&name=<%=name%>" class="p">上一页</a>
                 <% } %>
