@@ -1,6 +1,7 @@
 <!--
           文件名:glscsxx3.aspx
 		  传入参数 scs_id
+          author:张新颖
 -->
 
 <%@ Import Namespace="System.Data" %>
@@ -28,18 +29,15 @@
                 public string gys_id { get; set; }       //供应商id				
             }
 		   protected DataTable dt_scsxx = new DataTable();	
+           public DataConn objConn=new DataConn();
+           public string sSQL="";
 		   protected void Page_Load(object sender, EventArgs e)
            {
-            String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-
             string scs_id = Request["id"];   //获取下拉框传过来的分销商id
 
-            String str_gysxx = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,gys_id from 材料供应商信息表 where  gys_id='"+scs_id+"' ";
-            SqlDataAdapter da_gysxx = new SqlDataAdapter(str_gysxx, conn);
-			DataSet ds_gysxx = new DataSet();
-            da_gysxx.Fill(ds_gysxx, "材料供应商信息表");
-            dt_scsxx = ds_gysxx.Tables[0]; 
+            sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,gys_id from 材料供应商信息表 where  gys_id='"+scs_id+"' ";
+          
+            dt_scsxx =objConn.GetDataTable(sSQL);
 			
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 			this.Items = new List<Option_gys>();  //数据表DataTable转集合  

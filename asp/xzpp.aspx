@@ -2,7 +2,7 @@
           新增品牌  (生产商增加新的品牌)
 		  文件名: xzpp.aspx              
 		  传入参数gys_id
-		  
+		  author:张新颖
          
 -->
 
@@ -12,8 +12,6 @@
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
-
-
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -50,18 +48,17 @@
     <script runat="server">
 
         protected DataTable dt_yjfl = new DataTable();   //材料分类大类
-		protected String gys_id;
-
+		protected String gys_id="";
+        public DataConn objConn=new DataConn();
         protected void Page_Load(object sender, EventArgs e)
         {
+        if(Request["gys_id"]!=null&&Request["gys_id"].ToString()!="")
+        {
             gys_id = Request["gys_id"].ToString();
-
-            String constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            SqlDataAdapter da_yjfl = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'", conn);
-            DataSet ds_yjfl = new DataSet();
-            da_yjfl.Fill(ds_yjfl, "材料分类表");            
-            dt_yjfl = ds_yjfl.Tables[0];   
+         }
+           string sSQL="select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
+          
+            dt_yjfl = objConn.GetDataTable(sSQL);
          }
 
     </script>
@@ -93,7 +90,6 @@
                     </td>
                     <td align="left">
                         <select id="ejflname" name="ejflname" style="width: 250px">
-
 
                             <option value="">请选择小类</option>
 
@@ -135,7 +131,7 @@
 
                 <tr>
                     <td>
-                        <input type="hidden" id="gys_id" name="gys_id" value=<%=gys_id %> />
+                        <input type="hidden" id="gys_id" name="gys_id" value="<%=gys_id %>" />
                         <input type="submit" id="send" value="保存" style="width: 100px" />
                     </td>
                     <td align="left">
