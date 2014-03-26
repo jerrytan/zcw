@@ -139,26 +139,45 @@
 					 
 		%>
 		</span>
+        <%if(dt_yh!=null&&dt_yh.Rows.Count>0) { %>
+                <dd>*贵公司名称：</dd>  <dt><input name="gys_name" id="Text1" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /></dt>
+	            <dd>*贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司地址"] %>"/></dt>
+	            <dd>*贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司电话"] %>"/></dt>
+	            <dd>&nbsp;贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
 
 
-	<dd>*贵公司名称：</dd>  <dt><input name="gys_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /></dt>
-	<dd>*贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司地址"] %>"/></dt>
-	<dd>*贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司电话"] %>"/></dt>
-	<dd>&nbsp;贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
+	            <dd>&nbsp;贵公司是：</dd>    
+								            <dt>
+									            <select name="scs_type" id="Select1" style="width: 120px; color: Blue">
+										            <option value="生产商">生产商</option>
+										            <option value="分销商">分销商</option>                        
+									            </select>
+								            </dt>
+
+	            <dd>*您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value=""/></dt>
+	            <dd>*您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value=""/></dt>
+	            <dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value=""/></dt>
+
+        <%} 
+        else
+        {%>
+	        <dd>*贵公司名称：</dd>  <dt><input name="gys_name" id="gys_name" type="text" class="gysggg" value=""  /></dt>
+	        <dd>*贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="gysggg" value=""/></dt>
+	        <dd>*贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="gysggg" value=""/></dt>
+	        <dd>&nbsp;贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="gysggg" value=""/></dt>
 
 
-	<dd>&nbsp;贵公司是：</dd>    
-								<dt>
-									<select name="scs_type" id="scs_type" style="width: 120px; color: Blue">
-										<option value="生产商">生产商</option>
-										<option value="分销商">分销商</option>                        
-									</select>
-								</dt>
-
-	<dd>*您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"] %>"/></dt>
-	<dd>*您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["手机"] %>"/></dt>
-	<dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"]%>"/></dt>
-
+	        <dd>&nbsp;贵公司是：</dd>    
+								        <dt>
+									        <select name="scs_type" id="scs_type" style="width: 120px; color: Blue">
+										        <option value="生产商">生产商</option>
+										        <option value="分销商">分销商</option>                        
+									        </select>
+								        </dt>
+	        <dd>*您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value=""/></dt>
+	        <dd>*您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value=""/></dt>
+	        <dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value=""/></dt>
+      <% } %> 
 	<!--
 	<dd>贵公司的营业执照： </dd><dt><input name="gys_license" type="file" class="ggg" /> 
 		<a href=""><img src="images/sc_03.jpg" /></a></dt>

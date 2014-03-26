@@ -22,11 +22,91 @@
     <title>管理生厂商信息</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" language="javascript">
+
+        function Update_scs(id)
+        {
+
+            if (window.XMLHttpRequest)
+            {
+                xmlhttp = new XMLHttpRequest();
+            }
+            else
+            {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function ()
+            {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                {
+
+                    var array = new Array();           //声明数组
+                    array = xmlhttp.responseText;     //接收替换返回的json字符串
+
+                    var json = array;
+                    var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 			
+
+
+                    for (var i = 0; i < myobj.length; i++)
+                    {  //遍历,将ajax返回的数据填充到文本框中				
+
+                        document.getElementById('companyname').value = myobj[i].gys_name;       //供应商
+                        document.getElementById('address').value = myobj[i].gys_address;        //地址
+                        document.getElementById('tel').value = myobj[i].gys_tel;                //电话  			 
+                        document.getElementById('homepage').value = myobj[i].gys_homepage;       //主页
+                        document.getElementById('fax').value = myobj[i].gys_fax;                 //传真
+                        document.getElementById('area').value = myobj[i].gys_area;               //地区名称
+                        document.getElementById('name').value = myobj[i].gys_user;               //联系人
+                        document.getElementById('phone').value = myobj[i].gys_user_phone;          //联系人电话
+                        document.getElementById('gys_id').value = myobj[i].gys_id;           //ajax返回的供应商id	供向表单提交时使用	  				              
+
+                    }
+
+                }
+            }
+            xmlhttp.open("GET", "glscsxx3.aspx?id=" + id, true);
+            xmlhttp.send();
+        }
+
+        function AddNewBrand(id)
+        {
+            var url = "xzpp.aspx?gys_id=" + id;
+            window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+        }
+        function DeleteBrand(id)
+        {
+            var r = confirm("请确认您将删除此品牌!");
+            if (r == true)
+            {
+                var brands = document.getElementsByName("brand");
+                var ppid;
+                ppid = "";
+                for (var i = 0; i < brands.length; i++)
+                {
+                    if (brands[i].checked)
+                    {
+
+                        ppid += brands[i].value + ",";
+                    }
+
+                }
+
+                var url = "scpp.aspx?fxs_id=" + id + "&pp_id=" + ppid;
+                window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+            }
+        }
+</script>
 </head>
-<script runat="server">
+
+
+<body>
+  <!-- 头部开始-->
+    <uc2:Header2 ID="Header2" runat="server" />
+    <!-- 头部结束-->
+    <script runat="server">
   protected DataTable dt_gysxx = new DataTable();  //分销商信息(材料供应商信息表)
-        protected DataTable dt_ppxx = new DataTable();   //分销商信息(材料供应商信息表)
-        protected String gys_id;
+        public DataTable dt_ppxx = new DataTable();   //分销商信息(材料供应商信息表)
+        public string gys_id="";
         public DataConn objConn=new DataConn();
         public string sSQL="";
         public string s_yh_id="";
@@ -35,70 +115,71 @@
          public string gys_types = "";                  //单位类型   
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(Session["GYS_YH_ID"]!=null&&Session["GYS_YH_ID"].ToString()!="")
+            if(Session["GYS_YH_ID"]!=null)
              {
                 s_yh_id = Session["GYS_YH_ID"].ToString(); 
              }
-			//认领厂商成功,根据用户id 查询认领的供应商信息
-			string gys_type="";
-            string gys_type_id="";
-			sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='"+s_yh_id+"' ";  //查询单位类型
+
+			        //认领厂商成功,根据用户id 查询认领的供应商信息
+			        string gys_type="";
+                    string gys_type_id="";
+			        sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='"+s_yh_id+"' ";  //查询单位类型
 			
-            DataTable dt_type = objConn.GetDataTable(sSQL);
-            if(dt_type!=null&&dt_type.Rows.Count>0)
-            {
-			     gys_type = dt_type.Rows[0]["单位类型"].ToString();
-			     gys_type_id = dt_type.Rows[0]["gys_id"].ToString();  //供应商id   141
-            }
-			if (gys_type.Equals("生产商"))
-			{
-			 //如果是分销商信息 直接根据yh_id 查询供应商信息 
-             sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='"+s_yh_id+"' ";
-             dt_gysxx = objConn.GetDataTable(sSQL);
-           	}
-            if (gys_type.Equals("分销商"))
-			{	             
-				//根据分销商id 从<材料供应商信息从表>中 获取代理不同品牌的品牌id  再根据品牌id从<品牌字典>查询不同的 生产商id
-				//再根据不同的生产商id 查询不同的生厂商信息
+                    DataTable dt_type = objConn.GetDataTable(sSQL);
+                    if(dt_type!=null&&dt_type.Rows.Count>0)
+                    {
+			             gys_type = dt_type.Rows[0]["单位类型"].ToString();
+			             gys_id = dt_type.Rows[0]["gys_id"].ToString();  //供应商id   141
+                    }
+			        if (gys_type.Equals("生产商"))
+			        {
+			         //如果是分销商信息 直接根据yh_id 查询供应商信息 
+                     sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='"+s_yh_id+"' ";
+                     dt_gysxx = objConn.GetDataTable(sSQL);
+           	        }
+                    if (gys_type.Equals("分销商"))
+			        {	             
+				        //根据分销商id 从<材料供应商信息从表>中 获取代理不同品牌的品牌id  再根据品牌id从<品牌字典>查询不同的 生产商id
+				        //再根据不同的生产商id 查询不同的生厂商信息
 				
-				sSQL = "select pp_id from  材料供应商信息从表 where gys_id='"+gys_type_id+"' ";   //183,186
-                	string gys_pp_id ="";
-                dt_gysxxs = objConn.GetDataTable(sSQL);
-                if(dt_gysxxs!=null&&dt_gysxxs.Rows.Count>0)
-                {
-               	  gys_pp_id = Convert.ToString(dt_gysxxs.Rows[0]["pp_id"]);		
-                }
-                sSQL= "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id "
-				+"from 材料供应商信息表 where  gys_id in (select scs_id from 品牌字典 where pp_id='"+gys_pp_id+"')"    //pp_id=186
-				+"and 单位类型='生产商'";             
-                dt_gysxx = objConn.GetDataTable(sSQL);
-            }
-            if (dt_gysxx.Rows.Count == 0) 
-               Response.Redirect("gyszym.aspx");
+				        sSQL = "select pp_id from  材料供应商信息从表 where gys_id='"+gys_id+"' ";   //183,186
+                	    string gys_pp_id ="";
+                        dt_gysxxs = objConn.GetDataTable(sSQL);
+                        if(dt_gysxxs!=null&&dt_gysxxs.Rows.Count>0)
+                        {
+               	          gys_pp_id = Convert.ToString(dt_gysxxs.Rows[0]["pp_id"]);		
+                        }
+                        sSQL= "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id "
+				        +"from 材料供应商信息表 where  gys_id in (select scs_id from 品牌字典 where pp_id='"+gys_pp_id+"')"    //pp_id=186
+				        +"and 单位类型='生产商'";             
+                        dt_gysxx = objConn.GetDataTable(sSQL);
+                    }
+                    if (dt_gysxx.Rows.Count == 0) 
+                       Response.Redirect("gyszym.aspx");
 			    
-            gys_id = dt_gysxx.Rows[0]["gys_id"].ToString();
+                    gys_id = dt_gysxx.Rows[0]["gys_id"].ToString();
 							
-			sSQL="select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='"+gys_id+"' ";
-            dt_ppxx = objConn.GetDataTable(sSQL);          
-            sSQL= "select 单位类型, gys_id from 材料供应商信息表 where  yh_id='"+s_yh_id+"' ";
-            dt_gysxxs = objConn.GetDataTable(sSQL);
-            string gysid = "";
+			        sSQL="select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='"+gys_id+"' ";
+                    dt_ppxx = objConn.GetDataTable(sSQL);          
+                    sSQL= "select 单位类型, gys_id from 材料供应商信息表 where  yh_id='"+s_yh_id+"' ";
+                    dt_gysxxs = objConn.GetDataTable(sSQL);
+                    string gysid = "";
             
-            if (dt_gysxxs != null && dt_gysxxs.Rows.Count>0)
-            {
-                gysid = dt_gysxxs.Rows[0]["gys_id"].ToString();
-                gys_types = dt_gysxxs.Rows[0]["单位类型"].ToString();
-            }
-            string id = "";
-            if (Request["id"]!=null&&Request["id"].ToString()!="")
-            {
-                id = Request["id"].ToString();    //获取glfxsxx2页面返回的供应商id
-            }
+                    if (dt_gysxxs != null && dt_gysxxs.Rows.Count>0)
+                    {
+                        gysid = dt_gysxxs.Rows[0]["gys_id"].ToString();
+                        gys_types = dt_gysxxs.Rows[0]["单位类型"].ToString();
+                    }
+                    string id = "";
+                    if (Request["id"]!=null&&Request["id"].ToString()!="")
+                    {
+                        id = Request["id"].ToString();    //获取glfxsxx2页面返回的供应商id
+                    }
 		    
-            if (id != "")
-            {
-                DWLX(gys_types, id, gysid);
-            }
+                    if (id != "")
+                    {
+                        DWLX(gys_types, id, gysid);
+                    }
         }
     protected void DWLX(string str_gysid_type, string id, string str_gysid)
         {
@@ -171,77 +252,6 @@
 
     }    
 </script>
-<script type="text/javascript" language="javascript">
-
-        function Update_scs(id) {          
-            
-            if (window.XMLHttpRequest) {
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				
-                var array = new Array();           //声明数组
-		 		array = xmlhttp.responseText;     //接收替换返回的json字符串
-				
-		        var json = array;
-                var myobj=eval(json);              //将返回的JSON字符串转成JavaScript对象 			
-				
-				
-                for(var i=0;i<myobj.length;i++){  //遍历,将ajax返回的数据填充到文本框中				
-			     
-				 document.getElementById('companyname').value = myobj[i].gys_name;       //供应商
-				 document.getElementById('address').value = myobj[i].gys_address;        //地址
-				 document.getElementById('tel').value = myobj[i].gys_tel;                //电话  			 
-				 document.getElementById('homepage').value = myobj[i].gys_homepage;       //主页
-                 document.getElementById('fax').value = myobj[i].gys_fax;                 //传真
-				 document.getElementById('area').value = myobj[i].gys_area;               //地区名称
-				 document.getElementById('name').value = myobj[i].gys_user;               //联系人
-				 document.getElementById('phone').value = myobj[i].gys_user_phone;          //联系人电话
-				 document.getElementById('gys_id').value = myobj[i].gys_id;           //ajax返回的供应商id	供向表单提交时使用	  				              
-				
-                }  
-                   
-                }
-            }
-            xmlhttp.open("GET", "glscsxx3.aspx?id=" + id, true);
-            xmlhttp.send();
-        }
-
-        function AddNewBrand(id)
-        {
-            var url = "xzpp.aspx?gys_id=" + id;
-            window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
-        }
-        function DeleteBrand()
-        {
-            var r = confirm("请确认您将删除此品牌!");
-            if (r == true)
-            {
-
-                var brand_str = "?pp_id=";
-                var brands = document.getElementsByName("brand");
-
-                for (var i = 0; i < brands.length; i++)
-                {
-                    if (brands[i].checked)
-                    {
-
-                        brand_str = brand_str + "," + brands[i].value;
-                    }
-
-                }
-
-                var url = "scpp.aspx" + brand_str;
-                window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
-            }
-        }
-</script>
-<body>
-
     <form id="update_scs" name="update_scs" action="glscsxx2.aspx" method="post">
         <div class="fxsxx">
 		   <span class="fxsxx1">
@@ -327,8 +337,11 @@
                     
                 </div>
   
-             <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand()">删除选中品牌</a></span>
+             <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">删除选中品牌</a></span>
             <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新品牌</a></span>
+<!--  footer 开始-->
+    <!-- #include file="static/footer.aspx" -->
+    <!-- footer 结束-->   
 </body>
 
 </html>

@@ -387,7 +387,7 @@
                   foreach (DataRow dr_gys in dt_clgysxx.Rows){
                         %>
                         <input type="checkbox" name="gysid" value='<%=dr_gys["gys_id"].ToString()%>' />
-                        <a href="javascript:void(0)">
+                        <a href=='gysxx.aspx?gys_id=<%=dr_gys["gys_id"].ToString() %>'>
                             <%=dr_gys["¹©Ó¦ÉÌ"].ToString()%></a>
                         <% } %>
                     </ul>
