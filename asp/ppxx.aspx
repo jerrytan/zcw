@@ -16,6 +16,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
     <title>品牌信息页</title>
+    <script src="js/ppjilian.js" type="text/javascript"></script>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
 </head>
@@ -38,10 +39,17 @@
 		protected DataTable dt_fxsxx = new DataTable(); //分销商信息(供应商和分销商相关表)
 		protected DataTable dt_clxx = new DataTable(); //该品牌下的产品(材料表)
         protected DataConn objdc = new DataConn();
+        protected DataTable dt_qymc = new DataTable();// 保存区域名称
+        protected string pp_id; //品牌id
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            
+             /*获取区域信息*/
+            string str_sqlqymc = "select 所属区域编号,所属区域名称  from 地区地域字典 group by 所属区域编号,所属区域名称";
+            dt_qymc = objdc.GetDataTable(str_sqlqymc);
                 
-			string pp_id = Request["pp_id"];  //获取传过来的pp_id
+			 pp_id = Request["pp_id"];  //获取传过来的pp_id
             string str_sqlppxx = "select 品牌名称,scs_id  from 品牌字典 where pp_id='"+pp_id+"'";      
             dt_ppxx = objdc.GetDataTable(str_sqlppxx);				
 
@@ -90,35 +98,24 @@
         <div class="gydl">
             <div class="dlpp">该品牌分销商</div>
             <div class="fxs1">
-                <select name="" class="fu1">
-                    <option>华北</option>
-                </select>
-                <select name="" class="fu2">
-                    <option>北京</option>
-                </select>
-                省（市）
-                <select name="" class="fu3">
-                    <option>石家庄</option>
+                <select id="s1" class="fu1" onchange="GetProvince(this.options[this.options.selectedIndex].value,<%=pp_id%>)">
+                    <option value="请选择">-请选择-</option>
+                     <%foreach(System.Data.DataRow row in dt_qymc.Rows )
+                    {%> 
+                        <option value="<%=row["所属区域编号"].ToString()%>"><%=row["所属区域名称"].ToString() %></option>
+                    <%}%>
                 </select>
                 地区
-                <select name="" class="fu4">
-                    <option>市区</option>
+                <select id="s2" class="fu2" onchange="GetCity(this.options[this.options.selectedIndex].value,<%=pp_id %>)">
                 </select>
-                区（县）
+                省(市)
+                <select id="s3" class="fu3">
+                </select>
+                市(区)
             </div>
-            <%foreach(System.Data.DataRow row in  dt_fxsxx.Rows)
-            {%>
-                <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
-                    <div class="fxs2">
-                        <ul>
-                            <li class="fxsa"><%=row["供应商"].ToString()%></li>
-                            <li>电话：<%=row["联系人手机"].ToString()%></li>
-                            <li>联系人：<%=row["联系人"].ToString()%></li>
-                            <li>地址：<%=row["联系地址"].ToString()%></li>
-                        </ul>
-                    </div>
-                </a>
-            <%}%>
+            <!-- 品牌分销商 显示开始-->
+        
+            <!-- 品牌分销商 显示结束-->
         </div>
         <!-- 该品牌分销商 结束-->
 

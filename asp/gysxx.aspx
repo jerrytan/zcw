@@ -16,7 +16,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=8ee0deb4c10c8fb4be0ac652f83e8f5d"></script>
+    <script src="js/jilian.js" type="text/javascript"></script>
     <title>材料供应商信息</title>
+    <script type="text/javascript" src=js/gysjilian.js></script>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
 </head>
@@ -42,11 +44,16 @@
         protected string gys_type;  //供应商类型：生产商和分销商
 		protected string gys_addr;  //供应商地址
         protected DataConn dc = new DataConn();
+        protected DataTable dt_qymc = new DataTable();// 保存区域名称
 
         protected void Page_Load(object sender, EventArgs e)
         {
 		    if (!Page.IsPostBack)
-            {          
+            {  
+                /*获取区域信息*/
+                string str_sqlqymc = "select 所属区域编号,所属区域名称  from 地区地域字典 group by 所属区域编号,所属区域名称";
+                dt_qymc = dc.GetDataTable(str_sqlqymc);
+
 			    gys_id = Request["gys_id"];   //获取供应商id                      
 			
 			    string str_sqlclgys = "select 供应商,单位类型,联系人,联系人手机,联系地址 from 材料供应商信息表 where  gys_id='"+gys_id+"'";            
@@ -113,7 +120,7 @@
                 <p>联系电话：<%=row["联系人手机"].ToString() %></p>
                 <%}%>
             </div>
-            <div class="gyan"><a href="#">本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>
+            <div class="gyan"><a href="" onclick="NewWindowRL(<%=gys_id %>)">本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>
             <div class="gyan1"><a href="" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
         </div>		
 		<div class="gydl">
@@ -192,35 +199,26 @@
             <div class="gydl">
             <div class="dlpp">分销商</div>
             <div class="fxs1">
-                <select id="s1" name="" class="fu1">
-                    <option></option>
+                <select id="s1" name="" class="fu1" onchange="GetProvince(this.options[this.options.selectedIndex].value,<%=gys_id %>)">
+                    <option value="请选择">--请选择--</option>
+                     <%foreach(System.Data.DataRow row in dt_qymc.Rows )
+                    {%> 
+                        <option value="<%=row["所属区域编号"].ToString()%>"><%=row["所属区域名称"].ToString() %></option>
+                    <%}%>
                 </select>
                 地区
-                <select id="s2" name="" class="fu2">
-                    <option></option>
+                <select id="s2" name="" class="fu2" onchange="GetCity(this.options[this.options.selectedIndex].value,<%=gys_id %>)">
+                    <option value="请选择">--请选择--</option>
                 </select>
-                省（市）
+                省(市)
                 <select id="s3" name="" class="fu3">
-                    <option></option>
+                    <option value="请选择">--请选择--</option>
                 </select>
-                地区
-                <select id="s4" name="" class="fu4">
-                    <option></option>
-                </select>
-                区（县）
+                市(区)
             </div>
-            <%foreach(System.Data.DataRow row in dt_fxsxx.Rows){%>
-            <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
-                <div class="fxs2">
-                    <ul>
-                        <li class="fxsa"><%=row["供应商"].ToString() %></li>
-                        <li>联系人：<%=row["联系人"].ToString() %></li>
-                        <li>电话：<%=row["联系人手机"].ToString() %></li>
-                        <li>地址：<%=row["联系地址"].ToString() %></li>
-                    </ul>
-                </div>
-            </a>
-            <%}%>
+               <!-- 动态显示 开始-->
+
+               <!-- 动态显示 结束-->
         </div>
             <!-- 分销商页 结束-->
         <% }
@@ -242,6 +240,10 @@
     <script language="javascript" type="text/javascript">
         function NewWindow(id) {
             var url = "scgys.aspx?gys_id=" + id;
+            window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+        }
+        function NewWindowRL(id) {
+            var url = "rlcs.aspx?gys_id=" + id;
             window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
         }
     </script>
