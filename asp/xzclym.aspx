@@ -3,7 +3,7 @@
        供应商新增材料页面	   
        文件名：czclym.aspx 
        传入参数:无	 (应该要传入供应商id)  
-	   
+	   author:张新颖
 -->
 
 
@@ -28,154 +28,172 @@
 
 <script language="javascript">
     //一级分类发送ajax 更新的是小类的名称 文件名是:xzclym2.aspx
-    function updateFL(id) 
-	{
+    function updateFL(id)
+    {
 
         var xmlhttp;
-        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
         }
-        else {// code for IE6, IE5
+        else
+        {// code for IE6, IE5
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.onreadystatechange = function () {
-            
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                
+        xmlhttp.onreadystatechange = function ()
+        {
+
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+            {
+
                 document.getElementById("ejflname").innerHTML = xmlhttp.responseText;
             }
         }
         xmlhttp.open("GET", "xzclym2.aspx?id=" + id, true);
         xmlhttp.send();
-              
+
     }
-	
-	
-       //二级分类发送ajax 更新的是品牌的名称 和材料属性的名称
-	   //文件名是xzclym3.aspx 和 xzclymSX.aspx
-      function updateCLFL(id) 
-	{
+
+
+    //二级分类发送ajax 更新的是品牌的名称 和材料属性的名称
+    //文件名是xzclym3.aspx 和 xzclymSX.aspx
+    function updateCLFL(id)
+    {
 
         var xmlhttp;
-		var xmlhttp1;
-        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        var xmlhttp1;
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
-			xmlhttp1 = new XMLHttpRequest();
+            xmlhttp1 = new XMLHttpRequest();
         }
-        else {// code for IE6, IE5
+        else
+        {// code for IE6, IE5
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-			 xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
+            xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.onreadystatechange = function () {
-            
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                
+        xmlhttp.onreadystatechange = function ()
+        {
+
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+            {
+
                 document.getElementById("brand").innerHTML = xmlhttp.responseText;
-			
+
             }
         }
         xmlhttp.open("GET", "xzclym3.aspx?id=" + id, true);
         xmlhttp.send();
-		
-		
+
+
         xmlhttp1.open("GET", "xzclymSX.aspx?id=" + id, true);
         xmlhttp1.send();
-		xmlhttp1.onreadystatechange = function () {
-            
-            if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200) {
-                
-               	//document.getElementById("sx_name").innerHTML = xmlhttp1.responseText;				
-		
-				
-				var array = new Array();           //声明数组
-		 		array = xmlhttp1.responseText;     //接收返回的json字符串
-				
-		        var json = array;
-                var myobj=eval(json);              //将返回的JSON字符串转成JavaScript对象 
-				
-				
-				
-                for(var i=0;i<myobj.length;i++){  //遍历			
-			
-				 var json= document.getElementById('sx_names');
-                 json.options.add(new Option(myobj[i].SX_name, myobj[i].SX_id));  //下拉框显示属性名称
+        xmlhttp1.onreadystatechange = function ()
+        {
 
-                 var json_code= document.getElementById('sx_codes');     //下拉框显示属性编码
-                 json_code.options.add(new Option(myobj[i].SX_code,myobj[i].SX_code));	
+            if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200)
+            {
 
-                 var json_id= document.getElementById('sx_id');       //下拉框显示属性id
-                 json_id.options.add(new Option(myobj[i].SX_id,myobj[i].SX_id));				 
-				
-               
-                }       
-		
-              } 	
+                //document.getElementById("sx_name").innerHTML = xmlhttp1.responseText;				
 
-           }
+
+                var array = new Array();           //声明数组
+                array = xmlhttp1.responseText;     //接收返回的json字符串
+
+                var json = array;
+                var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 
+
+
+
+                for (var i = 0; i < myobj.length; i++)
+                {  //遍历			
+
+                    var json = document.getElementById('sx_names');
+                    json.options.add(new Option(myobj[i].SX_name, myobj[i].SX_id));  //下拉框显示属性名称
+
+                    var json_code = document.getElementById('sx_codes');     //下拉框显示属性编码
+                    json_code.options.add(new Option(myobj[i].SX_code, myobj[i].SX_code));
+
+                    var json_id = document.getElementById('sx_id');       //下拉框显示属性id
+                    json_id.options.add(new Option(myobj[i].SX_id, myobj[i].SX_id));
+
+
+                }
+
+            }
+
         }
-              
-    
-	
-	
-	//属性名称ajax 更新的是属性值 文件名是:xzclymSX2.aspx
-	//更新的是规格型号 文件名是:xzclymSX3.aspx  (规格型号应该是文本框才合理)
-    function update_clsx(id) 
-	{
-	    
+    }
+
+
+
+
+    //属性名称ajax 更新的是属性值 文件名是:xzclymSX2.aspx
+    //更新的是规格型号 文件名是:xzclymSX3.aspx  (规格型号应该是文本框才合理)
+    function update_clsx(id)
+    {
+
         var xmlhttp1;
         var xmlhttp;
-        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
-			xmlhttp1 = new XMLHttpRequest();
+            xmlhttp1 = new XMLHttpRequest();
         }
-        else {// code for IE6, IE5
+        else
+        {// code for IE6, IE5
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-			xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
+            xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        
+
         xmlhttp.open("GET", "xzclymSX2.aspx?id=" + id, true);
         xmlhttp.send();
-		xmlhttp.onreadystatechange = function () {
-            
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                
+        xmlhttp.onreadystatechange = function ()
+        {
+
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+            {
+
                 //document.getElementById("cl_value").innerHTML = xmlhttp.responseText;
-				
-				var array = new Array();           //声明数组
-		 		array = xmlhttp.responseText;     //接收替换返回的json字符串
-				
-		        var json = array;
-                var myobj=eval(json);              //将返回的JSON字符串转成JavaScript对象 			
-				
-				
-                for(var i=0;i<myobj.length;i++){  //遍历			
-			
-				 var json= document.getElementById('cl_value');
-                 json.options.add(new Option(myobj[i].SXZ_name,myobj[i].SXZ_name));  //下拉框显示属性值
 
-                 var json_code= document.getElementById('cl_number');     //下拉框显示属性编号
-                 json_code.options.add(new Option(myobj[i].SXZ_code,myobj[i].SXZ_code));	
+                var array = new Array();           //声明数组
+                array = xmlhttp.responseText;     //接收替换返回的json字符串
 
-                 var json_id= document.getElementById('cl_ids');       //下拉框显示属性值id
-                 json_id.options.add(new Option(myobj[i].SXZ_id,myobj[i].SXZ_id));				 
-				
-               
-                }  
+                var json = array;
+                var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 			
+
+
+                for (var i = 0; i < myobj.length; i++)
+                {  //遍历			
+
+                    var json = document.getElementById('cl_value');
+                    json.options.add(new Option(myobj[i].SXZ_name, myobj[i].SXZ_name));  //下拉框显示属性值
+
+                    var json_code = document.getElementById('cl_number');     //下拉框显示属性编号
+                    json_code.options.add(new Option(myobj[i].SXZ_code, myobj[i].SXZ_code));
+
+                    var json_id = document.getElementById('cl_ids');       //下拉框显示属性值id
+                    json_id.options.add(new Option(myobj[i].SXZ_id, myobj[i].SXZ_id));
+
+
+                }
             }
         }
-		
-		 xmlhttp1.open("GET", "xzclymSX3.aspx?id=" + id, true);
+
+        xmlhttp1.open("GET", "xzclymSX3.aspx?id=" + id, true);
         xmlhttp1.send();
-		xmlhttp1.onreadystatechange = function () {
-            
-            if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200) {
-                
-				var ggxh_value = xmlhttp1.responseText;
-				
-               	document.getElementById("cl_type").value = ggxh_value;
+        xmlhttp1.onreadystatechange = function ()
+        {
+
+            if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200)
+            {
+
+                var ggxh_value = xmlhttp1.responseText;
+
+                document.getElementById("cl_type").value = ggxh_value;
             }
         }
-              
+
     }
             
 		
@@ -196,15 +214,12 @@
 
     }
     protected DataTable dt_clfl = new DataTable();  //材料分类大类    
-    
+    public DataConn objConn=new DataConn();
     protected void Page_Load(object sender, EventArgs e)
     {
-        string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-        SqlConnection conn = new SqlConnection(constr);
-        SqlDataAdapter da_clfl = new SqlDataAdapter("select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'", conn);
-        DataSet ds_clfl = new DataSet();
-        da_clfl.Fill(ds_clfl, "材料分类表");
-        dt_clfl = ds_clfl.Tables[0];     
+        string sSQL="select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
+      
+        dt_clfl = objConn.GetDataTable(sSQL);     
       
 
         this.Items1 = new List<OptionItem>();  //数据表DataTable转集合  
