@@ -86,22 +86,34 @@
 		<center>
 			<div>
 				<div class="fy3">
-                    <% if(current_page == 1) {%>
-                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=1" class="p">首页</a>
-                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page+1%>" class="p">下一页</a>
-                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=total_pages%>" class="p">末页</a>
-                    <%} %>
-					<% if(current_page !=1 && current_page!=total_pages) { %>
-                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=1" class="p">首页</a>
-					<a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page-1%>" class="p">上一页</a>
-					<a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page+1%>" class="p">下一页</a>
-                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=total_pages%>" class="p">末页</a>
-					<% } %>
-                    <% if(current_page==total_pages){ %>
-                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=1" class="p">首页</a>
-                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page-1%>" class="p">上一页</a
-                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=total_pages%>" class="p">末页</a>
-                    <% } %>
+                <% if(current_page<=1 && total_pages >1) {%> 
+                    <font style="color:Gray">首页</font>
+                    <a href="yjfl.aspx?p=<%=current_page+1 %>" class="p" style="color:Black">下一页</a>
+                    <a href="yjfl.aspx?p=<%=total_pages %>" class="p" style="color:Black">末页</a>
+                <%} %>
+                <% else if(current_page <=1 && total_pages <=1) {%>   
+                     
+                <%} %>
+                <% else if(!(current_page<=1)&&!(current_page == total_pages)){ %>
+                    <a href="yjfl.aspx?p=<%=1 %>"class="p" style="color:Black">首页</a>
+                    <a href="yjfl.aspx?p=<%=current_page-1 %>" class="p" style="color:Black">上一页</a>
+                    <a href="yjfl.aspx?p=<%=current_page+1 %>" class="p" style="color:Black">下一页</a>
+                     <a href="yjfl.aspx?p=<%=total_pages %>" class="p" style="color:Black">末页</a>
+                <%}%>
+                <% else if( current_page !=1 && current_page == total_pages){ %>
+                    <a href="yjfl.aspx?p=<%=1 %>"class="p" style="color:Black">首页</a>
+                    <a href="yjfl.aspx?p=<%=current_page-1 %>" class="p" style="color:Black">上一页</a>
+                    <font style="color:Gray">末页</font>
+                <%} %>
+
+                 <font style="color:Black" >直接到第</font>  
+                <select onchange="window.location=this.value" name="" class="p" style="color:Black">
+                <% foreach (var v in this.Items)
+                { %>
+                    <option value="<%=v.Value %>&id=<%=str_id%>" <%=v.SelectedString %>><%=v.Text %></option>
+                <%} %>
+                </select>
+                <font style="color:Black" >页&nbsp;&nbsp;&nbsp;第 <%=current_page %> 页/共 <%=pageCount_page %> 页</font>
 				</div>   
 			</div>
 		</center>

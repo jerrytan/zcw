@@ -158,31 +158,33 @@
        <div style="text-align:center"> <!--加入div控制分页居中-->
        <div class="fy2">
             <div class="fy3">
-                <% if(current_page<=1 ) {%> 
-                    <a href="wzlb.aspx?p=<%=1 %>&id=<%=str_id %>"class="p">首页</a>
-                    <a href="wzlb.aspx?p=<%=current_page+1 %>&id=<%=str_id %>" class="p">下一页</a>
-                    <a href="wzlb.aspx?p=<%=pageCount_page %>&id=<%=str_id %>" class="p">末页</a>
+                <% if(current_page<=1 && pageCount_page>1) {%> 
+                    <font class="p" style="color:Gray">首页</font>
+                    <a href="wzlb.aspx?p=<%=current_page+1 %>&id=<%=str_id %>" class="p" style="color:Black">下一页</a>
+                    <a href="wzlb.aspx?p=<%=pageCount_page %>&id=<%=str_id %>" class="p" style="color:Black">末页</a>
                 <%} %>
-                    
+                <% else if(current_page<=1 && pageCount_page<=1) {%>
+                
+                <% }%>    
                 <% else if(!(current_page<=1)&&!(current_page == pageCount_page)){ %>
-                    <a href="wzlb.aspx?p=<%=1 %>&id=<%=str_id %>"class="p">首页</a>
-                    <a href="wzlb.aspx?p=<%=current_page-1 %>&id=<%=str_id %>" class="p">上一页</a>
-                    <a href="wzlb.aspx?p=<%=current_page+1 %>&id=<%=str_id %>" class="p">下一页</a>
-                     <a href="wzlb.aspx?p=<%=pageCount_page %>&id=<%=str_id %>" class="p">末页</a>
+                    <a href="wzlb.aspx?p=<%=1 %>&id=<%=str_id %>"class="p" style="color:Black">首页</a>
+                    <a href="wzlb.aspx?p=<%=current_page-1 %>&id=<%=str_id %>" class="p" style="color:Black">上一页</a>
+                    <a href="wzlb.aspx?p=<%=current_page+1 %>&id=<%=str_id %>" class="p" style="color:Black">下一页</a>
+                     <a href="wzlb.aspx?p=<%=pageCount_page %>&id=<%=str_id %>" class="p" style="color:Black">末页</a>
                 <%}%>
                 <% else if(current_page == pageCount_page){ %>
-                    <a href="wzlb.aspx?p=<%=1 %>&id=<%=str_id %>"class="p">首页</a>
-                    <a href="wzlb.aspx?p=<%=current_page-1 %>&id=<%=str_id %>" class="p">上一页</a>
-                    <a href="wzlb.aspx?p=<%=pageCount_page %>&id=<%=str_id %>" class="p">末页</a>
+                    <a href="wzlb.aspx?p=<%=1 %>&id=<%=str_id %>"class="p" style="color:Black">首页</a>
+                    <a href="wzlb.aspx?p=<%=current_page-1 %>&id=<%=str_id %>" class="p" style="color:Black">上一页</a>
+                    <font class="p" style="color:Gray">末页</font> 
                 <%} %>
-                直接到第  
-                <select onchange="window.location=this.value" name="" class="p">
+                <font style="color:Black" >直接到第</font>  
+                <select onchange="window.location=this.value" name="" class="p" style="color:Black">
                 <% foreach (var v in this.Items)
                 { %>
                     <option value="<%=v.Value %>&id=<%=str_id%>" <%=v.SelectedString %>><%=v.Text %></option>
                 <%} %>
                 </select>
-                页
+                <font style="color:Black" >页&nbsp;&nbsp;&nbsp;第 <%=current_page %> 页/共 <%=pageCount_page %> 页</font>
             </div>
         </div>
         </div>
