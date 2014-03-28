@@ -251,13 +251,14 @@
     <div class="fxsxx">
         <span class="fxsxx1">请选择您要添加的材料信息</span>
         <%string gys_id = Request["gys_id"];%>
-          <form action="xzclym4.aspx?gys_id=134" method="post" >
+          <form action="xzclym4.aspx?gys_id=<%=gys_id %>" method="post" >
 
             <div class="xz1">
                 <div class="xza">
 
                     <span class="xz2"><a href="#">大类</a></span>
                     <select id="drop1" name="drop1" onchange="updateFL(this.options[this.options.selectedIndex].value)">
+                    <option value="0"> 选择大类</option>
                         <% foreach(var v  in Items1){%>
                         <option value="<%=v.GroupsCode %>"><%=v.Name%></option>
                         <%}%>

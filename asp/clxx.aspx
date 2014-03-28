@@ -51,56 +51,48 @@
 		protected DataTable dt_fxsxx = new DataTable();  //分销商信息(材料供应商信息表)
 		protected DataTable dt_image = new DataTable();  //材料大图片(材料多媒体信息表)
 		protected DataTable dt_images = new DataTable();  //材料小图片(材料多媒体信息表)
-        string cl_id;
-        
+        public string cl_id;
+        public DataConn objConn=new DataConn();
+        public  string sSQL="";
         protected void Page_Load(object sender, EventArgs e)
         {		      
-            string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-            SqlConnection conn = new SqlConnection(constr);
-            conn.Open();
+           
 			cl_id = Request["cl_id"];
 
-            SqlDataAdapter da_clxx = new SqlDataAdapter("select 显示名,fl_id,材料编码 from 材料表 where cl_id='"+cl_id+"' ", conn);
-            DataSet ds_clxx = new DataSet();
-            da_clxx.Fill(ds_clxx, "材料表");            
-            dt_clxx = ds_clxx.Tables[0];
+           sSQL="select 显示名,fl_id,材料编码 from 材料表 where cl_id='"+cl_id+"' ";         
+            dt_clxx = objConn.GetDataTable(sSQL);
 
              //材料表访问计数加1
-            String str_updatecounter = "update 材料表 set 访问计数 = (select 访问计数 from 材料表 where cl_id = '"+ cl_id +"')+1 where cl_id = '"+ cl_id +"'";
-            SqlCommand cmd_updatecounter = new SqlCommand(str_updatecounter, conn);         
-            cmd_updatecounter.ExecuteNonQuery();
+            sSQL = "update 材料表 set 访问计数 = (select 访问计数 from 材料表 where cl_id = '"+ cl_id +"')+1 where cl_id = '"+ cl_id +"'";
+            objConn.ExecuteSQL(sSQL,false);
+            string fl_id="";
+			if(dt_clxx!=null&&dt_clxx.Rows.Count>0)
+            {
+                 fl_id = dt_clxx.Rows[0]["fl_id"].ToString();
+            }
+			sSQL="select 显示名字 from 材料分类表 where fl_id='"+fl_id+"' ";
+            
+            dt_flxx = objConn.GetDataTable(sSQL);
 			
-            String fl_id = Convert.ToString(dt_clxx.Rows[0]["fl_id"]);
-			SqlDataAdapter da_flxx = new SqlDataAdapter("select 显示名字 from 材料分类表 where fl_id='"+fl_id+"' ", conn);
-            DataSet ds_flxx = new DataSet();
-            da_flxx.Fill(ds_flxx, "材料分类表");           
-            dt_flxx = ds_flxx.Tables[0];
+			sSQL="select 品牌名称,规格型号,材料编码 from 材料表 where cl_id='"+cl_id+"' ";
+         
+            dt_ppxx = objConn.GetDataTable(sSQL);
 			
-			SqlDataAdapter da_ppxx = new SqlDataAdapter("select 品牌名称,规格型号,材料编码 from 材料表 where cl_id='"+cl_id+"' " , conn);
-            DataSet ds_ppxx = new DataSet();
-            da_ppxx.Fill(ds_ppxx, "材料表");            
-            dt_ppxx = ds_ppxx.Tables[0];
+			sSQL="select 联系人手机,供应商,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') ";
+           
+            dt_scsxx = objConn.GetDataTable(sSQL);
 			
-			SqlDataAdapter da_scsxx = new SqlDataAdapter("select 联系人手机,供应商,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') " , conn);
-            DataSet ds_scsxx = new DataSet();
-            da_scsxx.Fill(ds_scsxx, "材料供应商信息表");            
-            dt_scsxx = ds_scsxx.Tables[0];
+            sSQL = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"'))";
+		
+            dt_fxsxx =objConn.GetDataTable(sSQL);
 			
-            String str__fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"'))";
-			SqlDataAdapter da_fxsxx = new SqlDataAdapter(str__fxsxx , conn);
-            DataSet ds_fxsxx = new DataSet();
-            da_fxsxx.Fill(ds_fxsxx, "材料供应商信息表");            
-            dt_fxsxx = ds_fxsxx.Tables[0];
+		    sSQL="select top 3 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='大'";
+         
+            dt_image = objConn.GetDataTable(sSQL);
 			
-			SqlDataAdapter da_image = new SqlDataAdapter("select top 3 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='大'" , conn);
-            DataSet ds_image = new DataSet();
-            da_image.Fill(ds_image, "材料多媒体信息表");            
-            dt_image = ds_image.Tables[0];
-			
-			SqlDataAdapter da_images = new SqlDataAdapter("select 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='小'" , conn);
-            DataSet ds_images = new DataSet();
-            da_images.Fill(ds_images, "材料多媒体信息表");            
-            dt_images = ds_images.Tables[0];
+			sSQL="select 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='小'" ;
+      
+            dt_images =objConn.GetDataTable(sSQL);
 		   
         }		
         
@@ -120,8 +112,8 @@
 </div>
 <div class="xx1">
 <div class="xx2">
-<div style="HEIGHT: 300px; OVERFLOW: hidden;" id=idTransformView>
-<ul id=idSlider class=slider>
+<div style="HEIGHT: 300px; OVERFLOW: hidden;" id="idTransformView">
+<ul id="idSlider" class="slider">
   <div style="POSITION: relative">
      
     <%
@@ -136,7 +128,7 @@
 </div>
 
 <div>
-<ul id=idNum class=hdnum>
+<ul id="idNum" class="hdnum">
    
   <% for (int i=0;i< dt_images.Rows.Count;i++) {
        

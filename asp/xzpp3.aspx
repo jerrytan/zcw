@@ -8,6 +8,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+</head>
 <%
             DataConn objConn=new DataConn();
             //新增品牌写入数据库
@@ -46,8 +47,20 @@
         </p> 
          <p>
         </p>
-       
+       <%if(ret!=0) {%>
         <a style="color: Red" onclick="clickMe()">恭喜您，新增品牌成功，请返回; </a>
+        <%}else{ %>
+         <a style="color: Red" onclick="clickMe()">新增品牌失败，页面将跳转到主页！</a>
+             
+        <%} %>
+        <script defer="defer">
+            function doload()
+            {
+                window.close();
+                opener.location.reload();
+            }
+            setTimeout("doload()", 1000);
+              </script>
         <script>
             function clickMe() {
                 window.close();

@@ -23,9 +23,11 @@
 <title>供应商收藏页面</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
-<link href="css/gysglcl.css" rel="stylesheet" type="text/css" />
+<link href="css/gl.css" rel="stylesheet" type="text/css" />
 <script src="js/gysglcl.js" type="text/javascript"></script>
 <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+
+
 </head>
 
 <body>
@@ -247,7 +249,7 @@
 </div></div>
 <div class="dlqqz3" style="width:260px;">
 
-<a href="xzclym.aspx"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;
+<a href="xzclym.aspx?gys_id=<%=gys_id %>"><img src="images/xzcl.jpg" border="0" /></a>&nbsp;
 
 <asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="Delete_cl" />
 
