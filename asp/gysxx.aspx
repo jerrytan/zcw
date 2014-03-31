@@ -48,7 +48,7 @@
 
         protected void Page_Load(object sender, EventArgs e)
         {
-		    if (!Page.IsPostBack)
+		    if (!IsPostBack)
             {  
                 /*获取区域信息*/
                 string str_sqlqymc = "select 所属区域编号,所属区域名称  from 地区地域字典 group by 所属区域编号,所属区域名称";
@@ -60,7 +60,7 @@
                 dt_gysxx = dc.GetDataTable(str_sqlclgys);
 
                 //访问计数加1
-                String str_updatecounter = "update 材料供应商信息表 set 访问计数 = (select 访问计数 from 材料供应商信息表 where gys_id = '"+ gys_id +"')+1 where gys_id = '"+ gys_id +"'";
+                string str_updatecounter = "update 材料供应商信息表 set 访问计数 = (select 访问计数 from 材料供应商信息表 where gys_id = '"+ gys_id +"')+1 where gys_id = '"+ gys_id +"'";
                 dc.ExecuteSQL(str_updatecounter,true);      
 
                 //对数据进行判断

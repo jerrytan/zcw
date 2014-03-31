@@ -35,6 +35,10 @@
 		{
 			s_yh_id = Session["GYS_YH_ID"].ToString();
 		}
+          if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
+        {
+             s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
+        }
 		if(s_yh_id!="")
 		{
 			sSQL = "select 公司名称,公司地址,公司电话,公司主页,手机,类型,QQ号码,姓名,是否验证通过 from 用户表 where  yh_id='"+s_yh_id+"' ";
@@ -149,14 +153,24 @@
 	            <dd>&nbsp;贵公司是：</dd>    
 								            <dt>
 									            <select name="scs_type" id="Select1" style="width: 120px; color: Blue">
-										            <option value="生产商">生产商</option>
-										            <option value="分销商">分销商</option>                        
+                                                <%if(dt_yh.Rows[0]["类型"].ToString()=="生产商" ){ %>
+                                               
+										            <option value="生产商" selected>生产商</option>
+										            <option value="分销商">分销商</option>      
+                                               <%  }else if(dt_yh.Rows[0]["类型"].ToString()=="供销商" ){%>   
+                                                    <option value="生产商">生产商</option>
+										            <option value="分销商" selected>分销商</option>
+                                              <%}else{ %>
+                                                <option value="" selected>--请选择单位类型--</option>
+                                                 <option value="生产商">生产商</option>
+										         <option value="分销商">分销商</option>
+                                              <%} %>               
 									            </select>
 								            </dt>
 
-	            <dd>*您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value=""/></dt>
-	            <dd>*您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value=""/></dt>
-	            <dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value=""/></dt>
+	            <dd>*您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"] %>"/></dt>
+	            <dd>*您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["手机"] %>"/></dt>
+	            <dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"] %>"/></dt>
 
         <%} 
         else

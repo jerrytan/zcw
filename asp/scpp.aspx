@@ -30,6 +30,10 @@
             {
                 fxs_id=Request["fxs_id"].ToString();
             }
+            if (Request.Cookies["GYS_YH_ID"]!=null && Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
+            {
+                 yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
+            }
             //删除品牌
                           
                 string ppid_str="";
@@ -50,7 +54,7 @@
                     for(int i=0;i<ppid_list.Length;i++)
                     {
                         //    分销商和品牌对应关系表
-                        string sSQL="delete 分销商和品牌对应关系表 where fxs_id='"+fxs_id+"' and pp_id ='("+ ppid_list[i]+")'";
+                        string sSQL="delete 品牌字典 where scs_id='"+fxs_id+"' and pp_id ='("+ ppid_list[i]+")'";
                         //  string str_update = "delete from  品牌字典 where pp_id in ("+ ppid_list[i]+")";                 
                          ret = objConn.ExecuteSQLForCount(sSQL,true);	
                     }
@@ -58,7 +62,7 @@
                 else
                 {
                     ppid=ppid_str;
-                    string sSQL="delete 分销商和品牌对应关系表 where fxs_id='"+fxs_id+"' and pp_id = '"+ ppid+"'";
+                    string sSQL="delete 品牌字典 where scs_id='"+fxs_id+"' and pp_id = '"+ ppid+"'";
                     //  string str_update = "delete from  品牌字典 where pp_id in '"+ ppid+"'";                 
                      ret = objConn.ExecuteSQLForCount(sSQL,true);	
                        Response.Write(sSQL);

@@ -52,6 +52,10 @@
 			{
 				s_yh_id = Session["GYS_YH_ID"].ToString();
 			}       
+              if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
+            {
+                 s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
+            }
              string gys_name = Request.Form["gys_name"];                  //公司名字
              string gys_address = Request.Form["gys_address"];            //地址
              string gys_homepage = Request.Form["gys_homepage"];     //公司主页
@@ -97,5 +101,12 @@
    
 </body>
 <a style="color: Red"  onclick=window.location.href="gyszym.aspx">信息已保存成功,等待审核,请返回! </a>
-
+ <script defer="defer">
+     function doload()
+     {
+         window.close();
+         opener.location.reload();
+     }
+     setTimeout("doload()", 2000);
+</script>
 </html>

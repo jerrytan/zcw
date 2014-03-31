@@ -16,7 +16,11 @@
             if(Session["GYS_YH_ID"]!=null&&Session["GYS_YH_ID"].ToString()!="")
                 {
                     yh_id =Session["GYS_YH_ID"].ToString();   //获取用户id
-                }        
+                }  
+           if (Request.Cookies["GYS_YH_ID"]!=null && Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
+            {
+                 yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
+            }      
                 string gys_id = Request.Form["gys_id"]; 				
                 string brandname = Request.Form["brandname"];            //品牌名称
                 string yjflname = Request.Form["yjflname"];              //大级分类名称               
@@ -36,7 +40,7 @@
                     +" where 品牌名称='"+brandname+"'";
               
                 int ret = 	objConn.ExecuteSQLForCount(str_update,true);	
-				//Response.Write(str_update);
+				Response.Write(str_update);
     
                                
 		

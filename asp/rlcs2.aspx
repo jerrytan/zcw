@@ -11,13 +11,17 @@
     public DataConn objConn = new DataConn();
     protected void Page_Load(object sender, EventArgs e)
     {
+      if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
+        {
+            s_yh_id = Session["GYS_YH_ID"].ToString();
+        }
         if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
         {
             s_gys_id = Request["gys_id"].ToString();
         }
-        if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
+          if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
         {
-            s_yh_id = Session["GYS_YH_ID"].ToString();
+             s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
         }
         if (s_yh_id != "")
         {
@@ -77,7 +81,7 @@
         }
         else
         {
-            objConn.MsgBox(this.Page, "当前用户id不存在,请重新登陆！");
+            Response.Write("当前用户id不存在,请重新登陆！");
         }
 
     }

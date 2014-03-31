@@ -41,7 +41,10 @@
                 {
                     yh_id =Session["GYS_YH_ID"].ToString();   //获取用户id
                 }           
-			
+                if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
+                {
+                    yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
+                }
                 string companyname = Request.Form["companyname"];   //公司名字
                 string address = Request.Form["address"];            //地址
                 string tel = Request.Form["tel"];               //电话
@@ -78,9 +81,7 @@
 				else
 				{
 				   //如果用户"没有"点击glscsxx.aspx 下拉框 就修改分销商信息,那么就执行如下代码,进行修改
-				   //根据用户id 查询的类型 有可能是分销商,有可能是生厂商
-				   
-            
+				   //根据用户id 查询的类型 有可能是分销商,有可能是生厂商            
 			       sSQL = "select 单位类型, gys_id from 材料供应商信息表 where yh_id='"+yh_id+"' " ;//查询供应商id	141	
                    string str_gysid ="";
                     string str_gys_type="";
@@ -130,18 +131,7 @@
 				   
 			       if(str_gys_type.Equals("生产商"))
 				   {
-			          //string str_pp_id = "select pp_id from 品牌字典 where scs_id='"+str_gysid+"' "; //查询品牌id		
-                      //SqlDataAdapter da_pp_id = new SqlDataAdapter(str_pp_id, conn);
-			          //DataSet ds_pp_id = new DataSet();
-                      //da_pp_id.Fill(ds_pp_id, "品牌字典");
-                      //DataTable dt_pp_id = ds_pp_id.Tables[0];
-			          //string str_ppid = Convert.ToString(dt_pp_id.Rows[0]["pp_id"]);   //获取品牌id  185		   				 
-				   
-				      //string sql_gys_id = "select count(*) from 供应商自己修改待审核表 where gys_id in "
-				      //+"(select top 1 fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')"; //有几个分销商,就有几个fxs_id,取第一个  139
-				      //SqlCommand cmd_checkuserexist = new SqlCommand(sql_gys_id, conn);                  
-                      //Object obj_check_gys_exist = cmd_checkuserexist.ExecuteScalar();
-					  
+			         
 					   sSQL = "select count(*) from 供应商自己修改待审核表 where gys_id ='"+str_gysid+"' ";	     
 				
                        Object obj_check_gys_exist = objConn.DBLook(sSQL);
@@ -152,21 +142,9 @@
                         int count = Convert.ToInt32(obj_check_gys_exist);
                         if (count == 0)  
                         {                        					 
-                           //string str_insert = "insert into 供应商自己修改待审核表 (gys_id)select top 1 fxs_id from 分销商和品牌对应关系表 "
-						   //+"where pp_id='"+str_ppid+"'";				       
-				           //SqlCommand cmd_insert = new SqlCommand(str_insert,conn);
-				          // cmd_insert.ExecuteNonQuery();
-						   
 						   sSQL = "insert into 供应商自己修改待审核表 (gys_id)values('"+str_gysid+"')";
 				             objConn.ExecuteSQL(sSQL,false);
-				        }
-				        //string str_update = "update 供应商自己修改待审核表 set 贵公司名称='"+companyname+"',贵公司地址='"+address+"',"
-				        //+"贵公司电话='"+tel+"',贵公司主页='"+homepage+"',贵公司地区='"+area+"',贵公司传真='"+fax+"',是否启用='1',"
-				        //+"联系人姓名='"+name+"',联系人电话='"+phone+"',单位类型='分销商',经营范围='"+Business_Scope+"',"
-				        //+"审批结果='待审核',updatetime=(select getdate()),yh_id='"+yh_id+"' where gys_id in"
-						//+"(select top 1 fxs_id from 分销商和品牌对应关系表 where pp_id='"+str_ppid+"')";					  
-				        //SqlCommand cmd_update = new SqlCommand(str_update,conn);
-				        //cmd_update.ExecuteNonQuery();  
+				        }  
 
 						sSQL = "update 供应商自己修改待审核表 set 贵公司名称='"+companyname+"',贵公司地址='"+address+"',"
 				        +"贵公司电话='"+tel+"',贵公司主页='"+homepage+"',贵公司地区='"+area+"',贵公司传真='"+fax+"',是否启用='1',"

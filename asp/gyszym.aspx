@@ -24,25 +24,24 @@
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body>
-
-    <!-- 头部2开始-->
-    <uc2:Header2 ID="Header2" runat="server" />
-    <!-- 头部2结束-->
-<%
-   DataTable dt_yh=new  DataTable();
-        DataConn objConn=new DataConn();
-         string s_QQ_id="";
-         string passed="";
-         string name="";
-         string passed_gys = "";
-        if ( Request.Cookies["GYS_QQ_ID"]!=null&& Request.Cookies["GYS_QQ_ID"].Value.ToString()!="")
+    <script  runat="server">
+    public DataTable dt_yh=new  DataTable();
+    public DataConn objConn=new DataConn();
+    public string s_QQ_id="";
+    public string passed="";
+    public string name="";
+    public string passed_gys = "";
+    public string s_yh_id = "";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        HttpCookie MyCookie = new HttpCookie("GYS_YH_ID");
+       
+        if (Request.Cookies["GYS_QQ_ID"]!=null&& Request.Cookies["GYS_QQ_ID"].Value.ToString()!="")
         {
              s_QQ_id= Request.Cookies["GYS_QQ_ID"].Value.ToString();
         }
         if(s_QQ_id!="")
-        {
-            string s_yh_id = "";
+        {            
             string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + s_QQ_id + "'";
             string s_Count=objConn.DBLook(str_checkuserexist);    
             if (s_Count != "")
@@ -53,14 +52,14 @@
                     string str_insertuser = "insert into 用户表 (QQ_id) VALUES ('" + s_QQ_id + "')";
                      if(!objConn.ExecuteSQL(str_insertuser,false))
                        {
-                          objConn.MsgBox(this.Page,"执行SQL语句失败"+str_insertuser);
+                         // objConn.MsgBox(this.Page,"执行SQL语句失败"+str_insertuser);
                        }
                
                     string str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + s_QQ_id + "')"
 				    +",updatetime=(select getdate()),注册时间=(select getdate())where QQ_id = '" + s_QQ_id + "'";
                      if(!objConn.ExecuteSQL(str_updateuser,false))
                        {
-                          objConn.MsgBox(this.Page,"执行SQL语句失败"+str_updateuser);
+                          //objConn.MsgBox(this.Page,"执行SQL语句失败"+str_updateuser);
                        }
                 }
             }
@@ -74,6 +73,8 @@
                 name = dt_yh.Rows[0]["姓名"].ToString();
 		    }
 		    //need to set session value
+             MyCookie.Value = s_yh_id;
+             Response.Cookies.Add(MyCookie);
             Session["GYS_YH_ID"] = s_yh_id;
 
             //(供应商申请)的yh_id 是在认领厂商之后更新的
@@ -87,12 +88,19 @@
                     }
               
        }
-       else
-       {
+     else
+      {
              objConn.MsgBox(this.Page,"QQ_ID不存在！请重新登录");
-       }	
-    %>
+       }
 
+    }
+    </script>
+
+<body>
+
+    <!-- 头部2开始-->
+    <uc2:Header2 ID="Header2" runat="server" />
+    <!-- 头部2结束-->
 
     <div class="gyzy1">
         <span class="zy1">&nbsp&nbsp &nbsp&nbsp 身份信息经过我方工作人员确认后，您可以认领已有的供应商，或者增加新的供应商信息，还可以添加新产品信息（图1)
@@ -103,11 +111,15 @@
 		<%
 		    foreach(System.Data.DataRow row in dt_yh.Rows)
 			{	    
-                  if(passed_gys.Equals("通过"))  
+                  if(passed_gys.Equals("通过")&&Convert.ToString(row["是否验证通过"])=="通过")  
                   {
 				     Response.Write("恭喜您!厂商已认领成功,可以进行管理.");					 
 				  }	
-				  if(!passed_gys.Equals("通过"))
+                  else if(passed_gys.Equals("通过")&&Convert.ToString(row["是否验证通过"])!="通过")
+                  {
+                      Response.Write("请耐心等候,您更新的个人资料已提交,正在审核当中,我方工作人员会尽快给您答复!");  
+                  }
+				  else if(!passed_gys.Equals("通过"))
 				  {
 					  if(Convert.ToString(row["是否验证通过"])=="通过")
 					  {

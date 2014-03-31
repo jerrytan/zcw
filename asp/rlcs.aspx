@@ -22,7 +22,16 @@
    <title>认领厂商页面</title>
    <link href="css/css.css" rel="stylesheet" type="text/css" />
    <link href="css/all of.css" rel="stylesheet" type="text/css" />
-   <script runat="server">
+ 
+</head>
+
+<body>
+
+<!-- 头部2开始-->
+<uc2:Header2 ID="Header2" runat="server" />
+<!-- 头部2结束-->
+
+  <script runat="server">
     protected DataTable dt_wrl_gys = new DataTable(); //未认领的供应商信息(材料供应商信息表) 	
     protected DataTable dt_yrl_gys = new DataTable(); //已经认领的供应商信息(材料供应商信息表) 	
     protected DataTable dt_dsh_gys = new DataTable(); //提示用户认领的供应商
@@ -37,6 +46,10 @@
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
+        }
+          if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
+        {
+             s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
         }
         string gys_type = "";
 		if(s_yh_id!="")
@@ -104,42 +117,47 @@
     }
    </script>
     <script language ="javascript">
-        function send_request() 
+        function send_request()
         {
             var gys_list = document.getElementById("gyslist");
             var gys_id = gys_list.options[gys_list.selectedIndex].value;
 
             var xmlhttp;
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
             }
-            else {// code for IE6, IE5
+            else
+            {// code for IE6, IE5
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    alert(xmlhttp.responseText);
+            xmlhttp.onreadystatechange = function ()
+            {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                {
                     location.reload();
                     //document.getElementById("rljg").innerHTML = xmlhttp.responseText;
 
                 }
             }
-
-
-            xmlhttp.open("GET", "rlcs2.aspx?gys_id=" +gys_id, true);
+            xmlhttp.open("GET", "rlcs2.aspx?gys_id=" + gys_id, true);
             xmlhttp.send();
         }
         function Select_Gys_Name(gys_id)
         {
             var xmlhttp;
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
             }
-            else {// code for IE6, IE5
+            else
+            {// code for IE6, IE5
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            xmlhttp.onreadystatechange = function ()
+            {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                {
                     alert(xmlhttp.responseText);
                     //document.getElementById("rljg").innerHTML = xmlhttp.responseText;
 
@@ -149,13 +167,7 @@
             xmlhttp.send();
         }
     </script>
-</head>
 
-<body>
-
-<!-- 头部2开始-->
-<uc2:Header2 ID="Header2" runat="server" />
-<!-- 头部2结束-->
 <form runat="server">
 <div style=" float:left;">
 

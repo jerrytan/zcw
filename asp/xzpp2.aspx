@@ -19,15 +19,11 @@
           string sSQL="select 显示名字,分类编码 from 材料分类表 where left(分类编码,2)='"+yjfl_id+"'and len(分类编码)='4'";
         
             DataTable dt_ejfl = objConn.GetDataTable(sSQL);      
-            string value="";; 
-            for(int i=0;i<dt_ejfl.Rows.Count;i++)
-            {
-                value+=dt_ejfl.Rows[i]["分类编码"].ToString()+"|"+dt_ejfl.Rows[i]["显示名字"].ToString()+"#";
-            }
+            string value="";
+
             foreach(System.Data.DataRow row in dt_ejfl.Rows) 
             {
-            //  value+= "<option value='"+row["分类编码"]+"'>"+row["显示名字"]+"</option>");
+               Response.Write("<option value='"+row["分类编码"]+"'>"+row["显示名字"]+"</option>");
             }
 
-             Response.Write(value);
 %>

@@ -52,13 +52,13 @@
         public DataConn objConn=new DataConn();
         protected void Page_Load(object sender, EventArgs e)
         {
-        if(Request["gys_id"]!=null&&Request["gys_id"].ToString()!="")
-        {
-            gys_id = Request["gys_id"].ToString();
-         }
-           string sSQL="select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
+            if(Request["gys_id"]!=null&&Request["gys_id"].ToString()!="")
+            {
+                gys_id = Request["gys_id"].ToString();
+             }
+               string sSQL="select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
           
-            dt_yjfl = objConn.GetDataTable(sSQL);
+                dt_yjfl = objConn.GetDataTable(sSQL);
          }
 
     </script>
@@ -75,7 +75,7 @@
                     </td>
                     <td align="left">
                         <select id="yjflname" name="yjflname" style="width: 200px" onchange="updateFL(this.options[this.options.selectedIndex].value)">
-
+                           <option value="0">请选择一级分类</option>
                             <% foreach(System.Data.DataRow row in dt_yjfl.Rows){%>
 
                             <option value="<%=row["分类编码"] %>"><%=row["显示名字"]%></option>
@@ -90,9 +90,7 @@
                     </td>
                     <td align="left">
                         <select id="ejflname" name="ejflname" style="width: 250px">
-
-                            <option value="">请选择小类</option>
-
+                            <option value="">请选择二级分类</option>
                         </select>
                     </td>
                 </tr>
@@ -135,7 +133,7 @@
                         <input type="submit" id="send" value="保存" style="width: 100px" />
                     </td>
                     <td align="left">
-                        <input type="button" id="close" value="关闭" style="width: 100px" />
+                        <input type="button" id="close" value="关闭" onclick="window.close();" style="width: 100px" />
                     </td>
                 </tr>
             </table>

@@ -121,24 +121,20 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-
+        if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
+        {
+                s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
+       }
             string s_gys_type_id = "";  //供应商id
             sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型
             DataTable dt_type = objConn.GetDataTable(sSQL);
             if (dt_type != null && dt_type.Rows.Count > 0)
             {
                 s_gys_type = dt_type.Rows[0]["单位类型"].ToString();
-                s_gys_type_id = dt_type.Rows[0]["gys_id"].ToString();
+                gys_id = dt_type.Rows[0]["gys_id"].ToString();
             }
             if (s_gys_type == "生产商")
             {
-                sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";//查询供应商id	
-                string s_gysid = "";
-                DataTable dt_gys_id = objConn.GetDataTable(sSQL);
-                if (dt_gys_id != null && dt_gys_id.Rows.Count > 0)
-                {
-                    gys_id = dt_gys_id.Rows[0]["gys_id"].ToString();  //获取供应商id
-                }
                 sSQL = "select pp_id from 品牌字典 where scs_id='" + gys_id + "' "; //查询品牌id		
                 string s_ppid = "";
                 DataTable dt_pp_id = objConn.GetDataTable(sSQL);

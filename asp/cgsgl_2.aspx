@@ -177,18 +177,12 @@
             string com_tel=dt_yhbt.Rows[0]["公司电话"].ToString();
             if(user_type!=""&&tel!=""&&name!=""&&com_name!=""&&com_add!=""&&com_tel!="")
             {
-             if (userIsVIP)
-                {
-                    
-                }
-                else
-                {
+
                     sSQL = "select b.* from 采购商关注材料表 as  a ,材料表 as b  where a.yh_id='" + s_yh_id + "'  and a.cl_id = b.cl_id ";
                     dt = null;
                     dt = objConn.GetDataTable(sSQL);
                     outToExcel(dt);
-                }
-              
+
             }
             else
             {
@@ -387,7 +381,7 @@
                   foreach (DataRow dr_gys in dt_clgysxx.Rows){
                         %>
                         <input type="checkbox" name="gysid" value='<%=dr_gys["gys_id"].ToString()%>' />
-                        <a href=='gysxx.aspx?gys_id=<%=dr_gys["gys_id"].ToString() %>'>
+                        <a href='gysxx.aspx?gys_id=<%=dr_gys["gys_id"].ToString() %>'>
                             <%=dr_gys["供应商"].ToString()%></a>
                         <% } %>
                     </ul>

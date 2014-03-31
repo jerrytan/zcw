@@ -33,10 +33,13 @@
            public string sSQL="";
 		   protected void Page_Load(object sender, EventArgs e)
            {
-            string scs_id = Request["id"];   //获取下拉框传过来的分销商id
-
+            string scs_id ="";
+           if( Request["id"]!=null&& Request["id"].ToString()!="")
+           {
+              scs_id = Request["id"];   //获取下拉框传过来的分销商id
+            }
             sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,gys_id from 材料供应商信息表 where  gys_id='"+scs_id+"' ";
-          
+         
             dt_scsxx =objConn.GetDataTable(sSQL);
 			
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
