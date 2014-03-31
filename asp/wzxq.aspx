@@ -105,15 +105,6 @@
                     <a href="yjfl.aspx?p=<%=current_page-1 %>" class="p" style="color:Black">上一页</a>
                     <font style="color:Gray">末页</font>
                 <%} %>
-
-                 <font style="color:Black" >直接到第</font>  
-                <select onchange="window.location=this.value" name="" class="p" style="color:Black">
-                <% foreach (var v in this.Items)
-                { %>
-                    <option value="<%=v.Value %>&id=<%=str_id%>" <%=v.SelectedString %>><%=v.Text %></option>
-                <%} %>
-                </select>
-                <font style="color:Black" >页&nbsp;&nbsp;&nbsp;第 <%=current_page %> 页/共 <%=pageCount_page %> 页</font>
 				</div>   
 			</div>
 		</center>

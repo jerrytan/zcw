@@ -83,7 +83,7 @@
             string str_sqlflname = "select  显示名字,fl_id from 材料分类表 where  分类编码='"+name+"' ";                
             dt_yjflmc = dc_obj.GetDataTable(str_sqlflname);      
   
-            string str_sqltop10name = "select distinct top 10 显示名,cl_id from 材料表 where left(材料编码,2)='"+name+"' ";              
+            string str_sqltop10name = "select  top 10 显示名,cl_id from 材料表 where left(材料编码,2)='"+name+"' order by 访问计数";              
             dt_zclmc = dc_obj.GetDataTable(str_sqltop10name); 
 			
 			string str_top4wz = "select top 4 标题,摘要,wz_id from 文章表 where left(分类编码,2)='"+name+"' ";
@@ -249,7 +249,6 @@
                         <li style="overflow:hidden"><a href="clxx.aspx?cl_id=<%=row["cl_id"]%>"><%=row["显示名"].ToString()%></a></li>
                         <%}%>
                     </ul>
-
                 </div>
             </div>
             <div class="pxright2">
@@ -258,9 +257,9 @@
                 </a>
             </div>
         </div>
-
+         <!-- 最具人气的石材 结束-->
     </div>
-    <!-- 最具人气的石材 结束-->
+   
     <!-- 首页 石材首页 结束-->
 
     <!-- 石材规格页码 开始-->

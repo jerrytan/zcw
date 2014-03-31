@@ -188,7 +188,8 @@
             {   %>
                 <a href="ppxx.aspx?pp_id=<%=row["pp_id"] %>">
                     <div class="gydl1">
-                        <img src="images/222_03.jpg" /><%=row["品牌名称"].ToString()%>
+                        <img src="images/222_03.jpg" />
+                        <span ><%=row["品牌名称"].ToString()%></span>
                     </div>
                 </a>
             <%}%>
@@ -208,11 +209,11 @@
                 </select>
                 地区
                 <select id="s2" name="" class="fu2" onchange="GetCity(this.options[this.options.selectedIndex].value,<%=gys_id %>)">
-                    <option value="请选择">--请选择--</option>
+                    <option value="请选择"></option>
                 </select>
                 省(市)
                 <select id="s3" name="" class="fu3">
-                    <option value="请选择">--请选择--</option>
+                    <option value="请选择"></option>
                 </select>
                 市(区)
             </div>

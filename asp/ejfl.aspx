@@ -18,7 +18,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-    <script src="Scripts/jquery-1.4.1-vsdoc.js" type="text/javascript"></script>
+    <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
     <script language="javascript" type="text/javascript">
         $(document).ready(function () {
             $("#ckAll").click(function () {
@@ -86,7 +86,8 @@
 			string str_sqlppmc = "select distinct 品牌名称 from 品牌字典 where  fl_id in(select 分类编码 from 材料分类表 where 分类编码='"+name+"') "; 
             dt_ejflpp = dc_obj.GetDataTable(str_sqlppmc);
 			
-			string str_sqlcl = "select 显示名,规格型号,分类编码,cl_id from 材料表 where 分类编码='"+name+"' ";
+			//string str_sqlcl = "select top 10  显示名,规格型号,分类编码,cl_id from 材料表 where left(分类编码,2)='"+name+"' order by 访问计数";
+            string str_sqlcl = "select top 10 显示名,规格型号,分类编码,cl_id from 材料表 where 分类编码='"+name+"' order by 访问计数 ";
             dt_ejflcl = dc_obj.GetDataTable(str_sqlcl);
 			
 			string str_sqltop4 = "select top 4 标题,摘要,wz_id from 文章表 where left(分类编码,4)='"+name+"' ";
@@ -171,7 +172,6 @@
         }
     </script>
 
-
     <div class="sc">
         <!-- 链接导航栏 开始-->
         <div class="sc1">
@@ -215,12 +215,13 @@
             <div class="ppxz">
                 <div class="ppxz1">区域：</div>
                 <div class="ppxz2"><a href="#">
-                    <img src="images/qwez.jpg" /></a> <a href="#">朝阳区</a> <a href="#">海淀区</a> <a href="#">丰台区</a></div>
+                    <img alt="" src="images/qwez.jpg" /></a> <a href="#">朝阳区</a> <a href="#">海淀区</a> <a href="#">丰台区</a>
+                </div>
             </div>
             <div class="ppxz">
                 <div class="ppxz1">材料：</div>
                 <div class="ppxz2">
-                    <a href="#"><img src="images/qwez.jpg" /></a>
+                    <a href="#"><img alt="" src="images/qwez.jpg" /></a>
                     <% foreach(System.Data.DataRow row in dt_ejflcl.Rows){%>
                     <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>"><%=row["显示名"].ToString() %></a>
                     <%}%>
@@ -228,7 +229,9 @@
             </div>
             <div class="ppxz">
                 <div class="ppxz1">更多：</div>
-                <div class="ppxz2"> <a href="#">属性1</a> <a href="#">属性2</a> <a href="#">属性3</a></div>
+                <div class="ppxz2"> 
+                    <a href="#">属性1</a> <a href="#">属性2</a> <a href="#">属性3</a>
+                </div>
             </div>
             <!-- 材料排序筛选 开始-->
             <div class="dlspx">
@@ -237,7 +240,8 @@
                 <span class="dlspx3"><a href="#">人气<img src="images/qweqw_03.jpg" /></a></span>
                 <span class="dlspx3"><a href="#">最新<img src="images/qweqw_03.jpg" /></a></span>
                 <span class="dlspx3">
-                    <input name="" type="checkbox" value="" id="ckAll" class="fx" /><a href="#">全选</a></span>
+                    <input name="" type="checkbox" value="" id="ckAll" class="fx" /><a href="#">全选</a>
+                </span>
                 <span class="dlspx4"><a href="#">请收藏，便于查找</a></span>
             </div>
             <!-- 材料排序筛选 结束-->
@@ -245,9 +249,9 @@
          <!-- 筛选 结束 -->
 
         <!-- 材料显示列表 开始-->
-        <div class="dlspxl">
+        <div class="dlspxl" style="background-color:Green">
             <% foreach(System.Data.DataRow row in dt_clmcpage.Rows){%>
-            <div class="dlspxt">
+            <div class="dlspxt" style="background-color:Orange">
                 <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">
                     <%
                     string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
@@ -261,12 +265,12 @@
                     Response.Write("<img src="+imgsrc+ " width=150px height=150px />");
 				    %>
                     
-                    <div class="dlspxt1">
-                        <span class="dlsl" style="overflow:hidden"><%=row["显示名"].ToString() %></span>
-                        <span class="dlspx3">
-                            <input name="" type="checkbox" value="" class="ck" />
-                            收藏</span>
-                        <span class="dlsgg">规格：<%=row["规格型号"].ToString() %></span>
+                    <div class="dlspxt1" style="overflow:hidden;background-color:Green">
+                        <span class="dlsl" style="overflow:hidden;background-color:Yellow"><%=row["显示名"].ToString() %></span>
+                        <span class="dlspx3" style="background-color:Blue">
+                            <input name="" type="checkbox" value="" class="ck" />收藏
+                        </span>
+                        <span class="dlsgg" style="background-color:Red">规格：<%=row["规格型号"].ToString() %></span>
                     </div>
                  </a>
             </div>
@@ -277,10 +281,10 @@
         <!-- 最具人气的石材 开始 -->
         <div class="pxright0">
             <div class="pxright">
-                <div class="pxright1">
+                <div class="pxright1" style=" text-align:left; padding-left:0px !important; padding-left:20px;overflow:hidden">
                     <ul>
                         <% foreach(System.Data.DataRow row in dt_ejflcl.Rows){%>
-                        <li><a href="clxx.aspx?cl_id=<%=row["cl_id"]%>"><%=row["显示名"].ToString() %></a></li>
+                        <li style="overflow:hidden"><a href="clxx.aspx?cl_id=<%=row["cl_id"]%>"><%=row["显示名"].ToString() %></a></li>
                         <%}%>
                     </ul>
 
