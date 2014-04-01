@@ -83,10 +83,10 @@
 			string str_sqlclmz = "select 显示名字 from 材料分类表 where 分类编码='"+name+"' ";
             dt_ejflmc = dc_obj.GetDataTable(str_sqlclmz);
 			
-			string str_sqlppmc = "select distinct 品牌名称 from 品牌字典 where  fl_id in(select 分类编码 from 材料分类表 where 分类编码='"+name+"') "; 
+			string str_sqlppmc = "select distinct 品牌名称 from 品牌字典 where  fl_id in(select fl_id from 材料分类表 where 分类编码='"+name+"') "; 
             dt_ejflpp = dc_obj.GetDataTable(str_sqlppmc);
+           		
 			
-			//string str_sqlcl = "select top 10  显示名,规格型号,分类编码,cl_id from 材料表 where left(分类编码,2)='"+name+"' order by 访问计数";
             string str_sqlcl = "select top 10 显示名,规格型号,分类编码,cl_id from 材料表 where 分类编码='"+name+"' order by 访问计数 ";
             dt_ejflcl = dc_obj.GetDataTable(str_sqlcl);
 			

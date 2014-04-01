@@ -60,22 +60,14 @@
 		protected DataTable dt_wz = new DataTable();  //如何挑选大理石打相关文章(文章表)
 		protected DataConn dc_obj = new DataConn();	//工具操作类
         		
-        private const int Page_Size = 8; //每页的记录数量
-		private int current_page=1;
-	    int pageCount_page;
-        private int i_count=0;
-        private string name="";
-        public class OptionItem
-        {
-            public string Text { get; set; }
-            public string SelectedString { get; set; }
-            public string Value { get; set; }
-        }
-       	public List<OptionItem> Items { get; set; }
+        protected string currentPageIndex=string.Empty; //自定义隐藏域，用来存放当前页码
+        protected string currentPageCount = string.Empty;      
+        protected string btnVisitValue = "人气↑";
+        protected string btnUpdateValue = "更新日期↑";
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            name= Request["name"]; //获取首页传过来的一级分类编码(两位)
+            string name= Request["name"]; //获取首页传过来的一级分类编码(两位)
 
             string str_sqltop10 = "select top 10 显示名字,分类编码 from 材料分类表 where  left(分类编码,2)='"+name+"' and len(分类编码)='4' ";            
             dt_ejflmc = dc_obj.GetDataTable(str_sqltop10);
@@ -89,85 +81,157 @@
 			string str_top4wz = "select top 4 标题,摘要,wz_id from 文章表 where left(分类编码,2)='"+name+"' ";
 			dt_wz = dc_obj.GetDataTable(str_top4wz);
             
-			
-            //从查询字符串中获取"页号"参数
-            string strP = Request.QueryString["p"];
-            if (string.IsNullOrEmpty(strP))
+			 if(!IsPostBack)
+              {
+                   dt_allcl=BindProductList(1);  
+              }    
+                 
+            //上一页
+            if(!string.IsNullOrEmpty(Request.Form["HtmBtnPrePage"]))
             {
-                strP = "1";
+                int pageIndex = Convert.ToInt32(Request.Form["HidPageIndex"]);
+                dt_allcl=BindProductList(--pageIndex);
             }
-            int p;
-            bool b1 = int.TryParse(strP, out p);
-            if (b1 == false)
+            //下一页
+            if (!string.IsNullOrEmpty(Request.Form["HtmBtnNextPage"]))
             {
-                p = 1;
+                int pageIndex = Convert.ToInt32(Request.Form["HidPageIndex"]);
+                dt_allcl=BindProductList(++pageIndex);            
             }
-            current_page = p;
-            //从查询字符串中获取"总页数"参数
-            string strC = Request.QueryString["c"];
-            if (string.IsNullOrEmpty(strC))
+         
+          //按人气排序
+            if (!string.IsNullOrEmpty(Request.Form["btnVisitOderBy"]))
             {
-                double recordCount = this.GetProductCount(); //总条数
-                double d1 = recordCount / Page_Size; //13.4
-                double d2 = Math.Ceiling(d1); //14.0
-                int pageCount = (int)d2; //14
-                strC = pageCount.ToString();
+                OrderByVisit(Request.Form["btnVisitOderBy"].ToString());
             }
-            int c;
-            bool b2 = int.TryParse(strC,out c);
-            if (b2 == false)
+            else
             {
-                c = 1;
+                if (ViewState["orderBy"] != null)
+                {
+                    if (ViewState["orderBy"].ToString() == "访问计数 asc")
+                    {
+                        btnVisitValue = "人气↓";
+                    }
+                }
             }
-            pageCount_page = c;
-            //计算/查询分页数据
-            int begin = (p - 1) * Page_Size + 1;
-            int end = p * Page_Size;
-            dt_allcl = this.GetProductFormDB(begin, end,name);
-            this.SetNavLink(p, c);   
-	
+            //按日期排序           
+            if (!string.IsNullOrEmpty(Request.Form["btnUpdateOderBy"]))
+            {
+                OrderByUpdateTime(Request.Form["btnUpdateOderBy"].ToString());
+            }
+            else
+            {
+                if (ViewState["orderBy"] != null)
+                {
+                    if (ViewState["orderBy"].ToString() == "updatetime asc")
+                    {
+                        btnUpdateValue = "更新日期↓";
+                    }
+                }
+            }
+        }    
+
+         //按照人气进行排序
+        private void OrderByVisit(string value)
+        {
+            if (value == "人气↑")
+            {
+                btnVisitValue = "人气↓";
+                ViewState["orderBy"] = "访问计数 asc";
+            }
+            else
+            {
+                btnVisitValue = "人气↑";
+                ViewState["orderBy"] = "访问计数 desc";
+            }
+            dt_allcl=BindProductList(1);//显示排序后的第一页
         }
+
+
+        //按照更新日期进行排序
+         private void OrderByUpdateTime(string value)
+        {
+            if (value == "更新日期↑")
+            {
+                btnUpdateValue = "更新日期↓";
+                ViewState["orderBy"] = "updatetime asc";
+            }
+            else
+            {
+                btnUpdateValue = "更新日期↑";
+                ViewState["orderBy"] = "updatetime desc";
+            }
+           dt_allcl=BindProductList(1);//显示排序后的第一页
+        }
+
+
+        //得到分页信息
+        protected  DataTable GetList(int pageIndex ,int pageSize,string name,string orderBy)
+        {
+        string sql=@"select 显示名,材料编码,cl_id,fl_id,规格型号  from (select ROW_NUMBER() over (order by {0}) as RowId ,*from 材料表 where left(材料编码,2)=@name)t
+where t.RowId between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize ";
+            sql=string.Format(sql,(orderBy!=""&&orderBy!=null)?orderBy:"myID");
+             SqlParameter[] parms = { 
+                                   new SqlParameter("@pageIndex",SqlDbType.Int),
+                                   new SqlParameter("@pageSize",SqlDbType.Int),
+                                   new SqlParameter("@name",SqlDbType.VarChar)
+                                };
+            parms[0].Value=pageIndex;
+            parms[1].Value=pageSize;
+            parms[2].Value=name;
+           return dc_obj.GetDataTable(sql,parms);
         
-         //设置导航链接 currentPage:当前页号 pageCount:总页数 
-        private void SetNavLink(int currentPage, int pageCount)
-        {  
-            this.Items = new List<OptionItem>();
-            for (int i = 1; i <= pageCount; i++)
-            {      
-                OptionItem item = new OptionItem();
-                item.Text = i.ToString();                          
-                item.SelectedString = i == currentPage ? "selected='selected'" : string.Empty;
-                item.Value = string.Format("yjfl.aspx?p={0}&name={1}",i,name);                
-                this.Items.Add(item);
-            }
-      
         }
 
-        private DataTable GetProductFormDB(int begin, int end, string name)
-        {
-             SqlParameter [] spt = new SqlParameter[]
-            {
-                new SqlParameter("@begin",begin),
-                new SqlParameter("@end",end),
-                new SqlParameter("@材料编码",name)
-            };
-            return dt_allcl = dc_obj.ExecuteProcForTable("yj_cl_Paging",spt);
-        }
 
-        //从数据库获取记录的总数量
-        private int GetProductCount()
+         //显示当前页的信息
+         private DataTable BindProductList(int pageIndex)
+        {           
+            int pageCount;       
+            string  categoryId=string.Empty;
+            if (Request.QueryString["name"]!=null) //判读是否选择了分类
+            {
+                categoryId =Request.QueryString["name"];
+            }           
+            pageCount =GetPageCount(categoryId,12);//总页数
+           
+            if (pageIndex < 1)
+            {
+                pageIndex = 1;
+            }
+            if (pageIndex > pageCount)
+            {
+                pageIndex = pageCount;
+            } 
+           
+            currentPageIndex = pageIndex.ToString();
+            currentPageCount = pageCount.ToString();
+
+            string orderBy = string.Empty;
+            if(ViewState["orderBy"]!=null)
+            {
+                orderBy = ViewState["orderBy"].ToString();
+            }
+             return GetList(pageIndex,12,categoryId,orderBy);
+            }
+               
+        //得到总页数
+         private int GetPageCount(string name,int pageSize)
         {
-            try
+            string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;          
+            string sql = "select count(cl_Id) from 材料表 where left(材料编码,2)='"+name+"'";
+            SqlCommand cmd = new SqlCommand(sql);
+            using (SqlConnection conn = new SqlConnection(connString))
             {
-                string sql = "select * from 材料表 where left(材料编码,2)='"+name+"'";
-                i_count = dc_obj.GetRowCount(sql);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return i_count;
-        }
+                cmd.Connection = conn;
+                conn.Open();
+                object obj = cmd.ExecuteScalar();
+                conn.Close();
+                int recordCount = (int)obj;
+                return Convert.ToInt32(Math.Ceiling(1.0 * recordCount / pageSize));
+            }      
+      }
+
     </script>
 
     <div class="sc">
@@ -198,26 +262,14 @@
             </div>
 			<%}%>			
         </div>
-       
+        <form id="Form1" runat="server">        
         <div class="px0">
-            <div class="px">排序：<a href="#">人气</a> <a id="zuixin" style=" cursor:pointer" onclick="doAjax()">最新</a></div>
+            <div class="px">排序方式： <input type="submit" value="<%=btnVisitValue %>"  name="btnVisitOderBy"/> 
+            |             <input  type="submit" value="<%=btnUpdateValue %>" name="btnUpdateOderBy" /></div>
         </div>
     
         <div class="pxleft">      
-           <%--根据ajax请求 对已取出来的分页数据表dt1按updatetime列降序排列 
-            Boolean b_isLatest=false;
-            string s_isLatest=Request["isLatest"];
-            if(!string.IsNullOrEmpty(s_isLatest))
-            {
-                Response.Write("ok");
-                b_isLatest=Convert.ToBoolean(s_isLatest);
-            }
-            if(b_isLatest=true)
-            {
-                DataView dv=dt1.DefaultView;
-                dv.Sort="updatetime DESC";
-                dt1=dv.ToTable();
-            }--%>
+           
 
             <% foreach(System.Data.DataRow row in dt_allcl.Rows)
                {%>
@@ -266,39 +318,15 @@
     <div >
         <div class="fy2">
             <div class="fy3" style=" width:500px;height:auto; padding-left:0% !important; padding-left:23%">
-                <% if(current_page<=1 && pageCount_page >1) {%> 
-                    <font style="color:Gray">首页</font>
-                    <a href="yjfl.aspx?p=<%=current_page+1 %>&name=<%=name %>"  style="color:Black">下一页</a>
-                    <a href="yjfl.aspx?p=<%=pageCount_page %>&name=<%=name %>"  style="color:Black">末页</a>
-                <%} %>
-                <%else if(current_page <=1 && pageCount_page <=1 ){ %>
-
-                <%} %>
-                    
-                <% else if(!(current_page<=1)&&!(current_page == pageCount_page)){ %>
-                    <a href="yjfl.aspx?p=<%=1 %>&name=<%=name %>" style="color:Black">首页</a>
-                    <a href="yjfl.aspx?p=<%=current_page-1 %>&name=<%=name %>"  style="color:Black">上一页</a>
-                    <a href="yjfl.aspx?p=<%=current_page+1 %>&name=<%=name %>"  style="color:Black">下一页</a>
-                     <a href="yjfl.aspx?p=<%=pageCount_page %>&name=<%=name %>"  style="color:Black">末页</a>
-                <%}%>
-                <% else if( current_page !=1 && current_page == pageCount_page){ %>
-                    <a href="yjfl.aspx?p=<%=1 %>&name=<%=name %>" style="color:Black">首页</a>
-                    <a href="yjfl.aspx?p=<%=current_page-1 %>&name=<%=name %>"  style="color:Black">上一页</a>
-                    <font style="color:Gray">末页</font>
-                <%} %>             
-                  <font style="color:Black" >直接到第</font>  
-                <select onchange="window.location=this.value" name=""  style="color:Black">
-                <% foreach (var v in this.Items)
-                { %>
-                    <option value="<%=v.Value %>" <%=v.SelectedString %>><%=v.Text %></option>
-                <%} %>
-                </select>
-                <font style="color:Black" >页&nbsp;&nbsp;&nbsp;第 <%=current_page %> 页/共 <%=pageCount_page %> 页</font>
+               第<%=currentPageIndex%>页&nbsp;&nbsp;共<%=currentPageCount %>页
+         <input type="hidden" name="HidPageIndex" value="<%=currentPageIndex %>" />        
+         <input type="submit" name="HtmBtnPrePage" value="上一页" />
+          <input type="submit" name="HtmBtnNextPage" value="下一页" />
             </div>
         </div>
     </div>
     <!-- 石材规格页码 结束-->
-
+   </form>
     <div>
         <!-- 关于我们 广告服务 投诉建议 开始-->
         <!-- #include file="static/aboutus.aspx" -->
