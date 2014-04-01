@@ -119,10 +119,13 @@
             {
                  s_yh_id = Session["GYS_YH_ID"].ToString(); 
             }
-            if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
+            else
             {
-                 s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-             }
+                if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
+                {
+                     s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
+                 }
+            }
 			    //认领厂商成功,根据用户id 查询认领的供应商信息
 			    string gys_type="";
                 string gys_type_id="";
@@ -281,7 +284,7 @@
                   }%>
 			
 			</select> 
-			<span class="zjgxs1"><a href="#">增加新的供销商</a></span>
+			<span class="zjgxs1"><a href="#">增加新的分销商</a></span>
 			</div>
 			<%}
                 %>

@@ -42,6 +42,7 @@
     <script runat="server">
 	public string s_yh_id = "";
     public DataConn objConn = new DataConn();
+    public bool b=false;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -49,6 +50,11 @@
             if (Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="")
             {
                 s_yh_id = Session["CGS_YH_ID"].ToString();
+            }
+
+            if (Request.Cookies["CGS_YH_ID"]!=null&& Request.Cookies["CGS_YH_ID"].Value.ToString()!="")
+            {
+            s_yh_id= Request.Cookies["CGS_YH_ID"].Value.ToString();
             }
             
             string sSQL_yh = "select * from 用户表 where yh_id='" + s_yh_id + "'";
@@ -62,13 +68,17 @@
                 this.contactorname.Value = dt_yh.Rows[0]["姓名"].ToString();
                 this.contactortel.Value = dt_yh.Rows[0]["手机"].ToString();
                 this.contactorqqid.Value = dt_yh.Rows[0]["QQ号码"].ToString();
-                if (dt_yh.Rows[0]["类型"].ToString() == "供销商")
+                if (dt_yh.Rows[0]["类型"].ToString() == "分销商")
                 {
                     this.gxs.Checked = true;
                 }
                 else if (dt_yh.Rows[0]["类型"].ToString() == "生产商")
                 {
                     this.scs.Checked = true;
+                }
+                if(dt_yh.Rows[0]["手机"].ToString()!="通过")
+                {
+                    b=true;
                 }
             }
         }      
@@ -80,10 +90,14 @@
 		{
 		  s_yh_id = Session["CGS_YH_ID"].ToString();
 		}
+        if (Request.Cookies["CGS_YH_ID"]!=null&& Request.Cookies["CGS_YH_ID"].Value.ToString()!="")
+        {
+             s_yh_id= Request.Cookies["CGS_YH_ID"].Value.ToString();
+        }
         string s_lx="";
         if (this.gxs.Checked)
         {
-            s_lx = "供销商";
+            s_lx = "分销商";
         }
         else if (this.scs.Checked)
         {
@@ -122,26 +136,29 @@
         string s_updateUserinfo = " update 用户表   set 手机='" +this.contactortel.Value + "', 姓名='" +this.contactorname.Value +
                                   "',公司名称='" + this.companyname.Value + "',公司地址='"+this.companyaddress.Value+
                                   "',公司电话='" + this.companytel.Value + "',QQ号码='"+this.contactorqqid.Value+
-                                  "',类型='"+s_lx+"' where yh_id='" + s_yh_id + "'";
-         if(!objConn.ExecuteSQL(s_updateUserinfo, true))
+                                  "',类型='"+s_lx+"',是否验证通过='待审核' where yh_id='" + s_yh_id + "'";
+                                  b=objConn.ExecuteSQL(s_updateUserinfo, true);
+         if(!b)
         {
             objConn.MsgBox(this.Page, "更新失败，请重试！");
         }
+       
     }
 		</script>
 
-<form runat="server">
-	
+<form runat="server">   
 	<div class="cggytb">
-
 		<div class="cggybtl"><img src="images/www_03.jpg" /></div>
+         <%if(b){%>
+                <span style=" color:Red">您提交的信息正在审核中，请您耐心等待!</span>
+          <%} %>
 		<div class="cggybtr">
 			<dl>
 				<dd>贵公司名称：</dd>  	<dt><input id="companyname" name="companyname" type="text" class="cgggg" runat="server"  /></dt>
 				<dd>贵公司地址：</dd>  	<dt><input id="companyaddress" name="companyaddress" type="text" class="cgggg" runat="server" /></dt>
 				<dd>贵公司电话：</dd>  	<dt><input id="companytel" name="companytel" type="text" class="ggg" runat="server" /></dt>
 				<dd>贵公司是：</dd>    		<dt><input  id="scs" name="select" type="radio" value="生产商" runat="server" validationgroup="select" />生产商  
-											<input id="gxs"  runat="server" name="select"  type="radio" value="供销商" validationgroup="select" />供销商 </dt>
+											<input id="gxs"  runat="server" name="select"  type="radio" value="分销商" validationgroup="select" />分销商 </dt>
 				<dd>您的姓名：</dd>    		<dt><input  id="contactorname" name="contactorname" type="text" class="cgggg" runat="server"/></dt>
 				<dd>您的电话：</dd>    		<dt><input id="contactortel" name="contactortel" type="text" class="cgggg"  runat="server"/></dt>			
 				<dd>您的QQ号码：</dd>   	<dt><input id="contactorqqid" name="contactorqqid" type="text" class="cgggg" runat="server" /></dt>

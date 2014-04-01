@@ -29,7 +29,7 @@
 
     function Update_gys(id)
     {
-
+        document.getElementById("fxs_id").value = id;
         if (window.XMLHttpRequest)
         {
             xmlhttp = new XMLHttpRequest();
@@ -61,7 +61,8 @@
                     document.getElementById('area').value = myobj[i].gys_area;               //地区名称
                     document.getElementById('name').value = myobj[i].gys_user;               //联系人
                     document.getElementById('phone').value = myobj[i].gys_user_phone;          //联系人电话
-                    document.getElementById('gys_id').value = myobj[i].gys_id;           //ajax返回的供应商id	供向表单提交时使用	  				              
+                    document.getElementById('gys_id').value = myobj[i].gys_id;           //ajax返回的供应商id	供向表单提交时使用	  
+                    				              
 
                 }
 
@@ -124,7 +125,7 @@
         if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
         {
                 s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-       }
+        }
             string s_gys_type_id = "";  //供应商id
             sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型
             DataTable dt_type = objConn.GetDataTable(sSQL);
@@ -156,9 +157,9 @@
 
                 dt_gysxx = objConn.GetDataTable(sSQL);
 
-                sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + str_fxsid + "' ";
+              //  sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + str_fxsid + "' ";
 
-                dt_ppxx = objConn.GetDataTable(sSQL);
+              //  dt_ppxx = objConn.GetDataTable(sSQL);
             }
             if (s_gys_type.Equals("分销商"))
             {
@@ -170,27 +171,29 @@
                 {
                     gys_id = Convert.ToString(dt_gysxx.Rows[0]["gys_id"]);
                 }
-
-                sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + gys_id + "' ";
-
-                dt_ppxx = objConn.GetDataTable(sSQL);
+                this.fxs_id.Value=gys_id;
+             //   sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + gys_id + "' ";
+             //   dt_ppxx = objConn.GetDataTable(sSQL);
             }
 
             if (dt_gysxx.Rows.Count == 0)
                 Response.Redirect("gyszym.aspx");
 
         
-
-            string id = Request["id"];    //获取glfxsxx2页面返回的供应商id
-            #region
-
-            if (id == "")
+             //获取glfxsxx2页面返回的供应商id
+            string id = "";
+            if(Request["id"]!=null&& Request["id"].ToString()!="")
             {
-                sSQL = "select 单位类型, gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";//查询供应商id			
+                id=Request["id"].ToString();
+            }   
+            #region
+              sSQL = "select 单位类型, gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";//查询供应商id			
 
                 DataTable dt_gys_id = objConn.GetDataTable(sSQL);
                 string str_gysid = Convert.ToString(dt_gys_id.Rows[0]["gys_id"]);   //获取供应商id   141
                 string str_gysid_type = Convert.ToString(dt_gys_id.Rows[0]["单位类型"]);
+            if (id != "")
+            {              
                 DWLX(str_gysid_type, id, str_gysid);
             }
              #endregion
@@ -334,13 +337,16 @@
 			<%}%>
 			
 			</select> 
-			<span class="zjgxs1"><a href="#">增加新的供销商</a></span>
+			<span class="zjgxs1"><a href="xzfxs.aspx">增加新的分销商</a></span>
 			</div>
 			<%}%>
+            <%if(s_gys_type=="生产商"){ %>
+            <span class="fxsxx1">该分销商的详细信息如下:</span>		
+            <%}else {%>
             <span class="fxsxx1">贵公司的详细信息如下:</span>		
-
+            <%} %>
                <div class="fxsxx2">
-				<%if (sp_result == "待审核")
+				<%if (sp_result=="待审核")
 				  { %>
 				<dl>
 					<dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" /></dt>
@@ -376,23 +382,37 @@
         </div>
                      </form>
                 <div class="ggspp">
+                <%if(s_gys_type=="生产商") {%>
+                 <span class="ggspp1">该分销商的分销品牌如下</span>
+                <%}else{ %>
                     <span class="ggspp1">贵公司分销品牌如下</span>
-                    
-                    <% foreach (System.Data.DataRow row in dt_ppxx.Rows){%>
-                    <div class="fgstp">
-                        <img src="images/wwwq_03.jpg" />
-                        <span class="fdlpp1">
-                            <input name="brand" type="checkbox" value="<%=row["pp_id"].ToString() %>" class="fxsfxk" />
-                            <%=row["品牌名称"].ToString() %>
-                        </span>
-                    </div>
-
                     <%} %>
+                    <input type="hidden" id="fxs_id"  runat="server"/>
+                    <%
+                    string s_fxs_id1=""; 
+                    s_fxs_id1=this.fxs_id.Value;
+                    sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + s_fxs_id1 + "' ";
+                    DataTable dt_pp=objConn.GetDataTable(sSQL);
+                    if(dt_pp!=null&&dt_pp.Rows.Count>0)
+                    {%>
+                        <% foreach (System.Data.DataRow row in dt_pp.Rows)
+                        {%>
+                            <div class="fgstp">
+                                <img src="images/wwwq_03.jpg" />
+                                <span class="fdlpp1">
+                                    <input name="brand" type="checkbox" value="<%=row["pp_id"].ToString() %>" class="fxsfxk" />
+                                    <%=row["品牌名称"].ToString() %>
+                                </span>
+                            </div>
+                    <%  }
+                    }%>
                     
                 </div>
-           
-             <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">取消选中的分销品牌</a></span>
-            <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新分销品牌</a></span>
+           <%if (s_gys_type!="生产商")
+			{%>
+             <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">取消选中的分销品牌</a></span>             
+             <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新分销品牌</a></span>
+             <%} %>
         </div>  
 
     <!--  footer 开始-->

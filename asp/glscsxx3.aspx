@@ -61,8 +61,8 @@
 				  item.gys_id = Convert.ToString(dr2["gys_id"]);
                  
                   this.Items.Add(item);                
-			   }
-			
+			   }			  
+
 			   string jsonStr = serializer.Serialize(Items); 
 			   Response.Clear(); 
 			   Response.Write(jsonStr);   //ÏòÇ°¶Ëglscsxx.aspxÊä³öjson×Ö·û´®

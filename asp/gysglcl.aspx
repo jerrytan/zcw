@@ -67,7 +67,7 @@
                 {
                      this.scs.Checked = true;  
                 }
-                else if(lx=="供销商")
+                else if(lx=="分销商")
                 {
                     this.gxs.Checked = true;
                 }
@@ -114,9 +114,14 @@
                     {
                          yjflbm[i]=flbm.Rows[0]["分类编码"].ToString()+"|"+flbm.Rows[0]["显示名字"].ToString();
                     }
-                 }              
+               } 
+                yjflbm=GetString(yjflbm);             
           }
-                yjflbm=GetString(yjflbm);
+          else
+          {
+             yjflbm=new string[0];
+          }
+               
         //一级分类编码
 
 
@@ -266,7 +271,7 @@
         string s_lx="";
         if (this.gxs.Checked)
         {
-            s_lx = "供销商";
+            s_lx = "分销商";
         }
         else if (this.scs.Checked)
         {
@@ -404,7 +409,7 @@
 					    <dd>*贵公司电话：</dd><dt><input class="cgdlex2text"  id="companytel" name="companytel" type="text"  runat="server"/></dt>
 					    <dd>&nbsp;贵公司主页：</dd><dt><input name="gys_homepage" id="gys_homepage" type="text" class="cgdlex2text"  runat="server"/></dt>
                         <dd>*贵公司是：</dd><dt><input  id="scs" name="select" type="radio" value="生产商" runat="server" validationgroup="select" />生产商  
-											<input id="gxs"  runat="server" name="select"  type="radio" value="供销商" validationgroup="select" />供销商 </dt>
+											<input id="gxs"  runat="server" name="select"  type="radio" value="分销商" validationgroup="select" />分销商 </dt>
                         <dd>*您的姓名：  </dd><dt><input class="cgdlex2text"  id="contactorname" name="contactorname" runat="server"/></dt>
 					    <dd>*您的电话：  </dd><dt><input class="cgdlex2text"  id="contactortel" name="contactortel0" runat="server"/></dt>
 					    <dd>您的QQ号码： </dd><dt><input class="cgdlex2text"  id="QQ_id" name="contactortel" runat="server"/></dt>					  

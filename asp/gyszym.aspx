@@ -32,6 +32,7 @@
     public string name="";
     public string passed_gys = "";
     public string s_yh_id = "";
+    public string lx="";
     protected void Page_Load(object sender, EventArgs e)
     {
         HttpCookie MyCookie = new HttpCookie("GYS_YH_ID");
@@ -71,11 +72,12 @@
                 s_yh_id =dt_yh.Rows[0]["yh_id"].ToString();
                 passed = dt_yh.Rows[0]["是否验证通过"].ToString();
                 name = dt_yh.Rows[0]["姓名"].ToString();
+                lx= dt_yh.Rows[0]["类型"].ToString();
 		    }
 		    //need to set session value
              MyCookie.Value = s_yh_id;
              Response.Cookies.Add(MyCookie);
-            Session["GYS_YH_ID"] = s_yh_id;
+             Session["GYS_YH_ID"] = s_yh_id;
 
             //(供应商申请)的yh_id 是在认领厂商之后更新的
 
@@ -159,7 +161,7 @@
 	     %>
 	     <div class="gyzy2">
              <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>
-             <span class="zyy1"><a href="gyszym.aspx">管理生厂商信息</a></span>
+             <span class="zyy1"><a href="gyszym.aspx">管理生产商信息</a></span>
              <span class="zyy1"><a href="gyszym.aspx">管理分销商信息</a></span>
              <span class="zyy1"><a href="gyszym.aspx">管理材料信息</a></span>
         
@@ -168,7 +170,11 @@
 	   if (passed_gys.Equals("通过")&&passed=="通过"){ %>
         <div class="gyzy2">
             <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>
-            <span class="zyy1"><a href="glscsxx.aspx">管理生厂商信息</a></span>
+            <%if(lx!="生产商"){ %>
+             <span class="zyy1"><a href="#" onclick='window.alert("您不是生产商不能管理生产商信息!")'>管理生产商信息</a></span>
+            <%}else{ %>
+            <span class="zyy1"><a href="glscsxx.aspx">管理生产商信息</a></span>
+            <%} %>
             <span class="zyy1"><a href="glfxsxx.aspx">管理分销商信息</a></span>
             <span class="zyy1"><a href="gysglcl.aspx">管理材料信息</a></span>        
         </div>

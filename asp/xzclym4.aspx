@@ -97,11 +97,19 @@
         </p>             
         <a href="gysglcl.aspx" style="color: Blue" onclick="clickMe() ">新增材料成功!请返回; </a>
         <script>
-            //function clickMe() 
+            function clickMe() 
 			{
-                //window.close();
-                //opener.location.reload();
+                window.close();
+                opener.location.reload();
             }
-        </script>      
+        </script> 
+         <script defer="defer">
+             function doload()
+             {
+                 window.close();
+                 opener.location.reload();
+             }
+             setTimeout("doload()", 1000);
+              </script>     
 
     </body>

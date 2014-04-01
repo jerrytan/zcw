@@ -47,7 +47,7 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-          if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
+        if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
         {
              s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
         }
@@ -62,7 +62,7 @@
 			}
 
 			//根据用户输入的类型(生产商/分销商)查询相关的供应商
-			sSQL = "select 供应商,gys_id from 材料供应商信息表 where 单位类型='" + gys_type + "' and yh_id is null or 单位类型='" + gys_type + "' and yh_id='' ";
+			sSQL = "select 供应商,gys_id from 材料供应商信息表 where 单位类型='" + gys_type + "' and (yh_id is null or yh_id='') ";
 			dt_wrl_gys = objConn.GetDataTable(sSQL);
 			sSQL = "select count(*) from 供应商认领申请表 where yh_id = '" + s_yh_id + "'";
 			string s_count = objConn.DBLook(sSQL);
@@ -113,6 +113,8 @@
         else
         {
             dt_clgys = null;
+            string SQL = "select * from 材料供应商信息表 ";
+            dt_clgys = objConn.GetDataTable(SQL);
         }
     }
    </script>

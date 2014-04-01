@@ -23,7 +23,7 @@
     <title>采购商关注材料管理页</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
-	 <link href="css/cgsgl2.css" rel="stylesheet" type="text/css" />
+    <link href="css/gl.css" rel="stylesheet" type="text/css" />
     <script src="js/cgsgl2.js" type="text/javascript"></script>
 </head>
     
@@ -51,6 +51,7 @@
     public int firstlevel;
     protected void Page_Load(object sender, EventArgs e)
     {
+        HttpCookie MyCookie = new HttpCookie("CGS_YH_ID");
          if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
         {
             s_QQid = Request.Cookies["CGS_QQ_ID"].Value.ToString();
@@ -86,7 +87,9 @@
                 {
                     userIsVIP = true;
                 }
-            }           
+            }
+            MyCookie.Value = s_yh_id;
+            Response.Cookies.Add(MyCookie);
             Session["CGS_YH_ID"] = s_yh_id;
              if (!IsPostBack)
             {           
@@ -312,6 +315,7 @@
                 " 公司地址='"+this.companyaddress.Value+"',"+
                 " 公司电话='"+this.companytel.Value+"',"+
                 " QQ号码='"+this.QQ_id.Value+"'"+
+                " 是否验证通过='待审核'"+
                 " where yh_id='" + s_yh_id + "'";
         if (!objConn.ExecuteSQL(sSQL, true))
         {

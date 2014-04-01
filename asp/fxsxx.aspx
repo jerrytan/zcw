@@ -27,7 +27,7 @@
 
 <div class="fxsxx">
 <span class="fxsxx1">贵公司的分销信息如下</span>
-<div class="zjgxs"> <select name="" class="fug"><option></option></select> <span class="zjgxs1"><a href="#">增加新的供销商</a></span></div>
+<div class="zjgxs"> <select name="" class="fug"><option></option></select> <span class="zjgxs1"><a href="#">增加新的分销商</a></span></div>
 <div class="fxsxx2">
  <dl>
     <dd>公司名称：</dd>

@@ -5,7 +5,7 @@
 
 <script runat="server"  > 
 		
-	    public string s_yh_id = "";
+    public string s_yh_id = "";
     public string s_gys_id = "";
     public string sSQL = "";
     public DataConn objConn = new DataConn();
@@ -19,7 +19,7 @@
         {
             s_gys_id = Request["gys_id"].ToString();
         }
-          if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
+         if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
         {
              s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
         }
