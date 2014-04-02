@@ -32,7 +32,7 @@
             
             dt_1Top7 = dc.GetDataTable(str_Sql1Top7);
             dt_2All = dc.GetDataTable(str_Sql2All);
-            dt_1Top7 = dc.GetDataTable(str_Sql1Top7);
+            dt_1Top7 = dc.GetDataTable(str_1After7);
 
             
             ////数据表DataTable转集合                  
