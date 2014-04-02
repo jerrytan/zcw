@@ -16,18 +16,10 @@
                 myCookie.Expires = DateTime.Now.AddDays(-10);
                 Response.Cookies.Add(myCookie);
             }	           
-                cookieName = "CGS_YH_ID";
-	        if (Request.Cookies[cookieName] != null)
-            {
-                HttpCookie myCookie = new HttpCookie(cookieName);
-                myCookie.Expires = DateTime.Now.AddDays(-10);
-                Response.Cookies.Add(myCookie);
-            }	      
-		    if (Session["CGS_YH_ID"] != null) 
-		    {
+
                 Session["CGS_YH_ID"]=null;
 			    Session.Remove("CGS_YH_ID");        		     
-		    }
+
                 cookieName = "GYS_QQ_ID";
 	        if (Request.Cookies[cookieName] != null)
             {
@@ -35,18 +27,9 @@
                 myCookie.Expires = DateTime.Now.AddDays(-10);
                 Response.Cookies.Add(myCookie);
             }		  
-                 cookieName = "GYS_YH_ID";
-	        if (Request.Cookies[cookieName] != null)
-            {
-                HttpCookie myCookie = new HttpCookie(cookieName);
-                myCookie.Expires = DateTime.Now.AddDays(-10);
-                Response.Cookies.Add(myCookie);
-            }		 
-		    if (Session["GYS_YH_ID"] != null) 
-		    { 
-                 Session["GYS_YH_ID"]=null;
+
+                Session["GYS_YH_ID"]=null;
 			    Session.Remove("GYS_YH_ID");	
-		    }
             Response.Redirect("index.aspx");
         }   
 </script>

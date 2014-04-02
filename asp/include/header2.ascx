@@ -47,16 +47,10 @@
       <%         
 			HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
             Object gys_yh_id = Session["GYS_YH_ID"];  
-            if(gys_yh_id==null)
-            {
-                gys_yh_id= Request.Cookies["GYS_YH_ID"];
-            }
+
             HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
             Object cgs_yh_id = Session["CGS_YH_ID"];     
-            if(cgs_yh_id==null)
-            {
-                cgs_yh_id= Request.Cookies["CGS_YH_ID"];
-            }     
+    
               
             //²É¹ºÉÌµÇÂ¼
              if(((GYS_QQ_ID == null ) || (gys_yh_id == null ))&&((CGS_QQ_ID != null ) && (cgs_yh_id != null)))

@@ -34,9 +34,7 @@
     public string s_yh_id = "";
     public string lx="";
     protected void Page_Load(object sender, EventArgs e)
-    {
-        HttpCookie MyCookie = new HttpCookie("GYS_YH_ID");
-       
+    {       
         if (Request.Cookies["GYS_QQ_ID"]!=null&& Request.Cookies["GYS_QQ_ID"].Value.ToString()!="")
         {
              s_QQ_id= Request.Cookies["GYS_QQ_ID"].Value.ToString();
@@ -75,8 +73,7 @@
                 lx= dt_yh.Rows[0]["类型"].ToString();
 		    }
 		    //need to set session value
-             MyCookie.Value = s_yh_id;
-             Response.Cookies.Add(MyCookie);
+
              Session["GYS_YH_ID"] = s_yh_id;
 
             //(供应商申请)的yh_id 是在认领厂商之后更新的

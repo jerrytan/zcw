@@ -51,7 +51,6 @@
     public int firstlevel;
     protected void Page_Load(object sender, EventArgs e)
     {
-        HttpCookie MyCookie = new HttpCookie("CGS_YH_ID");
          if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
         {
             s_QQid = Request.Cookies["CGS_QQ_ID"].Value.ToString();
@@ -88,8 +87,6 @@
                     userIsVIP = true;
                 }
             }
-            MyCookie.Value = s_yh_id;
-            Response.Cookies.Add(MyCookie);
             Session["CGS_YH_ID"] = s_yh_id;
              if (!IsPostBack)
             {           
@@ -105,6 +102,16 @@
                     this.contactorname.Value = dt_userInfo.Rows[0]["姓名"].ToString();
                     this.contactortel.Value = dt_userInfo.Rows[0]["手机"].ToString();
                     this.QQ_id.Value = dt_userInfo.Rows[0]["QQ号码"].ToString();
+                    string lx = "";
+                    lx = dt_userInfo.Rows[0]["类型"].ToString();
+                    if (lx == "生产商")
+                    {
+                        this.scs.Checked = true;
+                    }
+                    else if (lx == "分销商")
+                    {
+                        this.gxs.Checked = true;
+                    }
                 } 
             }
             listFollowCLIDs();
@@ -278,6 +285,15 @@
         {
             s_yh_id = Session["CGS_YH_ID"].ToString();
         }
+        string s_lx = "";
+        if (this.gxs.Checked)
+        {
+            s_lx = "分销商";
+        }
+        else if (this.scs.Checked)
+        {
+            s_lx = "生产商";
+        }
 		if (this.contactortel.Value == "")
         {
             objConn.MsgBox(this.Page, "手机不能为空,请填写!");
@@ -314,7 +330,8 @@
                 " 公司名称='"+this.companyname.Value+"',"+
                 " 公司地址='"+this.companyaddress.Value+"',"+
                 " 公司电话='"+this.companytel.Value+"',"+
-                " QQ号码='"+this.QQ_id.Value+"'"+
+                " QQ号码='"+this.QQ_id.Value+"',"+
+                " 类型='" + s_lx + "'," +
                 " 是否验证通过='待审核'"+
                 " where yh_id='" + s_yh_id + "'";
         if (!objConn.ExecuteSQL(sSQL, true))
@@ -333,46 +350,44 @@
             <div id="menu">
                 <% 
  	      firstlevel = 0;
-            foreach (DataRow dr_dl in dt_cgsgzcl_dl.Rows){
-                %>
-                <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)">
+            foreach (DataRow dr_dl in dt_cgsgzcl_dl.Rows)
+            { %>
+                        <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)">
                     <a href="javascript:void(0)">
                         <img src="images/biao2.jpg" /><%=dr_dl["显示名字"]%>
                         &gt;</a></h1>
-                <span class="no">
-                    <% 
+                        <span class="no">
+                              <% 
  	                   int secondlevel = 0;
- 		                      foreach (DataRow dr_xl in dt_cgsgzcl_xl.Rows){
+ 		                      foreach (DataRow dr_xl in dt_cgsgzcl_xl.Rows)
+                              {
                                   if (dr_xl["分类编码"].ToString().Substring(0, 2) == dr_dl["分类编码"].ToString())
-                                  {  
-                    %>
-                    <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )">
-                        <a href="javascript:void(0)">+
-                            <%=dr_xl["显示名字"].ToString()%></a></h2>
-                    <ul class="no">
-                        <% 
-                            foreach (DataRow dr_cl in dt_clb.Rows){
-                                if (dr_cl["分类编码"].ToString().Substring(0, 4) == dr_xl["分类编码"].ToString())
-                                {
-                        %>
-                        <input type="checkbox" name="clid" value='<%=dr_cl["cl_id"].ToString()%>' />
-                        <a  href='clxx.aspx?cl_id=<%=dr_cl["cl_id"].ToString() %>'>
-                            <%=dr_cl["显示名"].ToString().Trim()%></a><br/>
-                        <% 	
-   			                    }
-   		                    }
-   		            secondlevel++;
-                        %>
-                    </ul>
-                    <% 	
-                                   } 
-                        }   
-                    %>
-                </span>
+                                  { %>
+                            <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )">
+                                <a href="javascript:void(0)">+
+                                    <%=dr_xl["显示名字"].ToString()%></a></h2>
+                                     <ul class="no">
+                                            <% 
+                                                foreach (DataRow dr_cl in dt_clb.Rows)
+                                                {
+                                                    if (dr_cl["分类编码"].ToString().Substring(0, 4) == dr_xl["分类编码"].ToString())
+                                                    {%>
+                                                        <input type="checkbox" name="clid" value='<%=dr_cl["cl_id"].ToString()%>' />
+                                                        <a  href='clxx.aspx?cl_id=<%=dr_cl["cl_id"].ToString() %>'>
+                                                            <%=dr_cl["显示名"].ToString().Trim()%></a><br/>
+                                                     <%}
+   		                                        }
+   		                                        secondlevel++;%>
+                                         </ul>
+                                    <%} 
+                                  } %>
+                         </span>                
                 <% 
- 		            firstlevel++;
-                      } 
-                %>
+ 		         firstlevel++;
+               
+                
+           }%>
+
                 <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)">
                     <a href="javascript:void(0)">
                         <img src="images/biao2.jpg" />
@@ -386,7 +401,7 @@
                         %>
                         <input type="checkbox" name="gysid" value='<%=dr_gys["gys_id"].ToString()%>' />
                         <a href='gysxx.aspx?gys_id=<%=dr_gys["gys_id"].ToString() %>'>
-                            <%=dr_gys["供应商"].ToString()%></a>
+                            <%=dr_gys["供应商"].ToString()%></a><br />
                         <% } %>
                     </ul>
                 </span>
@@ -424,7 +439,9 @@
 					    <dd>公司名称：</dd><dt><input class="cgdlex2text" id="companyname" name="companyname" type="text"   runat="server" /></dt>
 					    <dd>公司地址：</dd><dt><input class="cgdlex2text"  id="companyaddress" name="companyaddress" type="text"  runat="server" /></dt>
 					    <dd>公司电话：</dd><dt><input class="cgdlex2text"  id="companytel" name="companytel" type="text"  runat="server"/></dt>
-					    <dd>您的姓名：</dd><dt><input class="cgdlex2text"  id="contactorname" name="contactorname" runat="server"/></dt>
+					     <dd>*贵公司是：</dd><dt><input  id="scs" name="select" type="radio" value="生产商" runat="server" validationgroup="select" />生产商  
+											<input id="gxs"  runat="server" name="select"  type="radio" value="分销商" validationgroup="select" />分销商 </dt>
+                        <dd>您的姓名：</dd><dt><input class="cgdlex2text"  id="contactorname" name="contactorname" runat="server"/></dt>
 					    <dd>您的电话：</dd><dt><input class="cgdlex2text"  id="contactortel" name="contactortel0" runat="server"/></dt>
 					    <dd>您的QQ号：</dd><dt><input class="cgdlex2text"  id="QQ_id" name="contactortel" runat="server"/></dt>					  
 				    </dl>

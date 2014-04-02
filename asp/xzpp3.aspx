@@ -1,4 +1,9 @@
-
+<!--
+      生产商新增品牌
+	  文件名:  xzpp3.aspx   
+      传入参数:用户id 
+	  author:张新颖         
+-->
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
@@ -17,10 +22,7 @@
                 {
                     yh_id =Session["GYS_YH_ID"].ToString();   //获取用户id
                 }  
-           if (Request.Cookies["GYS_YH_ID"]!=null && Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-            {
-                 yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-            }      
+       
                 string gys_id = Request.Form["gys_id"]; 				
                 string brandname = Request.Form["brandname"];            //品牌名称
                 string yjflname = Request.Form["yjflname"];              //大级分类名称               
@@ -57,14 +59,14 @@
          <a style="color: Red" onclick="clickMe()">新增品牌失败，页面将跳转到主页！</a>
              
         <%} %>
-        <script defer="defer">
+        <script defer="defer" type="text/javascript">
             function doload()
             {
                 window.close();
                 opener.location.reload();
             }
             setTimeout("doload()", 1000);
-              </script>
+        </script>
         <script>
             function clickMe() {
                 window.close();

@@ -47,10 +47,6 @@
 			{
 				s_yh_id = Session["GYS_YH_ID"].ToString();
 			}       
-            if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-            {
-                 s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-            }
              string gys_name = Request["gys_name"];                  //公司名字
              string gys_address = Request["gys_address"];            //地址
              string gys_homepage = Request["gys_homepage"];     //公司主页

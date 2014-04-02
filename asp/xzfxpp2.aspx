@@ -16,37 +16,39 @@
             {
                 s_yh_id = Session["GYS_YH_ID"].ToString();
             }
-            else
-            {
-                if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-                {
-                     s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-                }
-            }
+
 
             //新增分销品牌写入数据库
            if(s_yh_id!="") {
                 
-                 string dwlx=Request["lx"];
-                 string fxs_id = Request["fxs_id"]; 		
-                 string pp_id = Request["pp_id"];		
-                 string pp_name = Request["pp_name"];                
+                 string dwlx=Request["lx"];             //单位类型
+                 string fxs_id = Request["fxs_id"]; 	//分销商id	
+                 string pp_id = Request["pp_id"];	    //品牌id	
+                 string pp_name = Request["pp_name"];   //品牌名称     
                 if(dwlx=="生产商")
                 {
-                   string clfl=Request["clfl"];
+                   string clfl=Request["clfl"];         //
                    string ppmc=Request["ppmc"];
                    string fw=Request["fw"];
                    string dj=Request["dj"];
-                  sSQL="update 品牌字典 set 品牌名称=c.品牌名称,是否启用=c.是否启用,等级=c.等级,分类编码=c.分类编码,分类名称=c.分类名称,fl_id=c.fl_id,范围=c.范围,生产商=c.供应商,备注=c.备注
-from 材料供应商信息从表 c,品牌字典 p where c.uid=[myid] and c.myid=p.标识id";
+                   sSQL = "insert into  品牌字典 (品牌名称,是否启用,scs_id,分类编码,等级,范围,yh_id) values('" + brandname + "',1,'"+gys_id+"','" + flname + "','" + grade + "','" + scope + "','"+yh_id+"' ) ";
+            
+                objConn.ExecuteSQL(sSQL,false);
+                string str_update = "update 品牌字典 set pp_id= (select myID from 品牌字典 where 品牌名称='"+brandname+"'),"  
+                    +" fl_id = (select fl_id from 材料分类表 where 分类编码='"+flname+"')," 
+                    +" 生产商 = (select 供应商 from 材料供应商信息表 where gys_id = '"+gys_id+"'),"
+                    +" 分类名称 = (select 显示名字 from 材料分类表 where 分类编码 = '"+flname+"')"
+                    +" where 品牌名称='"+brandname+"'";
+              
+                int ret = 	objConn.ExecuteSQLForCount(str_update,true);	
                 }
                 else
                 {
                     
-                    string str_insert = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,yh_id) values('"+ pp_id + "','"+pp_name+"', 1,'"+fxs_id+"','" +s_yh_id+"' ) ";
-                    objConn.ExecuteSQL(str_insert,true);
+                   sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,yh_id) values('"+ pp_id + "','"+pp_name+"', 1,'"+fxs_id+"','" +s_yh_id+"' ) ";
+                    objConn.ExecuteSQL(sSQL,true);
                 }
-                Response.Write(str_insert);
+                Response.Write(sSQL);
             }	                    
 		
      %>
@@ -66,7 +68,14 @@ from 材料供应商信息从表 c,品牌字典 p where c.uid=[myid] and c.myid=p.标识id";
             }
         </script>
         
-
+         <script defer="defer" type="text/javascript">
+             function doload()
+             {
+                 window.close();
+                 opener.location.reload();
+             }
+             setTimeout("doload()", 1000);
+        </script>
     </body>
 
 

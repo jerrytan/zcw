@@ -35,10 +35,6 @@
 		{
 			s_yh_id = Session["GYS_YH_ID"].ToString();
 		}
-        if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-        {
-             s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-        }
 		if(s_yh_id!="")
 		{
 			sSQL = "select 公司名称,公司地址,公司电话,公司主页,手机,类型,QQ号码,姓名,是否验证通过 from 用户表 where  yh_id='"+s_yh_id+"' ";

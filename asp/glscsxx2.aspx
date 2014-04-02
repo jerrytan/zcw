@@ -41,10 +41,7 @@
                 {
                     yh_id =Session["GYS_YH_ID"].ToString();   //获取用户id
                 }           
-                if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-                {
-                    yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-                }
+               
                 string companyname = Request.Form["companyname"];   //公司名字
                 string address = Request.Form["address"];            //地址
                 string tel = Request.Form["tel"];               //电话

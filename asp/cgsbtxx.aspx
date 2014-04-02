@@ -51,11 +51,6 @@
             {
                 s_yh_id = Session["CGS_YH_ID"].ToString();
             }
-
-            if (Request.Cookies["CGS_YH_ID"]!=null&& Request.Cookies["CGS_YH_ID"].Value.ToString()!="")
-            {
-            s_yh_id= Request.Cookies["CGS_YH_ID"].Value.ToString();
-            }
             
             string sSQL_yh = "select * from ”√ªß±Ì where yh_id='" + s_yh_id + "'";
             DataTable dt_yh = new DataTable();
@@ -90,10 +85,6 @@
 		{
 		  s_yh_id = Session["CGS_YH_ID"].ToString();
 		}
-        if (Request.Cookies["CGS_YH_ID"]!=null&& Request.Cookies["CGS_YH_ID"].Value.ToString()!="")
-        {
-             s_yh_id= Request.Cookies["CGS_YH_ID"].Value.ToString();
-        }
         string s_lx="";
         if (this.gxs.Checked)
         {

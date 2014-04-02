@@ -91,7 +91,7 @@
 
                 }
 
-                var url = "scpp.aspx?fxs_id=" + id + "&pp_id=" + ppid;
+                var url = "scpp.aspx?fxs_id=" + id + "&pp_id=" + ppid+"&lx=1";
                 window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
             }
         }
@@ -112,23 +112,13 @@
         public string s_yh_id="";
         public string sp_result="";
         public DataTable dt_gysxxs = new DataTable();
-         public string gys_types = "";                  //单位类型   
+         public string gys_type = "";                  //单位类型   
         protected void Page_Load(object sender, EventArgs e)
         {
             if(Session["GYS_YH_ID"]!=null)
             {
                  s_yh_id = Session["GYS_YH_ID"].ToString(); 
             }
-            else
-            {
-                if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-                {
-                     s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-                 }
-            }
-			    //认领厂商成功,根据用户id 查询认领的供应商信息
-			    string gys_type="";
-                string gys_type_id="";
 			    sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='"+s_yh_id+"' ";  //查询单位类型
 			
                 DataTable dt_type = objConn.GetDataTable(sSQL);
@@ -143,39 +133,40 @@
                     sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='"+s_yh_id+"' ";
                     dt_gysxx = objConn.GetDataTable(sSQL);
            	    }
-                if (gys_type.Equals("分销商"))
-			    {	             
-				    //根据分销商id 从<材料供应商信息从表>中 获取代理不同品牌的品牌id  再根据品牌id从<品牌字典>查询不同的 生产商id
-				    //再根据不同的生产商id 查询不同的生厂商信息
-				
-				    sSQL = "select pp_id from  材料供应商信息从表 where gys_id='"+gys_id+"' ";   //183,186
-                	string gys_pp_id ="";
-                    dt_gysxxs = objConn.GetDataTable(sSQL);
-                    if(dt_gysxxs!=null&&dt_gysxxs.Rows.Count>0)
-                    {
-               	        gys_pp_id = Convert.ToString(dt_gysxxs.Rows[0]["pp_id"]);		
-                    }
-                    sSQL= "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id "
-				    +"from 材料供应商信息表 where  gys_id in (select scs_id from 品牌字典 where pp_id='"+gys_pp_id+"')"    //pp_id=186
-				    +"and 单位类型='生产商'";             
-                    dt_gysxx = objConn.GetDataTable(sSQL);
-                }
+                 sSQL = "select 单位类型 ,gys_id, 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='"+s_yh_id+"' ";
+                 dt_gysxx = objConn.GetDataTable(sSQL);
+                 if(dt_gysxx!=null&&dt_gysxx.Rows.Count>0)
+                 {
+                     gys_type = dt_type.Rows[0]["单位类型"].ToString();
+			         gys_id = dt_type.Rows[0]["gys_id"].ToString(); 
+                     if(gys_type=="生产商")
+                     {						
+			              sSQL="select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='"+gys_id+"' ";
+                          dt_ppxx = objConn.GetDataTable(sSQL);  
+                     }
+                     else
+                     {
+                            sSQL = "select pp_id from  材料供应商信息从表 where gys_id='"+gys_id+"' ";
+                            string gys_pp_id ="";
+                            dt_gysxxs = objConn.GetDataTable(sSQL);
+                            if(dt_gysxxs!=null&&dt_gysxxs.Rows.Count>0)
+                            {
+                                gys_pp_id = Convert.ToString(dt_gysxxs.Rows[0]["pp_id"]);		
+                            }
+                            sSQL= "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id "
+                            +"from 材料供应商信息表 where  gys_id in (select scs_id from 品牌字典 where pp_id='"+gys_pp_id+"')"    //pp_id=186
+                            +"and 单位类型='生产商'";             
+                            dt_gysxx = objConn.GetDataTable(sSQL);
+                             sSQL="select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='"+gys_id+"' ";
+                            dt_ppxx = objConn.GetDataTable(sSQL);  
+                     }
+                 }
+
                 if (dt_gysxx.Rows.Count == 0) 
                     Response.Redirect("gyszym.aspx");
 			    
-                gys_id = dt_gysxx.Rows[0]["gys_id"].ToString();
-							
-			    sSQL="select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='"+gys_id+"' ";
-                dt_ppxx = objConn.GetDataTable(sSQL);          
-                sSQL= "select 单位类型, gys_id from 材料供应商信息表 where  yh_id='"+s_yh_id+"' ";
-                dt_gysxxs = objConn.GetDataTable(sSQL);
-                string gysid = "";
-            
-                if (dt_gysxxs != null && dt_gysxxs.Rows.Count>0)
-                {
-                    gysid = dt_gysxxs.Rows[0]["gys_id"].ToString();
-                    gys_types = dt_gysxxs.Rows[0]["单位类型"].ToString();
-                }
+                      
+               
                 string id = "";
                 if (Request["id"]!=null&&Request["id"].ToString()!="")
                 {
@@ -184,7 +175,7 @@
 		    
                 if (id != "")
                 {
-                    DWLX(gys_types, id, gysid);
+                    DWLX(gys_type, id, gys_id);
                 }
         }
     protected void DWLX(string str_gysid_type, string id, string str_gysid)
@@ -263,31 +254,24 @@
 		   <span class="fxsxx1">
 		    </span>
 			
-			<%	
-                if (gys_types.Equals("分销商"))
-                {
-			%>
-			<div class="zjgxs">
+<%--			<div class="zjgxs">
 			<select name="" class="fug" style="width:200px" onchange="Update_scs(this.options[this.options.selectedIndex].value)">
 			 <% 
                  if (dt_gysxxs != null && dt_gysxxs.Rows.Count > 0)
                  {
-
-
                      foreach (System.Data.DataRow row in dt_gysxxs.Rows)
                      {
-                         sSQL = "select 供应商,gys_id from 材料供应商信息表 where  gys_id='" + row["fxs_id"].ToString() + "' and 单位类型='分销商' ";
+                         sSQL = "select 供应商,gys_id from 材料供应商信息表 where  gys_id='" + row["gys_id"].ToString() + "' ";
                         System.Data.DataTable dt = objConn.GetDataTable(sSQL);       	
 			            %>			
-			            <option value='<%=dt.Rows[0]["gys_id"].ToString()%>'><%=dt.Rows[0]["供应商"].ToString()%></option>
+			            <option value="<%=dt.Rows[0]["gys_id"].ToString()%>"><%=dt.Rows[0]["供应商"]%></option>
 			            <%}
                   }%>
 			
 			</select> 
 			<span class="zjgxs1"><a href="#">增加新的分销商</a></span>
 			</div>
-			<%}
-                %>
+--%>
             <span class="fxsxx1">贵公司的详细信息如下:</span>
 
             <div class="fxsxx2">

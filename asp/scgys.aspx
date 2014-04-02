@@ -99,7 +99,7 @@
 
                       string str_checkexist = "select count(*) from 采购商关注供应商表 where yh_id = '"+yh_id+"' and gys_id ='"+gys_id+"'";
                       
-                      int res_checkexist =objConn.DBLook(str_checkexist);
+                      int res_checkexist =Convert.ToInt32(objConn.DBLook(str_checkexist));
                       if (res_checkexist !=1 ) 
                       {
                           string str_getcl = "select 供应商,gys_id from 材料供应商信息表 where gys_id ='"+gys_id+"'";

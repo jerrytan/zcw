@@ -44,10 +44,6 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-        if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-        {
-             s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-        }
         Products_gys_cl();
         if(!IsPostBack)
         {
@@ -80,10 +76,6 @@
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
-        }
-        if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-        {
-             s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
         }
         sSQL = "select 等级 from 用户表 where yh_id='" + s_yh_id + "' ";   //141           
         string vip = objConn.DBLook(sSQL);
@@ -162,10 +154,6 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-        if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-        {
-             s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-        }
         string gys_id = "";
         //根据用户id 查询供应商id
         sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";
@@ -238,10 +226,6 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-        if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-        {
-             s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-        }
          string gys_id="";
         //根据用户id 查询供应商id
         sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";    
@@ -264,10 +248,6 @@
 		{
 		  s_yh_id = Session["CGS_YH_ID"].ToString();
 		}
-         if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-        {
-             s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-        }
         string s_lx="";
         if (this.gxs.Checked)
         {

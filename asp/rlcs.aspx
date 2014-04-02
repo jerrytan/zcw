@@ -40,6 +40,7 @@
     public string sSQL = "";
     public string s_spjg="";   //审批结果
     public string s_gys_id="";   //供应商id
+    public string gys_type = "";
      public DataTable dt_clgys = null;     //材料供应商   查询使用
      protected void Page_Load(object sender, EventArgs e)
     {
@@ -47,11 +48,8 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-        if (Request.Cookies["GYS_YH_ID"]!=null&& Request.Cookies["GYS_YH_ID"].Value.ToString()!="")
-        {
-             s_yh_id= Request.Cookies["GYS_YH_ID"].Value.ToString();
-        }
-        string gys_type = "";
+
+    
 		if(s_yh_id!="")
 		{
 			sSQL = "select 类型 from 用户表 where yh_id ='" + s_yh_id + "' ";
@@ -79,7 +77,7 @@
 					{
 						sSQL = "update 材料供应商信息表 set yh_id = '" + s_yh_id + "' where gys_id = '" + s_gys_id + "'";
 						objConn.ExecuteSQL(sSQL, false);
-						sSQL = "select 供应商,gys_id,联系地址 from 材料供应商信息表 where yh_id ='" + s_yh_id + "'";
+						sSQL = "select 联系地址,供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,gys_id,经营范围 from 材料供应商信息表 where yh_id ='" + s_yh_id + "'";
 						dt_yrl_gys = objConn.GetDataTable(sSQL);
 					}
 					else if (s_spjg == "不通过")
@@ -92,8 +90,8 @@
 					}
 					else if (s_spjg == "待审核")
 					{
-						sSQL = "select 供应商,gys_id,联系地址 from 供应商认领申请表 where yh_id ='" + s_yh_id + "'";
-						dt_dsh_gys = objConn.GetDataTable(sSQL);
+						sSQL = "select 联系地址,供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id  from 供应商认领申请表 where yh_id ='" + s_yh_id + "'";
+						dt_yrl_gys = objConn.GetDataTable(sSQL);
 					}
 				}
 			}
@@ -142,30 +140,50 @@
 
                 }
             }
-            xmlhttp.open("GET", "rlcs2.aspx?gys_id=" + gys_id, true);
+            var gys_type = '<%=gys_type %>';
+            xmlhttp.open("GET", "rlcs2.aspx?gys_id=" + gys_id + "&gys_type=" + gys_type, true);
             xmlhttp.send();
         }
-        function Select_Gys_Name(gys_id)
-        {
-            var xmlhttp;
+        function Update_gys(id)
+        {        
             if (window.XMLHttpRequest)
-            {// code for IE7+, Firefox, Chrome, Opera, Safari
+            {
                 xmlhttp = new XMLHttpRequest();
             }
             else
-            {// code for IE6, IE5
+            {
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
             xmlhttp.onreadystatechange = function ()
             {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
                 {
-                    alert(xmlhttp.responseText);
-                    //document.getElementById("rljg").innerHTML = xmlhttp.responseText;
+
+                    var array = new Array();           //声明数组
+                    array = xmlhttp.responseText;     //接收替换返回的json字符串
+
+                    var json = array;
+                    var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 			
+
+
+                    for (var i = 0; i < myobj.length; i++)
+                    {  //遍历,将ajax返回的数据填充到文本框中				
+
+                        document.getElementById('companyname').value = myobj[i].gys_name;       //供应商
+                        document.getElementById('address').value = myobj[i].gys_address;        //地址
+                        document.getElementById('tel').value = myobj[i].gys_tel;                //电话  			 
+                        document.getElementById('homepage').value = myobj[i].gys_homepage;       //主页
+                        document.getElementById('fax').value = myobj[i].gys_fax;                 //传真
+                        document.getElementById('area').value = myobj[i].gys_area;               //地区名称
+                        document.getElementById('name').value = myobj[i].gys_user;               //联系人
+                        document.getElementById('phone').value = myobj[i].gys_user_phone;          //联系人电话
+                        document.getElementById('gys_id').value = myobj[i].gys_id;           //ajax返回的供应商id	供向表单提交时使用	  				              
+
+                    }
 
                 }
             }
-            xmlhttp.open("GET", "rlcs_3.aspx?gys_id=" + gys_id, true);
+            xmlhttp.open("GET", "glscsxx3.aspx?id=" + id, true);
             xmlhttp.send();
         }
     </script>
@@ -179,22 +197,27 @@
             if(s_spjg=="通过")
             {
 %>
-                    <div>                  
+                    <div>          
+<%                  if(gys_type=="生产商")
+                    { 
+%>        
                          <div class="rlcs">
                              <span class="rlcszi" style="color:Blue;font-size:12px">
 				                            <%Response.Write("恭喜您!审核已通过,你可以进行以下操作：");%>
                                             <br />
                                             <a href="glscsxx.aspx">管理生产厂商信息</a>
                                             <br />
+                                            <a href="gysglcl.aspx">管理分销商信息</a>
+                                            <br />
                                             <a href="gysglcl.aspx">管理材料信息</a>
+
 
 		                     </span>
                          </div>  
-                     
+                    <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">您已经在本站认领的供应商如下:</span></div>
 <%                      if(dt_yrl_gys.Rows.Count>0)
                          {
-%>
-                            <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">您已经在本站认领的供应商如下:</span></div>
+%>   
 <%
                              foreach (System.Data.DataRow row in dt_yrl_gys.Rows)
                              { 
@@ -204,8 +227,37 @@
                                 </span>
 <%                           } 
                          }
+%>                   </div>
+                        
+<%                  }
+                    else
+                    { 
+%>                      <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">您已经在本站认领的供应商如下:</span></div>
+                         <select id="gys"  name="gys" class="fug" style="width:200px" onchange="Update_gys(this.options[this.options.selectedIndex].value)">
+ <%                        
+                              foreach (System.Data.DataRow row in dt_yrl_gys.Rows)
+                             { 
+%>                              <option value='<%=row["gys_id"].ToString()%>'><%=row["供应商"].ToString() %></option>
+<%                           }  
 %>
-                    </div>
+                         </select>
+                          <div class="fxsxx2">
+                              <dl>
+                                <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="Text2" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["供应商"] %>" /></dt>
+                                <dd>贵公司地址：</dd><dt><input name="address" type="text" id="Text4" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["联系地址"] %>"/></dt>
+                                <dd>贵公司电话：</dd><dt><input name="tel" type="text" id="Text6" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["电话"] %>"/></dt>
+                                <dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="Text8" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["主页"] %>" /></dt>
+                                <dd>贵公司传真：</dd><dt><input name="fax" type="text" id="Text10" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["传真"] %>"/></dt>
+                                <dd>贵公司地区：</dd><dt><input name="area" type="text" id="Text12" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["地区名称"] %>"/></dt>
+                                <dd>联系人姓名：</dd><dt><input name="name" type="text" id="Text14" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["联系人"] %>" /></dt>
+                                <dd>联系人电话：</dd><dt><input name="phone" type="text" id="Text16" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["联系人手机"] %>" /></dt>
+                                <dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Text18" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["经营范围"] %>" /></dt>
+                             </dl>
+                         </div>
+<%                  }
+%>
+
+                   
                     <img src="images/www_03.jpg" />
 <%
              }
@@ -218,7 +270,7 @@
 <%                       Response.Write("尊敬的用户,您好!您已在本站申请了");
 %>
 				         <br>
-<%                      foreach (System.Data.DataRow row in dt_dsh_gys.Rows)
+<%                      foreach (System.Data.DataRow row in dt_yrl_gys.Rows)
                         { 
 %>                    
 					        <a  style="color:Blue;font-size:12px" href="gysxx.aspx?gys_id=<%=row["gys_id"]%>"><%=row["供应商"].ToString() %></a>				
