@@ -21,20 +21,6 @@
     <title><%=Request["id"] %>列表</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-    <!-- 头部开始-->
-    <!-- #include file="static/header.aspx" -->
-    <!-- 头部结束-->
-
-    <!-- 导航开始-->
-    <uc1:Menu1 ID="Menu1" runat="server" />
-    <!-- 导航结束-->
-
-    <!-- banner开始-->
-    <!-- #include file="static/banner.aspx" -->
-    <!-- banner 结束-->
-
     <script runat="server">        
         private DataConn dc_obj = new DataConn();
         private const int Page_Size = 5; //每页的记录数量
@@ -126,7 +112,7 @@
             {
                 string str_type = Request["id"];   //获取传过来的文档类型参数
                 string str_sql = "select wz_Id from 文章表 where 文档类型='"+str_type+"' order by 发表时间 ";
-                i_count = dc_obj.GetRowCount(str_sql); //
+                i_count = dc_obj.GetRowCount(str_sql);
             }
             catch (Exception e)
             {
@@ -135,6 +121,19 @@
             return i_count;
         } 
     </script>
+</head>
+<body>
+    <!-- 头部开始-->
+    <!-- #include file="static/header.aspx" -->
+    <!-- 头部结束-->
+
+    <!-- 导航开始-->
+    <uc1:Menu1 ID="Menu1" runat="server" />
+    <!-- 导航结束-->
+
+    <!-- banner开始-->
+    <!-- #include file="static/banner.aspx" -->
+    <!-- banner 结束-->
 
     <div class="xw">
         <% string str_id=Request["id"];%>
@@ -142,13 +141,13 @@
         <!--首页 文章列表 开始-->
         <div class="xw2">
             <dl><% foreach(System.Data.DataRow row in dt_content.Rows){%>
-                <dd><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>">·<%=row["标题"].ToString() %></a></dd>
+                <dd style="overflow:hidden"><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>">·<%=row["标题"].ToString() %></a></dd>
                 <%
                     string str_time = row["发表时间"].ToString();
                     string[] str_times = str_time.Split(' ');
                     string str_fbtime = str_times[0];
                  %>
-                <dt><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>"><%=str_fbtime %></a></dt>
+                <dt style="overflow:hidden"><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>"><%=str_fbtime %></a></dt>
                 <% } %>
             </dl>
         </div>

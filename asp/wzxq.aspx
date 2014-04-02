@@ -19,21 +19,6 @@
     <title>文章详情页</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-    <!-- 头部开始-->
-    <!-- #include file="static/header.aspx" -->
-    <!-- 头部结束-->
-
-    <!-- 导航开始-->
-    <uc1:Menu1 ID="Menu1" runat="server" />
-    <!-- 导航结束-->
-
-    <!-- banner开始-->
-    <!-- #include file="static/banner.aspx" -->
-    <!-- banner 结束-->
-
-    <!-- 文章首页 开始-->
     <script runat="server">                         
  	    protected DataTable dt_Wz = new DataTable();  //文章表
         protected DataTable dt_Wzhnr = new DataTable();  //文章和内容相关表
@@ -72,43 +57,57 @@
             }             
         }
     </script>
+</head>
+<body>
+    <!-- 头部开始-->
+    <!-- #include file="static/header.aspx" -->
+    <!-- 头部结束-->
 
+    <!-- 导航开始-->
+    <uc1:Menu1 ID="Menu1" runat="server" />
+    <!-- 导航结束-->
+
+    <!-- banner开始-->
+    <!-- #include file="static/banner.aspx" -->
+    <!-- banner 结束-->
+
+    <!-- 文章首页 开始-->
     <div class="xwn">
         <div class="xwn1"><a href="index.aspx" class="p1">首页 ></a>正文</div>
         <div class="xwleft">
             <% foreach(System.Data.DataRow row in dt_Wz.Rows){%>
-            <div class="xwleft1"><%=row["标题"].ToString() %></div>
-            <div class="xwleft2">作者：<%=row["作者"].ToString() %></div>
-
+            <div class="xwleft1" style="overflow:hidden;"><%=row["标题"].ToString() %></div>
+            <div class="xwleft2" >作者：<%=row["作者"].ToString() %></div>
+            <%} %>
+            
             <% foreach(System.Data.DataRow row2 in dt_Wzhnr.Rows){%>
-            <div class="xwleft3"><%=row2["页面内容"].ToString() %></div>
+            <div class="xwleft3" ><%=row2["页面内容"].ToString() %></div>
             <%}%>
 		<center>
-			<div>
+		<div>
 				<div class="fy3">
                 <% if(current_page<=1 && total_pages >1) {%> 
                     <font style="color:Gray">首页</font>
-                    <a href="yjfl.aspx?p=<%=current_page+1 %>" class="p" style="color:Black">下一页</a>
-                    <a href="yjfl.aspx?p=<%=total_pages %>" class="p" style="color:Black">末页</a>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page+1 %>" class="p" style="color:Black">下一页</a>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=total_pages %>" class="p" style="color:Black">末页</a>
                 <%} %>
                 <% else if(current_page <=1 && total_pages <=1) {%>   
                      
                 <%} %>
                 <% else if(!(current_page<=1)&&!(current_page == total_pages)){ %>
-                    <a href="yjfl.aspx?p=<%=1 %>"class="p" style="color:Black">首页</a>
-                    <a href="yjfl.aspx?p=<%=current_page-1 %>" class="p" style="color:Black">上一页</a>
-                    <a href="yjfl.aspx?p=<%=current_page+1 %>" class="p" style="color:Black">下一页</a>
-                     <a href="yjfl.aspx?p=<%=total_pages %>" class="p" style="color:Black">末页</a>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=1 %>"class="p" style="color:Black">首页</a>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page-1 %>" class="p" style="color:Black">上一页</a>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page+1 %>" class="p" style="color:Black">下一页</a>
+                     <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=total_pages %>" class="p" style="color:Black">末页</a>
                 <%}%>
                 <% else if( current_page !=1 && current_page == total_pages){ %>
-                    <a href="yjfl.aspx?p=<%=1 %>"class="p" style="color:Black">首页</a>
-                    <a href="yjfl.aspx?p=<%=current_page-1 %>" class="p" style="color:Black">上一页</a>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=1 %>"class="p" style="color:Black">首页</a>
+                    <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page-1 %>" class="p" style="color:Black">上一页</a>
                     <font style="color:Gray">末页</font>
                 <%} %>
 				</div>   
 			</div>
 		</center>
-            <%}%>
         </div>
         <!-- 文章首页 结束-->
 
@@ -149,5 +148,5 @@
     <!-- footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->   
-    <body>
+</body>
 </html>

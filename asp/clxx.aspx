@@ -23,21 +23,6 @@
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
 <script src="js/SJLD.js" type="text/javascript"></script>
- 
-</head>
-<body>
-<!-- 头部开始-->
-<!-- #include file="static/header.aspx" -->
-<!-- 头部结束-->
-
-<!-- 导航开始-->
-<uc1:Menu1 ID="Menu1" runat="server" />
-<!-- 导航结束-->
-
-<!-- banner开始-->
-<!-- #include file="static/banner.aspx" -->
-<!-- banner 结束-->
-
 <script runat="server"> 
 
         protected DataTable dt_clxx = new DataTable();   //材料名字(材料表)
@@ -63,7 +48,7 @@
             dc_obj.ExecuteSQL(str_updatecounter,true);
 			
             string fl_id = Convert.ToString(dt_clxx.Rows[0]["fl_id"]);
-			string str_sqlxsmz = "select 显示名字 from 材料分类表 where fl_id='"+fl_id+"' ";           
+			string str_sqlxsmz = "select 显示名字,分类编码 from 材料分类表 where fl_id='"+fl_id+"' ";           
             dt_flxx = dc_obj.GetDataTable(str_sqlxsmz);
 			
 			string str_sqlppmc = "select 品牌名称,规格型号,材料编码 from 材料表 where cl_id='"+cl_id+"' ";            
@@ -83,15 +68,28 @@
         }		
         
 </script>
+</head>
+<body>
+<!-- 头部开始-->
+<!-- #include file="static/header.aspx" -->
+<!-- 头部结束-->
+
+<!-- 导航开始-->
+<uc1:Menu1 ID="Menu1" runat="server" />
+<!-- 导航结束-->
+
+<!-- banner开始-->
+<!-- #include file="static/banner.aspx" -->
+<!-- banner 结束-->
 
 <div class="sc">
     <!-- 导航链接栏 开始 -->
     <div class="sc1"><a href="index.aspx">首页 ></a>
     <% foreach(System.Data.DataRow row in dt_flxx.Rows){%>
-        <a href="#"><%=row["显示名字"].ToString() %></a>
+        <a href="ejfl.aspx?name=<%=row["分类编码"].ToString() %>"><%=row["显示名字"].ToString() %></a>
     <%}%>> 
     <% foreach(System.Data.DataRow row in dt_clxx.Rows){%>
-        <a href="#"><%=row["显示名"].ToString() %></a>
+        <a href="clxx.aspx?cl_id=<%=cl_id %>"><%=row["显示名"].ToString() %></a>
     <%}%>
     </div>
     <!-- 导航链接栏 结束 -->
@@ -112,7 +110,7 @@
                 </ul>
             </div>
         <div>
-        <ul id=idNum class=hdnum>
+        <ul id="idNum" class="hdnum">
         <% for (int i=0;i< dt_images.Rows.Count;i++) 
         {
             System.Data.DataRow row =dt_images.Rows[i];
