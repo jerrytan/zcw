@@ -32,7 +32,7 @@
             
             dt_1Top7 = dc.GetDataTable(str_Sql1Top7);
             dt_2All = dc.GetDataTable(str_Sql2All);
-            dt_1Top7 = dc.GetDataTable(str_1After7);
+            dt_1After7 = dc.GetDataTable(str_1After7);
 
             
             ////数据表DataTable转集合                  
@@ -86,35 +86,22 @@
     }
    
 </script>
-
-
 <div class="dh">
     <ul>
         <% foreach (var v in this.Items1){%>
         <li><a href="yjfl.aspx?name=<%=v.Sid.ToString() %>"><%=v.Name%></a>
-            <ul style="left: -39px; width: 152px;">  
-               <%int count=0;%>         
+            <ul style="left: -39px; width: 152px;">
                 <%  foreach (var vr in this.Items2){				
-                %>               
-                <%if (vr.Sid.ToString().Substring(0, 2) == v.Sid.ToString()) {%>
-                <%count=count+1; %>
-                <%if(count<=5){ %>
-                  <li><a href="ejfl.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
+                %>
+                <%if (vr.Sid.ToString().Substring(0, 2) == v.Sid.ToString())
+           {%>
+                <li><a href="ejfl.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
                 <%} %>
-                <%else{%>
-                <%break; %>
-                <%} %>
-                <%} %>
-              
-                <%} %>
+                <% } %>
             </ul>
         </li>
-
         <% } %>
-
-
         <li><a href="#">更多</a>
-
             <ul style="left: -677px;">
                 <li></li>
                 <li></li>
@@ -136,7 +123,6 @@
         </li>
     </ul>
 </div>
-
 
 
 
