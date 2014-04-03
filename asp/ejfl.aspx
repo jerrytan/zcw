@@ -118,6 +118,7 @@
             }
             int c;
             bool b2 = int.TryParse(strC,out c);
+
             if (b2 == false)
             {
                 c = 1;

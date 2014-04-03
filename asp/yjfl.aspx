@@ -53,6 +53,7 @@
 
     <!-- 首页 石材首页 开始-->
     <script runat="server">
+
         protected DataTable dt_ejflmc = new DataTable();   //二级分类名称
         protected DataTable dt_allcl = new DataTable();  //材料名称分页 (大类下的所有材料分页)
         protected DataTable dt_yjflmc = new DataTable();  //首页显示一级分类名字
