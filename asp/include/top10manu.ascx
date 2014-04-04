@@ -24,10 +24,9 @@
         {
 		    if (!Page.IsPostBack)
             {
-                string str_Sql ="select distinct top 10 供应商 ,gys_id,单位类型 from 材料供应商信息表 where 是否启用=1 order by gys_id";  ;
+                string str_Sql ="select  top 10 供应商 ,gys_id,单位类型,访问计数 from 材料供应商信息表 where 是否启用=1 order by 访问计数 desc";  ;
                 dt_Most10cp = dc.GetDataTable(str_Sql);
 
-			
 			    this.Items = new List<Manufacturer>();
                 for (int x = 0; x < dt_Most10cp.Rows.Count; x++)
                 {

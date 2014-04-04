@@ -85,7 +85,7 @@
             <%}%>
 		<center>
 		<div>
-				<div class="fy3">
+				<div class="fy3" style="padding-left:70px">
                 <% if(current_page<=1 && total_pages >1) {%> 
                     <font style="color:Gray">สืาณ</font>
                     <a href="wzxq.aspx?wz_id=<%=wz_Id %>&p=<%=current_page+1 %>" class="p" style="color:Black">ฯยาปาณ</a>
