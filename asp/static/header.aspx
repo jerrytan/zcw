@@ -41,6 +41,7 @@
             {
     %>
              <div class="anniu"><a  href="QQ_out.aspx" target="_self">采购商登出</a></div>
+			 <div class="anniu"><a  href="cgsgl_2.aspx" target="_self">采购商主页面</a></div>
     <%
             }
             //供应商登录
@@ -48,6 +49,7 @@
             {
     %>
                  <div class="anniu"><a href="QQ_out.aspx" target="_self">供应商登出</a></div>
+				 <div class="anniu"><a href="gyszym.aspx" target="_self">供应商主页面</a></div>
     <%
             }
     %>

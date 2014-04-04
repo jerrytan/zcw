@@ -372,7 +372,9 @@
                         </div>
                         </div>
                         <div class="rlcs4">
-                        <span class="rlcs7">如果您没有找到贵公司，您可以提交贵公司资料，我方工作人员会在3个工作日内完成审核工作（流程图如下）</span>
+                        <span class="rlcs7">
+						<a href="gysbtxx.aspx">如果您没有找到贵公司，您可以提交贵公司资料，我方工作人员会在3个工作日内完成审核工作（流程图如下）</a>
+						</span>
                         <span><img src="images/www_03.jpg" /></span>
                     </div>
                 </div> 

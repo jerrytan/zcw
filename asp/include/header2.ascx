@@ -41,7 +41,7 @@
 <div class="box">
 
     <div class="topx">
-        <a href="gyszym.aspx"><img src="images/topx_02.jpg" /></a>
+        <a href="index.aspx"><img src="images/topx_02.jpg" /></a>
     </div>
 
       <%         
@@ -64,6 +64,7 @@
             {
     %>
                  <div class="anniu"><a  href="QQ_out.aspx" target="_self">供应商登出</a></div>
+				 <div class="anniu"><a  href="gyszym.aspx" target="_self">供应商主页面</a></div>
     <%
             }
     %>
