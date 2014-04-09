@@ -15,6 +15,7 @@
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
@@ -43,6 +44,7 @@
 	public string s_yh_id = "";
     public DataConn objConn = new DataConn();
     public bool b=false;
+	public string s_yz="":
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -62,19 +64,8 @@
                 this.companytel.Value = dt_yh.Rows[0]["公司电话"].ToString();
                 this.contactorname.Value = dt_yh.Rows[0]["姓名"].ToString();
                 this.contactortel.Value = dt_yh.Rows[0]["手机"].ToString();
-                this.contactorqqid.Value = dt_yh.Rows[0]["QQ号码"].ToString();
-                if (dt_yh.Rows[0]["类型"].ToString() == "分销商")
-                {
-                    this.gxs.Checked = true;
-                }
-                else if (dt_yh.Rows[0]["类型"].ToString() == "生产商")
-                {
-                    this.scs.Checked = true;
-                }
-                if(dt_yh.Rows[0]["手机"].ToString()!="通过")
-                {
-                    b=true;
-                }
+                this.contactorqqid.Value = dt_yh.Rows[0]["QQ号码"].ToString();               
+				s_yz=dt_yh.Rows[0]["是否验证通过"].ToString();
             }
         }      
     }
@@ -85,15 +76,7 @@
 		{
 		  s_yh_id = Session["CGS_YH_ID"].ToString();
 		}
-        string s_lx="";
-        if (this.gxs.Checked)
-        {
-            s_lx = "分销商";
-        }
-        else if (this.scs.Checked)
-        {
-            s_lx = "生产商";
-        }
+     
 		    if (this.contactortel.Value == "")
         {
             objConn.MsgBox(this.Page, "手机不能为空,请填写!");
@@ -127,7 +110,7 @@
         string s_updateUserinfo = " update 用户表   set 手机='" +this.contactortel.Value + "', 姓名='" +this.contactorname.Value +
                                   "',公司名称='" + this.companyname.Value + "',公司地址='"+this.companyaddress.Value+
                                   "',公司电话='" + this.companytel.Value + "',QQ号码='"+this.contactorqqid.Value+
-                                  "',类型='"+s_lx+"',是否验证通过='待审核' where yh_id='" + s_yh_id + "'";
+                                  "',是否验证通过='待审核',类型='采购商' where yh_id='" + s_yh_id + "'";
                                   b=objConn.ExecuteSQL(s_updateUserinfo, true);
          if(!b)
         {
@@ -140,7 +123,7 @@
 <form runat="server">   
 	<div class="cggytb">
 		<div class="cggybtl"><img src="images/www_03.jpg" /></div>
-         <%if(b){%>
+         <%if(s_yz=="待审核"){%>
                 <span style=" color:Red">您提交的信息正在审核中，请您耐心等待!</span>
           <%} %>
 		<div class="cggybtr">
@@ -148,8 +131,6 @@
 				<dd>贵公司名称：</dd>  	<dt><input id="companyname" name="companyname" type="text" class="cgggg" runat="server"  /></dt>
 				<dd>贵公司地址：</dd>  	<dt><input id="companyaddress" name="companyaddress" type="text" class="cgggg" runat="server" /></dt>
 				<dd>贵公司电话：</dd>  	<dt><input id="companytel" name="companytel" type="text" class="ggg" runat="server" /></dt>
-				<dd>贵公司是：</dd>    		<dt><input  id="scs" name="select" type="radio" value="生产商" runat="server" validationgroup="select" />生产商  
-											<input id="gxs"  runat="server" name="select"  type="radio" value="分销商" validationgroup="select" />分销商 </dt>
 				<dd>您的姓名：</dd>    		<dt><input  id="contactorname" name="contactorname" type="text" class="cgggg" runat="server"/></dt>
 				<dd>您的电话：</dd>    		<dt><input id="contactortel" name="contactortel" type="text" class="cgggg"  runat="server"/></dt>			
 				<dd>您的QQ号码：</dd>   	<dt><input id="contactorqqid" name="contactorqqid" type="text" class="cgggg" runat="server" /></dt>

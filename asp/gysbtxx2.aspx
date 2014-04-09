@@ -22,13 +22,13 @@
 <%@ Import Namespace="System.Web" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
 		 <script defer="defer">
 		     function doload()
 		     {
-		         window.close();
 		         window.location.href="gyszym.aspx";
 		     }
 		     setTimeout("doload()", 2000);

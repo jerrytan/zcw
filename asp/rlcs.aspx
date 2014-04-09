@@ -47,9 +47,7 @@
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
-        }
-
-    
+        }    
 		if(s_yh_id!="")
 		{
 			sSQL = "select 类型 from 用户表 where yh_id ='" + s_yh_id + "' ";
@@ -140,7 +138,7 @@
 
                 }
             }
-            var gys_type = '<%=gys_type %>';
+            var gys_type = '<%= System.Web.HttpUtility.UrlEncode(gys_type)%>';  
             xmlhttp.open("GET", "rlcs2.aspx?gys_id=" + gys_id + "&gys_type=" + gys_type, true);
             xmlhttp.send();
         }

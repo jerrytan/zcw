@@ -2,7 +2,12 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Web" %>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page language="C#" %>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+</head>
 <script runat="server"  > 
 		
     public string s_yh_id = "";
@@ -22,7 +27,8 @@
         string gys_type="";
         if (Request["gys_type"] != null && Request["gys_type"].ToString() != "")
         {
-            gys_type = Request["gys_type"].ToString();
+            gys_type = Request["gys_type"].ToString();       
+            gys_type=System.Web.HttpUtility.UrlDecode(gys_type);
         }
         if (s_yh_id != "")
         {
@@ -115,3 +121,4 @@
     }
     </script>
 
+</html>

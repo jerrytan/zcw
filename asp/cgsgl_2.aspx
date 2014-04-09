@@ -97,8 +97,8 @@
                 if (dt_userInfo != null && dt_userInfo.Rows.Count > 0)
                 {
                     this.companyname.Value = dt_userInfo.Rows[0]["公司名称"].ToString();
-                    this.companytel.Value = dt_userInfo.Rows[0]["公司地址"].ToString();
-                    this.companyaddress.Value = dt_userInfo.Rows[0]["公司电话"].ToString();
+                    this.companytel.Value = dt_userInfo.Rows[0]["公司电话"].ToString();
+                    this.companyaddress.Value = dt_userInfo.Rows[0]["公司地址"].ToString();
                     this.contactorname.Value = dt_userInfo.Rows[0]["姓名"].ToString();
                     this.contactortel.Value = dt_userInfo.Rows[0]["手机"].ToString();
                     this.QQ_id.Value = dt_userInfo.Rows[0]["QQ号码"].ToString();
