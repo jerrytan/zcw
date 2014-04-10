@@ -98,44 +98,38 @@
 
 		<span id="msg" style="color:Red;font-size:14px">
 		<%
-		  foreach(System.Data.DataRow row in dt_yh.Rows)
-		   {
-			 if(Convert.ToString(row["公司名称"])!="")
-			 {
-				  if(Convert.ToString(row["是否验证通过"])==""||Convert.ToString(row["是否验证通过"])=="待审核")
-				  {				  
-					 Response.Write("请耐心等候,您的资料已提交,正在审核当中,我方工作");
-					 Response.Write("<br>");
-					 Response.Write("人员会尽快给您答复!");
-					 Response.Write("<br>");
-					 Response.Write("<dd>");
-					 Response.Write("您的信息如下:");
-					 Response.Write("</dd>");
-					 Response.Write("<dt>");
-					 Response.Write("</dt>");
-				  }
-				  if(Convert.ToString(row["是否验证通过"])=="通过")
-				  {
-					 Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领.");				 
-					 Response.Write("<br>");								 
-					 Response.Write("<dd>");
-					 Response.Write("您的信息如下:");
-					 Response.Write("</dd>");
-					 Response.Write("<dt>");
-					 Response.Write("</dt>");
-				  }
-				  if(Convert.ToString(row["是否验证通过"])=="不通过")
-				  {
-					 Response.Write("审核未通过,请继续完善信息!");
-					 Response.Write("<br>");								 
-					 Response.Write("<dd>");
-					 Response.Write("您的信息如下:");
-					 Response.Write("</dd>");
-					 Response.Write("<dt>");
-					 Response.Write("</dt>");
-				  } 
-			 }
-		   }                   
+		   if(dt_yh.Rows[0]["是否验证通过"].ToString()=="待审核")
+            {
+                Response.Write("请耐心等候,您的资料已提交,正在审核当中,我方工作");
+			    Response.Write("<br>");
+			    Response.Write("人员会尽快给您答复!");
+			    Response.Write("<br>");
+			    Response.Write("<dd>");
+			    Response.Write("您的信息如下:");
+			    Response.Write("</dd>");
+			    Response.Write("<dt>");
+			    Response.Write("</dt>");
+            }
+            else if(dt_yh.Rows[0]["是否验证通过"].ToString()=="通过")
+            {
+                Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领.");				 
+			    Response.Write("<br>");								 
+			    Response.Write("<dd>");
+			    Response.Write("您的信息如下:");
+			    Response.Write("</dd>");
+			    Response.Write("<dt>");
+			    Response.Write("</dt>");
+            }
+            else if(dt_yh.Rows[0]["是否验证通过"].ToString()=="不通过")
+            {
+                Response.Write("审核未通过,请继续完善信息!");
+			    Response.Write("<br>");								 
+			    Response.Write("<dd>");
+			    Response.Write("您的信息如下:");
+			    Response.Write("</dd>");
+			    Response.Write("<dt>");
+			    Response.Write("</dt>");
+            }                   
 					 
 		%>
 		</span>

@@ -4,8 +4,7 @@
 	  文件名:  认领厂商.aspx        
 	  传入参数:用户id	  
      author:张新颖
---> 
-
+-->
 
 <%@ Register Src="include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
 
@@ -16,6 +15,7 @@
 <%@ Import Namespace="System.Web" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
@@ -109,12 +109,12 @@
         else
         {
             dt_clgys = null;
-            string SQL = "select * from 材料供应商信息表 ";
+            string SQL = "select * from 材料供应商信息表  where 单位类型='" + gys_type + "' and (yh_id is null or yh_id='') ";
             dt_clgys = objConn.GetDataTable(SQL);
         }
     }
    </script>
-    <script language ="javascript">
+    <script language ="javascript" type="text/javascript">
         function send_request()
         {
             var gys_list = document.getElementById("gyslist");
@@ -138,7 +138,7 @@
 
                 }
             }
-            var gys_type = '<%= System.Web.HttpUtility.UrlEncode(gys_type)%>';  
+            var gys_type = '<%= System.Web.HttpUtility.UrlEncode(gys_type)%>'; 
             xmlhttp.open("GET", "rlcs2.aspx?gys_id=" + gys_id + "&gys_type=" + gys_type, true);
             xmlhttp.send();
         }
@@ -196,8 +196,8 @@
             {
 %>
                     <div>          
-<%                  if(gys_type=="生产商")
-                    { 
+<%          //    if(gys_type=="生产商")
+              //   { 
 %>        
                          <div class="rlcs">
                              <span class="rlcszi" style="color:Blue;font-size:12px">
@@ -226,11 +226,25 @@
 <%                           } 
                          }
 %>                   </div>
-                        
+<%--                        
 <%                  }
                     else
                     { 
-%>                      <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">您已经在本站认领的供应商如下:</span></div>
+%>                     
+                        <div class="rlcs">
+                             <span class="rlcszi" style="color:Blue;font-size:12px">
+				                            <%Response.Write("恭喜您!审核已通过,你可以进行以下操作：");%>
+                                            <br />
+                                            <a href="glscsxx.aspx">管理生产厂商信息</a>
+                                            <br />
+                                            <a href="gysglcl.aspx">管理分销商信息</a>
+                                            <br />
+                                            <a href="gysglcl.aspx">管理材料信息</a>
+
+
+		                     </span>
+                         </div>  
+                         <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">您已经在本站认领的供应商如下:</span></div>
                          <select id="gys"  name="gys" class="fug" style="width:200px" onchange="Update_gys(this.options[this.options.selectedIndex].value)">
  <%                        
                               foreach (System.Data.DataRow row in dt_yrl_gys.Rows)
@@ -238,21 +252,21 @@
 %>                              <option value='<%=row["gys_id"].ToString()%>'><%=row["供应商"].ToString() %></option>
 <%                           }  
 %>
-                         </select>
-                          <div class="fxsxx2">
+                         </select>--%>
+<%--                          <div class="fxsxx2">
                               <dl>
-                                <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="Text2" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["供应商"] %>" /></dt>
-                                <dd>贵公司地址：</dd><dt><input name="address" type="text" id="Text4" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["联系地址"] %>"/></dt>
-                                <dd>贵公司电话：</dd><dt><input name="tel" type="text" id="Text6" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["电话"] %>"/></dt>
-                                <dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="Text8" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["主页"] %>" /></dt>
-                                <dd>贵公司传真：</dd><dt><input name="fax" type="text" id="Text10" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["传真"] %>"/></dt>
-                                <dd>贵公司地区：</dd><dt><input name="area" type="text" id="Text12" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["地区名称"] %>"/></dt>
-                                <dd>联系人姓名：</dd><dt><input name="name" type="text" id="Text14" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["联系人"] %>" /></dt>
-                                <dd>联系人电话：</dd><dt><input name="phone" type="text" id="Text16" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["联系人手机"] %>" /></dt>
-                                <dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Text18" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["经营范围"] %>" /></dt>
+                                <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["供应商"] %>" /></dt>
+                                <dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["联系地址"] %>"/></dt>
+                                <dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["电话"] %>"/></dt>
+                                <dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["主页"] %>" /></dt>
+                                <dd>贵公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["传真"] %>"/></dt>
+                                <dd>贵公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["地区名称"] %>"/></dt>
+                                <dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["联系人"] %>" /></dt>
+                                <dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["联系人手机"] %>" /></dt>
+                                <dd>经营范围  ：</dd><dt><input name="Business_Scope" type="Business_Scope" id="Text18" class="fxsxx3" value="<%=dt_yrl_gys.Rows[0]["经营范围"] %>" /></dt>
                              </dl>
-                         </div>
-<%                  }
+                         </div>--%>
+<%             //     }
 %>
 
                    

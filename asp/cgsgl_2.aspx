@@ -49,6 +49,8 @@
     public string sSQL = "";
     public DataTable dt = new DataTable();
     public int firstlevel;
+    public string xx = "";   //是否存在信息   
+    public string sftg = "";   
     protected void Page_Load(object sender, EventArgs e)
     {
          if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
@@ -57,35 +59,49 @@
         }
       if(s_QQid!="")
         {
-             sSQL = "select count(*) from 用户表 where QQ_id = '" + s_QQid + "'";
-		     string s_Count=objConn.DBLook(sSQL);
-              int count = Convert.ToInt32(s_Count);
-            if (count == 0)  //qq_id 不存在，需要增加用户表
+            sSQL = "select count(*) from 用户表 where QQ_id = '" + s_QQid + "'";
+           string count = objConn.DBLook(sSQL);
+           if (Convert.ToInt32(count)==0)  //qq_id 不存在，需要增加用户表
             {
-
                 sSQL = "insert into 用户表 (QQ_id) VALUES ('" + s_QQid + "')";
                if(!objConn.ExecuteSQL(sSQL,false))
                {
                   objConn.MsgBox(this.Page,"执行SQL语句失败"+sSQL);
                }
-
-                sSQL = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + s_QQid + "') where QQ_id = '" + s_QQid + "'";
+                sSQL = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + s_QQid + "'),类型='采购商' where QQ_id = '" + s_QQid + "'";
                 if(!objConn.ExecuteSQL(sSQL,false))
                {
                   objConn.MsgBox(this.Page,"执行SQL语句失败"+sSQL);
+                  return;
                }
 
             }
-            sSQL="select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='" + s_QQid + "'";           
-            dt =objConn.GetDataTable(sSQL);
+           string lx = "";
+            sSQL = "select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id = '" + s_QQid + "'";
+            dt = objConn.GetDataTable(sSQL);
             if (dt!=null&&dt.Rows.Count>0)
-            {
+            {              
                 s_yh_id = Convert.ToString(dt.Rows[0]["yh_id"]);
                 string vip=dt.Rows[0]["等级"].ToString();
                 if (vip=="VIP用户")
                 {
                     userIsVIP = true;
                 }
+                lx = dt.Rows[0]["类型"].ToString();
+                sftg = dt.Rows[0]["是否验证通过"].ToString();
+            }
+
+            if (lx != "采购商")
+            {
+                string cookieName = "";
+                cookieName = "CGS_YH_ID";
+                if (Request.Cookies[cookieName] != null)
+                {
+                    HttpCookie myCookie = new HttpCookie(cookieName);
+                    myCookie.Expires = DateTime.Now.AddDays(-10d);
+                    Response.Cookies.Add(myCookie);
+                }
+                Response.Write("<script>window.alert('您不是采购商，不能用采购商身份登录！');window.location.href='index.aspx';</" + "script>");
             }
             Session["CGS_YH_ID"] = s_yh_id;
              if (!IsPostBack)
@@ -102,15 +118,14 @@
                     this.contactorname.Value = dt_userInfo.Rows[0]["姓名"].ToString();
                     this.contactortel.Value = dt_userInfo.Rows[0]["手机"].ToString();
                     this.QQ_id.Value = dt_userInfo.Rows[0]["QQ号码"].ToString();
-                    string lx = "";
-                    lx = dt_userInfo.Rows[0]["类型"].ToString();
-                    if (lx == "生产商")
+                    if ( dt_userInfo.Rows[0]["公司名称"].ToString()==""&&dt_userInfo.Rows[0]["公司电话"].ToString()==""&&dt_userInfo.Rows[0]["公司地址"].ToString()==""
+                        && dt_userInfo.Rows[0]["姓名"].ToString() == "" && dt_userInfo.Rows[0]["手机"].ToString()=="")
                     {
-                        this.scs.Checked = true;
+                        xx = "否";
                     }
-                    else if (lx == "分销商")
+                    else
                     {
-                        this.gxs.Checked = true;
+                        xx = "是";
                     }
                 } 
             }
@@ -175,7 +190,7 @@
             s_yh_id = Session["CGS_YH_ID"].ToString();
         }
 
-         sSQL="select QQ号码,手机,类型,姓名,公司名称,公司地址,公司主页,公司电话 from 用户表 where yh_id='"+s_yh_id+"'";
+         sSQL="select QQ号码,手机,类型,姓名,公司名称,公司地址,公司主页,公司电话,是否验证通过 from 用户表 where yh_id='"+s_yh_id+"'";
         DataTable dt_yhbt=objConn.GetDataTable(sSQL);
         if(dt_yhbt!=null&&dt_yhbt.Rows.Count>0)
         {
@@ -187,12 +202,17 @@
             string com_tel=dt_yhbt.Rows[0]["公司电话"].ToString();
             if(user_type!=""&&tel!=""&&name!=""&&com_name!=""&&com_add!=""&&com_tel!="")
             {
-
+                if (dt_yhbt.Rows[0]["是否验证通过"].ToString()=="通过")
+                {
                     sSQL = "select b.* from 采购商关注材料表 as  a ,材料表 as b  where a.yh_id='" + s_yh_id + "'  and a.cl_id = b.cl_id ";
                     dt = null;
                     dt = objConn.GetDataTable(sSQL);
                     outToExcel(dt);
-
+                }
+                else
+                {
+                    Response.Redirect("cgsbtxx.aspx");
+                }
             }
             else
             {
@@ -285,15 +305,7 @@
         {
             s_yh_id = Session["CGS_YH_ID"].ToString();
         }
-        string s_lx = "";
-        if (this.gxs.Checked)
-        {
-            s_lx = "分销商";
-        }
-        else if (this.scs.Checked)
-        {
-            s_lx = "生产商";
-        }
+      
 		if (this.contactortel.Value == "")
         {
             objConn.MsgBox(this.Page, "手机不能为空,请填写!");
@@ -331,7 +343,6 @@
                 " 公司地址='"+this.companyaddress.Value+"',"+
                 " 公司电话='"+this.companytel.Value+"',"+
                 " QQ号码='"+this.QQ_id.Value+"',"+
-                " 类型='" + s_lx + "'," +
                 " 是否验证通过='待审核'"+
                 " where yh_id='" + s_yh_id + "'";
         if (!objConn.ExecuteSQL(sSQL, true))
@@ -434,19 +445,40 @@
     <div class="cgdlqq">
 		    <div class="cgdlex">
 			    <div class="cgdlex2">
-				    <span class="cgdlex3">您的信息如下，如需更改请单击更改按钮</span>
+                <%if (xx == "否")
+                  {%>
+                   <span class="cgdlex3">请补填您的详细信息</span>
+                <%}
+                  else
+                  {
+                      if (sftg == "不通过")
+                      {%>
+                       <span class="cgdlex3">您提交的信息未通过审核，请修改后提交！</span>
+                      <%}
+                      else
+                      {
+                       %>
+                   <span class="cgdlex3">您的信息如下，如需更改请单击更改按钮</span>
+                <%}
+                  }%>
+				   
 				    <dl>						
 					    <dd>公司名称：</dd><dt><input class="cgdlex2text" id="companyname" name="companyname" type="text"   runat="server" /></dt>
 					    <dd>公司地址：</dd><dt><input class="cgdlex2text"  id="companyaddress" name="companyaddress" type="text"  runat="server" /></dt>
 					    <dd>公司电话：</dd><dt><input class="cgdlex2text"  id="companytel" name="companytel" type="text"  runat="server"/></dt>
-					     <dd>*贵公司是：</dd><dt><input  id="scs" name="select" type="radio" value="生产商" runat="server" validationgroup="select" />生产商  
-											<input id="gxs"  runat="server" name="select"  type="radio" value="分销商" validationgroup="select" />分销商 </dt>
                         <dd>您的姓名：</dd><dt><input class="cgdlex2text"  id="contactorname" name="contactorname" runat="server"/></dt>
 					    <dd>您的电话：</dd><dt><input class="cgdlex2text"  id="contactortel" name="contactortel0" runat="server"/></dt>
 					    <dd>您的QQ号：</dd><dt><input class="cgdlex2text"  id="QQ_id" name="contactortel" runat="server"/></dt>					  
 				    </dl>
 				    <asp:Label ID="label2" runat="server" Text="" />
-				    <span class="cggg"><asp:ImageButton ID="updateButtion" ImageUrl="images/12ff_03.jpg"  OnClick="updateUserInfo" runat="server" /></span>
+                    <%if (xx == "否")
+                      { %>
+                      <span class="cggg"><asp:ImageButton runat="server" ID="ImageButton1" ImageUrl="images/aaaa_03.jpg"  OnClick="updateUserInfo"  /></span>
+                    <%}
+                      else
+                      { %>
+                       <span class="cggg"><asp:ImageButton ID="updateButtion" ImageUrl="images/12ff_03.jpg"  OnClick="updateUserInfo" runat="server" /></span>
+                    <%} %>				   
 			    </div>
 		    </div>
 	    </div>

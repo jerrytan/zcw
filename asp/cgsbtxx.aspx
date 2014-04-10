@@ -44,7 +44,7 @@
 	public string s_yh_id = "";
     public DataConn objConn = new DataConn();
     public bool b=false;
-	public string s_yz="":
+    public string s_yz = "";
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -125,6 +125,10 @@
 		<div class="cggybtl"><img src="images/www_03.jpg" /></div>
          <%if(s_yz=="待审核"){%>
                 <span style=" color:Red">您提交的信息正在审核中，请您耐心等待!</span>
+          <%}
+           else if (s_yz == "不通过")
+           { %>
+           <span style=" color:Red">您提交的信息未通过审核，请您重新填写个人信息并提交!</span>
           <%} %>
 		<div class="cggybtr">
 			<dl>

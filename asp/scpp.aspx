@@ -57,7 +57,7 @@
                         ppid_list=ppid_str.Split(',');
                         for(int i=0;i<ppid_list.Length;i++)
                         {
-                              sSQL="delete 品牌字典 where scs_id='"+fxs_id+"' and pp_id ='("+ ppid_list[i]+")'";                
+                              sSQL="delete 品牌字典 where scs_id='"+fxs_id+"' and pp_id ='"+ ppid_list[i]+"'";                
                              ret = objConn.ExecuteSQLForCount(sSQL,true);	
                         }
                     }
@@ -66,7 +66,6 @@
                         ppid=ppid_str;
                           sSQL="delete 品牌字典 where scs_id='"+fxs_id+"' and pp_id = '"+ ppid+"'";                 
                          ret = objConn.ExecuteSQLForCount(sSQL,true);	
-                           Response.Write(sSQL);
                     } 		
                 }
                 else
@@ -76,7 +75,7 @@
                         ppid_list=ppid_str.Split(',');
                         for(int i=0;i<ppid_list.Length;i++)
                         {
-                             sSQL="delete 分销商和品牌对应关系表 where fxs_id='"+fxs_id+"' and pp_id ='("+ ppid_list[i]+")'";              
+                             sSQL="delete 分销商和品牌对应关系表 where fxs_id='"+fxs_id+"' and pp_id ='"+ ppid_list[i]+"'";              
                              ret = objConn.ExecuteSQLForCount(sSQL,true);	
                         }
                     }
