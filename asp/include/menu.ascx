@@ -90,17 +90,22 @@
 <div class="dh">
     <ul>
         <% foreach (var v in this.Items1){%>
-        <li><a href="yjfl.aspx?name=<%=v.Sid.ToString() %>"><%=v.Name%></a>
-            <ul style="left: -39px; width: 152px;">
+       <li><a href="yjfl.aspx?name=<%=v.Sid.ToString() %>"><%=v.Name%></a>
+            <ul style="left: -39px; width: 152px;">  
+               <%int count=0;%>         
                 <%  foreach (var vr in this.Items2){				
-                %>
-                <%if (vr.Sid.ToString().Substring(0, 2) == v.Sid.ToString())
-           {%>
-                <li><a href="ejfl.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
+                %>               
+                <%if (vr.Sid.ToString().Substring(0, 2) == v.Sid.ToString()) {%>
+                <%count=count+1; %>
+                <%if(count<=5){ %>
+                  <li><a href="ejfl.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
                 <%} %>
-                <% } %>
+               <% else{
+                break;
+                }}} %>
             </ul>
         </li>
+
         <% } %>
         <li><a href="#">更多</a>
             <ul style="left: -677px;">
