@@ -50,12 +50,18 @@
         protected DataTable dt_yjfl = new DataTable();   //材料分类大类
 		protected String gys_id="";
         public DataConn objConn=new DataConn();
+        public string source1="";
         protected void Page_Load(object sender, EventArgs e)
         {
             if(Request["gys_id"]!=null&&Request["gys_id"].ToString()!="")
             {
                 gys_id = Request["gys_id"].ToString();
              }
+             if(Request["source"]!=null&&Request["source"].ToString()!="")
+             {
+                source1=Request["source"].ToString();
+             }
+             this.source.Value=source1;
                string sSQL="select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
           
                 dt_yjfl = objConn.GetDataTable(sSQL);
@@ -129,6 +135,7 @@
 
                 <tr>
                     <td>
+                    <input  type="hidden" runat="server" id="source"/>
                         <input type="hidden" id="gys_id" name="gys_id" value="<%=gys_id %>" />
                         <input type="submit" id="send" value="保存" style="width: 100px" />
                     </td>

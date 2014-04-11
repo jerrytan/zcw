@@ -18,11 +18,14 @@
             DataConn objConn=new DataConn();
             //新增品牌写入数据库
              string yh_id="";
+        
             if(Session["GYS_YH_ID"]!=null&&Session["GYS_YH_ID"].ToString()!="")
                 {
                     yh_id =Session["GYS_YH_ID"].ToString();   //获取用户id
                 }  
-       
+
+                  string  source=Request.Form["source"];
+             
                 string gys_id = Request.Form["gys_id"]; 				
                 string brandname = Request.Form["brandname"];            //品牌名称
                 string yjflname = Request.Form["yjflname"];              //大级分类名称               
@@ -62,13 +65,19 @@
         <script defer="defer" type="text/javascript">
             function doload()
             {
+            <%if(source=="xzym") {%>
+              window.close();
+                opener.location.href="gyszym.aspx";
+            <%} else{%>
                 window.close();
                 opener.location.reload();
+                <%} %>
             }
             setTimeout("doload()", 1000);
         </script>
-        <script>
+        <script type="text/javascript">
             function clickMe() {
+
                 window.close();
                 opener.location.reload();
 

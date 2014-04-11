@@ -20,6 +20,7 @@
         public DataConn objConn=new DataConn();
         public DataTable dt_clfl=new DataTable();
         public string s_dwlx="";
+        public string source1 = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             if( Request["gys_id"]!=null&& Request["gys_id"].ToString()!="")
@@ -30,7 +31,11 @@
             {
                 s_yh_id = Session["GYS_YH_ID"].ToString();
             }
-
+            if (Request["source"] != null && Request["source"].ToString() != "")
+            {
+                source1 = Request["source"].ToString();
+            }
+            this.source.Value = source1;
              string sSQL="";
             
              sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型
@@ -49,6 +54,7 @@
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page Language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
@@ -148,6 +154,7 @@
 
                 <tr>
                     <td>
+                    <input  type="hidden" runat="server" id="source"/>
                         <input type="hidden" id="lx" name="lx" value="<%=s_dwlx %>"  />
                         <input type="hidden" id="fxs_id" name="fxs_id" value="<%=gys_id %>" />
                         <input type="hidden" id="pp_id" name="pp_id" value="<%=dt_ppxx.Rows[0]["pp_id"] %> " />
@@ -164,10 +171,3 @@
     </center>
 </body>
 </html>
-
-
-
-
-
-
-

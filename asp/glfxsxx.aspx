@@ -17,6 +17,7 @@
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page Language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
@@ -190,7 +191,9 @@
             }
 
             if (dt_gysxx.Rows.Count == 0)
-                Response.Redirect("gyszym.aspx");
+               {
+                      Response.Redirect("xzgxs.aspx?xzlx=fsx");
+               }
 
         
              //获取glfxsxx2页面返回的供应商id
@@ -348,7 +351,7 @@
 			<%}%>
 			
 			</select> 
-			<span class="zjgxs1"><a href="xzfxs.aspx">增加新的分销商</a></span>
+			<span class="zjgxs1"><a href="xzgxs.aspx?xzlx=fsx">增加新的分销商</a></span>
 			</div>
 			<%}%>
             <%if(s_gys_type=="生产商"){ %>
