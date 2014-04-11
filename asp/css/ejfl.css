@@ -1,0 +1,12 @@
+﻿ #filter{width:950px;  height:auto; margin-left:auto; margin-right:auto;font-size:12px;} 
+     #filter a{text-decoration:none;color:#0033FF;padding-right: 8px;}
+     #filter dl,dd,dt{margin:0;padding:0}
+     #filter dl{width:980px;overflow:hidden;margin:20px auto}
+     #filter dt{width:60px;float:left;font-weight:bold}
+     #filter dd{width:900px;float:right;cursor:pointer;}
+     #filter .now{background:#0033FF;color:#fff;}
+     #filter .now a{color:#fff}   
+    .active{ color:#fff; height:26px; padding:0 5px; background:#0033FF; border:none;}  
+     #filter dl dd a{margin-bottom:20px;}
+     .dlspx3 {cursor:pointer;}
+     .dlspx4 {cursor:pointer;}

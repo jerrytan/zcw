@@ -6,38 +6,28 @@
                
     -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
-
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
+<%@ Import Namespace="System.Text" %>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-    <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
-    <script language="javascript" type="text/javascript">
-        $(document).ready(function () {
-            $("#ckAll").click(function () {
-                var v = $(this).attr("checked");//获取"全选复选框"                
-                $(":checkbox.ck").attr("checked", v);//设置class=ck的复选框是否被选中
-            });
-            $(":checkbox.ck").click(function () {
-                var a = $(":checkbox.ck").size(); //获取所有的class=ck的复选框数量                
-                var b = $(":checkbox.ck:checked").size();//获取所有的class=ck,并且被选中的 复选框数量
-                var c = a == b;
-                $("#ckAll").attr("checked", c);
-            });
-        });
-    </script>
     <title>二级分类详细页面</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
+    <link href="css/ejfl.css" rel="stylesheet" type="text/css" />  
+    <script src="Scripts/jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script src="js/ejfl.js" type="text/javascript"></script> 
 </head>
 <body>
+
+
     <!-- 头部开始-->
     <!-- #include file="static/header.aspx" -->
     <!-- 头部结束-->
@@ -56,26 +46,27 @@
         protected DataTable dt_ejflmc = new DataTable();  //二级分类名称 
 		protected DataTable dt_ejflpp = new DataTable();  //品牌(和二级分类相关的品牌) 材料分类表中fl_id 品牌字典中关系没有对应
 		protected DataTable dt_ejflcl = new DataTable();  //二级分类名称下的材料(最具人气的石材)
-		protected DataTable dt_clmcpage = new DataTable();  //材料名称分页 (对小类中的所有材料进行分页)
+		protected DataTable dt_clxx= new DataTable();  //默认情况下显示的材料信息
 		protected DataTable dt_wz = new DataTable();  //如何挑选大理石相关文章(文章表)
+        protected DataTable dt_flsx = new DataTable();//分类属性
+        protected DataTable dt_flsxz = new DataTable();//分类属性值
+
         protected DataConn dc_obj = new DataConn();
+		
+        private string name="";    //二级分类编码
+        protected string sort= string.Empty; //排序方式
+        protected string pp= string.Empty; //品牌
+        protected string msg = string.Empty;//传递的属性值id组成的字符串
+        protected string url=string.Empty;//获取当前请求的url
+        protected int pageIndex=1;
+        protected int pageSize=12;
+        protected int pageCount;
+        protected string pageBar="";
+        protected string defaultMsg="";//当没有筛选到合适的记录时默认显示的提示信息
 
-		private const int Page_Size = 8; //每页的记录数量
-		private int current_page=1;
-	    int pageCount_page;
-        private string name="";
-        private int i_count=0;
-
-      public class OptionItem
-    {
-        public string Text { get; set; }
-        public string SelectedString { get; set; }
-        public string Value { get; set; }
-    }
-       	public List<OptionItem> Items { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
-            name= Request["name"];
+            name= Request["name"];//二级分类的名称
 			string name1=name.ToString().Substring(0, 2); //取左边两位字符串
             string str_sqlclmc = "select 显示名字,分类编码 from 材料分类表 where  left(分类编码,2)='"+name1+"' and len(分类编码)='2' "; 
             dt_yjflmc = dc_obj.GetDataTable(str_sqlclmc);
@@ -83,7 +74,7 @@
 			string str_sqlclmz = "select 显示名字 from 材料分类表 where 分类编码='"+name+"' ";
             dt_ejflmc = dc_obj.GetDataTable(str_sqlclmz);
 			
-			string str_sqlppmc = "select distinct 品牌名称 from 品牌字典 where  fl_id in(select fl_id from 材料分类表 where 分类编码='"+name+"') "; 
+			string str_sqlppmc = "select 品牌名称,pp_id from 品牌字典  where  fl_id in(select fl_id from 材料分类表 where 分类编码='"+name+"') "; 
             dt_ejflpp = dc_obj.GetDataTable(str_sqlppmc);
            		
 			
@@ -92,85 +83,184 @@
 			
 			string str_sqltop4 = "select top 4 标题,摘要,wz_id from 文章表 where left(分类编码,4)='"+name+"' ";
 			dt_wz = dc_obj.GetDataTable(str_sqltop4);
-			
-			//从查询字符串中获取"页号"参数
-            string strP = Request.QueryString["p"];
-            if (string.IsNullOrEmpty(strP))
-            {
-                strP = "1";
-            }
-            int p;
-            bool b1 = int.TryParse(strP, out p);
-            if (b1 == false)
-            {
-                p = 1;
-            }
-            current_page = p;
-            //从查询字符串中获取"总页数"参数
-            string strC = Request.QueryString["c"];
-            if (string.IsNullOrEmpty(strC))
-            {
-                double recordCount = this.GetProductCount(); //总条数
-                double d1 = recordCount / Page_Size; //13.4
-                double d2 = Math.Ceiling(d1); //14.0
-                int pageCount = (int)d2; //14
-                strC = pageCount.ToString();
-            }
-            int c;
-            bool b2 = int.TryParse(strC,out c);
+         
+            string str_sqlflsx="select flsx_id,显示 from dbo.材料分类属性表 where 分类编码='"+name+"'";
+            dt_flsx=dc_obj.GetDataTable(str_sqlflsx);
 
-            if (b2 == false)
+            string str_sqlflsxz="select flsxz_id,属性值,flsx_id from dbo.材料分类属性值表";
+            dt_flsxz=dc_obj.GetDataTable(str_sqlflsxz);
+             
+            url = Request.RawUrl;//获取当前请求的ur
+		  
+            sort=Request.QueryString["sort"];//排序方式
+            pp=Request.QueryString["pp"];//品牌
+            string result=string.Empty;
+            if(sort!=null&&pp!=null)
+             {
+             result=sort + ","+pp+",";
+             }      
+            
+           msg=result+GetParameterStr(url);//参数id组成的字符串 还原状态 
+           string sqlParm=GetInputSqlParm(GetParameterStr(url));//传入sql语句的参数
+            string  Pagestr=Request.QueryString["page"];
+             if (!int.TryParse(Pagestr, out pageIndex))
+             {
+                 pageIndex = 1;
+             }            
+                 
+            pageCount=GetPageCount(name,pageSize,pp,sqlParm);            
+            if(pageCount<=0)
             {
-                c = 1;
+              defaultMsg="暂无信息";
             }
-            pageCount_page = c;
-            //计算/查询分页数据
-            int begin = (p - 1) * Page_Size + 1;
-            int end = p * Page_Size;
-			//string name1 = name.ToString().Substring(0, 4);    //将二级分类传过来的材料编码取前四位作为参数执行存储过程
-            dt_clmcpage = this.GetProductFormDB(begin, end,name);
-            this.SetNavLink(p, c,name);   
-		} 
-		      
-        private void SetNavLink(int currentPage, int pageCount,string name)
+            else
+            {
+             dt_clxx=GetPageList(name,pp,sort,sqlParm,pageIndex,pageSize);  
+             pageBar=CreatePageBar(url,pageIndex,pageCount);   
+            }     
+           
+		} 		  
+
+
+         
+         //解析参数     
+       private string GetParameterStr(string url)
         {
-            this.Items = new List<OptionItem>();
-            for (int i = 1; i <= pageCount; i++)  //下拉列表循环总得页数
-            {               
-                OptionItem item = new OptionItem();
-                item.Text = i.ToString();                          
-                item.SelectedString = i == currentPage ? "selected='selected'" : string.Empty;
-                item.Value = string.Format("ejfl.aspx?p={0}&name={1}", i,name);                
-                this.Items.Add(item);
-            }
-      
+             string ArrStr = string.Empty; 
+             int num1 = url.IndexOf('&');//第一次出现的位置          
+             int num2 = url.IndexOf('&', num1 + 1);//第二次出现的位置
+             if(num1==-1)
+             {
+               ArrStr="";
+             }
+             else if(num1!=-1&&num2==-1)
+             {
+               ArrStr="";
+             }
+             else if(num1!=-1&&num2!=-1)
+             {
+               int num3 = url.IndexOf('&', num2 + 1);//第三次出现的位置
+               int num4 = url.IndexOf('&', num3 + 1);
+               if(num4!=-1)
+               {
+                url = url.Remove(num4);
+               }
+                url = url.Substring(num3 + 1);
+                string[] strArr = url.Split('=');
+                ArrStr = strArr[1].Replace('x', ',');
+             }
+            
+             return ArrStr;
         }
 
-        private DataTable GetProductFormDB(int begin, int end, string name)
+        //处理传入SQL语句关于属性值id的参数
+        protected string GetInputSqlParm(string str)
         {
-             SqlParameter [] spt = new SqlParameter[]
-            {
-                new SqlParameter("@begin",begin),
-                new SqlParameter("@end",end),
-                new SqlParameter("@材料编码",name)
-            };
-            return dt_clmcpage = dc_obj.ExecuteProcForTable("ej_cl_Paging",spt); 
+           str=str.Replace("0", "");
+           string[] parmStr = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+           return string.Join(",", parmStr);           
         }
 
-        //从数据库获取记录的总数量
-        private int GetProductCount()
-        {
-            try
+        //得到分页信息
+         protected DataTable GetPageList(string name,string pp,string sort,string ids,int pageIndex,int pageSize)      
+        {          
+            string sql = @"select ROW_NUMBER() over(order by {0}) as newID, a.显示名,a.材料编码,a.cl_id,a.fl_id,a.规格型号,b.flsxz_id,a.pp_id,a.访问计数,a.updatetime from dbo.材料表 a inner join dbo.材料属性表 b on a.分类编码=b.分类编码 where a.分类编码=@name";
+           if (pp != null && pp != ""&&pp!="0")
             {
-                string sql = "select * from 材料表 where left(材料编码,4)='"+name+"'";
-                i_count = dc_obj.GetRowCount(sql);
+                sql += " and a.pp_id=" + pp;
             }
-            catch (Exception e)
+           if (ids != null && ids != "")
             {
-                Console.WriteLine(e.Message);
+                sql += " and b.flsxz_id in(" + ids + ")";
+            }      
+            string orderBy = string.Empty;
+            if (sort == "0")
+            {
+                orderBy = "a.myid";
             }
-            return i_count;
+            else if (sort == "1")
+            {
+                orderBy = "a.访问计数";
+            }
+            else if (sort == "2")
+            {
+                orderBy = "a.updatetime";
+            }
+          
+            sql = string.Format(sql, (orderBy != "" && orderBy != null) ? orderBy : "a.myid");
+            sql = "select * from (" + sql + ") as t where t.newID between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize ";
+            SqlParameter[] parms ={ 
+                                   new SqlParameter("@pageIndex",SqlDbType.Int),
+                                   new SqlParameter("@pageSize",SqlDbType.Int),
+                                   new SqlParameter("@name",SqlDbType.VarChar)
+                                };           
+            parms[0].Value=pageIndex;
+            parms[1].Value=pageSize; 
+            parms[2].Value=name;
+            return  dc_obj.GetDataTable(sql,parms);     
+           
         }
+         
+
+        //得到总页数
+         private int GetPageCount(string name,int pageSize,string pp,string ids)
+        {
+            string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;          
+            string sql = "select COUNT(*) from dbo.材料表 a inner join dbo.材料属性表 b on a.分类编码=b.分类编码 where a.分类编码="+name;
+            if (pp != null && pp != "" &&pp!="0")
+            {
+                sql += " and a.pp_id=" + pp;
+            }
+            if (ids != null && ids != "")
+            {
+                sql += " and b.flsxz_id in(" + ids + ")";
+            }  
+            SqlCommand cmd = new SqlCommand(sql);
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                cmd.Connection = conn;
+                conn.Open();
+                object obj = cmd.ExecuteScalar();
+                conn.Close();
+                int recordCount = (int)obj;
+                return Convert.ToInt32(Math.Ceiling(1.0 * recordCount / pageSize));
+            }      
+      }
+
+      //分页条
+      protected string CreatePageBar(string url,int pageIndex,int pageCount)
+      {                         
+            int num1 = url.IndexOf('&');//第一次出现的位置          
+             int num2 = url.IndexOf('&', num1 + 1);//第二次出现的位置
+             int num3 = url.IndexOf('&', num2 + 1);//第三次出现的位置
+             int num4=url.IndexOf('&',num3+1);          
+             if (num1 != -1 && num2 == -1)//判断是否出现page这个参数
+             {
+                url = url.Remove(num1);
+             }
+             if (num1 != -1 && num2 != -1 && num3 != -1 && num4 != -1)
+             {
+                url = url.Remove(num4);
+             }
+
+             StringBuilder sb = new StringBuilder();          
+            sb.Append("<a href='"+url+"&page=1'>首页</a>&nbsp;&nbsp;");
+            int temp=pageIndex;
+            if (pageIndex > 1)
+            {
+                temp = pageIndex - 1;
+            }
+            sb.Append("<a href='"+url+"&page="+temp+"'>上一页</a>&nbsp;&nbsp;");
+            temp = pageIndex;
+            if (pageIndex < pageCount)
+            {
+                temp = pageIndex + 1;
+            }
+            sb.Append("<a href='"+url+"&page="+temp+"'>下一页</a>&nbsp;&nbsp;");
+            sb.Append("<a href='"+url+"&page=" + pageCount + "'>尾页</a> &nbsp;&nbsp;第"+pageIndex+"页/共"+pageCount+"页");
+            return  sb.ToString();
+      }
+
     </script>
 
     <div class="sc">
@@ -181,7 +271,7 @@
             <a href="yjfl.aspx?name=<%=row["分类编码"]%>"><%=row["显示名字"].ToString() %></a>
             <% } %>> 
             <% foreach(System.Data.DataRow row in dt_ejflmc.Rows){%>
-            <a href="#"><%=row["显示名字"].ToString() %></a>
+            <a ><%=row["显示名字"].ToString() %></a>
             <% } %>
         </div>
         <!-- 链接导航栏 结束-->
@@ -202,58 +292,93 @@
         </div>
         <!-- 标题和内容摘要 结束-->
 
+        <!--
+          二级分类页面的筛选 排序 材料列表
+          author:lilifeng
+        -->
         <!-- 筛选 开始 -->
         <div class="xzss">
-            <div class="ppxz">
-                <div class="ppxz1">品牌：</div>
-                <div class="ppxz2">
-                    <a href="#"><img src="images/qwez.jpg" /></a>
-                    <% foreach(System.Data.DataRow row in dt_ejflpp.Rows){%>
-                    <a href="#"><%=row["品牌名称"].ToString() %></a>
-                    <% } %>
-                </div>
+        <div id="filter">
+          <dl>
+           <dt >品牌：</dt>
+           <dd class="content content0"><a  val="0">全部</a>
+           <%foreach (System.Data.DataRow row in dt_ejflpp.Rows){%>
+           <a val="<%=row["pp_id"]%>"><%=row["品牌名称"]%></a>
+           <%} %>
+           </dd></dl>         
+         
+    <!--其它属性开始-->
+     <%int count=1;string classname="content1"; %> 
+    <%if(dt_flsx.Rows.Count>2)
+     { 
+       for(int i=1;i<=2;i++){
+        var row=dt_flsx.Rows[i-1];%>
+       <dl ><dt><%=row["显示"]%>：</dt>
+           <dd class="content <%=classname%>"><a val="0">全部</a>
+           <%foreach (System.Data.DataRow row1 in dt_flsxz.Rows){%>
+           <%if (row["flsx_id"].ToString()==row1["flsx_id"].ToString()){%>
+            <a val="<%=row1["flsxz_id"]%>"><%=row1["属性值"]%></a>
+           <%}%>
+           <%}%>            
+             </dd></dl>
+         <%count++;classname="content"+count;%>
+       <% }%>
+       <div id="btnMore" style="cursor:pointer;"><span style="font-weight:bold">更多</span><img src="images/more_03.jpg" />
+       <div id="more" style="display:none">
+        <%for (int i = 3; i <=dt_flsx.Rows.Count; i++){%>
+         <%var row=dt_flsx.Rows[i-1]; %>
+         <dl ><dt><%=row["显示"]%>：</dt>
+           <dd class="content <%=classname%>"><a val="0">全部</a>
+           <%foreach (System.Data.DataRow row1 in dt_flsxz.Rows){%>
+           <%if (row["flsx_id"].ToString()==row1["flsx_id"].ToString()){%>
+            <a val="<%=row1["flsxz_id"]%>"><%=row1["属性值"]%></a>
+           <%}%>
+        <%}%>
+          </dd></dl>
+         <%count++;classname="content"+count;%>
+        <%}%></div>
+        </div>
+      <% }%>
+  <% else{%>
+    <% foreach (System.Data.DataRow row in dt_flsx.Rows){%>          
+           <dl ><dt><%=row["显示"]%>：</dt>
+           <dd class="content <%=classname%>"><a val="0">全部</a>
+           <%foreach (System.Data.DataRow row1 in dt_flsxz.Rows){%>
+           <%if (row["flsx_id"].ToString()==row1["flsx_id"].ToString()){%>
+            <a val="<%=row1["flsxz_id"]%>"><%=row1["属性值"]%></a>
+           <%}%>
+           <%}%>            
+             </dd></dl>
+         <%count++;classname="content"+count;%>
+           <%}%>
+      <% }%>
+     <!--其它属性结束-->
+        </div>
+
+        <div class="dlspx">
+                 <span class="dlspx3">排序：</span>
+                <ul id="sort" >
+                    <li val="0" class="dlspx3" >默认方式</li>
+                    <li val="1" class="dlspx3" ><span class="pl14px">人气<img src="images/qweqw_03.jpg" /></span></li>
+                    <li val="2" class="dlspx3" ><span>最新<img src="images/qweqw_03.jpg" /></span></li>
+                </ul>              
+               <span class="dlspx3"><input type="checkbox" value="" id="ckAll" class="fx" />全选</span>
+                <span class="dlspx4"><a id="collect">请收藏，便于查找</a></span>
             </div>
-            <div class="ppxz">
-                <div class="ppxz1">区域：</div>
-                <div class="ppxz2"><a href="#">
-                    <img alt="" src="images/qwez.jpg" /></a> <a href="#">朝阳区</a> <a href="#">海淀区</a> <a href="#">丰台区</a>
-                </div>
-            </div>
-            <div class="ppxz">
-                <div class="ppxz1">材料：</div>
-                <div class="ppxz2">
-                    <a href="#"><img alt="" src="images/qwez.jpg" /></a>
-                    <% foreach(System.Data.DataRow row in dt_ejflcl.Rows){%>
-                    <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>"><%=row["显示名"].ToString() %></a>
-                    <%}%>
-                </div>
-            </div>
-            <div class="ppxz">
-                <div class="ppxz1">更多：</div>
-                <div class="ppxz2"> 
-                    <a href="#">属性1</a> <a href="#">属性2</a> <a href="#">属性3</a>
-                </div>
-            </div>
-            <!-- 材料排序筛选 开始-->
-            <div class="dlspx">
-                <span class="dlspx1">排序：</span>
-                <span class="dlspx2"><a href="#">默认</a></span>
-                <span class="dlspx3"><a href="#">人气<img src="images/qweqw_03.jpg" /></a></span>
-                <span class="dlspx3"><a href="#">最新<img src="images/qweqw_03.jpg" /></a></span>
-                <span class="dlspx3">
-                    <input name="" type="checkbox" value="" id="ckAll" class="fx" /><a href="#">全选</a>
-                </span>
-                <span class="dlspx4"><a href="#">请收藏，便于查找</a></span>
-            </div>
-            <!-- 材料排序筛选 结束-->
         </div>
          <!-- 筛选 结束 -->
 
         <!-- 材料显示列表 开始-->
-        <div class="dlspxl" style="background-color:Green">
-            <% foreach(System.Data.DataRow row in dt_clmcpage.Rows){%>
-            <div class="dlspxt" style="background-color:Orange">
-                <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">
+        <div class="dlspxl" id="dv"><span style="font-size:30px;font-weight:bolder;color:Red;"><%=defaultMsg%></span>
+            <% foreach(System.Data.DataRow row in dt_clxx.Rows){
+                String  mc = row["显示名"].ToString();
+               if (mc.Length > 6) {
+                    mc = mc.Substring(0,6)+"..";
+               } 
+            
+            %>
+            <div class="dlspxt">
+                <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>" title="<%=row["显示名"].ToString() %>">
                     <%
                     string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
                         +row["cl_id"]+"' and 大小='小'";
@@ -266,14 +391,13 @@
                     Response.Write("<img src="+imgsrc+ " width=150px height=150px />");
 				    %>
                     
-                    <div class="dlspxt1" style="overflow:hidden;background-color:Green">
-                        <span class="dlsl" style="overflow:hidden;background-color:Yellow"><%=row["显示名"].ToString() %></span>
-                        <span class="dlspx3" style="background-color:Blue">
-                            <input name="" type="checkbox" value="" class="ck" />收藏
+                    <div class="dlspxt1" >
+                        <span class="dlsl"><%=mc%></span>  </a>
+                        <span class="dlspx3">
+                            <input name="item" type="checkbox" value="<%=row["cl_id"]%>" class="ck" />收藏
                         </span>
-                        <span class="dlsgg" style="background-color:Red">规格：<%=row["规格型号"].ToString() %></span>
-                    </div>
-                 </a>
+                        <span class="dlsgg" >规格：<%=row["规格型号"].ToString() %></span>
+                    </div>              
             </div>
             <% } %>
         </div>
@@ -300,34 +424,7 @@
     <!-- 分页 开始 -->
     <div class="fy2">
         <div class="fy3">
-                 <% if(current_page<=1 && pageCount_page >1) {%> 
-                    <font style="color:Gray">首页</font>
-                    <a href="ejfl.aspx?p=<%=current_page+1 %>&name=<%=name %>" class="p" style="color:Black">下一页</a>
-                    <a href="ejfl.aspx?p=<%=pageCount_page %>&name=<%=name %>" class="p" style="color:Black">末页</a>
-                <%} %>
-                <%else if(current_page <=1 && pageCount_page <=1 ){ %>
-
-                <%} %>
-                    
-                <% else if(!(current_page<=1)&&!(current_page == pageCount_page)){ %>
-                    <a href="ejfl.aspx?p=<%=1 %>&name=<%=name %>"class="p" style="color:Black">首页</a>
-                    <a href="ejfl.aspx?p=<%=current_page-1 %>&name=<%=name %>" class="p" style="color:Black">上一页</a>
-                    <a href="ejfl.aspx?p=<%=current_page+1 %>&name=<%=name %>" class="p" style="color:Black">下一页</a>
-                     <a href="ejfl.aspx?p=<%=pageCount_page %>&name=<%=name %>" class="p" style="color:Black">末页</a>
-                <%}%>
-                <% else if( current_page !=1 && current_page == pageCount_page){ %>
-                    <a href="ejfl.aspx?p=<%=1 %>&name=<%=name %>"class="p" style="color:Black">首页</a>
-                    <a href="ejfl.aspx?p=<%=current_page-1 %>&name=<%=name %>" class="p" style="color:Black">上一页</a>
-                    <font style="color:Gray">末页</font>
-                <%} %>             
-                  <font style="color:Black" >直接到第</font>  
-                <select onchange="window.location=this.value" name="" class="p" style="color:Black">
-                <% foreach (var v in this.Items)
-                { %>
-                    <option value="<%=v.Value %>" <%=v.SelectedString %>><%=v.Text %></option>
-                <%} %>
-                </select>
-                <font style="color:Black" >页&nbsp;&nbsp;&nbsp;第 <%=current_page %> 页/共 <%=pageCount_page %> 页</font>
+              <div id="page"><%=pageBar %></div>  
         </div>
     </div>
     <!-- 分页 结束-->
@@ -341,5 +438,8 @@
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->
+    <div id="msgStr" style="display:none"><%=msg %></div>
+    <div id="name" style="display:none"><%=name%></div>
+  
 </body>
 </html>
