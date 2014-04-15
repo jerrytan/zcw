@@ -3,9 +3,8 @@
         文件名：ppxx_ajax.aspx
         传入参数：
                     ppid 品牌编号
-                    type   类型id
-                    pid    省id
-                    cid    市id
+                    address   地址
+                    ppfxs_count  数量  
         负责人:任武       
     -->
 <%@ Import Namespace="System.Data" %>
@@ -17,90 +16,115 @@
 <%@ Import Namespace="System.Text" %>
 <script runat="server">
         protected DataConn dc_tool = new DataConn();
-        protected DataTable dt_province = new DataTable();    //保存省
-        protected DataTable dt_city = new DataTable();  //保存市
-        protected string str_pid;  //省
-        protected string str_ct; //市
-        protected string type = ""; //页面处理参数
-        protected int ppid;   //品牌编号
+        protected DataTable dt_list = new DataTable();
+
+        private const int Page_Size = 2; //每页的记录数量
+        private int CurrentPage=1;//当前默认页为第一页
+        private int PageCount; //总页数
+
+        protected string pp_id;   //品牌编号
+        protected string address;   //地址
+        protected double count; //数量
+        protected string content; //存储信息
+        protected string fy_list; //分页信息
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            string str_province = "";//省级响应的结果集
-            string str_citys = "";   //市级响应的结果集
-
-            type = Request["type"].ToString();
-            ppid = int.Parse(Request["ppid"].ToString());
-
-            //省级联动
-            if (type == "1")
+            if(!Page.IsPostBack)
             {
-                str_pid = Request["pid"];
-                if (!string.IsNullOrEmpty(str_pid))
-                {
-                    /*获取省市信息*/
-                    string str_sqlprovince = "select 省市地区编号,省市地区名称 from 地区地域字典 where 所属区域编号="
-                        + int.Parse(str_pid) + "and len(省市地区编号)=2";
-                    dt_province = dc_tool.GetDataTable(str_sqlprovince);
-                    if (dt_province != null && dt_province.Rows.Count > 0)//有数据
-                    {
-                        for (int i = 0; i < dt_province.Rows.Count; i++)//遍历出所有的数据
-                        {
-                            str_province += dt_province.Rows[i]["省市地区编号"].ToString() + "_" + dt_province.Rows[i]["省市地区名称"].ToString() + "@";
-                        }
-                    }
-                }
-                Response.Write(str_province);
-            }
-            else
-            {
-                //市级联动
-                string str_cid = Request["cid"];
-                if (!string.IsNullOrEmpty(str_cid))//如果不为空
-                {
-                    //获取省的所有市
-                    string str_sqlcity = "select 省市地区编号, 省市地区名称 from 地区地域字典 where  len(省市地区编号)=4 and left(省市地区编号,2)like '" + str_cid + "';";
-                    dt_city = dc_tool.GetDataTable(str_sqlcity);
-                    if (dt_city != null && dt_city.Rows.Count > 0)//dt_city不为空
-                    {
-                        for (int i = 0; i < dt_city.Rows.Count; i++)
-                        {
-                            //拼凑成字符串
-                            str_citys += dt_city.Rows[i]["省市地区编号"].ToString() + "_" + dt_city.Rows[i]["省市地区名称"].ToString() + "@";
-                        }
-                    }
-                }
-                Response.Write(str_citys);
+                pp_id = Request["pp_id"];
 
-                /* 根据地区名称，找到对应的分销商信息 */
+                address = Request["address"];
+                if (!string.IsNullOrEmpty(address))
+                {
+                     string strP = Request.QueryString["p"];
+                    if(string.IsNullOrEmpty(strP))//判断传过来的参数是否为空  
+                    {
+                        strP = "1";
+                    }
+            
+                    int p;
+                    bool b1 = int.TryParse(strP, out p);
+                    if (b1 == false)
+                    {
+                        p = 1;
+                    }
+                    CurrentPage = p;
                 
-                //1.根据地区编号取得地区名称
-                string str_sqldq = "select 省市地区名称 from 地区地域字典 where 省市地区编号 ='" + str_cid + "'";//这里获取的是省和直辖市
-                DataTable dt_dq = new DataTable();
-                string str_dq = "";
-                dt_dq = dc_tool.GetDataTable(str_sqldq);
-                if (dt_dq != null && dt_dq.Rows.Count > 0)
-                {
-                    str_dq = dt_dq.Rows[0]["省市地区名称"].ToString();
-                }
-
-                //2.根据品牌id和地区名称，找到对应的分销商信息
-                string str_sqlfxs = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='" + ppid + "') and 联系地址 like '" + str_dq + "'";
-                DataTable dt_fxs = new DataTable();
-                string str_result = "";
-                dt_fxs = dc_tool.GetDataTable(str_sqlfxs);
-                if (dt_fxs != null && dt_fxs.Rows.Count > 0)
-                {
-                    for (int i = 0; i < dt_fxs.Rows.Count; i++)
+                    //获取"总页数"
+                    string strC = "";
+                    if(string.IsNullOrEmpty(strC))
                     {
-                        str_result += dt_fxs.Rows[i]["供应商"].ToString() + "|" + dt_fxs.Rows[i]["联系人"].ToString() + "|"
-                                       + dt_fxs.Rows[i]["联系人手机"].ToString() + "|" + dt_fxs.Rows[i]["联系地址"].ToString() 
-                                       + dt_fxs.Rows[i].ToString() + "$";
+                        double recordCount = count; 
+                        double d1 = recordCount / Page_Size; 
+                        double d2 = Math.Ceiling(d1); 
+                        int pageCount = (int)d2; 
+                        strC = pageCount.ToString();
                     }
-                }
-                Response.Write("#"); //分割符号
-                Response.Write(str_result);
-                Response.End();
+                    int c;
+                    bool b2 = int.TryParse(strC,out c);
+                    if (b2 == false)
+                    {
+                        c = 1;
+                    }
+                    PageCount = c;
+
+                    //计算/查询分页数据
+                    int begin = (p - 1) * Page_Size + 1;
+                    int end = p * Page_Size;
+                    if(address.Equals("-省(市)-"))
+                    {
+                        address="";
+                    }
+                    dt_list = this.GetPageList(pp_id,begin,end,address);
+                    
+                    if(dt_list != null && dt_list.Rows.Count>0)//有数据,则进行遍历
+                    {   
+                        //所有的供应商信息
+                        foreach(System.Data.DataRow row in dt_list.Rows)
+                        {
+                            content += "<div class='fxs2'><a href='gysxx.aspx?gys_id='"
+                                + row["gys_id"].ToString() + "><ul><li class='fxsa'>"
+                                + row["供应商"].ToString() + "</li><li>联系人："
+                                + row["联系人"].ToString() + "</li><li>电话："
+                                + row["联系人手机"].ToString() + "</li><li>地址："
+                                + row["联系地址"].ToString() + "</li></ul></a></div>";
+                        }
+                        //分页信息
+                        if(CurrentPage>1 && CurrentPage!=PageCount)
+                        {
+                            fy_list += "<span style='font-size:12px;color:Black'><a href='ppxx.aspx?pp_id="
+                                + pp_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a><a href='gysxx.aspx?gys_id="
+                                + pp_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>第"
+                                + CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+                        }
+                    }
+                    Response.Write(content);
+                    Response.Write("@");
+                    Response.Write(fy_list);
+
+                } 
             }
         }
+
+
+       //获取分页信息:pp_id 品牌id, begin 开始, end 结束, address 地址
+        protected DataTable GetPageList(string pp_id, int begin, int end, string address)
+        {
+            //执行分页的sql语句
+            string str_sqlpage = @"select 供应商,联系人,联系人手机,联系地址,gys_id from(select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id=@pp_id))t where t.RowId between @begin and @end  and 联系地址 like '%"+@address+"%'";
+            //添加相应参数值
+            SqlParameter[] parms = new SqlParameter[] 
+            {      
+                    new SqlParameter("@begin",SqlDbType.Int),
+                    new SqlParameter("@end",SqlDbType.Int),
+                    new SqlParameter("@pp_id",SqlDbType.VarChar),
+                    new SqlParameter("@address",SqlDbType.VarChar)
+            };
+            parms[0].Value = begin;
+            parms[1].Value = end;
+            parms[2].Value = pp_id;
+            parms[3].Value = address;
+            return  dc_tool.GetDataTable(str_sqlpage,parms);
+        } 
 </script>
