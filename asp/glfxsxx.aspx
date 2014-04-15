@@ -5,9 +5,7 @@
        author:张新颖  
 -->
 
-
 <%@ Register Src="include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
-
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
@@ -80,7 +78,7 @@
         }
         else
         {
-             url = "xzfxpp.aspx?gys_id=" + id;
+            url = "xzfxpp.aspx?gys_id=" + id;
         }
         window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
     }
@@ -89,7 +87,7 @@
         var lx = '<%=s_gys_type %>';
         var r = confirm("请确认您将取消分销此品牌!");
         if (r == true)
-        {        
+        {
             var brands = document.getElementsByName("brand");
             var ppid;
             ppid = "";
@@ -98,18 +96,18 @@
                 if (brands[i].checked)
                 {
                     ppid += brands[i].value + ",";
-//                    brand_str = brand_str + "," + brands[i].value;
+                    //                    brand_str = brand_str + "," + brands[i].value;
                 }
 
             }
             var url;
             if (lx == "生产商")
             {
-                 url = "scpp.aspx?fxs_id=" + id + "&pp_id=" + ppid+"&lx=1";
+                url = "scpp.aspx?fxs_id=" + id + "&pp_id=" + ppid + "&lx=1";
             }
             else
             {
-                 url = "scpp.aspx?fxs_id=" + id + "&pp_id=" + ppid + "&lx=2";
+                url = "scpp.aspx?fxs_id=" + id + "&pp_id=" + ppid + "&lx=2";
             }
             window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
         }
@@ -132,15 +130,13 @@
     public DataConn objConn = new DataConn();
     public string sp_result = "";        //首先声明审批结果变量
     public string s_gys_type = "";         //单位类型
-    public DataTable dt_fxs_id = new DataTable();
+    public DataTable dt_pp_id = new DataTable();
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-
-            string s_gys_type_id = "";  //供应商id
             sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型
             DataTable dt_type = objConn.GetDataTable(sSQL);
             if (dt_type != null && dt_type.Rows.Count > 0)
@@ -151,25 +147,19 @@
             if (s_gys_type == "生产商")
             {
                 sSQL = "select pp_id from 品牌字典 where scs_id='" + gys_id + "' "; //查询品牌id		
-                string s_ppid = "";
-                DataTable dt_pp_id = objConn.GetDataTable(sSQL);
-                if (dt_pp_id != null && dt_pp_id.Rows.Count > 0)
-                {
-                    s_ppid = dt_pp_id.Rows[0]["pp_id"].ToString();         //获取品牌id
-                }
+                dt_pp_id = objConn.GetDataTable(sSQL);
+                //if (dt_pp_id != null && dt_pp_id.Rows.Count > 0)
+                //{
+                //    s_ppid = dt_pp_id.Rows[0]["pp_id"].ToString();         //获取品牌id
+                //}
 
-                sSQL = "select fxs_id from 分销商和品牌对应关系表 where pp_id='" + s_ppid + "' "; //查询分销商id	
+                //sSQL = "select fxs_id from 分销商和品牌对应关系表 where pp_id='" + s_ppid + "' "; //查询分销商id	
+                //  string str_fxsid="";
 
-                 dt_fxs_id = objConn.GetDataTable(sSQL);
-                  string str_fxsid="";
-                 if(dt_fxs_id!=null&&dt_fxs_id.Rows.Count>0)
-                 {
-                    str_fxsid = Convert.ToString(dt_fxs_id.Rows[0]["fxs_id"]);   //获取第一个分销商id	
-                 }	
-                //根据不同的分销商id 查询不同的分销商信息
-                sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='" + str_fxsid + "' ";
+                ////根据不同的分销商id 查询不同的分销商信息
+                //sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='" + str_fxsid + "' ";
 
-                dt_gysxx = objConn.GetDataTable(sSQL);
+                //dt_gysxx = objConn.GetDataTable(sSQL);
 
               //  sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + str_fxsid + "' ";
 
@@ -179,7 +169,6 @@
             {
                 //如果是分销商信息 直接根据yh_id 查询供应商信息 
                 sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + s_yh_id + "' ";
-                 string fxs_id="";
                 dt_gysxx = objConn.GetDataTable(sSQL);
                 if(dt_gysxx!=null&&dt_gysxx.Rows.Count>0)
                 {
@@ -188,12 +177,13 @@
                 this.fxs_id.Value=gys_id;
              //   sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + gys_id + "' ";
              //   dt_ppxx = objConn.GetDataTable(sSQL);
+                if (dt_gysxx.Rows.Count == 0)
+                {
+                    Response.Redirect("gysbtxx.aspx");
+                }
             }
 
-            if (dt_gysxx.Rows.Count == 0)
-               {
-                      Response.Redirect("xzgxs.aspx?xzlx=fsx");
-               }
+
 
         
              //获取glfxsxx2页面返回的供应商id
@@ -217,7 +207,7 @@
         {
             sSQL = "select pp_id from 品牌字典 where scs_id='" + str_gysid + "' "; //查询品牌id		
             string str_ppid="";
-            DataTable dt_pp_id = objConn.GetDataTable(sSQL);
+             dt_pp_id = objConn.GetDataTable(sSQL);
             if(dt_pp_id!=null&&dt_pp_id.Rows.Count>0)
             {
                 str_ppid = Convert.ToString(dt_pp_id.Rows[0]["pp_id"]);   //获取品牌id	185
@@ -325,10 +315,9 @@
 
 <body>
 
-    <!-- 头部开始-->
+ <!-- 头部开始-->
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部结束-->
-
    <div class="fxsxx">
     <form id="update_fxs" name="update_fxs" action="glfxsxx2.aspx" method="post">
      
@@ -339,19 +328,33 @@
 			if (s_gys_type.Equals("生产商"))
 			{
 			%>
-			<div class="zjgxs">
+		    	<div class="zjgxs">
 			<select name="" class="fug" style="width:200px" onchange="Update_gys(this.options[this.options.selectedIndex].value)">
-			 <% foreach (System.Data.DataRow row_fxs in dt_fxs_id.Rows)
+			 <% foreach (System.Data.DataRow row_fxs in dt_pp_id.Rows)
             {
-                string s_fxs_id = row_fxs["fxs_id"].ToString();
-                sSQL = "select 供应商,gys_id from 材料供应商信息表 where  gys_id='" + s_fxs_id + "' and 单位类型='分销商' ";
-               System.Data.DataTable dt_gys = objConn.GetDataTable(sSQL);
-			%>			
-			<option value='<%=dt_gys.Rows[0]["gys_id"].ToString()%>'><%=dt_gys.Rows[0]["供应商"].ToString()%></option>
-			<%}%>
+                string s_ppid = row_fxs["pp_id"].ToString();         //获取品牌id
+                sSQL = "select fxs_id,分销商 from 分销商和品牌对应关系表 where pp_id='" + s_ppid + "' "; //查询分销商id	
+                DataTable dt_fxs = objConn.GetDataTable(sSQL);
+                string str_fxsid = "";
+                if (dt_fxs!=null&&dt_fxs.Rows.Count>0)
+                {
+                    foreach (System.Data.DataRow rowfxs_id in dt_fxs.Rows)
+                    {
+                        str_fxsid = rowfxs_id["fxs_id"].ToString();
+                 
+                        //根据不同的分销商id 查询不同的分销商信息
+                        sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='" + str_fxsid + "' and 单位类型='分销商' ";
+                        dt_gysxx = objConn.GetDataTable(sSQL);
+                        if (dt_gysxx != null && dt_gysxx.Rows.Count > 0)
+                        {%>			
+			             <option value='<%=dt_gysxx.Rows[0]["gys_id"].ToString()%>'><%=dt_gysxx.Rows[0]["供应商"].ToString()%></option>
+		    	        <%}
+                    }
+                }
+            }%>
 			
 			</select> 
-			<span class="zjgxs1"><a href="xzgxs.aspx?xzlx=fsx">增加新的分销商</a></span>
+			<span class="zjgxs1"><a href="xzgxs.aspx?xzlx=fxs">增加新的分销商</a></span>
 			</div>
 			<%}%>
             <%if(s_gys_type=="生产商"){ %>
@@ -429,12 +432,9 @@
              <%} %>
         </div>  
 
-    <!--  footer 开始-->
+<!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->   
-
-
-
 </body>
 </html>
 

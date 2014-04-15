@@ -94,7 +94,7 @@
             if (lx != "≤…π∫…Ã")
             {
                 string cookieName = "";
-                cookieName = "CGS_YH_ID";
+                cookieName = "CGS_QQ_ID";
                 if (Request.Cookies[cookieName] != null)
                 {
                     HttpCookie myCookie = new HttpCookie(cookieName);

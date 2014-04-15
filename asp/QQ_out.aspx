@@ -13,7 +13,7 @@
 	        if (Request.Cookies[cookieName] != null)
             {
                 HttpCookie myCookie = new HttpCookie(cookieName);
-                myCookie.Expires = DateTime.Now.AddDays(-10);
+                myCookie.Expires = DateTime.Now.AddDays(-10d);
                 Response.Cookies.Add(myCookie);
             }	           
 
@@ -24,7 +24,7 @@
 	        if (Request.Cookies[cookieName] != null)
             {
                 HttpCookie myCookie = new HttpCookie(cookieName);
-                myCookie.Expires = DateTime.Now.AddDays(-10);
+                myCookie.Expires = DateTime.Now.AddDays(-10d);
                 Response.Cookies.Add(myCookie);
             }		  
 
