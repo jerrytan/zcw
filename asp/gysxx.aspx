@@ -17,7 +17,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=8ee0deb4c10c8fb4be0ac652f83e8f5d"></script>
     <title>材料供应商信息</title>
-    <script src="js/SJLD_New.js" type="text/javascript"></script>
+    <script src="js/SJLD.js" type="text/javascript"></script>
     <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
@@ -25,26 +25,50 @@
     <script type="text/javascript" language="javascript">
         var $j = jQuery.noConflict();
         $j(document).ready(function () {
-            var url = "";
+            var url = "gysxx_ajax.aspx";
+            var fxsmsg = $j("#fxsid_msg").val();
+            var fxscount = $j("#fxscount_msg").val();
             $j("#s1").change(function () {
-                var item = $j("#s1 option:selected").text();
-                var data = { address: item };
-                $j.post(url, data, function (msg) { }, "text");
+                var item1 = $j("#s1 option:selected").text();
+                var data = { address: item1, gys_id: fxsmsg, gys_count: fxscount };
+                $j.post(url, data, function (msg) {
+                    var content = msg;
+                    if (content.indexOf("@") >= 0) {
+                        var str_fxs = msg.split('@'); //进行分割
+                        var fxs_list = str_fxs[0];  //供应商信息
+                        var fxs_fy = str_fxs[1];    //分页信息
+                        $j("#fxsxx_list").html(fxs_list); //替换筛选的内容
+                        $j("#fy_list").html(fxs_fy);      //替换筛选的内容
+                    }
+                }, "text");
             });
             $j("#s2").change(function () {
-                var item = $j("#s2 option:selected").text();
-                var data = { address: item };
-                $j.post(url, data, function (msg) { }, "text");
+                var item2 = $j("#s2 option:selected").text();
+                var data = { address: item2, gys_id: fxsmsg, gys_count: fxscount };
+                $j.post(url, data, function (msg) {
+                    var content = msg;
+                    if (content.indexOf("@") >= 0) {
+                        var str_fxs = msg.split('@'); //进行分割
+                        var fxs_list = str_fxs[0];  //供应商信息
+                        var fxs_fy = str_fxs[1];    //分页信息
+                        $j("#fxsxx_list").html(fxs_list); //替换筛选的内容
+                        $j("#fy_list").html(fxs_fy);      //替换筛选的内容
+                    }
+                },"text");
             });
-            $j("#s2").change(function () {
-                var item = $j("#s2 option:selected").text();
-                var data = { address: item };
-                $j.post(url, data, function (msg) { }, "text");
-            });
-            $j("#s2").change(function () {
-                var item = $j("#s2 option:selected").text();
-                var data = { address: item };
-                $j.post(url, data, function (msg) { }, "text");
+            $j("#s3").change(function () {
+                var item3 = $j("#s3 option:selected").text();
+                var data = { address: item3, gys_id: fxsmsg, gys_count: fxscount };
+                $j.post(url, data, function (msg) {
+                    var content = msg;
+                    if (content.indexOf("@")>= 0) {
+                        var str_fxs = msg.split('@'); //进行分割
+                        var fxs_list = str_fxs[0];  //供应商信息
+                        var fxs_fy = str_fxs[1];    //分页信息
+                        $j("#fxsxx_list").html(fxs_list); //替换筛选的内容
+                        $j("#fy_list").html(fxs_fy);      //替换筛选的内容
+                    } 
+                }, "text");
             });
         });
     </script>
@@ -78,18 +102,16 @@
 
         private const int Page_Size = 2; //每页的记录数量
         private int CurrentPage=1;//当前默认页为第一页
-        int PageCount; //总页数
+        private int PageCount; //总页数
+
+        protected string content = "";  //存放供应商信息
+        protected string fy_list = "";  //存放分页信息
 
         protected void Page_Load(object sender, EventArgs e)
         {
 		    if (!Page.IsPostBack)
             {
                 gys_id = Request["gys_id"];   //获取供应商id 
-                address = Request["address"]; //分销商所在地址
-                if (string.IsNullOrEmpty(address))
-                {
-                    address = "";
-                }
 
                 /*获取区域信息*/
                 string str_sqlqymc = "select 所属区域编号,所属区域名称  from 地区地域字典 group by 所属区域编号,所属区域名称";
@@ -171,11 +193,33 @@
                             //计算/查询分页数据
                             int begin = (p - 1) * Page_Size + 1;
                             int end = p * Page_Size;
-                            dt_content = this.GetPageList(gys_id,begin,end,address);
-                    }        
-                }		
-              }
-            }
+                            dt_content = this.GetPageList(gys_id,begin,end);
+
+                            if(dt_content != null && dt_content.Rows.Count>0)//有数据,则进行遍历
+                            {   
+                                foreach(System.Data.DataRow row in dt_content.Rows)
+                                {
+                                    content += "<div class='fxs2'><a href='gysxx.aspx?gys_id='"
+                                        + row["gys_id"].ToString() + "><ul><li class='fxsa'>"
+                                        + row["供应商"].ToString() + "</li><li>联系人："
+                                        + row["联系人"].ToString() + "</li><li>电话："
+                                        + row["联系人手机"].ToString() + "</li><li>地址："
+                                        + row["联系地址"].ToString() + "</li></ul></a></div>";
+                                }
+
+                                //分页显示信息
+                                if(CurrentPage>1 && CurrentPage!=PageCount)
+                                {
+                                    fy_list += "<span style='font-size:12px;color:Black'><a href='gysxx.aspx?gys_id="
+                                    + gys_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a><a href='gysxx.aspx?gys_id="
+                                    + gys_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>第"
+                                    + CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+                                }
+                            }        
+                        }	
+                    }	
+                }
+        }
 
         //从数据库获取记录的总数量
         protected int GetFXSCount()
@@ -195,23 +239,21 @@
         } 
 
         //获取分页信息:gys_id 生产商id, begin 开始, end 结束, address 地址
-        protected DataTable GetPageList(string gys_id, int begin, int end,string address)
+        protected DataTable GetPageList(string gys_id, int begin, int end)
         {
             
             //执行分页的sql语句
-            string str_sqlpage = @"select 供应商,联系人,联系人手机,联系地址,gys_id from (select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表  where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id=@gys_id) ))t where t.RowId between @begin and @end and t.联系地址 like '%'+@address+'%' ";
+            string str_sqlpage = @"select 供应商,联系人,联系人手机,联系地址,gys_id from (select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表  where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id=@gys_id) ))t where t.RowId between @begin and @end ";
             //添加相应参数值
             SqlParameter[] parms = new SqlParameter[] 
             {      
                     new SqlParameter("@begin",SqlDbType.Int),
                     new SqlParameter("@end",SqlDbType.Int),
                     new SqlParameter("@gys_id",SqlDbType.VarChar),
-                    new SqlParameter("@address",SqlDbType.VarChar)
             };
             parms[0].Value = begin;
             parms[1].Value = end;
             parms[2].Value = gys_id;
-            parms[3].Value = address;
             return  dc.GetDataTable(str_sqlpage,parms);
         }
      </script>
@@ -312,20 +354,18 @@
             <!-- 公司旗下品牌 结束-->
 
             <!-- 分销商页 开始-->
-          
-            <div class="gydl">
+         <div class="gydl">
             <div class="dlpp">公司旗下分销商</div>
             <div class="fxs1" style="margin-left:20px;">
-                <select id="s1" class="fu1"><option></option></select> 地区
-                <select id="s2" class="fu2"><option></option></select> 省(市)
-                <select id="s3" class="fu3"><option></option></select> 市(县)
-                <select id="s4" class="fu4"><option></option></select> 县(区)
+                <select id="s1" class="fu1"><option></option></select> 省（市）
+                <select id="s2" class="fu2"><option></option></select> 地级市
+                <select id="s3" class="fu3"><option></option></select> 市、县级市、县
                 <script type="text/javascript"  language ="javascript" > 
                     <!--
                     //** Power by Fason(2004-3-11) 
                     //** Email:fason_pfx@hotmail.com
-                    var s = ["s1", "s2", "s3", "s4"];
-                    var opt0 = ["-地区-", "-省(市)、自治区-", "-市(县)、自治州-", "-县级市、县、区-"];
+                    var s = ["s1", "s2", "s3"];
+                    var opt0 = ["-省(市)-", "-地级市、区-", "-县级市、县、区-"];
                     for (i = 0; i < s.length - 1; i++)
                         document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
                     change(0);
@@ -333,29 +373,17 @@
                 </script> 
             </div>
                <!-- 动态显示 开始-->
-            <%foreach(System.Data.DataRow row in dt_content.Rows){%> 
-                <div class="fxs2">
-                <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
-                    <ul>        
-                        <li class="fxsa"><%=row["供应商"].ToString() %></li>
-                        <li>联系人：<%=row["联系人"].ToString() %></li>
-                        <li>电话：<%=row["联系人手机"].ToString() %></li>
-                        <li>地址：<%=row["联系地址"].ToString() %></li>
-                    </ul>
-                </a>
-                </div>
-            <%}%>
+                <!-- 存放传值数据-->
+                <input type="hidden" id="fxsid_msg" name="fxsid_msg" value="<%=gys_id %>"/>
+                <input type="hidden" id="fxscount_msg" name="fxscount_msg" value="<%=GetFXSCount() %>" />
+            
+            <div id="fxsxx_list">
+                <%=content %>
+            </div>
                <!-- 动态显示 结束-->
         </div>
-        <div style=" margin-left:34%;margin-top:40px;float:left;height:auto;width:400px;">
-            <span style="font-size:12px;color:Black"> 
-             <% if(CurrentPage>1 && CurrentPage!=PageCount){ %>
-
-                <a href="gysxx.aspx?gys_id=<%=gys_id %>&p=<%=CurrentPage-1%>" style="color:Black">上一页</a>
-                <a href="gysxx.aspx?gys_id=<%=gys_id %>&p=<%=CurrentPage+1%>" style="color:Black">下一页</a>
-                第<%=CurrentPage%>页/共<%=PageCount%>页
-            <%} %>
-            </span>
+        <div id="fy_list" style=" margin-left:34%;margin-top:40px;float:left;height:auto;width:400px;">
+                <%=fy_list %>
         </div>
             <!-- 分销商页 结束-->
         <% }
