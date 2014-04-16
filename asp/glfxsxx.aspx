@@ -26,9 +26,8 @@
 
 <script type="text/javascript" language="javascript">
 
-    function Update_gys(id)
+    function Update_CS(id)
     {
-        document.getElementById("fxs_id").value = id;
         if (window.XMLHttpRequest)
         {
             xmlhttp = new XMLHttpRequest();
@@ -41,14 +40,44 @@
         {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
             {
-
+                document.getElementById("fxsxx").innerHTML = xmlhttp.responseText;
+            }
+        }
+        xmlhttp.open("GET", "glfxsxx4.aspx?id=" + id+"&lx=pp", true);
+        xmlhttp.send();
+    }
+    function Update_gys(id)
+    {
+        document.getElementById("ck_fgxsxx").href = "gysxx.aspx?gys_id=" + id;
+        if (window.XMLHttpRequest)
+        {
+            xmlhttp = new XMLHttpRequest();
+        }
+        else
+        {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function ()
+        {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+            {
                 var array = new Array();           //声明数组
                 array = xmlhttp.responseText;     //接收替换返回的json字符串
 
                 var json = array;
                 var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 			
 
-
+                if (myobj.length == 0)
+                {
+                    document.getElementById('companyname').value = "";       //供应商
+                    document.getElementById('address').value = "";        //地址
+                    document.getElementById('tel').value = "";                //电话  			 
+                    document.getElementById('homepage').value = "";       //主页
+                    document.getElementById('fax').value = "";                 //传真
+                    document.getElementById('area').value = "";               //地区名称
+                    document.getElementById('name').value = "";               //联系人
+                    document.getElementById('phone').value = "";        //联系人电话 				              
+                }
                 for (var i = 0; i < myobj.length; i++)
                 {  //遍历,将ajax返回的数据填充到文本框中				
 
@@ -59,9 +88,9 @@
                     document.getElementById('fax').value = myobj[i].gys_fax;                 //传真
                     document.getElementById('area').value = myobj[i].gys_area;               //地区名称
                     document.getElementById('name').value = myobj[i].gys_user;               //联系人
-                    document.getElementById('phone').value = myobj[i].gys_user_phone;          //联系人电话 				              
-
+                    document.getElementById('phone').value = myobj[i].gys_user_phone;        //联系人电话 				              
                 }
+                window.location.reload();
 
             }
         }
@@ -131,6 +160,8 @@
     public string sp_result = "";        //首先声明审批结果变量
     public string s_gys_type = "";         //单位类型
     public DataTable dt_pp_id = new DataTable();
+    public DataTable dt_fxs;
+    public DataTable dt_DLPP=null;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
@@ -146,24 +177,27 @@
             }
             if (s_gys_type == "生产商")
             {
-                sSQL = "select pp_id from 品牌字典 where scs_id='" + gys_id + "' "; //查询品牌id		
+                string ppid="";
+                sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id='" + gys_id + "' order by scs_id "; //查询品牌id		
                 dt_pp_id = objConn.GetDataTable(sSQL);
-                //if (dt_pp_id != null && dt_pp_id.Rows.Count > 0)
-                //{
-                //    s_ppid = dt_pp_id.Rows[0]["pp_id"].ToString();         //获取品牌id
-                //}
+                if (dt_pp_id != null && dt_pp_id.Rows.Count > 0)
+                {
+                    ppid = dt_pp_id.Rows[0]["pp_id"].ToString();         //获取品牌id
+                }
 
-                //sSQL = "select fxs_id from 分销商和品牌对应关系表 where pp_id='" + s_ppid + "' "; //查询分销商id	
-                //  string str_fxsid="";
+                sSQL = "select fxs_id,分销商 from 分销商和品牌对应关系表 where pp_id='" + ppid + "' "; //查询分销商id	
+                dt_fxs = objConn.GetDataTable(sSQL);
+                string str_fxsid = "";
+                if (dt_fxs!=null&&dt_fxs.Rows.Count>0)
+                {
+                    str_fxsid = dt_fxs.Rows[0]["fxs_id"].ToString();
+                }
+                //根据不同的分销商id 查询不同的分销商信息
+                sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='" + str_fxsid + "' order by gys_id ";
+                dt_gysxx = objConn.GetDataTable(sSQL);
 
-                ////根据不同的分销商id 查询不同的分销商信息
-                //sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='" + str_fxsid + "' ";
-
-                //dt_gysxx = objConn.GetDataTable(sSQL);
-
-              //  sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + str_fxsid + "' ";
-
-              //  dt_ppxx = objConn.GetDataTable(sSQL);
+                sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + str_fxsid + "'  order by fxs_id ";
+                dt_ppxx = objConn.GetDataTable(sSQL);
             }
             if (s_gys_type.Equals("分销商"))
             {
@@ -174,9 +208,8 @@
                 {
                     gys_id = Convert.ToString(dt_gysxx.Rows[0]["gys_id"]);
                 }
-                this.fxs_id.Value=gys_id;
-             //   sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + gys_id + "' ";
-             //   dt_ppxx = objConn.GetDataTable(sSQL);
+                sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + gys_id + "' order by myID ";
+                dt_ppxx = objConn.GetDataTable(sSQL);
                 if (dt_gysxx.Rows.Count == 0)
                 {
                     Response.Redirect("gysbtxx.aspx");
@@ -205,7 +238,7 @@
         #region
         if (str_gysid_type.Equals("生产商"))
         {
-            sSQL = "select pp_id from 品牌字典 where scs_id='" + str_gysid + "' "; //查询品牌id		
+            sSQL = "select pp_id from 品牌字典 where scs_id='" + str_gysid + "' order by myID "; //查询品牌id		
             string str_ppid="";
              dt_pp_id = objConn.GetDataTable(sSQL);
             if(dt_pp_id!=null&&dt_pp_id.Rows.Count>0)
@@ -311,130 +344,156 @@
         }
 
     }
+   
 </script>
 
 <body>
-
- <!-- 头部开始-->
+<!-- 头部开始-->
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部结束-->
-   <div class="fxsxx">
-    <form id="update_fxs" name="update_fxs" action="glfxsxx2.aspx" method="post">
-     
-	   <span class="fxsxx1">
-	    </span>		                                
-
-			<%
-			if (s_gys_type.Equals("生产商"))
-			{
-			%>
-		    	<div class="zjgxs">
-			<select name="" class="fug" style="width:200px" onchange="Update_gys(this.options[this.options.selectedIndex].value)">
-			 <% foreach (System.Data.DataRow row_fxs in dt_pp_id.Rows)
-            {
-                string s_ppid = row_fxs["pp_id"].ToString();         //获取品牌id
-                sSQL = "select fxs_id,分销商 from 分销商和品牌对应关系表 where pp_id='" + s_ppid + "' "; //查询分销商id	
-                DataTable dt_fxs = objConn.GetDataTable(sSQL);
-                string str_fxsid = "";
-                if (dt_fxs!=null&&dt_fxs.Rows.Count>0)
-                {
-                    foreach (System.Data.DataRow rowfxs_id in dt_fxs.Rows)
-                    {
-                        str_fxsid = rowfxs_id["fxs_id"].ToString();
-                 
-                        //根据不同的分销商id 查询不同的分销商信息
-                        sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='" + str_fxsid + "' and 单位类型='分销商' ";
-                        dt_gysxx = objConn.GetDataTable(sSQL);
-                        if (dt_gysxx != null && dt_gysxx.Rows.Count > 0)
-                        {%>			
-			             <option value='<%=dt_gysxx.Rows[0]["gys_id"].ToString()%>'><%=dt_gysxx.Rows[0]["供应商"].ToString()%></option>
-		    	        <%}
-                    }
-                }
-            }%>
-			
-			</select> 
-			<span class="zjgxs1"><a href="xzgxs.aspx?xzlx=fxs">增加新的分销商</a></span>
+	
+ <div class="fxsxx">
+    <form id="Form1" name="update_fxs" action="glfxsxx2.aspx" method="post" runat="server">
+     <%if (s_gys_type.Equals("生产商"))
+       {%>
+             <div class="zjgxs">
+             <span>选择品牌：</span><br />
+			    <select name="scs" id="scs" class="fug" style="width:200px" onchange="Update_CS(this.options[this.options.selectedIndex].value)">
+			     <% foreach (System.Data.DataRow row_fxs in dt_pp_id.Rows)
+                  { %>			
+			         <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
+	            <% }%>			
+			    </select> 			
 			</div>
-			<%}%>
-            <%if(s_gys_type=="生产商"){ %>
-            <span class="fxsxx1">该分销商的详细信息如下:</span>		
-            <%}else {%>
-            <span class="fxsxx1">贵公司的详细信息如下:</span>		
-            <%} %>
-               <div class="fxsxx2">
-				<%if (sp_result=="待审核")
-				  { %>
-				<dl>
-					<dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" /></dt>
-					<dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>" /></dt>
-					<dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>" /></dt>
-					<dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" /></dt>
-					<dd>贵公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司传真"] %>" /></dt>
-					<dd>贵公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地区"] %>" /></dt>
+           <br />
+           <br />
+            <div class="zjgxs">
+            <span>选择分销商：</span><br />
+			    <select name="fxsxx" id="fxsxx" class="fug" style="width:200px" onchange="Update_gys(this.options[this.options.selectedIndex].value)">			
+                <option value="0" selected="selected">--请选择分销商--</option>
+                </select> 
+			    <span class="zjgxs1"><a href="xzgxs.aspx?xzlx=fxs">增加新的分销商</a></span>
+			</div>
+             <span class="fxsxx1">该分销商的详细信息如下:</span>	
+             <div class="fxsxx2">
+             <% if (dt_gysxx.Rows.Count > 0)
+               {
+                   if (sp_result == "待审核")
+                   {  %>
+				       <dl>
+					<dd>公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" /></dt>
+					<dd>公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>" /></dt>
+					<dd>公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>" /></dt>
+					<dd>公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" /></dt>
+					<dd>公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司传真"] %>" /></dt>
+					<dd>公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地区"] %>" /></dt>
 					<dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人姓名"] %>" /></dt>
 					<dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人电话"] %>" /></dt>
-					<dd>经营范围  ：</dd><dt><input name="Business_Scope" type="Business_Scope" id="Text17" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></dt>
+					<dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></dt>
 				</dl>
-				<%}
-				  else
-				  { %>
-					<dl>
-					  <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" /></dt>
-					  <dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系地址"] %>" /></dt>
-					  <dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>" /></dt>
-					  <dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["主页"] %>" /></dt>
-					  <dd>贵公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["传真"] %>" /></dt>
-					  <dd>贵公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地区名称"] %>" /></dt>
+				 <%}
+                   else
+                   { %>
+					  <dl>
+					  <dd>公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" /></dt>
+					  <dd>公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系地址"] %>" /></dt>
+					  <dd>公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>" /></dt>
+					  <dd>公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["主页"] %>" /></dt>
+					  <dd>公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["传真"] %>" /></dt>
+					  <dd>公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地区名称"] %>" /></dt>
 					  <dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人"] %>" /></dt>
 					  <dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人手机"] %>" /></dt>
 					  <dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></dt>
 					</dl>
-				<%} %>
-            
-            <span class="fxsbc">
-                <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" />
-                <input type="submit" value="保存" onclick="Update_gysxx()" />
-            </span>
-        </div>
-                     </form>
-                <div class="ggspp">
-                <%if(s_gys_type=="生产商") {%>
-                 <span class="ggspp1">该分销商代理的分销品牌如下</span>
-                <%}else{ %>
-                    <span class="ggspp1">贵公司代理分销品牌如下</span>
-                    <%} %>
-                    <input type="hidden" id="fxs_id"  runat="server"/>
-                    <%
-                    string s_fxs_id1=""; 
-                    s_fxs_id1=this.fxs_id.Value;
-                    sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + s_fxs_id1 + "' ";
-                    DataTable dt_pp=objConn.GetDataTable(sSQL);
-                    if(dt_pp!=null&&dt_pp.Rows.Count>0)
-                    {%>
-                        <% foreach (System.Data.DataRow row in dt_pp.Rows)
-                        {%>
-                            <div class="fgstp">
+				 <%}
+               }
+               else
+               {%>
+                   <dl>
+					  <dd>公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" /></dt>
+					  <dd>公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" /></dt>
+					  <dd>公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3"/></dt>
+					  <dd>公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3"  /></dt>
+					  <dd>公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3"  /></dt>
+					  <dd>公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" /></dt>
+					  <dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3"  /></dt>
+					  <dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3"  /></dt>
+					  <dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3"/></dt>
+					</dl>
+               <%} %>	
+               </div>
+               
+               <div class="ggspp">
+              <a id="ck_fgxsxx">查看该分销商的详细信息</a>
+                 <div class="fxsxx2">             
+                        <span class="fxsbc">
+                            <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" />
+                            <input type="submit" value="更改" onclick="Update_gysxx()" />
+                        </span>
+                 </div>
+                <span class="fxsxx1"></span>	
+     <%}
+       else
+       { %>
+             <span class="fxsxx1">贵公司的详细信息如下:</span>	
+             <div class="fxsxx2">
+            <% if (sp_result == "待审核")
+                {  %>
+				    <dl>
+				<dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" /></dt>
+				<dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>" /></dt>
+				<dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>" /></dt>
+				<dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" /></dt>
+				<dd>贵公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司传真"] %>" /></dt>
+				<dd>贵公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地区"] %>" /></dt>
+				<dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人姓名"] %>" /></dt>
+				<dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人电话"] %>" /></dt>
+				<dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></dt>
+			</dl>
+			<%}
+                else
+                { %>
+					<dl>
+					<dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" /></dt>
+					<dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系地址"] %>" /></dt>
+					<dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>" /></dt>
+					<dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["主页"] %>" /></dt>
+					<dd>贵公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["传真"] %>" /></dt>
+					<dd>贵公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地区名称"] %>" /></dt>
+					<dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人"] %>" /></dt>
+					<dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人手机"] %>" /></dt>
+					<dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></dt>
+				</dl>
+			<%}%>
+            </div>
+                    <div class="fxsxx2">             
+                        <span class="fxsbc">
+                            <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" />
+                            <input type="submit" value="更改" onclick="Update_gysxx()" />
+                        </span>
+                    </div>
+                 	<span class="fxsxx1"></span>
+                    <div class="ggspp">
+                        <span class="ggspp1">贵公司代理分销品牌如下</span> 
+                        <div class="fgstp">
                                 <img src="images/wwwq_03.jpg" />
                                 <span class="fdlpp1">
-                                    <input name="brand" type="checkbox" value="<%=row["pp_id"].ToString() %>" class="fxsfxk" />
-                                    <%=row["品牌名称"].ToString() %>
+                                <%foreach (System.Data.DataRow row in dt_ppxx.Rows)
+                                  {%>
+                                      <input name="brand" type="checkbox" value="<%=row["pp_id"].ToString() %>" class="fxsfxk" />
+                                      <a  id="brandname" ><%=row["品牌名称"].ToString() %></a>
+                                 <%} %>
                                 </span>
-                            </div>
-                    <%  }
-                    }%>
-                    
-                </div>
-           <%if (s_gys_type!="生产商")
-			{%>
+                         </div>      
+                    </div>	
              <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">取消选中的分销品牌</a></span>             
              <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新分销品牌</a></span>
-             <%} %>
-        </div>  
-
-<!--  footer 开始-->
+     <%} %>
+     </form>
+     </div>
+	 <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
-    <!-- footer 结束-->   
+    <!-- footer 结束--> 
 </body>
 </html>
 

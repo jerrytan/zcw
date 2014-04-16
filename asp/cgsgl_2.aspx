@@ -103,7 +103,10 @@
                 }
                 Response.Write("<script>window.alert('您不是采购商，不能用采购商身份登录！');window.location.href='index.aspx';</" + "script>");
             }
-            Session["CGS_YH_ID"] = s_yh_id;
+			else
+			{
+				Session["CGS_YH_ID"] = s_yh_id;
+			}           
              if (!IsPostBack)
             {           
                 sSQL = "select * from 用户表 where yh_id='" + s_yh_id + "'";
