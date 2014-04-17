@@ -10,6 +10,12 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page Language="C#" %>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
 
 <script runat="server">
 
@@ -26,7 +32,8 @@
                 public string gys_area { get; set; }       //地区名称
                 public string gys_user { get; set; }       //联系人
 				public string gys_user_phone { get; set; }       //联系人手机 
-                public string gys_id { get; set; }       //供应商id				
+                public string gys_id { get; set; }       //供应商id		
+                public string sh { get; set; }		
             }
 		   protected DataTable dt_scsxx = new DataTable();	
            public DataConn objConn=new DataConn();
@@ -44,24 +51,52 @@
 			
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 			this.Items = new List<Option_gys>();  //数据表DataTable转集合  
-			   for(int x=0;x<dt_scsxx.Rows.Count;x++)
-               {
-                  DataRow dr2 = dt_scsxx.Rows[x];              
-                  
-		          Option_gys item = new Option_gys();
-				  
-				  item.gys_name = Convert.ToString(dr2["供应商"]);   
-                  item.gys_address = Convert.ToString(dr2["地址"]);
-                  item.gys_tel = Convert.ToString(dr2["电话"]);
-				  item.gys_homepage = Convert.ToString(dr2["主页"]);   
-                  item.gys_fax = Convert.ToString(dr2["传真"]);
-                  item.gys_area = Convert.ToString(dr2["地区名称"]);
-				  item.gys_user = Convert.ToString(dr2["联系人"]);   
-                  item.gys_user_phone = Convert.ToString(dr2["联系人手机"]);
-				  item.gys_id = Convert.ToString(dr2["gys_id"]);
-                 
-                  this.Items.Add(item);                
-			   }			  
+            if (dt_scsxx!=null&&dt_scsxx.Rows.Count>0)
+            {
+                for (int x = 0; x < dt_scsxx.Rows.Count; x++)
+                {
+                    DataRow dr2 = dt_scsxx.Rows[x];
+
+                    Option_gys item = new Option_gys();
+
+                    item.gys_name = Convert.ToString(dr2["供应商"]);
+                    item.gys_address = Convert.ToString(dr2["地址"]);
+                    item.gys_tel = Convert.ToString(dr2["电话"]);
+                    item.gys_homepage = Convert.ToString(dr2["主页"]);
+                    item.gys_fax = Convert.ToString(dr2["传真"]);
+                    item.gys_area = Convert.ToString(dr2["地区名称"]);
+                    item.gys_user = Convert.ToString(dr2["联系人"]);
+                    item.gys_user_phone = Convert.ToString(dr2["联系人手机"]);
+                    item.gys_id = Convert.ToString(dr2["gys_id"]);
+
+                    this.Items.Add(item);
+                }			  
+            }
+            else
+            {
+                sSQL = "select 贵公司名称,贵公司地址,贵公司电话,贵公司主页,贵公司传真,贵公司地区,联系人姓名,联系人电话,gys_id,审批结果 from 供应商自己修改待审核表 where  gys_id='" + scs_id + "' ";
+                dt_scsxx = null;
+                dt_scsxx = objConn.GetDataTable(sSQL);
+                if (dt_scsxx != null && dt_scsxx.Rows.Count > 0)
+                {
+                    DataRow dr2 = dt_scsxx.Rows[0];
+
+                    Option_gys item = new Option_gys();
+
+                    item.gys_name = Convert.ToString(dr2["贵公司名称"]);
+                    item.gys_address = Convert.ToString(dr2["贵公司地址"]);
+                    item.gys_tel = Convert.ToString(dr2["贵公司电话"]);
+                    item.gys_homepage = Convert.ToString(dr2["贵公司主页"]);
+                    item.gys_fax = Convert.ToString(dr2["贵公司传真"]);
+                    item.gys_area = Convert.ToString(dr2["贵公司地区"]);
+                    item.gys_user = Convert.ToString(dr2["联系人姓名"]);
+                    item.gys_user_phone = Convert.ToString(dr2["联系人电话"]);
+                    item.gys_id = Convert.ToString(dr2["gys_id"]);
+                    item.sh = Convert.ToString(dr2["审批结果"]);
+                    this.Items.Add(item);
+                }
+            }
+			   
 
 			   string jsonStr = serializer.Serialize(Items); 
 			   Response.Clear(); 
@@ -70,3 +105,4 @@
 			  }
 
 </script>
+</html>

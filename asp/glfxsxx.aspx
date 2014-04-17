@@ -76,7 +76,12 @@
                     document.getElementById('fax').value = "";                 //传真
                     document.getElementById('area').value = "";               //地区名称
                     document.getElementById('name').value = "";               //联系人
-                    document.getElementById('phone').value = "";        //联系人电话 				              
+                    document.getElementById('phone').value = "";        //联系人电话 
+                    document.getElementById('sh').style.visibility = "hidden";
+                    if (confirm("该分销商尚未填写详细信息,是否补填？"))
+                    {
+                        window.location.href = "btgysxx.aspx?gxs_id=" + id + "&lx=fxs";
+                    }
                 }
                 for (var i = 0; i < myobj.length; i++)
                 {  //遍历,将ajax返回的数据填充到文本框中				
@@ -88,9 +93,16 @@
                     document.getElementById('fax').value = myobj[i].gys_fax;                 //传真
                     document.getElementById('area').value = myobj[i].gys_area;               //地区名称
                     document.getElementById('name').value = myobj[i].gys_user;               //联系人
-                    document.getElementById('phone').value = myobj[i].gys_user_phone;        //联系人电话 				              
+                    document.getElementById('phone').value = myobj[i].gys_user_phone;        //联系人电话 	
+                    if (myobj[i].sh == "待审核")
+                    {
+                        document.getElementById('sh').style.visibility = "visible";
+                    }
+                    else
+                    {
+                        document.getElementById('sh').style.visibility = "hidden";
+                    }
                 }
-                window.location.reload();
 
             }
         }
@@ -353,11 +365,12 @@
     <!-- 头部结束-->
 	
  <div class="fxsxx">
+
     <form id="Form1" name="update_fxs" action="glfxsxx2.aspx" method="post" runat="server">
      <%if (s_gys_type.Equals("生产商"))
        {%>
              <div class="zjgxs">
-             <span>选择品牌：</span><br />
+             <span>贵公司品牌：</span><br />
 			    <select name="scs" id="scs" class="fug" style="width:200px" onchange="Update_CS(this.options[this.options.selectedIndex].value)">
 			     <% foreach (System.Data.DataRow row_fxs in dt_pp_id.Rows)
                   { %>			
@@ -368,18 +381,18 @@
            <br />
            <br />
             <div class="zjgxs">
-            <span>选择分销商：</span><br />
+            <span>品牌代理商：</span><br />
 			    <select name="fxsxx" id="fxsxx" class="fug" style="width:200px" onchange="Update_gys(this.options[this.options.selectedIndex].value)">			
-                <option value="0" selected="selected">--请选择分销商--</option>
                 </select> 
 			    <span class="zjgxs1"><a href="xzgxs.aspx?xzlx=fxs">增加新的分销商</a></span>
 			</div>
-             <span class="fxsxx1">该分销商的详细信息如下:</span>	
+             <span class="fxsxx1">该分销商的信息如下:</span>
              <div class="fxsxx2">
              <% if (dt_gysxx.Rows.Count > 0)
                {
                    if (sp_result == "待审核")
                    {  %>
+                    <span class="fxsxx1">该分销商的信息正在审核中</span>
 				       <dl>
 					<dd>公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" /></dt>
 					<dd>公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>" /></dt>
@@ -408,7 +421,8 @@
 				 <%}
                }
                else
-               {%>
+               { %>
+                <span class="fxsxx1" id="sh" style=" visibility:hidden">该分销商的信息正在审核中</span>
                    <dl>
 					  <dd>公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" /></dt>
 					  <dd>公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" /></dt>
@@ -422,13 +436,11 @@
 					</dl>
                <%} %>	
                </div>
-               
-               <div class="ggspp">
-              <a id="ck_fgxsxx">查看该分销商的详细信息</a>
-                 <div class="fxsxx2">             
-                        <span class="fxsbc">
+               <div class="fxsxx2">             
+                        <span class="fxsbc" >
                             <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" />
-                            <input type="submit" value="更改" onclick="Update_gysxx()" />
+                            <input type="submit"  onclick="Update_gysxx()"  value="更改"/>
+                            <span class="zjgxs1"> <a id="ck_fgxsxx">查看分销商主页</a></span>
                         </span>
                  </div>
                 <span class="fxsxx1"></span>	
@@ -440,6 +452,7 @@
             <% if (sp_result == "待审核")
                 {  %>
 				    <dl>
+                    <span class="fxsxx1">贵公司的信息正在审核中</span>	
 				<dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" /></dt>
 				<dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>" /></dt>
 				<dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>" /></dt>

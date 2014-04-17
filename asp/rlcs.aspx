@@ -199,19 +199,22 @@
 <%          //    if(gys_type=="生产商")
               //   { 
 %>        
-                         <div class="rlcs">
+
                              <span class="rlcszi" style="color:Blue;font-size:12px">
-				                            <%Response.Write("恭喜您!审核已通过,你可以进行以下操作：");%>
-                                            <br />
-                                            <a href="glscsxx.aspx">管理生产厂商信息</a>
-                                            <br />
-                                            <a href="gysglcl.aspx">管理分销商信息</a>
-                                            <br />
-                                            <a href="gysglcl.aspx">管理材料信息</a>
+				                            <%Response.Write("恭喜您!审核已通过,你可以进行以下操作：");%> </span>
+                                       <div >
+                                            <ul>
+                                                <li class="rlcsxz"><a href="glscsxx.aspx">管理生产厂商信息</a></li>
+                                                <li class="rlcsxz"><a href="glfxsxx.aspx" >管理分销商信息</a></li>
+                                                <li class="rlcsxz"><a href="gysglcl.aspx" >管理材料信息</a></li>
+                                            </ul>
+                                            
+                                            
+                                       </div>                                           
 
 
-		                     </span>
-                         </div>  
+		                    
+                         
                     <div class="rlcs"><span class="rlcszi" style="color:Blue;font-size:12px">您已经在本站认领的供应商如下:</span></div>
 <%                      if(dt_yrl_gys.Rows.Count>0)
                          {
