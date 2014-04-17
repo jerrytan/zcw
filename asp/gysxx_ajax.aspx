@@ -86,12 +86,12 @@
                         //所有的供应商信息
                         foreach(System.Data.DataRow row in dt_msg.Rows)
                         {
-                            content += "<div class='fxs2'><a href='gysxx.aspx?gys_id='"
-                                + row["gys_id"].ToString() + "><ul><li class='fxsa'>"
-                                + row["供应商"].ToString() + "</li><li>联系人："
-                                + row["联系人"].ToString() + "</li><li>电话："
-                                + row["联系人手机"].ToString() + "</li><li>地址："
-                                + row["联系地址"].ToString() + "</li></ul></a></div>";
+                             content += "<div class='fxs2'><a href='gysxx.aspx?gys_id="
+                                        + row["gys_id"].ToString() + "'><ul><li class='fxsa'>"
+                                        + row["供应商"].ToString() + "</li><li>联系人："
+                                        + row["联系人"].ToString() + "</li><li>电话："
+                                        + row["联系人手机"].ToString() + "</li><li>地址："
+                                        + row["联系地址"].ToString() + "</li></ul></a></div>";;
                         }
                         //分页信息
                         if(CurrentPage>1 && CurrentPage!=PageCount)
@@ -115,7 +115,7 @@
         {
             
             //执行分页的sql语句
-            string str_sqlpage = @"select 供应商,联系人,联系人手机,联系地址,gys_id from (select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表  where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id=@gys_id) ))t where t.RowId between @begin and @end and t.联系地址 like '%'+@address+'%' ";
+            string str_sqlpage = @"select gys_id,供应商,联系人,联系人手机,联系地址 from (select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表  where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id=@gys_id) ))t where t.RowId between @begin and @end and t.联系地址 like '%'+@address+'%' ";
             //添加相应参数值
             SqlParameter[] parms = new SqlParameter[] 
             {      

@@ -16,6 +16,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=8ee0deb4c10c8fb4be0ac652f83e8f5d"></script>
+	<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
+        data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/index.aspx" charset="utf8"></script>
+		
     <title>材料供应商信息</title>
     <script src="js/SJLD.js" type="text/javascript"></script>
     <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
@@ -199,8 +202,8 @@
                             {   
                                 foreach(System.Data.DataRow row in dt_content.Rows)
                                 {
-                                    content += "<div class='fxs2'><a href='gysxx.aspx?gys_id='"
-                                        + row["gys_id"].ToString() + "><ul><li class='fxsa'>"
+									content += "<div class='fxs2'><a href='gysxx.aspx?gys_id="
+                                        + row["gys_id"].ToString() + "'><ul><li class='fxsa'>"
                                         + row["供应商"].ToString() + "</li><li>联系人："
                                         + row["联系人"].ToString() + "</li><li>电话："
                                         + row["联系人手机"].ToString() + "</li><li>地址："
@@ -228,7 +231,7 @@
             try
             {
                 string gys_id = Request["gys_id"];   //获取供应商id
-                string str_sql_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )"; 
+                string str_sql_fxsxx = "select gys_id, 供应商,联系人,联系人手机,联系地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )"; 
                 i_count = dc.GetRowCount(str_sql_fxsxx);
             }
             catch (Exception e)
@@ -243,7 +246,7 @@
         {
             
             //执行分页的sql语句
-            string str_sqlpage = @"select 供应商,联系人,联系人手机,联系地址,gys_id from (select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表  where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id=@gys_id) ))t where t.RowId between @begin and @end ";
+            string str_sqlpage = @"select gys_id,供应商,联系人,联系人手机,联系地址 from (select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表  where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id=@gys_id) ))t where t.RowId between @begin and @end ";
             //添加相应参数值
             SqlParameter[] parms = new SqlParameter[] 
             {      
@@ -408,8 +411,8 @@
             window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
         }
         function NewWindowRL(id) {
-            var url = "rlcs.aspx?gys_id=" + id;
-            window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+			var url = "rlcs.aspx?gys_id=" + id;
+			window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
         }
     </script>
 </body>

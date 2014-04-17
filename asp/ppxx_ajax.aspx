@@ -83,8 +83,8 @@
                         //所有的供应商信息
                         foreach(System.Data.DataRow row in dt_list.Rows)
                         {
-                            content += "<div class='fxs2'><a href='gysxx.aspx?gys_id='"
-                                + row["gys_id"].ToString() + "><ul><li class='fxsa'>"
+                            content += "<div class='fxs2'><a href='gysxx.aspx?gys_id="
+                                + row["gys_id"].ToString() + "'><ul><li class='fxsa'>"
                                 + row["供应商"].ToString() + "</li><li>联系人："
                                 + row["联系人"].ToString() + "</li><li>电话："
                                 + row["联系人手机"].ToString() + "</li><li>地址："
