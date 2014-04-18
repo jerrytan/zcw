@@ -84,7 +84,17 @@
                     myCookie.Expires = DateTime.Now.AddDays(-10d);
                     Response.Cookies.Add(myCookie);
                 }
-                Response.Write("<script>window.alert('您是采购商，不能用供销商身份登录！');window.location.href='index.aspx';</" + "script>");
+                foreach (string cookiename in  Request.Cookies.AllKeys)
+				{
+					HttpCookie cookies = Request.Cookies[cookiename];
+					if (cookies != null)
+					{
+					   cookies.Expires = DateTime.Today.AddDays(-1);
+					   Response.Cookies.Add(cookies);
+					   Request.Cookies.Remove(cookiename);
+					}
+				}    
+				Response.Write("<script>window.alert('您是采购商，不能用供销商身份登录！');window.location.href='index.aspx';</" + "script>");
             }
                 
             else

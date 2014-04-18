@@ -78,10 +78,13 @@
                     document.getElementById('name').value = "";               //联系人
                     document.getElementById('phone').value = "";        //联系人电话 
                     document.getElementById('sh').style.visibility = "hidden";
-                    if (confirm("该分销商尚未填写详细信息,是否补填？"))
+					 if (id!="0")
                     {
-                        window.location.href = "btgysxx.aspx?gxs_id=" + id + "&lx=fxs";
-                    }
+						if (confirm("该分销商尚未填写详细信息,是否补填？"))
+						{
+							window.location.href = "btgysxx.aspx?gxs_id=" + id + "&lx=fxs";
+						}
+					}
                 }
                 for (var i = 0; i < myobj.length; i++)
                 {  //遍历,将ajax返回的数据填充到文本框中				

@@ -16,7 +16,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>  
-
+    <script src="js/SJLD_New.js" type="text/javascript"></script>
  <style type="text/css">
     input{
           border:1px;  
@@ -46,6 +46,7 @@
         public DataTable dt_ppxx;
         public DataTable dt_clfl;
         public string s_yh_id = "";
+        public string qymc = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
@@ -130,6 +131,7 @@
             }
             return b;
         }
+     
         public string save()
         {           
             bool b = false;          
@@ -154,14 +156,13 @@
             {
                 zczj = "null";
             }
-           
-            
+            qymc = this.s0.Value + this.s1.Value + this.s2.Value + this.s3.Value;            
             sSQL = "insert into 材料供应商信息表 " +
                 "(供应商,主页,地址,电话,传真,联系人,联系人手机,联系人QQ,是否启用,单位类型,组织机构编号,单位简称,地区名称," +
                 "法定代表人,注册资金,联系地址,邮编,电子邮箱,开户银行,银行账户,账户名称,资质等级,经营范围,备注,注册日期," +
                 "企业员工人数,资产总额,注册级别,企业类别,营业执照注册号)values('" +
                 this.gys.Value + "','" + this.zy.Value + "','" + this.dz.Value + "','" + this.dh.Value + "','" + this.cz.Value + "','" + this.lxr.Value + "','" + this.lxrsj.Value +
-                "','" + this.lxrqq.Value + "'," + sfqy + ",'" + this.lx.Value + "','" + this.zzjgbh.Value + "','" + this.dwjc.Value + "','" + this.dqmc.Value + "','" + this.fddbr.Value + "'," +
+                "','" + this.lxrqq.Value + "'," + sfqy + ",'" + this.lx.Value + "','" + this.zzjgbh.Value + "','" + this.dwjc.Value + "','" + qymc + "','" + this.fddbr.Value + "'," +
                  zczj+ ",'" + this.lxdz.Value + "','" + this.yb.Value + "','" + this.dzyx.Value + "','" + this.khyh.Value + "','" + this.yhzh.Value + "','" + this.zhmc.Value +
                 "','" + this.zzdj.Value + "','" + this.jyfw.Value + "','" + this.bz.Value + "','" + this.zcrq.Value + "'," + qyygrs+ ",'" + this.zcze.Value + "','" + this.zcjb.Value +
                 "','" + this.qylb.Value + "','" + this.yyzzzch.Value
@@ -202,10 +203,11 @@
                 this.lx.Focus();
                 return;
             }
-             if (this.dqmc.Value=="")
+             qymc = this.s0.Value+this.s1.Value + this.s2.Value + this.s3.Value;
+             if (qymc!="")
             {
                 objConn.MsgBox(this.Page,"地区名称不能为空！");
-                this.dqmc.Focus();
+                this.s1.Focus();
                 return;
             }
              if (this.lxr.Value=="")
@@ -464,8 +466,26 @@
 </tr>
 <tr>
   <td style="color:Red">*地区名称：</td>
-        <td colspan="3"><input type="text" id="dqmc" runat="server" /></td>
+   <td colspan="4">
+    <select id="s0" class="fu1" runat="server"><option></option></select> 
+    <select id="s1" class="fu1" runat="server"><option></option></select>
+                <select id="s2" class="fu2" runat="server"><option></option></select> 
+                <select id="s3" class="fu3" runat="server"><option></option></select>
+                <script type="text/javascript"  language ="javascript" > 
+                    <!--
+                    //** Power by Fason(2004-3-11) 
+                    //** Email:fason_pfx@hotmail.com
+                    var s = ["s0","s1", "s2", "s3"];
+                    var opt0 = ["-区域-","-省(市)-", "-地级市、区-", "-县级市、县、区-"];
+                    for (i = 0; i < s.length - 1; i++)
+                        document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
+                    change(0);
+                    //--> 
+                </script>
+   </td>               
+       <%-- <td colspan="3"><input type="text" id="dqmc" runat="server" /></td>--%>
 </tr>
+<tr><td colspan="4"></td></tr>
 <tr>
     <td>法定代表人</td>
     <td><input type="text" id="fddbr" runat="server" /></td>
