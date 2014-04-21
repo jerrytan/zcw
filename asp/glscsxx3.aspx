@@ -35,74 +35,109 @@
                 public string gys_id { get; set; }       //供应商id		
                 public string sh { get; set; }		
             }
+            public List<Option_gys1> Items1 { get; set; }
+            public class Option_gys1
+            {//属性
+                public string pp_id { get; set; }
+                public string ppmc { get; set; }
+            }
 		   protected DataTable dt_scsxx = new DataTable();	
            public DataConn objConn=new DataConn();
            public string sSQL="";
-		   protected void Page_Load(object sender, EventArgs e)
+           protected void Page_Load(object sender, EventArgs e)
            {
-            string scs_id ="";
-           if( Request["id"]!=null&& Request["id"].ToString()!="")
-           {
-              scs_id = Request["id"];   //获取下拉框传过来的分销商id
-            }
-            sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,gys_id from 材料供应商信息表 where  gys_id='"+scs_id+"' ";
-         
-            dt_scsxx =objConn.GetDataTable(sSQL);
-			
-            System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-			this.Items = new List<Option_gys>();  //数据表DataTable转集合  
-            if (dt_scsxx!=null&&dt_scsxx.Rows.Count>0)
-            {
-                for (int x = 0; x < dt_scsxx.Rows.Count; x++)
-                {
-                    DataRow dr2 = dt_scsxx.Rows[x];
+               string lx = "";
+               string scs_id = "";
+               if (Request["id"] != null && Request["id"].ToString() != "")
+               {
+                   scs_id = Request["id"];   //获取下拉框传过来的分销商id
+               }
+               if (Request["lx"] != null && Request["lx"].ToString() != "")
+               {
+                   lx = Request["lx"].ToString();
+               }
+               if (lx == "")
+               {
+                   sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,gys_id from 材料供应商信息表 where  gys_id='" + scs_id + "' ";
 
-                    Option_gys item = new Option_gys();
+                   dt_scsxx = objConn.GetDataTable(sSQL);
 
-                    item.gys_name = Convert.ToString(dr2["供应商"]);
-                    item.gys_address = Convert.ToString(dr2["地址"]);
-                    item.gys_tel = Convert.ToString(dr2["电话"]);
-                    item.gys_homepage = Convert.ToString(dr2["主页"]);
-                    item.gys_fax = Convert.ToString(dr2["传真"]);
-                    item.gys_area = Convert.ToString(dr2["地区名称"]);
-                    item.gys_user = Convert.ToString(dr2["联系人"]);
-                    item.gys_user_phone = Convert.ToString(dr2["联系人手机"]);
-                    item.gys_id = Convert.ToString(dr2["gys_id"]);
+                   System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                   this.Items = new List<Option_gys>();  //数据表DataTable转集合  
+                   if (dt_scsxx != null && dt_scsxx.Rows.Count > 0)
+                   {
+                       for (int x = 0; x < dt_scsxx.Rows.Count; x++)
+                       {
+                           DataRow dr2 = dt_scsxx.Rows[x];
 
-                    this.Items.Add(item);
-                }			  
-            }
-            else
-            {
-                sSQL = "select 贵公司名称,贵公司地址,贵公司电话,贵公司主页,贵公司传真,贵公司地区,联系人姓名,联系人电话,gys_id,审批结果 from 供应商自己修改待审核表 where  gys_id='" + scs_id + "' ";
-                dt_scsxx = null;
-                dt_scsxx = objConn.GetDataTable(sSQL);
-                if (dt_scsxx != null && dt_scsxx.Rows.Count > 0)
-                {
-                    DataRow dr2 = dt_scsxx.Rows[0];
+                           Option_gys item = new Option_gys();
 
-                    Option_gys item = new Option_gys();
+                           item.gys_name = Convert.ToString(dr2["供应商"]);
+                           item.gys_address = Convert.ToString(dr2["地址"]);
+                           item.gys_tel = Convert.ToString(dr2["电话"]);
+                           item.gys_homepage = Convert.ToString(dr2["主页"]);
+                           item.gys_fax = Convert.ToString(dr2["传真"]);
+                           item.gys_area = Convert.ToString(dr2["地区名称"]);
+                           item.gys_user = Convert.ToString(dr2["联系人"]);
+                           item.gys_user_phone = Convert.ToString(dr2["联系人手机"]);
+                           item.gys_id = Convert.ToString(dr2["gys_id"]);
 
-                    item.gys_name = Convert.ToString(dr2["贵公司名称"]);
-                    item.gys_address = Convert.ToString(dr2["贵公司地址"]);
-                    item.gys_tel = Convert.ToString(dr2["贵公司电话"]);
-                    item.gys_homepage = Convert.ToString(dr2["贵公司主页"]);
-                    item.gys_fax = Convert.ToString(dr2["贵公司传真"]);
-                    item.gys_area = Convert.ToString(dr2["贵公司地区"]);
-                    item.gys_user = Convert.ToString(dr2["联系人姓名"]);
-                    item.gys_user_phone = Convert.ToString(dr2["联系人电话"]);
-                    item.gys_id = Convert.ToString(dr2["gys_id"]);
-                    item.sh = Convert.ToString(dr2["审批结果"]);
-                    this.Items.Add(item);
-                }
-            }
-			   
+                           this.Items.Add(item);
+                       }
+                   }
+                   else
+                   {
+                       sSQL = "select 贵公司名称,贵公司地址,贵公司电话,贵公司主页,贵公司传真,贵公司地区,联系人姓名,联系人电话,gys_id,审批结果 from 供应商自己修改待审核表 where  gys_id='" + scs_id + "' ";
+                       dt_scsxx = null;
+                       dt_scsxx = objConn.GetDataTable(sSQL);
+                       if (dt_scsxx != null && dt_scsxx.Rows.Count > 0)
+                       {
+                           DataRow dr2 = dt_scsxx.Rows[0];
 
-			   string jsonStr = serializer.Serialize(Items); 
-			   Response.Clear(); 
-			   Response.Write(jsonStr);   //向前端glscsxx.aspx输出json字符串
-			   Response.End();
-			  }
+                           Option_gys item = new Option_gys();
+
+                           item.gys_name = Convert.ToString(dr2["贵公司名称"]);
+                           item.gys_address = Convert.ToString(dr2["贵公司地址"]);
+                           item.gys_tel = Convert.ToString(dr2["贵公司电话"]);
+                           item.gys_homepage = Convert.ToString(dr2["贵公司主页"]);
+                           item.gys_fax = Convert.ToString(dr2["贵公司传真"]);
+                           item.gys_area = Convert.ToString(dr2["贵公司地区"]);
+                           item.gys_user = Convert.ToString(dr2["联系人姓名"]);
+                           item.gys_user_phone = Convert.ToString(dr2["联系人电话"]);
+                           item.gys_id = Convert.ToString(dr2["gys_id"]);
+                           item.sh = Convert.ToString(dr2["审批结果"]);
+                           this.Items.Add(item);
+                       }
+                   }
+
+
+                   string jsonStr = serializer.Serialize(Items);
+                   Response.Clear();
+                   Response.Write(jsonStr);   //向前端glscsxx.aspx输出json字符串
+                   Response.End();
+               }
+               else {
+                   System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                   this.Items1 = new List<Option_gys1>();  //数据表DataTable转集合  
+                   sSQL = "select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='" +scs_id  + "' ";
+                   DataTable dt_ppxx = objConn.GetDataTable(sSQL);
+                   if (dt_ppxx != null && dt_ppxx.Rows.Count > 0)
+                   {
+                       for (int i = 0; i < dt_ppxx.Rows.Count; i++)
+                       {
+                           Option_gys1 item1 = new Option_gys1();
+                           item1.pp_id = dt_ppxx.Rows[i]["pp_id"].ToString();
+                           item1.ppmc = dt_ppxx.Rows[i]["品牌名称"].ToString();
+                           this.Items1.Add(item1);
+                       }
+                   }
+                   string jsonStr = serializer.Serialize(Items1);
+                   Response.Clear();
+                   Response.Write(jsonStr);   //向前端glscsxx.aspx输出json字符串
+                   Response.End();
+          
+               }
+           }
 
 </script>
 </html>

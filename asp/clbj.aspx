@@ -68,10 +68,7 @@
         }
         xmlhttp.open("GET", "xzclym3.aspx?id=" + id, true);
         xmlhttp.send();
-		
-	
-	
-        }
+    }
 </script>	
 <script type=text/javascript><!--    //--><![CDATA[//><!--
     function menuFix()
@@ -208,28 +205,30 @@
  <!-- 头部开始-->
     <uc2:Header2 ID="Header2" runat="server" />
  <!-- 头部结束-->
- 
 
-<div class="fxsxx">
-    <span class="fxsxx1">材料分类如下:</span>
-    <div class="xz1">
+<div>
+ <form action="xzclym4.aspx?ym=clbj" method="post">
+ <div class="fxsxx">
+<%--    <span class="fxsxx1">材料分类如下:</span>--%>
+<%--    <div class="xz1">
     <div class="xza">
 
                     <span class="xz2"><a href="#">大类</a></span>
                     <select id="drop1" name="drop1" onchange="updateFL(this.options[this.options.selectedIndex].value)">
+                     <option value="0">请选择大类</option>
                         <% foreach(var v  in Items1){%>
                         <option value="<%=v.GroupsCode %>"><%=v.Name%></option>
                         <%}%>
                     </select>
-                </div>
-    <div class="xza">
+                </div>--%>
+    <%--<div class="xza">
                     <span class="xz2"><a href="#">小类</a></span>
                     <select id="ejflname" name="ejflname" class="fux"  onchange="updateCLFL(this.options[this.options.selectedIndex].value)">
                         
                         <option value="0">请选择小类</option>
                     
                     </select>
-                </div>           
+                </div>           --%>
     <div class="xzz">
 <!--
 <span class="xzz0">如果没有适合的小类，请联系网站管理员增加！ 联系方式是xxx@xxx.com.请使用模板。 </span>
@@ -247,7 +246,7 @@
 
                     <dd>品    牌：</dd>
                     <dt>
-                        <select name="brand" id="brand" style="width: 300px">
+                        <select name="brand" id="brand" style="width: 300px" >
                             
                             <option value="0">请选择品牌</option>
                            
@@ -261,13 +260,7 @@
                             <option value="0"><%=v.Sx_Name%></option>
 							<%}%>
 						
-                        </select></dt>
-						
-		  <!--
-	                <dd>属性名称：</dd>                    
-                    <dt>
-                        <input name="sx_names" type="text" id="sx_names" class="fxsxx3" value="<%=dt_clxx.Rows[0]["规格型号"] %>" /></dt>
-			-->				
+                        </select></dt>		
 						
                     <dd>属性值：</dd>
                     <dt>
@@ -332,7 +325,8 @@
  <span class="fxsbc"><a href="#"><img src="images/bbc_03.jpg" /></a></span>  
 </div>
 
-</div>
+ </form>
+ </div>
 <div class="foot">
 <span class="foot2"><a href="#">网站合作</a>  |<a href="#"> 内容监督</a> | <a href="#"> 商务咨询</a> |  <a href="#">投诉建议010-87654321</a> </span>
 <span class="di3"><p>Copyright 2002-2012众材网版权所有      京ICP证0000111号      京公安网备110101000005号</p>

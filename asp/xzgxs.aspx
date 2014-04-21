@@ -4,7 +4,7 @@
 	  传入参数:用户id	  
      author:张新颖
 --> 
-
+<%@ Register Src="include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
@@ -17,6 +17,8 @@
 <head>
     <title></title>  
     <script src="js/SJLD_New.js" type="text/javascript"></script>
+    <link href="css/all%20of.css" rel="stylesheet" type="text/css" />
+    <link href="css/css.css" rel="stylesheet" type="text/css" />
  <style type="text/css">
     input{
           border:1px;  
@@ -160,12 +162,12 @@
             sSQL = "insert into 材料供应商信息表 " +
                 "(供应商,主页,地址,电话,传真,联系人,联系人手机,联系人QQ,是否启用,单位类型,组织机构编号,单位简称,地区名称," +
                 "法定代表人,注册资金,联系地址,邮编,电子邮箱,开户银行,银行账户,账户名称,资质等级,经营范围,备注,注册日期," +
-                "企业员工人数,资产总额,注册级别,企业类别,营业执照注册号)values('" +
+                "企业员工人数,资产总额,注册级别,企业类别,营业执照注册号,是否审核通过)values('" +
                 this.gys.Value + "','" + this.zy.Value + "','" + this.dz.Value + "','" + this.dh.Value + "','" + this.cz.Value + "','" + this.lxr.Value + "','" + this.lxrsj.Value +
                 "','" + this.lxrqq.Value + "'," + sfqy + ",'" + this.lx.Value + "','" + this.zzjgbh.Value + "','" + this.dwjc.Value + "','" + qymc + "','" + this.fddbr.Value + "'," +
                  zczj+ ",'" + this.lxdz.Value + "','" + this.yb.Value + "','" + this.dzyx.Value + "','" + this.khyh.Value + "','" + this.yhzh.Value + "','" + this.zhmc.Value +
                 "','" + this.zzdj.Value + "','" + this.jyfw.Value + "','" + this.bz.Value + "','" + this.zcrq.Value + "'," + qyygrs+ ",'" + this.zcze.Value + "','" + this.zcjb.Value +
-                "','" + this.qylb.Value + "','" + this.yyzzzch.Value
+                "','" + this.qylb.Value + "','" + this.yyzzzch.Value+",'待审核'"
                 + "')";
             if (objConn.ExecuteSQL(sSQL, false))
             {
@@ -298,10 +300,13 @@
             document.getElementById("pp_name").value = pp_name_array[id];
         }    
  </script>
-<body style=" text-align:center">
-
+<body >
+    <!-- 头部开始-->
+    <uc2:Header2 ID="Header2" runat="server" />
+    <!-- 头部结束-->
+    <div class="fxsxx">
+    
 <form id="Form1" runat="server">
-
     <%if (xzlx == "分销商")
   {%>
  <table border="0" width="600px">
@@ -312,9 +317,9 @@
                     <td align="left">
                         <select id="yjflname" name="yjflname" style="width: 200px" onchange="updateFLfxs(this.options[this.options.selectedIndex].value)">
 
-                            <% for (int i=0;i< dt_ppxx.Rows.Count;i++) {
-                                Response.Write("<option value='"+i+"'>"+dt_ppxx.Rows[i]["品牌名称"]+"</option>");
-                            }%>
+                            <% for (int i=0;i< dt_ppxx.Rows.Count;i++) {%>
+                               <option value='<%=dt_ppxx.Rows[i]["pp_id"].ToString() %>'><%=dt_ppxx.Rows[i]["品牌名称"]%></option>");
+                           <% }%>
                         </select>
                     </td>
                 </tr>
@@ -354,7 +359,6 @@
 <%}
   else if (xzlx == "生产商")
   { %>
-       <div id="myDiv"></div>
        <table border="0" width="600px">
 
                 <tr>
@@ -593,5 +597,11 @@
       <dd style="width:300px; color:Red">*号的为必填项,不能为空!</dd>  
 		<span class="cggg"><asp:ImageButton runat="server" ID="ImageButton1" ImageUrl="images/aaaa_03.jpg"  OnClick="updateUserInfo"  /></span>
 </form>
+</div>
+<div class="foot">
+<span class="foot2"><a href="#">网站合作</a>  |<a href="#"> 内容监督</a> | <a href="#"> 商务咨询</a> |  <a href="#">投诉建议010-87654321</a> </span>
+<span class="di3"><p>Copyright 2002-2012众材网版权所有      京ICP证0000111号      京公安网备110101000005号</p>
+<p>地址：北京市海淀区天雅大厦11层  联系电话：010-87654321    技术支持：京企在线</p></span>
+</div>
 </body>
 </html>

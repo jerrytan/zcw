@@ -4,15 +4,11 @@
        传入参数：s_yh_id  用户id  session
        author:张新颖  
 -->
-
 <%@ Register Src="include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Web" %>
-
-
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ Page Language="C#" %>
@@ -43,12 +39,11 @@
                 document.getElementById("fxsxx").innerHTML = xmlhttp.responseText;
             }
         }
-        xmlhttp.open("GET", "glfxsxx4.aspx?id=" + id+"&lx=pp", true);
+        xmlhttp.open("GET", "glfxsxx4.aspx?id=" + id + "&lx=pp", true);
         xmlhttp.send();
     }
     function Update_gys(id)
     {
-        document.getElementById("ck_fgxsxx").href = "gysxx.aspx?gys_id=" + id;
         if (window.XMLHttpRequest)
         {
             xmlhttp = new XMLHttpRequest();
@@ -78,13 +73,13 @@
                     document.getElementById('name').value = "";               //联系人
                     document.getElementById('phone').value = "";        //联系人电话 
                     document.getElementById('sh').style.visibility = "hidden";
-					 if (id!="0")
+                    if (id != "0")
                     {
-						if (confirm("该分销商尚未填写详细信息,是否补填？"))
-						{
-							window.location.href = "btgysxx.aspx?gxs_id=" + id + "&lx=fxs";
-						}
-					}
+                        if (confirm("该分销商尚未填写详细信息,是否补填？"))
+                        {
+                            window.location.href = "btgysxx.aspx?gxs_id=" + id + "&lx=fxs";
+                        }
+                    }
                 }
                 for (var i = 0; i < myobj.length; i++)
                 {  //遍历,将ajax返回的数据填充到文本框中				
@@ -111,6 +106,36 @@
         }
         xmlhttp.open("GET", "glfxsxx3.aspx?id=" + id, true);
         xmlhttp.send();
+
+        if (window.XMLHttpRequest)
+        {
+            xmlhttp1 = new XMLHttpRequest();
+        }
+        else
+        {
+            xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp1.onreadystatechange = function ()
+        {
+            if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200)
+            {
+                var array1 = new Array();           //声明数组
+                array1 = xmlhttp1.responseText;     //接收替换返回的json字符串
+                var json1 = array1;
+                var myobj1 = eval(json1);              //将返回的JSON字符串转成JavaScript对象 	
+                var s = "";		
+                for (var j = 0; j < myobj1.length;j++)
+                {  //遍历,将ajax返回的数据填充到文本框中				
+                   
+                    s += "<image src='images/wwwq_03.jpg'/>";
+                    s += "  <span class='fdlpp1'>";
+                    s += " <a href='clxx.aspx?cl_id=" + myobj1[j].pp_id + "' class='fxsfxk'>" + myobj1[j].ppmc+"</a></span>";
+                }
+                document.getElementById("ppxx").innerHTML = s;
+            }
+        }
+        xmlhttp1.open("GET", "glfxsxx3.aspx?id=" + id+"&lx=ppxx", true);
+        xmlhttp1.send();
     }
     function AddNewBrand(id)
     {
@@ -363,10 +388,9 @@
 </script>
 
 <body>
-<!-- 头部开始-->
+	  <!-- 头部开始-->
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部结束-->
-	
  <div class="fxsxx">
 
     <form id="Form1" name="update_fxs" action="glfxsxx2.aspx" method="post" runat="server">
@@ -443,10 +467,15 @@
                         <span class="fxsbc" >
                             <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" />
                             <input type="submit"  onclick="Update_gysxx()"  value="更改"/>
-                            <span class="zjgxs1"> <a id="ck_fgxsxx">查看分销商主页</a></span>
+                         <%--   <span class="zjgxs1"> <a id="ck_fgxsxx">查看分销商主页</a></span>--%>
                         </span>
                  </div>
                 <span class="fxsxx1"></span>	
+                    <div class="ggspp">
+                        <span class="ggspp1">贵公司代理分销品牌如下</span> 
+                        <div class="fgstp" id="ppxx">
+                         </div>      
+                    </div>	
      <%}
        else
        { %>
@@ -492,10 +521,12 @@
                     <div class="ggspp">
                         <span class="ggspp1">贵公司代理分销品牌如下</span> 
                         <div class="fgstp">
-                                <img src="images/wwwq_03.jpg" />
+                                
                                 <span class="fdlpp1">
                                 <%foreach (System.Data.DataRow row in dt_ppxx.Rows)
                                   {%>
+								  <img src="images/wwwq_03.jpg" />
+                                  <a href="clxx.aspx?cl_id=<%=row["pp_id"].ToString() %>"><%=row["品牌名称"].ToString() %></a>
                                       <input name="brand" type="checkbox" value="<%=row["pp_id"].ToString() %>" class="fxsfxk" />
                                       <a  id="brandname" ><%=row["品牌名称"].ToString() %></a>
                                  <%} %>
@@ -507,9 +538,9 @@
      <%} %>
      </form>
      </div>
-	 <!--  footer 开始-->
+     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
-    <!-- footer 结束--> 
+    <!-- footer 结束-->  
 </body>
 </html>
 

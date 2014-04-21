@@ -11,6 +11,7 @@
 <%@ Import Namespace="System.Web" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page Language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 </head>
@@ -45,7 +46,11 @@
                     +" where 品牌名称='"+brandname+"'";
               
                 int ret = 	objConn.ExecuteSQLForCount(str_update,true);	
-				Response.Write(str_update);
+                if (ret==0)
+                {
+                    string sql="delete 品牌字典 where 品牌名称='"+brandname+"' and 是否启用=1 and scs_id='"+gys_id+"' and 分类编码='"+flname+"' and yh_id='"+yh_id+"'";
+                    objConn.ExecuteSQL(sql, true);
+                }
     
                                
 		
