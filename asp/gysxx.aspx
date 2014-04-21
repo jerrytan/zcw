@@ -281,8 +281,18 @@
                 <p>联系电话：<%=row["联系人手机"].ToString() %></p>
                 <%}%>
             </div>
-            <div class="gyan"><a href="" onclick="NewWindowRL(<%=gys_id %>)">本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>
-            <div class="gyan1"><a href="" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
+			 <%
+				HttpCookie CYS_QQ_id = Request.Cookies["GYS_QQ_ID"];   
+				Object GYS_YH_id = Session["GYS_YH_ID"];
+				
+				if(CYS_QQ_id != null && GYS_YH_id != null)
+				{%>
+					<div class="gyan"><a href="" onclick="NewWindowRL(<%=gys_id %>)">本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>	
+			<%	}
+				else{%> 
+					<div class="gyan" style="display:none"><a href="" onclick="NewWindowRL(<%=gys_id %>)">本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>
+			<%	}%>
+			<div class="gyan1"><a href="" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
         </div>		
 		<div class="gydl">
             <div class="dlpp">地理位置</div>
@@ -411,7 +421,7 @@
             window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
         }
         function NewWindowRL(id) {
-			var url = "rlcs.aspx?gys_id=" + id;
+			var url = "gysdl.aspx?gys_id=" + id;
 			window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
         }
     </script>
