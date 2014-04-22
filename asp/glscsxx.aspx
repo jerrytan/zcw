@@ -133,7 +133,7 @@
 
                       s += "<image src='images/wwwq_03.jpg'/>";
                       s += "  <span class='fdlpp1'>";
-                      s += " <a href='clxx.aspx?cl_id=" + myobj1[j].pp_id + "' class='fxsfxk'>" + myobj1[j].ppmc + "</a></span>";
+                      s += " <a href='ppxx.aspx?pp_id=" + myobj1[j].pp_id + "' class='fxsfxk'>" + myobj1[j].ppmc + "</a></span>";
                   }
                   document.getElementById("ppxx").innerHTML = s;
               }
@@ -171,7 +171,7 @@
       }
 </script>
   <script runat="server">
-  protected DataTable dt_gysxx = new DataTable();  //分销商信息(材料供应商信息表)
+        protected DataTable dt_gysxx = new DataTable();  //分销商信息(材料供应商信息表)
         public DataTable dt_ppxx = new DataTable();   //分销商信息(材料供应商信息表)
         public string gys_id="";
         public DataConn objConn=new DataConn();
@@ -362,7 +362,8 @@
                 <div class="zjgxs">
                  <span>贵公司代理品牌：</span><br />
 			        <select name="pp" id="pp" class="fug" style="width:200px" onchange="Update(this.options[this.options.selectedIndex].value)">
-			         <% foreach (System.Data.DataRow row_fxs in dt_ppxx.Rows)
+			          <option value="0">请选择品牌</option>
+                     <% foreach (System.Data.DataRow row_fxs in dt_ppxx.Rows)
                          { %>			
 			             <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
 	                <% }%>			
@@ -433,7 +434,7 @@
           </div>
           <span class="fxsxx1"></span>	
                     <div class="ggspp">
-                        <span class="ggspp1">贵公司代理分销品牌如下</span> 
+                        <span class="ggspp1">该厂商的品牌如下</span> 
                         <div class="fgstp" id="ppxx">
                          </div>      
                     </div>	

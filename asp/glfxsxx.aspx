@@ -129,7 +129,7 @@
                    
                     s += "<image src='images/wwwq_03.jpg'/>";
                     s += "  <span class='fdlpp1'>";
-                    s += " <a href='clxx.aspx?cl_id=" + myobj1[j].pp_id + "' class='fxsfxk'>" + myobj1[j].ppmc+"</a></span>";
+                    s += " <a href='ppxx.aspx?pp_id=" + myobj1[j].pp_id + "' class='fxsfxk'>" + myobj1[j].ppmc + "</a></span>";
                 }
                 document.getElementById("ppxx").innerHTML = s;
             }
@@ -399,7 +399,8 @@
              <div class="zjgxs">
              <span>贵公司品牌：</span><br />
 			    <select name="scs" id="scs" class="fug" style="width:200px" onchange="Update_CS(this.options[this.options.selectedIndex].value)">
-			     <% foreach (System.Data.DataRow row_fxs in dt_pp_id.Rows)
+			        <option value="0">请选择品牌</option>
+                 <% foreach (System.Data.DataRow row_fxs in dt_pp_id.Rows)
                   { %>			
 			         <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
 	            <% }%>			
@@ -520,12 +521,11 @@
                  	<span class="fxsxx1"></span>
                     <div class="ggspp">
                         <span class="ggspp1">贵公司代理分销品牌如下</span> 
-                        <div class="fgstp">
-                                
+                        <div class="fgstp">                                
                                 <span class="fdlpp1">
                                 <%foreach (System.Data.DataRow row in dt_ppxx.Rows)
                                   {%>
-								  <img src="images/wwwq_03.jpg" />
+                                  <img src="images/wwwq_03.jpg" />
                                   <a href="clxx.aspx?cl_id=<%=row["pp_id"].ToString() %>"><%=row["品牌名称"].ToString() %></a>
                                       <input name="brand" type="checkbox" value="<%=row["pp_id"].ToString() %>" class="fxsfxk" />
                                       <a  id="brandname" ><%=row["品牌名称"].ToString() %></a>
