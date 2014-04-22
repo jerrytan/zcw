@@ -23,7 +23,7 @@
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
 <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
- <script src="js/SJLD_New.js" type="text/javascript"></script>
+<script src="js/SJLD.js" type="text/javascript"></script>
 <script type="text/javascript" language="javascript">
     var $j = jQuery.noConflict();
     $j(document).ready(function () {
@@ -317,7 +317,6 @@
     <div class="xx8" >
         <div class="xx9">
             <div class="fxs1">
-                 <select id="s0" class="fu1"><option></option></select> 区域
                 <select id="s1" class="fu1"><option></option></select> 省（市）
                 <select id="s2" class="fu2"><option></option></select> 地级市
                 <select id="s3" class="fu3"><option></option></select> 市、县级市、县
@@ -325,8 +324,8 @@
                     <!--
                     //** Power by Fason(2004-3-11) 
                     //** Email:fason_pfx@hotmail.com
-                    var s = ["s0","s1", "s2", "s3"];
-                    var opt0 = ["-区域-","-省(市)-", "-地级市、区-", "-县级市、县、区-"];
+                    var s = ["s1", "s2", "s3"];
+                    var opt0 = ["-省(市)-", "-地级市、区-", "-县级市、县、区-"];
                     for (i = 0; i < s.length - 1; i++)
                     document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
                     change(0);
