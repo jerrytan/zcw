@@ -28,7 +28,7 @@
 	protected DataTable dt_yh = new DataTable();  //供应商补填信息(用户表)  
 	public string s_yh_id=""; 
 	public string sSQL=""; 
-	public DataConn objConn=new DataConn();      
+	public DataConn objConn = new DataConn();      
 	protected void Page_Load(object sender, EventArgs e)
 	{            
 	   if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
@@ -96,13 +96,13 @@
 <div class="gysgybtr">
 	<dl>
 
-		<span id="msg" style="color:Red;font-size:14px">
+		<span id="msg" style=" font-size:14px;font-weight: 600; line-height:20px;">
 		<%
 		   if(dt_yh.Rows[0]["是否验证通过"].ToString()=="待审核")
             {
-                Response.Write("请耐心等候,您的资料已提交,正在审核当中,我方工作");
+                Response.Write("<font color='red'>请耐心等候,您的资料已提交,正在审核当中···");
 			    Response.Write("<br>");
-			    Response.Write("人员会尽快给您答复!");
+			    Response.Write("我方工作人员会尽快给您答复!</font>");
 			    Response.Write("<br>");
 			    Response.Write("<dd>");
 			    Response.Write("您的信息如下:");
@@ -112,7 +112,7 @@
             }
             else if(dt_yh.Rows[0]["是否验证通过"].ToString()=="通过")
             {
-                Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领.");				 
+                Response.Write("<font color='green'>恭喜您!审核已通过,可以对生产厂商进行认领.</font>");				 
 			    Response.Write("<br>");								 
 			    Response.Write("<dd>");
 			    Response.Write("您的信息如下:");
@@ -122,7 +122,7 @@
             }
             else if(dt_yh.Rows[0]["是否验证通过"].ToString()=="不通过")
             {
-                Response.Write("审核未通过,请继续完善信息!");
+                Response.Write(">审核未通过,请继续完善信息!");
 			    Response.Write("<br>");								 
 			    Response.Write("<dd>");
 			    Response.Write("您的信息如下:");
@@ -134,11 +134,10 @@
 		%>
 		</span>
         <%if(dt_yh!=null&&dt_yh.Rows.Count>0) { %>
-                <dd>*贵公司名称：</dd>  <dt><input name="gys_name" id="Text1" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /></dt>
-	            <dd>*贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司地址"] %>"/></dt>
-	            <dd>*贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司电话"] %>"/></dt>
+                <dd>贵公司名称：</dd> <dt><input name="gys_name" id="Text1" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /><font color="red"><strong>*</strong></font></dt>
+	            <dd>贵公司地址：</dd>	<dt><input name="gys_address" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司地址"] %>"/><font color="red"><strong>*</strong></font></dt>
+	            <dd>贵公司电话：</dd> <dt><input name="gys_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司电话"] %>"/><font color="red"><strong>*</strong></font></dt>
 	            <dd>&nbsp;贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
-
 
 	            <dd>&nbsp;贵公司是：</dd>    
 								            <dt>
@@ -158,16 +157,16 @@
 									            </select>
 								            </dt>
 
-	            <dd>*您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"] %>"/></dt>
-	            <dd>*您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["手机"] %>"/></dt>
+	            <dd>您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"] %>"/><font color="red"><strong>*</strong></font></dt>
+	            <dd>您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["手机"] %>"/><font color="red"><strong>*</strong></font></dt>
 	            <dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"] %>"/></dt>
 
         <%} 
         else
         {%>
-	        <dd>*贵公司名称：</dd>  <dt><input name="gys_name" id="gys_name" type="text" class="gysggg" value=""  /></dt>
-	        <dd>*贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="gysggg" value=""/></dt>
-	        <dd>*贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="gysggg" value=""/></dt>
+	        <dd>贵公司名称：</dd>  <dt><input name="gys_name" id="gys_name" type="text" class="gysggg" value=""  /><font color="red"><strong>*</strong></font></dt>
+	        <dd>贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="gysggg" value=""/><font color="red"><strong>*</strong></font></dt>
+	        <dd>贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="gysggg" value=""/><font color="red"><strong>*</strong></font></dt>
 	        <dd>&nbsp;贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="gysggg" value=""/></dt>
 
 
@@ -178,8 +177,8 @@
 										        <option value="分销商">分销商</option>                        
 									        </select>
 								        </dt>
-	        <dd>*您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value=""/></dt>
-	        <dd>*您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value=""/></dt>
+	        <dd>您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value=""/><font color="red"><strong>*</strong></font></dt>
+	        <dd>您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value=""/><font color="red"><strong>*</strong></font></dt>
 	        <dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value=""/></dt>
       <% } %> 
 	<!--
@@ -187,8 +186,8 @@
 		<a href=""><img src="images/sc_03.jpg" /></a></dt>
 	-->
 		<input name="gysgys_id" type="hidden" id="gys_id" class="fxsxx3" value=""/>
-		<dd style="width:300px; color:Red">*号的为必填项,不能为空!</dd>
-		<dt style="width:100%; text-align:center;"><input type="submit" value="保存"/></dt>
+		<dd style="width:300px; color:Red">注意：*号的为必填项,不能为空!</dd>
+		<dt style="width:80%; text-align:center;"><input style="width:74px;height:22px;background:url(/asp/images/aaaa_03.jpg) no-repeat;" type="submit" value="" /></dt>
 		
 	</dl>
 </div>
