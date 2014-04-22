@@ -88,6 +88,10 @@
             {
                 Response.Write("<script>window.alert('添加成功！');window.location.href='gyszym.aspx';</" + "script>");
             }
+            else
+            {
+                Response.Write("<script>window.alert('添加成功！');window.location.href='gyszym.aspx';</" + "script>");
+            }
          
         }
         public bool xzpp(string gys_id)
@@ -118,7 +122,7 @@
                    if (ret<1||ret1<1)
                    {
                        b = false;
-                   }
+                   }                 
                }
                
             }
@@ -167,8 +171,7 @@
                 "','" + this.lxrqq.Value + "'," + sfqy + ",'" + this.lx.Value + "','" + this.zzjgbh.Value + "','" + this.dwjc.Value + "','" + qymc + "','" + this.fddbr.Value + "'," +
                  zczj+ ",'" + this.lxdz.Value + "','" + this.yb.Value + "','" + this.dzyx.Value + "','" + this.khyh.Value + "','" + this.yhzh.Value + "','" + this.zhmc.Value +
                 "','" + this.zzdj.Value + "','" + this.jyfw.Value + "','" + this.bz.Value + "','" + this.zcrq.Value + "'," + qyygrs+ ",'" + this.zcze.Value + "','" + this.zcjb.Value +
-                "','" + this.qylb.Value + "','" + this.yyzzzch.Value+",'待审核'"
-                + "')";
+                "','" + this.qylb.Value + "','" + this.yyzzzch.Value+"','待审核')";
             if (objConn.ExecuteSQL(sSQL, false))
             {
                 sSQL = "update 材料供应商信息表 set gys_id=myid where 供应商='" + this.gys.Value + "' and 营业执照注册号='" + this.yyzzzch.Value + "' and 组织机构编号='" + this.zzjgbh.Value + "'";

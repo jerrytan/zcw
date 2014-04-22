@@ -18,6 +18,7 @@
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page Language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
@@ -194,12 +195,7 @@
             }
         }
 
-    }
-            
-		
-
-			
-
+    }	
 </script>
 
 
@@ -237,8 +233,7 @@
             }
         }    
 
-    }				
- 
+    }
 </script>
 
 <body>
@@ -251,7 +246,7 @@
     <div class="fxsxx">
         <span class="fxsxx1">请选择您要添加的材料信息</span>
         <%string gys_id = Request["gys_id"];%>
-          <form action="xzclym4.aspx?gys_id=<%=gys_id %>" method="post" >
+          <form action = "xzclym4.aspx?gys_id=<%=gys_id %>" method = "post"  >
 
             <div class="xz1">
                 <div class="xza">
@@ -313,7 +308,7 @@
 						
 						<dd>属性id：</dd>
                     <dt>
-                        <select name="sx_id" id="sx_id" style="width: 300px" >
+                        <select runat="server" name="sx_id" id="sx_id" style="width: 300px"  >
                                                                        
                             <option value="0">属性id</option>
 						
@@ -382,25 +377,11 @@
 -->
 
 
-            <div class="cpdt">
-                <span class="dmt">多媒体信息</span>
-                <dl>
-                    <dd>产品视频：</dd>
-                    <dt>
-                        <input name="" type="text" class="fxsxx3" /><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
-                    <dd>成功案例：</dd>
-                    <dt>
-                        <input name="" type="text" class="fxsxx3" /><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
-                    <dd>更多资料：</dd>
-                    <dt>
-                        <input name="" type="text" class="fxsxx3" /><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
-                </dl>
+<div class="cpdt">
+ <span class="fxsbc"><a href="#"><input type="image" name="Submit" value="Submit" src="images/bbc_03.jpg"></a></span>
+</div>
 
-                <span class="fxsbc"><a href="#">
-                    <input type="image" name="Submit" value="Submit" src="images/bbc_03.jpg"></a></span>
-
-            </div>
-        </form>
+</form>
     </div>
  
 

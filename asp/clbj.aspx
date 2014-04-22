@@ -69,6 +69,12 @@
         xmlhttp.open("GET", "xzclym3.aspx?id=" + id, true);
         xmlhttp.send();
     }
+    function SaveAll()
+    {
+        document.getElementById("form1").action = "xzclym4.aspx?ym=clbj";
+        document.getElementById("form1").method = "post";
+        document.getElementById("form1").submit();
+    }
 </script>	
 <script type=text/javascript><!--    //--><![CDATA[//><!--
     function menuFix()
@@ -144,61 +150,154 @@
     window.onload = menuFix;
     //--><!]]></script>
 <script runat="server">  
-        
-         public List<OptionItem> Items1 { get; set; }    //材料分类大类
-         public List<OptionItem_sx> Items2 { get; set; }	 //属性名称,分类属性值	 
-         public class OptionItem
-         {
-            public string Name { get; set; }  //下拉列表显示名属性
-            public string GroupsCode { get; set; }  //下拉列表分类编码属性    
-         }
-		 public class OptionItem_sx
-         {
-            public string Sx_Name { get; set; }      //下拉列表属性名称
-            public string Sx_value { get; set; }     //下拉列表分类属性值    
-         }
          protected DataTable dt_clfl = new DataTable();  //材料分类大类   
+         protected DataTable dt_clflej = new DataTable();  //材料分类大类   
          protected DataTable dt_clxx = new DataTable();    //材料信息
          protected DataTable dt_clsx = new DataTable();    //材料属性名称,属性值(材料属性表)	 
          protected DataConn objConn = new DataConn();
+         protected DataTable dt_pp = new DataTable();                 //品牌名称
          public string sSQL = "";
+         public string s_clmc = "";
+         public string clbm = "";
+         public string fl_id = "";
+   
          protected void Page_Load(object sender, EventArgs e)
          {
-            
-		     string cl_id = Request["cl_id"];   //获取材料id
-			 
-             sSQL="select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";           
-             dt_clfl = objConn.GetDataTable(sSQL);         
+             string cl_id = Request["cl_id"];   //获取材料id               
+                 sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
+                 dt_clfl = objConn.GetDataTable(sSQL);
+                 sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='4'";
+                 dt_clflej = objConn.GetDataTable(sSQL);
+                 sSQL = "select 显示名,分类名称,品牌名称,规格型号,计量单位,单位体积,单位重量,分类编码,说明,pp_id,fl_id,材料编码 from 材料表 where cl_id='" + cl_id + "' ";
+                 dt_clxx = objConn.GetDataTable(sSQL);
+                 clbm = Convert.ToString(dt_clxx.Rows[0]["材料编码"]);
+                 s_clmc = Convert.ToString(dt_clxx.Rows[0]["显示名"]);
+                 sSQL = "select 品牌名称,pp_id from 品牌字典 where left(分类编码,2)='" + clbm.Substring(0, 2) + "'";
 
-             this.Items1 = new List<OptionItem>();  //数据表DataTable转集合  
-        
-             for (int x = 0; x < dt_clfl.Rows.Count; x++)
+                 dt_pp = objConn.GetDataTable(sSQL);
+                 sSQL = "select 分类属性名称,分类属性值 from 材料属性表 where cl_id='" + cl_id + "' and 材料编码='" + clbm + "'";
+                 dt_clsx = objConn.GetDataTable(sSQL);
+             
+         }
+         protected void UploadFile(object sender, EventArgs e)
+         {
+             if (file1.PostedFile.FileName.ToString().Trim() == "")
              {
-                DataRow dr = dt_clfl.Rows[x];
-                if (Convert.ToString(dr["分类编码"]).Length == 2)
-                {
-                   OptionItem item = new OptionItem();
-                   item.Name = Convert.ToString(dr["显示名字"]);
-                   item.GroupsCode = Convert.ToString(dr["分类编码"]);
-                   this.Items1.Add(item);   //将大类存入集合
-                }
-             }    
-             sSQL= "select 显示名,分类名称,品牌名称,规格型号,计量单位,单位体积,单位重量,分类编码,说明 from 材料表 where cl_id='"+cl_id+"' ";
-             dt_clxx = objConn.GetDataTable(sSQL);
-			 
-			 sSQL = "select 分类属性名称,分类属性值 from 材料属性表 where cl_id='"+cl_id+"' ";
-             dt_clsx = objConn.GetDataTable(sSQL);
-			  
-			 this.Items2 = new List<OptionItem_sx>();
-			 for(int x= 0;x<dt_clsx.Rows.Count;x++)
-			 {
-			    DataRow dr = dt_clsx.Rows[x];
-				OptionItem_sx sx = new OptionItem_sx();
-				sx.Sx_Name = Convert.ToString(dr["分类属性名称"]);
-				sx.Sx_value = Convert.ToString(dr["分类属性值"]);
-				this.Items2.Add(sx);
-			 }            
-         }				
+                 objConn.MsgBox(this.Page, "请先选择上传文件！");
+                 return;
+             }
+            string FilePath = Server.MapPath("temp\\");
+             FilePath = FilePath + "Vedio\\";
+             if (!System.IO.Directory.Exists(FilePath))
+             {
+                 System.IO.Directory.CreateDirectory(FilePath);
+             }
+             string name = "";
+             name = System.IO.Path.GetFileName(this.file1.PostedFile.FileName.Trim());
+             if (System.IO.File.Exists(FilePath+name))
+             {
+                 try
+                 {
+                     System.IO.File.Delete(FilePath + name);
+                 }
+                 catch (Exception)
+                 {
+                 }
+                
+             }
+             file1.PostedFile.SaveAs(FilePath+name);
+             if (System.IO.File.Exists(FilePath + name))
+             {
+                 string ip = "";
+                 ip = Page.Request.Url.ToString().Trim();
+                 int iPos;
+                 ip = ip.Replace("http://", "");
+                 ip = ip.Replace("HTTP://", "");
+                 iPos = ip.IndexOf("/");
+                 if (iPos != -1)
+                 {
+                     ip = ip.Substring(0, iPos);
+                 }
+                
+                 string strVD = Request.ApplicationPath.ToString().Trim().Substring(1);
+                 int intPos;
+                 intPos = FilePath.LastIndexOf("\\");
+                 if (intPos < 0)
+                     intPos = FilePath.LastIndexOf("/");
+                 FilePath = FilePath.Substring(intPos + 1);
+                 FilePath = strVD + "/" + FilePath + "/" + name;
+                 FilePath = "http://" + ip + "/" + FilePath;
+                 
+                 
+                 
+                 
+                 
+                 
+                 string s_mtlx = "";   //媒体类型
+                 string s_fl = "";
+                 s_mtlx = mtlx.Value;
+                 if (this.sysm.Checked)
+                 {
+                     s_fl = "使用说明";
+                 }
+                 else if (this.cgal.Checked)
+                 {
+                     s_fl = "成功案例";
+                 }
+                 else if (this.ys.Checked)
+                 {
+                     s_fl = "演示";
+                 }
+                 else if (this.cptp.Checked)
+                 {
+                     s_fl = "产品图片";
+                 }
+                 sSQL = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,分类,存放地址) values(" +
+               "'" + Convert.ToString(Request["cl_id"]) + "','" + clbm + "','" + s_clmc + "','1','" +
+               s_mtlx + "','" + s_fl + "','" + FilePath + "')";
+                 Response.Write("<script>window.alert('" + sSQL + "')</" + "script>");
+                 bool b = objConn.ExecuteSQL(sSQL, true);
+                 if (b)
+                 {
+                     Response.Write("<script>window.alert('上传成功！')</" + "script>");
+                 }
+                 else
+                 {
+                     Response.Write("<script>window.alert('保存到数据库中失败，请重新上传！')</" + "script>");
+                 }
+                
+             }
+             else
+             {
+                 Response.Write("<script>window.alert('上传失败！')</" + "script>");
+             }           
+         }
+ 
+         protected bool CheckFileType(string FileName)
+         {
+             bool b = false;
+             System.IO.FileStream fs = new System.IO.FileStream(FileName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+             System.IO.BinaryReader reader = new System.IO.BinaryReader(fs);
+             byte[] buff = new byte[2];
+             string result = string.Empty;
+             try
+             {
+                 fs.Read(buff, 0, 2);
+                 result = buff[0].ToString() + buff[1].ToString();
+             }
+             catch (Exception ex)
+             {
+             }            
+             reader.Close();
+             fs.Close();
+             if (result=="4838"||result=="7368"||result=="6787")
+             {
+                 b = true;
+             }
+             return b;
+        }
+
+        
 </script>
 <body>
 
@@ -207,28 +306,42 @@
  <!-- 头部结束-->
 
 <div>
- <form action="xzclym4.aspx?ym=clbj" method="post">
+ <form runat="server" id="form1">
  <div class="fxsxx">
-<%--    <span class="fxsxx1">材料分类如下:</span>--%>
-<%--    <div class="xz1">
+    <span class="fxsxx1">材料分类如下:</span>
+    <div class="xz1">
     <div class="xza">
 
                     <span class="xz2"><a href="#">大类</a></span>
                     <select id="drop1" name="drop1" onchange="updateFL(this.options[this.options.selectedIndex].value)">
                      <option value="0">请选择大类</option>
-                        <% foreach(var v  in Items1){%>
-                        <option value="<%=v.GroupsCode %>"><%=v.Name%></option>
-                        <%}%>
+                        <% foreach (System.Data.DataRow v in dt_clfl.Rows)
+                           {
+                                   if (v["分类编码"].ToString() == dt_clxx.Rows[0]["材料编码"].ToString().Substring(0, 2))
+                                   {%>
+                                        <option value="<%=v["分类编码"].ToString() %>" selected="selected"><%=v["显示名字"].ToString()%></option>
+                                 <%}
+                                   else
+                                   { %>
+                                   <option value="<%=v["分类编码"].ToString() %>"><%=v["显示名字"].ToString()%></option>
+                                  <%}
+                         }%>
                     </select>
-                </div>--%>
-    <%--<div class="xza">
+                </div>
+    <div class="xza">
                     <span class="xz2"><a href="#">小类</a></span>
                     <select id="ejflname" name="ejflname" class="fux"  onchange="updateCLFL(this.options[this.options.selectedIndex].value)">
-                        
+                        <%for (int i = 0; i < dt_clflej.Rows.Count; i++)
+                          {
+                              if (dt_clflej.Rows[i]["分类编码"].ToString()==dt_clxx.Rows[0]["材料编码"].ToString().Substring(0,4))
+                              {%>
+                                   <option value="<%=dt_clflej.Rows[i]["分类编码"].ToString() %>" selected="selected"><%=dt_clflej.Rows[i]["显示名字"].ToString()%></option>
+                              <%}
+                          } %>
                         <option value="0">请选择小类</option>
                     
                     </select>
-                </div>           --%>
+                </div>           
     <div class="xzz">
 <!--
 <span class="xzz0">如果没有适合的小类，请联系网站管理员增加！ 联系方式是xxx@xxx.com.请使用模板。 </span>
@@ -242,22 +355,24 @@
  <dl>
                     <dd>材料名字：</dd>
                     <dt>
-                        <input name="cl_name" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["显示名"] %>" /></dt>
-
+                        <input name="cl_name"  id="cl_name" type="text" class="fxsxx3" value="<%=s_clmc%>"  /></dt>
                     <dd>品    牌：</dd>
                     <dt>
-                        <select name="brand" id="brand" style="width: 300px" >
-                            
-                            <option value="0">请选择品牌</option>
-                           
+                        <select name="brand" id="brand" style="width: 300px" >                            
+                            <option value="0">请选择品牌</option>                
+                            <%foreach (System.Data.DataRow row in dt_pp.Rows)
+                              {%>
+                                   <option value="<%=row["pp_id"] %>"><%=row["品牌名称"] %></option>                
+                             <% } %>           
                         </select></dt>
   
                     <dd>属性名称：</dd>
                     <dt>
                         <select name="sx_names" id="sx_names" style="width: 300px" >
 						
-                            <%foreach(var v in this.Items2){%>                                          
-                            <option value="0"><%=v.Sx_Name%></option>
+                            <%foreach (System.Data.DataRow v in dt_clsx.Rows)
+                              {%>                                          
+                            <option value="0"><%=v["分类属性名称"].ToString()%></option>
 							<%}%>
 						
                         </select></dt>		
@@ -266,8 +381,9 @@
                     <dt>
                         <select name="cl_value" id="cl_value" style="width: 300px"  >
                             
-                            <%foreach(var v in this.Items2){%>                                          
-                            <option value="0"><%=v.Sx_value%></option>
+                            <%foreach (System.Data.DataRow v in dt_clsx.Rows)
+                              {%>                                          
+                            <option value="0"><%=v["分类属性值"].ToString()%></option>
 							<%}%>
                            
                         </select></dt>
@@ -312,17 +428,35 @@
 </div>
 -->
 
-    <div class="cpdt">
-<span class="dmt">多媒体信息</span>
-   <dl>
-     <dd>产品视频：</dd>
-    <dt><input name="" id="sp" type="text" class="fxsxx3"/><a href="#" onclick="window.location.href=document.getElementById('sp').value"><img src="images/qweqwe_03.jpg" /></a></dt>
-     <dd>成功案例：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/><a href=""><img src="images/qweqwe_03.jpg" /></a></dt>
-     <dd>更多资料：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>                          
- </dl>
- <span class="fxsbc"><a href="#"><img src="images/bbc_03.jpg" /></a></span>  
+<div class="cpdt">
+    <span class="dmt">多媒体信息</span>
+    <dl>
+       <dd>多媒体类型：</dd>
+       <dt>
+           <select  id="mtlx" runat="server">
+                <option value="0">选择媒体类型</option>
+                <option value="视频">视频</option>
+                <option value="图片">图片</option>
+                <option value="文档">文档</option>
+            </select>
+       </dt>
+       <dd>分类：</dd>
+       <dt>
+        <input  id="sysm" name="select" type="radio" value="使用说明" runat="server" validationgroup="select" />使用说明  
+		    <input id="cgal"  runat="server" name="select"  type="radio" value="成功案例" validationgroup="select" />成功案例
+            <input id="ys"  runat="server" name="select"  type="radio" value="演示" validationgroup="select" />演示
+            <input id="cptp"  runat="server" name="select"  type="radio" value="产品图片" validationgroup="select" />产品图片
+       </dt>
+       <dd>上传文件</dd>
+               <dt><input name="" id="file1" type="file" class="fxsxx3"  runat="server"/>&nbsp;&nbsp;<asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="ImageButton1" OnClick="UploadFile" /></dt>
+         <%--<dd>产品视频：</dd>
+        <dt><input name="" id="filesp" type="file" class="fxsxx3"  runat="server"/>&nbsp;&nbsp;<asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="UploadSP" OnClick="UploadFile" /></dt>
+         <dd>成功案例：</dd>
+        <dt><input name=""  id="fileAL"  type="file" class="fxsxx3" runat="server"/>&nbsp;&nbsp;<asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="uploadFileAL" OnClick="UploadFileAL" /></dt>
+         <dd>更多资料：</dd>
+        <dt><input name="" id="More"  runat="server" type="file" class="fxsxx3"/>&nbsp;&nbsp;<asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="uploadMore" OnClick="UploadFileMore" /></dt>                       --%>
+     </dl>
+     <span class="fxsbc"><a href="#"><img src="images/bbc_03.jpg"  onclick="SaveAll()"/></a></span>  
 </div>
 
  </form>
