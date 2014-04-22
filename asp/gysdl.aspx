@@ -49,6 +49,16 @@
         
             else
             {
+			 foreach (string cookiename in Request.Cookies.AllKeys)
+                {
+                    HttpCookie cookies = Request.Cookies[cookiename];
+                    if (cookies != null)
+                    {
+                        cookies.Expires = DateTime.Today.AddDays(-1);
+                        Response.Cookies.Add(cookies);
+                        Request.Cookies.Remove(cookiename);
+                    }
+                }    
             //Response.Write("openid is empty");
             %>
             <span class="dlzi">尊敬的供应商，您好! </span>

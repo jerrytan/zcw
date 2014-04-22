@@ -46,7 +46,16 @@
 
             else
            {
-           
+            foreach (string cookiename in Request.Cookies.AllKeys)
+                {
+                    HttpCookie cookies = Request.Cookies[cookiename];
+                    if (cookies != null)
+                    {
+                        cookies.Expires = DateTime.Today.AddDays(-1);
+                        Response.Cookies.Add(cookies);
+                        Request.Cookies.Remove(cookiename);
+                    }
+                }    
             %>
             <span class="dlzi">尊敬的采购商用户，您好! </span><span class="dlzi">请点击右边按钮登陆！</span> <span
                 class="dlzi2" id="qqLoginBtn"></span>
