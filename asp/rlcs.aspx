@@ -208,8 +208,6 @@
                                                 <li class="rlcsxz"><a href="glfxsxx.aspx" >管理分销商信息</a></li>
                                                 <li class="rlcsxz"><a href="gysglcl.aspx" >管理材料信息</a></li>
                                             </ul>
-                                            
-                                            
                                        </div>                                           
 
 
@@ -335,7 +333,14 @@
                             </div>
                          </div>
                          <div class="rlcs4">
-                            <span class="rlcs7">如果您没有找到贵公司，您可以提交贵公司资料，我方工作人员会在3个工作日内完成审核工作（流程图如下）</span>
+                         <%if (gys_type == "生产商")
+                           {%>
+                            <span class="rlcs7"><a href="xzgxs.aspx?xzlx=scs">如果您没有找到贵公司，您可以提交贵公司资料，我方工作人员会在3个工作日内完成审核工作（流程图如下）</a></span>
+                         <%}
+                           else
+                           { %>
+                            <span class="rlcs7"><a href="xzgxs.aspx?xzlx=fxs">如果您没有找到贵公司，您可以提交贵公司资料，我方工作人员会在3个工作日内完成审核工作（流程图如下）</a></span>
+                         <%} %>
                             <span><img src="images/www_03.jpg" /></span>
                         </div>
                    </div>
@@ -387,9 +392,14 @@
                         </div>
                         </div>
                         <div class="rlcs4">
-                        <span class="rlcs7">
-						<a href="gysbtxx.aspx">如果您没有找到贵公司，您可以提交贵公司资料，我方工作人员会在3个工作日内完成审核工作（流程图如下）</a>
-						</span>
+                     <%if (gys_type == "生产商")
+                           {%>
+                            <span class="rlcs7"><a href="xzgxs.aspx?xzlx=scs">如果您没有找到贵公司，您可以提交贵公司资料，我方工作人员会在3个工作日内完成审核工作（流程图如下）</a></span>
+                         <%}
+                           else
+                           { %>
+                            <span class="rlcs7"><a href="xzgxs.aspx?xzlx=fxs">如果您没有找到贵公司，您可以提交贵公司资料，我方工作人员会在3个工作日内完成审核工作（流程图如下）</a></span>
+                         <%} %>
                         <span><img src="images/www_03.jpg" /></span>
                     </div>
                 </div> 
