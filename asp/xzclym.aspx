@@ -2,7 +2,7 @@
           
        供应商新增材料页面	   
        文件名：czclym.aspx 
-       传入参数:无	 (应该要传入供应商id)  
+       传入参数:gys_id	 
 	   author:张新颖
 -->
 
@@ -61,30 +61,30 @@
     function updateCLFL(id)
     {
 
-        var xmlhttp;
+//        var xmlhttp;
         var xmlhttp1;
         if (window.XMLHttpRequest)
         {// code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
+//            xmlhttp = new XMLHttpRequest();
             xmlhttp1 = new XMLHttpRequest();
         }
         else
         {// code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+//            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.onreadystatechange = function ()
-        {
+//        xmlhttp.onreadystatechange = function ()
+//        {
 
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-            {
+//            if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+//            {
 
-                document.getElementById("brand").innerHTML = xmlhttp.responseText;
+//                document.getElementById("brand").innerHTML = xmlhttp.responseText;
 
-            }
-        }
-        xmlhttp.open("GET", "xzclym3.aspx?id=" + id, true);
-        xmlhttp.send();
+//            }
+//        }
+//        xmlhttp.open("GET", "xzclym3.aspx?id=" + id, true);
+//        xmlhttp.send();
 
 
         xmlhttp1.open("GET", "xzclymSX.aspx?id=" + id, true);
@@ -195,7 +195,21 @@
             }
         }
 
-    }	
+    }
+    function AddNewBrand(id)
+    {
+        var url;
+        var type = '<%=lx%>';
+        if (type == "生产商")
+        {
+            url = "xzpp.aspx?gys_id=" + id;
+        }
+        else
+        {
+            url = "xzfxpp.aspx?gys_id=" + id;
+        }
+        window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+    }
 </script>
 
 
@@ -211,9 +225,35 @@
     }
     protected DataTable dt_clfl = new DataTable();  //材料分类大类    
     public DataConn objConn=new DataConn();
+    public string gys_id = "";
+    protected string sSQL = "";
+    protected DataTable dt_pp = new DataTable();
+    protected string lx = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        string sSQL="select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
+        if (Request["gys_id"]!=null&&Request["gys_id"].ToString()!="")
+        {
+            gys_id = Request["gys_id"].ToString();
+        }
+        
+        if (gys_id!="")
+        {
+            sSQL = "select 单位类型 from 材料供应商信息表 where gys_id='" + gys_id + "'";
+            lx = objConn.DBLook(sSQL);
+        }
+
+            if (lx=="生产商")
+            {
+                sSQL = "select 品牌名称,pp_id from 品牌字典 where scs_id='" + gys_id + "'";
+                dt_pp = objConn.GetDataTable(sSQL);
+            }
+            else
+            {
+                sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where fxs_id='"+gys_id+"'";
+                dt_pp = objConn.GetDataTable(sSQL);
+            }
+           
+         sSQL="select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
       
         dt_clfl = objConn.GetDataTable(sSQL);     
       
@@ -281,15 +321,32 @@
                     <dd>材料名字：</dd>
                     <dt>
                         <input name="cl_name" type="text" class="fxsxx3" value="<%=Request.Form["cl_name"] %>" /></dt>
-
+                  
                     <dd>品    牌：</dd>
                     <dt>
-                        <select name="brand" id="brand" style="width: 300px">
-                            
+                        <select name="brand" id="brand" style="width: 300px">                            
                             <option value="0">请选择品牌</option>
-                           
-                        </select></dt>
-
+                             <%if (dt_pp.Rows.Count > 0)
+                              {
+                                  foreach (System.Data.DataRow row in dt_pp.Rows)
+                                  {%>
+                                   <option value="<%=row["pp_id"].ToString() %>"><%=row["品牌名称"].ToString() %></option>
+                                 <% }
+                              }%>
+                        </select>
+                          <%if (dt_pp.Rows.Count == 0)
+                          {
+                              if (lx == "分销商")
+                              {%>
+                             <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新分销品牌</a></span>
+                            <%}
+                            else
+                             { %>
+                               <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新品牌</a></span>
+                           <%}
+                          } %>
+                        </dt>
+                      
                     <dd>属性名称：</dd>
                     <dt>
                         <select name="sx_names" id="sx_names" style="width: 300px" onchange="update_clsx(this.options[this.options.selectedIndex].value)">

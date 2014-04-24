@@ -49,6 +49,8 @@
         public DataTable dt_clfl;
         public string s_yh_id = "";
         public string qymc = "";
+        public string gxs_id = "";
+        public DataTable dt_fxpp = new DataTable();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
@@ -59,47 +61,117 @@
             if (Request["xzlx"]!=null&&Request["xzlx"].ToString()!="")
             {
                 xzlx = Request["xzlx"].ToString();
-                if (xzlx=="scs")
+                if (xzlx.Trim()=="scs")
                 {
                     xzlx = "生产商";
                 }
-                else if (xzlx == "fxs")
+                else if (xzlx.Trim() == "fxs")
                 {
                     xzlx = "分销商";
                 }
                
             }
-                BTX();
+            if (Request["gxs_id"]!=null&&Request["gxs_id"].ToString()!="")
+            {
+                gxs_id = Request["gxs_id"].ToString();
+            }           
+           
+                if (xzlx=="分销商")  //当前用户是生产商
+                {
+                    sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "'";
+                    dt_ppxx = objConn.GetDataTable(sSQL);
+                }
+                    //else
+                    //{                 
+                    //    sSQL = "select pp_id from 分销商和品牌对应关系表 where fxs_id='" + gxs_id + "'";
+                    //    dt_fxpp = objConn.GetDataTable(sSQL);
+           
+                    //    string pp_id = dt_fxpp.Rows[0]["pp_id"].ToString();
+                    //    sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where pp_id=" + pp_id;
+                    //    dt_ppxx = objConn.GetDataTable(sSQL);
+                    
+                    //}
              sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
             dt_yjfl = objConn.GetDataTable(sSQL);
 
-            sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where yh_id="+s_yh_id;
-            dt_ppxx = objConn.GetDataTable(sSQL);
+          
             sSQL = "select 分类编码,显示名字 from 材料分类表 where 是否启用=1";
             dt_clfl = objConn.GetDataTable(sSQL);
             
          }
         protected void updateUserInfo(object sender, EventArgs e)
         {
-            string id = "";           
-            id=save();
-            bool b=xzpp(id);   
-            if (b)
+            qymc = this.s0.Value + this.s1.Value + this.s2.Value + this.s3.Value;
+            if (this.gys.Value == "")
             {
-                Response.Write("<script>window.alert('添加成功！');window.location.href='gyszym.aspx';</" + "script>");
+                Response.Write("<script>window.alert('供应商不能为空！')</" + "script>");
+                this.gys.Focus();
+                return;
+            }
+           else if (this.zzjgbh.Value == "")
+            {
+                Response.Write("<script>window.alert('组织机构编号不能为空！')</" + "script>");
+                this.zzjgbh.Focus();
+                return;
+            }
+            else if (this.lx.Value == "")
+            {
+                Response.Write("<script>window.alert('单位类型不能为空！')</" + "script>");
+                this.lx.Focus();
+                return;
+            }           
+            else if (qymc != "")
+            {
+                Response.Write("<script>window.alert('地区名称不能为空！')</" + "script>");
+                this.s1.Focus();
+                return;
+            }
+            else if (this.lxr.Value == "")
+            {
+                Response.Write("<script>window.alert('联系人不能为空！')</" + "script>");
+                this.lxr.Focus();
+                return;
+            }
+            else if (this.lxrsj.Value == "")
+            {
+                Response.Write("<script>window.alert('联系人手机不能为空！')</" + "script>");
+                this.lxrsj.Focus();
+                return;
+            }
+            else if (this.lxdz.Value == "")
+            {
+                Response.Write("<script>window.alert('联系地址不能为空！')</" + "script>");
+                this.lxdz.Focus();
+                return;
+            }
+            else if (this.jyfw.Value == "")
+            {
+                Response.Write("<script>window.alert('经营范围不能为空！')</" + "script>");
+                this.jyfw.Focus();
+                return;
             }
             else
             {
-                Response.Write("<script>window.alert('添加成功！');window.location.href='gyszym.aspx';</" + "script>");
+                string id = "";
+                id = save();
+                bool b = xzpp(id);
+                if (b)
+                {
+                    Response.Write("<script>window.alert('添加成功！');window.location.href='gyszym.aspx';</" + "script>");
+                }
+                else
+                {
+                    Response.Write("<script>window.alert('添加成功！');window.location.href='gyszym.aspx';</" + "script>");
+                }
             }
          
         }
         public bool xzpp(string gys_id)
         {
             bool b = false;
-            if (xzlx=="生产商")
+            if (xzlx == "生产商")
             {
-               // string gys_id = Request.Form["gys_id_hid"];
+                // string gys_id = Request.Form["gys_id_hid"];
                 string brandname = Request.Form["brandname"];            //品牌名称
                 string yjflname = Request.Form["yjflname"];              //大级分类名称               
                 string ejflname = Request.Form["ejflname"];              //二级分类名称
@@ -108,32 +180,32 @@
                 string flname = Request.Form["ejflname"];
                 sSQL = "insert into  品牌字典 (品牌名称,是否启用,scs_id,分类编码,等级,范围) values('" + brandname + "',1,'" + gys_id + "','" + flname + "','" + grade + "','" + scope + "') ";
 
-               b= objConn.ExecuteSQL(sSQL, false);
-               if (b)
-               {
-                   string str_update = "update 品牌字典 set pp_id= (select myID from 品牌字典 where 品牌名称='" + brandname + "'),"
-                   + " fl_id = (select fl_id from 材料分类表 where 分类编码='" + flname + "'),"
-                   + " 生产商 = (select 供应商 from 材料供应商信息表 where gys_id = '" + gys_id + "'),"
-                   + " 分类名称 = (select 显示名字 from 材料分类表 where 分类编码 = '" + flname + "')"
-                   + " where 品牌名称='" + brandname + "'";
-                   int ret1 = objConn.ExecuteSQLForCount(str_update, false);
-                   sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,yh_id) values('" + " (select myID from 品牌字典 where 品牌名称='" + brandname + "')" + "','" + brandname + "', 1,'" + gys_id + "','"+s_yh_id+"' ) ";
-                   int ret = objConn.ExecuteSQLForCount(sSQL, true);
-                   if (ret<1||ret1<1)
-                   {
-                       b = false;
-                   }                 
-               }
-               
+                b = objConn.ExecuteSQL(sSQL, false);
+                if (b)
+                {
+                    string str_update = "update 品牌字典 set pp_id= (select myID from 品牌字典 where 品牌名称='" + brandname + "'),"
+                    + " fl_id = (select fl_id from 材料分类表 where 分类编码='" + flname + "'),"
+                    + " 生产商 = (select 供应商 from 材料供应商信息表 where gys_id = '" + gys_id + "'),"
+                    + " 分类名称 = (select 显示名字 from 材料分类表 where 分类编码 = '" + flname + "')"
+                    + " where 品牌名称='" + brandname + "'";
+                    int ret1 = objConn.ExecuteSQLForCount(str_update, false);
+                    sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,yh_id) values('" + " (select myID from 品牌字典 where 品牌名称='" + brandname + "')" + "','" + brandname + "', 1,'" + gys_id + "','" + s_yh_id + "' ) ";
+                    int ret = objConn.ExecuteSQLForCount(sSQL, true);
+                    if (ret < 1 || ret1 < 1)
+                    {
+                        b = false;
+                    }
+                }
+
             }
-            else if(xzlx=="分销商")
+            else if (xzlx == "分销商")
             {
-              //  string fxs_id = Request["gys_id_hid"]; 	//分销商id	
-                
+                //  string fxs_id = Request["gys_id_hid"]; 	//分销商id	
+
                 string pp_id = Request["pp_id"];	    //品牌id	
                 string pp_name = Request["pp_name"];   //品牌名称     
                 sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id) values('" + pp_id + "','" + pp_name + "', 1,'" + gys_id + "' ) ";
-               b= objConn.ExecuteSQL(sSQL, true);
+                b = objConn.ExecuteSQL(sSQL, true);
             }
             return b;
         }
@@ -187,59 +259,7 @@
             gys_id = objConn.DBLook(sSQL);
             this.gys_id_hid.Value = gys_id;
             return gys_id;
-        }
-        protected void BTX()
-        {
-            if (this.gys.Value=="")
-            {
-                objConn.MsgBox(this.Page,"供应商不能为空！");
-                this.gys.Focus();
-                return;
-            }
-             if (this.zzjgbh.Value=="")
-            {
-                objConn.MsgBox(this.Page,"组织机构编号不能为空！");
-                this.zzjgbh.Focus();
-                return;
-            }
-             if (this.lx.Value=="")
-            {
-                objConn.MsgBox(this.Page,"单位类型不能为空！");
-                this.lx.Focus();
-                return;
-            }
-             qymc = this.s0.Value+this.s1.Value + this.s2.Value + this.s3.Value;
-             if (qymc!="")
-            {
-                objConn.MsgBox(this.Page,"地区名称不能为空！");
-                this.s1.Focus();
-                return;
-            }
-             if (this.lxr.Value=="")
-            {
-                objConn.MsgBox(this.Page,"联系人不能为空！");
-                this.lxr.Focus();
-                return;
-            }
-             if (this.lxrsj.Value=="")
-            {
-                objConn.MsgBox(this.Page, "联系人手机不能为空！");
-                this.lxrsj.Focus();
-                return;
-            }
-             if (this.lxdz.Value == "")
-             {
-                 objConn.MsgBox(this.Page, "联系地址不能为空！");
-                 this.lxdz.Focus();
-                 return;
-             }
-             if (this.jyfw.Value == "")
-             {
-                 objConn.MsgBox(this.Page, "经营范围不能为空！");
-                 this.jyfw.Focus();
-                 return;
-             }
-        }
+        }       
     </script>
    
  <script type="text/javascript" language="javascript">
@@ -267,40 +287,43 @@
          xmlhttp.send();
      }
 
-      function updateFLfxs(id) {
+     function updateFLfxs(id)
+     {
 
-            var scs_array = new Array();
-            var scs_id_array = new Array();
-            var grade_array = new Array();
-            var scope_array = new Array();
-            var fl_id_array = new Array();
-            var fl_name_array = new Array();
-            var fl_code_array = new Array();
-            var pp_id_array = new Array();
-            var pp_name_array = new Array();
+          var xmlhttp;
+          if (window.XMLHttpRequest)
+          {// code for IE7+, Firefox, Chrome, Opera, Safari
+              xmlhttp = new XMLHttpRequest();
+          }
+          else
+          {// code for IE6, IE5
+              xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+          }
+          xmlhttp.onreadystatechange = function ()
+          {
+              if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+              {
+                  var array = new Array();           //声明数组
+                  array = xmlhttp.responseText;     //接收替换返回的json字符串
 
-            <%
-                for (int i=0;i<dt_ppxx.Rows.Count;i++)
-                {
-                    Response.Write("            scs_array["+i+"] = '"+dt_ppxx.Rows[i]["生产商"]+"';\n");
-                    Response.Write("            scs_id_array["+i+"] = '"+dt_ppxx.Rows[i]["scs_id"]+"';\n");
-                    Response.Write("            grade_array["+i+"] = '"+dt_ppxx.Rows[i]["等级"]+"';\n");
-                    Response.Write("            scope_array["+i+"] = '"+dt_ppxx.Rows[i]["范围"]+"';\n");
-                    Response.Write("            fl_id_array["+i+"] = '"+dt_ppxx.Rows[i]["fl_id"]+"';\n");
-                    Response.Write("            pp_id_array["+i+"] = '"+dt_ppxx.Rows[i]["pp_id"]+"';\n");
-                    Response.Write("            fl_name_array["+i+"] = '"+dt_ppxx.Rows[i]["分类名称"]+"';\n");
-                    Response.Write("            fl_code_array["+i+"] = '"+dt_ppxx.Rows[i]["分类编码"]+"';\n");
-                    Response.Write("            pp_name_array["+i+"] = '"+dt_ppxx.Rows[i]["品牌名称"]+"';\n");
-                }
-              
-            %> 
-            document.getElementById("scs").innerHTML = scs_array[id];
-            document.getElementById("fl_name").innerHTML = fl_name_array[id];
-            document.getElementById("grade").innerHTML = grade_array[id];
-            document.getElementById("scope").innerHTML = scope_array[id];
+                  var json = array;
+                  var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 	
+                  for (var i = 0; i < myobj.length; i++)
+                  {  //遍历,将ajax返回的数据填充到文本框中				
 
-            document.getElementById("pp_id").value = pp_id_array[id];
-            document.getElementById("pp_name").value = pp_name_array[id];
+                      document.getElementById('scs').value = myobj[i].scs;      
+                      document.getElementById('grade').value = myobj[i].dj       
+                      document.getElementById('scope').value = myobj[i].fw;                	 
+                      document.getElementById('fl_name').value = myobj[i].flname;
+                      document.getElementById('pp_id').value = myobj[i].pp_id;
+                      document.getElementById('pp_name').value = myobj[i].ppname;         
+                      
+                  }
+              }
+          }
+          xmlhttp.open("GET", "xzgxs2.aspx?id=" + id, true);
+          xmlhttp.send();
+            
         }    
  </script>
 <body >
@@ -318,7 +341,7 @@
                     <td style="width: 120px; color: Blue">*品牌名称：
                     </td>
                     <td align="left">
-                        <select id="yjflname" name="yjflname" style="width: 200px" onchange="updateFLfxs(this.options[this.options.selectedIndex].value)">
+                        <select id="" name="" style="width: 200px" onchange="updateFLfxs(this.options[this.options.selectedIndex].value)">
 
                             <% for (int i=0;i< dt_ppxx.Rows.Count;i++) {%>
                                <option value='<%=dt_ppxx.Rows[i]["pp_id"].ToString() %>'><%=dt_ppxx.Rows[i]["品牌名称"]%></option>");
@@ -326,8 +349,6 @@
                         </select>
                     </td>
                 </tr>
-
-
                 <tr>
                     <td style="width: 120px; color: Blue">*生产商：
                     </td>

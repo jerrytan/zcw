@@ -71,6 +71,7 @@
                 }
            }
         }
+            CancelFollowButton.Attributes.Add("onClick", "return confirm('您确定要删除该选中的材料吗？');");      
        
     }
     protected void Products_gys_cl()
@@ -133,9 +134,8 @@
 
         //取二级分类名称
         sSQL="select 显示名字,分类编码 from 材料分类表 where 分类编码 in(select 分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1' )";
-        dt_ejfl = objConn.GetDataTable(sSQL);
-     
-        CancelFollowButton.Attributes.Add("onClick", "return confirm('您确定要删除该选中的材料吗？');");
+        dt_ejfl = objConn.GetDataTable(sSQL);       
+        
     }
     public static string[] GetString(string[] values) 
     { 
@@ -223,26 +223,33 @@
     }
     public void Delete_cl(object sender, EventArgs e)
     {
-
+       
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-         string gys_id="";
+        string gys_id = "";
         //根据用户id 查询供应商id
-        sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";    
-        DataTable dt_gys =objConn.GetDataTable(sSQL);
-        if (dt_gys!=null&&dt_gys.Rows.Count>0)
-        {
-            gys_id = dt_gys.Rows[0]["gys_id"].ToString();
-        }
-      
         //获取复选框选中的cl_id
         string clidstr = Request.Form["clid"];
-        //通过获取的供应商id和cl_id进行删除
-        sSQL = "update 材料表 set 是否启用='0' where gys_id ='" + gys_id + "' and cl_id in (" + clidstr + ")";
-        objConn.ExecuteSQL(sSQL, true);
-        Products_gys_cl();
+        if (Request.Form["clid"] != "" && Request.Form["clid"] != null)
+        {
+            sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";
+            DataTable dt_gys = objConn.GetDataTable(sSQL);
+            if (dt_gys != null && dt_gys.Rows.Count > 0)
+            {
+                gys_id = dt_gys.Rows[0]["gys_id"].ToString();
+            }
+            //通过获取的供应商id和cl_id进行删除
+            sSQL = "update 材料表 set 是否启用='0' where gys_id ='" + gys_id + "' and cl_id in (" + clidstr + ")";
+            objConn.ExecuteSQL(sSQL, true);
+
+            Products_gys_cl();
+        }
+        else
+        {
+            Response.Write("<script>window.alert('您没有选中任何材料！')</" + "script>");
+        }
     }
     protected void updateUserInfo(object sender, EventArgs e)
     {      

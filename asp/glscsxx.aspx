@@ -373,7 +373,7 @@
                      <span>该品牌下的分销商：</span><br />
 			        <select name="scs_PP" id="scs_PP" class="fug" style="width:200px" onchange="Update_scs(this.options[this.options.selectedIndex].value)">			
 			        </select> 
-			        <span class="zjgxs1"><a href="xzgxs.aspx?xzlx=scs"> 增加新的生产商</a></span>
+			        <span class="zjgxs1"><a href="xzgxs.aspx?xzlx=scs&gxs_id=<%=gys_id %>"> 增加新的生产商</a></span>
 			    </div>
          
             <span class="fxsxx1">该公司的详细信息如下:</span>

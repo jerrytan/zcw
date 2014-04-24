@@ -412,7 +412,7 @@
             <span>品牌代理商：</span><br />
 			    <select name="fxsxx" id="fxsxx" class="fug" style="width:200px" onchange="Update_gys(this.options[this.options.selectedIndex].value)">			
                 </select> 
-			    <span class="zjgxs1"><a href="xzgxs.aspx?xzlx=fxs">增加新的分销商</a></span>
+			    <span class="zjgxs1"><a href="xzgxs.aspx?xzlx=fxs&gxs_id=<%=gys_id %>">增加新的分销商</a></span>
 			</div>
              <span class="fxsxx1">该分销商的信息如下:</span>
              <div class="fxsxx2">

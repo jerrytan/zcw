@@ -35,7 +35,7 @@
                     Response.Write("<option value = '0'>" + "请选择分销商" + "</option>");
                     foreach (DataRow row in dt_fxs.Rows)
                     {
-                        Response.Write("<option value = '" + row["fxs_id"] + "'>" + row["分销商"] + "</option>");
+                        Response.Write("<option value = '" + row["fxs_id"].ToString() + "'>" + row["分销商"].ToString() + "</option>");
                     }
                 }
             }
@@ -48,7 +48,7 @@
                     Response.Write("<option value = '0'>" + "请选择生产商" + "</option>");
                     foreach (DataRow row in dt_fxs.Rows)
                     {
-                        Response.Write("<option value = '" + row["scs_id"] + "'>" + row["生产商"] + "</option>");
+                        Response.Write("<option value = '" + row["scs_id"].ToString() + "'>" + row["生产商"].ToString() + "</option>");
                     }
                 }
             }
