@@ -3,6 +3,8 @@
         文件名：menu.ascx
         传入参数：无
         owner:丁传宇
+        首页导航根据用户关注类别动态匹配
+        author:lilifeng
         
     -->
 <%@ Import Namespace="System.Data" %>
@@ -22,18 +24,51 @@
 		protected DataTable dt_1After7 = new DataTable();  //取一级分类名称前七条之后的所有
         protected DataConn dc = new DataConn();
 
+        protected string str_Sql1Top7 ="";  //首页导航sql
+             
         protected void Page_Load(object sender, EventArgs e)
         {
+          Object session_GYS= Session["GYS_YH_ID"]; //供应商
+          Object session_CGS=Session["CGS_YH_ID"];//采购商
+          string yh_id="";//会员id
 
-            //暂时只显示人工挑选的7个，12-10 add by 谭中意
-            string str_Sql1Top7 = "select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 in (08,07,02,04,05,01,06) order by 分类编码 desc";
+          if(session_GYS!=null)
+          {
+            yh_id=Session["GYS_YH_ID"].ToString();         
+           
+          }
+          if(session_CGS!=null)
+          {
+            yh_id=Session["CGS_YH_ID"].ToString(); 
+          }
+
+           string sqlType="select 用户关注类别 from 用户表 where yh_id="+yh_id; //获得用户关注的类别
+           string typeStr=dc.DBLook(sqlType); 
+           if(typeStr!="")//用户选择了关注类别
+           {
+             string sqlnav ="select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 in(" + typeStr + ")";
+             DataTable dt_sqlNav=dc.GetDataTable(sqlnav);
+             if(dt_sqlNav.Rows.Count>=7)  //关注类别大于7个时
+             {
+               str_Sql1Top7 ="select top 7 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 in(" + typeStr + ") order by 分类编码 desc";
+             }
+             else  //关注类别少于7个时
+             {
+               str_Sql1Top7 ="select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 in(" + typeStr + ") order by 分类编码 desc";           
+             }
+           } 
+
+           else //没有选择关注的类别时显示默认
+           {
+            str_Sql1Top7 = "select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 in (08,07,02,04,05,01,06) order by 分类编码 desc";
+           } 
+            //暂时只显示人工挑选的7个，12-10 add by 谭中意         
 			string str_Sql2All = "select distinct  显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=4 ";
 			string str_1After7 = "select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 not in(08,07,02,04,05,01,06 )";
             
             dt_1Top7 = dc.GetDataTable(str_Sql1Top7);
             dt_2All = dc.GetDataTable(str_Sql2All);
             dt_1After7 = dc.GetDataTable(str_1After7);
-
             
             ////数据表DataTable转集合                  
             this.Items1 = new List<FLObject>();
@@ -52,6 +87,25 @@
                     this.Items1.Add(item);
                 }
 			}
+
+            if(this.Items1.Count<7)//如果用户关注的类别少于7个
+            {
+              string sqlOther="select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 not in(" + typeStr + ") and 分类编码 in(08,07,02,04,05,01,06) order by 分类编码 desc";
+              DataTable dt_sqlOther=dc.GetDataTable(sqlOther);
+              for(int x=0;x<dt_sqlOther.Rows.Count;x++)
+                {
+                    DataRow dr2 = dt_sqlOther.Rows[x]; 
+		            if (Convert.ToString(dr2["分类编码"]).Length ==2&&this.Items1.Count<7) 
+		            {
+ 			            FLObject item = new FLObject();
+                        item.Name = Convert.ToString(dr2["显示名字"]);
+                        item.Sid = Convert.ToString(dr2["分类编码"]);
+                        this.Items1.Add(item);
+                    }
+			    }
+            }
+
+
 			for(int x=0;x<dt_1After7.Rows.Count;x++)
             {
                 DataRow dr = dt_1After7.Rows[x];                   

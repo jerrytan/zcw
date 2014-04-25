@@ -14,11 +14,12 @@
         <a href="index.aspx">
             <img src="images/logo_03.jpg" /></a>
     </div>
-
+  
     <div class="sous">
-        <form id="form1" name="form1" method="post" action="ss.aspx">
-            <input name="sou" type="text" class="sou" />
-            <img src="images/sss_03.jpg" onclick="javascript:fsubmit(document.form1);">
+        <form id="form1" name="form1" method="get" action="ss.aspx">
+            <%string keyWord=Request["sou"];%>            
+            <input name="sou" type="text" class="sou" value="<%=keyWord%>"/>          
+            <input type="submit" name="btnSubmit" value="" style="background:url('images/sss_03.jpg');width:96px;height:28px;margin-top:1px;" />
         </form>
     </div>    
     <%
