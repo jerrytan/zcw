@@ -218,19 +218,11 @@ where t.RowId between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize ";
                
         //得到总页数
          private int GetPageCount(string name,int pageSize)
-        {
-            string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;          
-            string sql = "select count(cl_Id) from 材料表 where left(材料编码,2)='"+name+"'";
-            SqlCommand cmd = new SqlCommand(sql);
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                cmd.Connection = conn;
-                conn.Open();
-                object obj = cmd.ExecuteScalar();
-                conn.Close();
-                int recordCount = (int)obj;
-                return Convert.ToInt32(Math.Ceiling(1.0 * recordCount / pageSize));
-            }      
+        {          
+             string sql = "select count(cl_Id) from 材料表 where left(材料编码,2)='"+name+"'";
+             string pageStr = dc_obj.DBLook(sql);
+             int recordCount =Convert.ToInt32(pageStr);
+             return Convert.ToInt32(Math.Ceiling(1.0 * recordCount / pageSize));
       }
 
     </script>

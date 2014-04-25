@@ -204,9 +204,8 @@
 
         //得到总页数
          private int GetPageCount(string name,int pageSize,string pp,string ids)
-        {
-            string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;          
-            string sql = "select COUNT(*) from dbo.材料表 a inner join dbo.材料属性表 b on a.分类编码=b.分类编码 where a.分类编码="+name;
+        {               
+            string sql = "select COUNT(*) from dbo.材料表 a inner join dbo.材料属性表 b on  a.分类编码=b.分类编码 where a.分类编码="+name;
             if (pp != null && pp != "" &&pp!="0")
             {
                 sql += " and a.pp_id=" + pp;
@@ -214,17 +213,10 @@
             if (ids != null && ids != "")
             {
                 sql += " and b.flsxz_id in(" + ids + ")";
-            }  
-            SqlCommand cmd = new SqlCommand(sql);
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                cmd.Connection = conn;
-                conn.Open();
-                object obj = cmd.ExecuteScalar();
-                conn.Close();
-                int recordCount = (int)obj;
-                return Convert.ToInt32(Math.Ceiling(1.0 * recordCount / pageSize));
-            }      
+            }     
+             string pageStr = dc_obj.DBLook(sql);
+             int recordCount =Convert.ToInt32(pageStr);
+             return Convert.ToInt32(Math.Ceiling(1.0 * recordCount / pageSize));
       }
 
       //分页条
@@ -394,7 +386,10 @@
                     <div class="dlspxt1" >
                         <span class="dlsl"><%=mc%></span>  </a>
                         <span class="dlspx3">
-                            <input name="item" type="checkbox" value="<%=row["cl_id"]%>" class="ck" />收藏
+                            <%string parm="";
+                              parm=row["材料编码"].ToString()+"|"+row["pp_id"].ToString();
+                             %>
+                            <input name="item" type="checkbox" value="<%=parm%>" class="ck" />收藏
                         </span>
                         <span class="dlsgg" >规格：<%=row["规格型号"].ToString() %></span>
                     </div>              

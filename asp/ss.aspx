@@ -2,7 +2,7 @@
            搜索页
            文件名为:ss.aspx
 		   传入参数为: 搜索文本框中的值
-           owner:丁传宇
+           owner:lilifeng
 -->
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 <%@ Import Namespace="System.Data" %>
@@ -11,44 +11,50 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="System.Web" %>
+<%@ Import Namespace="Lucene.Net.Store" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="Lucene.Net.Index" %>
+<%@ Import Namespace="Lucene.Net.Search" %>
+<%@ Import Namespace="Lucene.Net.Documents" %>
+<%@ Import Namespace="Lucene.Net.Analysis" %>
+<%@ Import Namespace="Lucene.Net.Analysis.PanGu" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Configuration" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page Language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
     <title>搜索结果页</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
+    <link href="css/SearchpageBar.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script src="js/Searchpage.js" type="text/javascript"></script>
+
+    
 </head>
 <script runat="server">
 
           protected DataTable dt_clss = new DataTable();   //搜索的产品(材料表)   
           protected DataTable dt_cl_page = new DataTable();  //对搜索的材料进行分页
-		  protected DataTable dt_clss_name = new DataTable();  //查询所有材料分类表中的显示名字,分类编码
-		  
-		  private const int Page_Size = 4; //每页的记录数量
-		  private int current_page=1;
-	      int pageCount_page;
+		  protected DataTable dt_clss_name = new DataTable();  //查询所有材料分类表中的显示名字,分类编码 
+          protected DataConn dc_obj = new DataConn();//工具类  
 
-          public class OptionItem //材料分页的 类 属性
-          {
-            public string Text { get; set; }
-            public string SelectedString { get; set; }
-            public string Value { get; set; }
-          }
-       	  public List<OptionItem> Items { get; set; }  //材料分页集合
-
+          protected string pageHtml = string.Empty;//页码条
+         List<SeachResult> list = new List<SeachResult>(); 
+          protected string  typeList=string.Empty;//获取命中类的列表
           bool isEmpty=false;//是否搜索到材料
 
           protected void Page_Load(object sender, EventArgs e)
           {
-		     string key_ss = Request["sou"];  //获取搜索文本框中的值
-             string constr = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-             SqlConnection conn = new SqlConnection(constr);
-			 
-			 SqlDataAdapter da_clss_name = new SqlDataAdapter("select  显示名字,分类编码 from 材料分类表 " , conn);
-             DataSet ds_clss_name = new DataSet();
-             da_clss_name.Fill(ds_clss_name, "材料表");
-             dt_clss_name = ds_clss_name.Tables[0];
+		     string key_ss = Request["sou"];  //获取搜索文本框中的值            
+
+             //与类进行匹配
+             string sqlType="select  显示名字,分类编码 from 材料分类表";
+             dt_clss_name =dc_obj.GetDataTable(sqlType);
+
 			 foreach(System.Data.DataRow row in dt_clss_name.Rows)
 			 {
 			    //判断如果与材料分类表中的分类名称相匹配跳转到一级或二级页面
@@ -63,125 +69,195 @@
 				   return;
 				}
 			 }
-			 
-             SqlDataAdapter da_clss = new SqlDataAdapter("select top 10 显示名,规格型号,cl_id ,访问计数 from 材料表 where 显示名 like '%"+key_ss+"%'order by 访问计数 desc" , conn);
-             DataSet ds_clss = new DataSet();
-             da_clss.Fill(ds_clss, "材料表");
+             			
+             //最受欢迎的十大材料
+            string sqlTop10="select top 10 显示名,规格型号,cl_id ,访问计数 from 材料表 order by 访问计数 desc";
+            dt_clss =dc_obj.GetDataTable(sqlTop10);
 
-
-             dt_clss = ds_clss.Tables[0];  
+          
+           SearchContent();//搜索
+           if(key_ss!=null&&key_ss!="")//命中分类列表
+           {
+               typeList=GetTypeList();  
+           }
+           
+          }
             
 
-             //从查询字符串中获取"页号"参数
-            string str_page = Request.QueryString["p"];
-            if (string.IsNullOrEmpty(str_page))
-            {//为空时默认为1
-                str_page = "1";
-            }
-            int p;
-            bool b1 = int.TryParse(str_page, out p);  //校验 地址栏不为数字 都强转为数字
-            if (b1 == false)
-            {
-                p = 1;
-            }
-            current_page = p;
-			
-            //从查询字符串中获取"总页数"参数
-            string str_Count = Request.QueryString["c"];
-            if (string.IsNullOrEmpty(str_Count))
-            {
-                double recordCount = this.GetProductCount(); //获得总条数
-                double d1 = recordCount / Page_Size; //13.4
-                double d2 = Math.Ceiling(d1); //14.0
-                int pageCount = (int)d2; //14                //取整
-                str_Count = pageCount.ToString();
-            }
-            int c;
-            bool b2 = int.TryParse(str_Count,out c);
-            if (b2 == false)
-            {
-                c = 1;
-            }
-            pageCount_page = c;
-			
-            //计算/查询分页数据
-            int begin = (p - 1) * Page_Size + 1;    //开始记录数 点击第二页时(若每页10) begin 为11条
-            int end = p * Page_Size;                //结束的记录数
-            dt_cl_page = this.GetProductFormDB(begin, end,key_ss);
-            this.SetNavLink(p, c); 	
-
-          }
-              //从数据库获取记录的总数量
-              private int GetProductCount()
-              {
-                    string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-                    string key_ss = Request["sou"];  //获取搜索文本框中的值
-                    string sql = "select count(cl_Id) from 材料表 where 显示名 like '%"+key_ss+"%'";
-                    SqlCommand cmd = new SqlCommand(sql);
-                    using (SqlConnection conn = new SqlConnection(connString))
-                    {
-                      cmd.Connection = conn;
-                      conn.Open();
-                      object obj = cmd.ExecuteScalar();
-                      conn.Close();
-                      int count = (int)obj;
-                      return count;
-                    }
-              }
-
-              private DataTable GetProductFormDB(int begin, int end, string key_ss)
-              {
-                     string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;         
-                     SqlCommand cmd = new SqlCommand("cl_ss_Paging");     //材料搜索分页存储过程
-                     cmd.CommandType = CommandType.StoredProcedure;
-                     cmd.Parameters.Add("@begin", SqlDbType.Int).Value = begin;            //开始页第一条记录
-                     cmd.Parameters.Add("@end", SqlDbType.Int).Value = end;                //开始页最后一条记录
-			         cmd.Parameters.Add("@显示名", SqlDbType.VarChar,20).Value = key_ss; //传材料编码给材料表,执行存储过程
-
-                     SqlDataAdapter sda = new SqlDataAdapter(cmd);        
-                     using (SqlConnection conn = new SqlConnection(connString))
-                     {
-                          cmd.Connection = conn;
-                          conn.Open();
-                          sda.Fill(dt_cl_page);
-                          conn.Close();
-                     }
-                     return dt_cl_page;
-
-
-
-               }
-
-               protected string cpPrev = "";
-               protected string cpNext = "";
-               protected string cpLast = "";       
-               private void SetNavLink(int currentPage, int pageCount)
-               {
-                   //string path = Request.Path;         
-                   cpPrev = currentPage != 1 ? string.Format("p={0}",currentPage - 1) : "";          //连超链接上一页
-                   cpNext = currentPage != pageCount ? string.Format("p={0}",currentPage + 1) : "";  //连超链接下一页
-                   cpLast = currentPage != pageCount ? string.Format("p={0}",pageCount) : "";         //连超链接尾页
-           
-                   this.Items = new List<OptionItem>();
-                   for (int i = 1; i <= pageCount; i++)  //下拉列表循环总得页数
-                   {               
-                       OptionItem item = new OptionItem();
-                       item.Text = i.ToString();                          
-                       item.SelectedString = i == currentPage ? "selected='selected'" : string.Empty;
-                       item.Value = string.Format("ss.aspx?p={0}", i);                
-                       this.Items.Add(item);
-                   }
-      
-               }			   
+         //搜索内容
+       private  void SearchContent()
+        {            
+            //string indexPath= ConfigurationManager.AppSettings["path"].ToString();
+            string indexPath = Server.MapPath("lucenedir\\");
+            string keyWord =Request["sou"];         
+            keyWord = keyWord.ToLower();                   
+            string[] kw = PanGuCut(keyWord);
+            FSDirectory directory = FSDirectory.Open(new DirectoryInfo(indexPath), new NoLockFactory());
+            IndexReader reader = IndexReader.Open(directory, true);
+            IndexSearcher searcher = new IndexSearcher(reader);    
         
-         
-		  
-		  
-		  
+            //跨字段搜索
+            BooleanQuery query = new BooleanQuery();            
+            foreach (string word in kw)
+            {  
+                Query query1 = new TermQuery(new Term("材料名称", word));
+                Query query2 = new TermQuery(new Term("分类属性值", word));
+                query.Add(query1, BooleanClause.Occur.SHOULD);
+                query.Add(query2, BooleanClause.Occur.SHOULD);
+            } 
+            Sort sort = new Sort();//排序
+            string sortM = "id";//默认按id排序
+            if (!string.IsNullOrEmpty(Request["sort"]))
+            {
+                sortM =Request["sort"].ToString();
+            }
 
+            sort.SetSort(new SortField(sortM, SortField.STRING, false));    
+            Filter filter = null;
+            if (!string.IsNullOrEmpty(Request["type"]))//二次过滤
+            { 
+             filter = new QueryFilter(new TermQuery(new Term("分类编码", Request["type"].ToString())));
+            }     
+            ScoreDoc[] docs = searcher.Search(query, filter, 1000, sort).scoreDocs;  //查询获取的文档集 
+                 
+            int pageSize = 12;
+            double count = docs.Length;//总记录数                                 
+            int pageCount = Convert.ToInt32(Math.Ceiling(count / pageSize));//总页数
+            int pageIndex;
+            if (!int.TryParse(Request.QueryString["page"], out pageIndex))
+            {
+                pageIndex = 1;
+            }
+           
+            pageHtml = CreatePageBar(pageIndex, pageCount, keyWord,sortM,Request["type"]);           
+            int start = (pageIndex - 1) * pageSize + 1;
+            int end = pageIndex * pageSize;           
+            if (end > Convert.ToInt32(count))
+            {
+                end = Convert.ToInt32(count);
+            }
+                     
+            for (int i = start; i <= end; i++)
+            {
+                SeachResult SR = new SeachResult();              
+                int docId = docs[i-1].doc;
+                Document doc = searcher.Doc(docId);
+                SR.cl_id =doc.Get("cl_id");
+                SR.材料名称 = doc.Get("材料名称");
+                SR.材料编码 = doc.Get("材料编码");             
+                list.Add(SR);
+            }            
+         
+        }
+
+         //获取命中类的列表
+        private string  GetTypeList()
+        {
+            StringBuilder sb = new StringBuilder();
+            string indexPath = @"C:\lucenedir";
+            string keyWord = Request["sou"];
+            keyWord = keyWord.ToLower();
+            string[] kw = PanGuCut(keyWord);
+            FSDirectory directory = FSDirectory.Open(new DirectoryInfo(indexPath), new NoLockFactory());
+            IndexReader reader = IndexReader.Open(directory, true);
+            IndexSearcher searcher = new IndexSearcher(reader);           
+            BooleanQuery query = new BooleanQuery();
+            foreach (string word in kw)
+            {               
+                Query query1 = new TermQuery(new Term("材料名称", word));
+                Query query2 = new TermQuery(new Term("分类属性值", word));
+                query.Add(query1, BooleanClause.Occur.SHOULD);
+                query.Add(query2, BooleanClause.Occur.SHOULD);
+
+            }
+            TopScoreDocCollector collector = TopScoreDocCollector.create(1000, true);
+            searcher.Search(query, null, collector);           
+            ScoreDoc[] docs = collector.TopDocs(0, collector.GetTotalHits()).scoreDocs;                        
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            for (int i = 0; i < docs.Length; i++)
+            {               
+                int docId = docs[i].doc;
+                Document doc = searcher.Doc(docId);
+                if (!dic.ContainsKey(doc.Get("分类编码")))
+                {
+                    dic.Add(doc.Get("分类编码"), doc.Get("分类名称"));
+                }
+            }           
+              foreach (KeyValuePair<string, string> item in dic)
+            {
+                sb.Append(string.Format("<a  href='ss.aspx?&page=1&sou={0}&sort={1}&type={2}'>{3}</a>", keyWord,Request["sort"],item.Key,item.Value));
+            }
+          return sb.ToString();
+        }
+
+
+        //页码条
+        public string CreatePageBar(int currentPageIndex, int currentPageCount, string keyWord,string sort,string type)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (currentPageIndex > 1)
+            {
+
+                sb.Append(string.Format("<a  href='ss.aspx?page={0}&sou={1}&sort={2}&type={3}'>&lt;上一页</a>", currentPageIndex - 1, keyWord,sort,type));
+            }
+            int startPage = currentPageIndex - 5;
+            if (startPage < 1)
+            {
+                startPage = 1;
+            }
+            int endPage = startPage + 9;
+            if (endPage > currentPageCount)
+            {
+                endPage = currentPageCount;
+                startPage = endPage - 9 > 0 ? endPage - 9 : 1;
+            }
+            for (int i = startPage; i <= endPage; i++)
+            {
+                if (i == currentPageIndex)//如果是当前页不用加超链接
+                {
+                    sb.Append(string.Format("<a href='javascript:void(0)' class='on'>{0}</a>",i));
+                }
+                else
+                {
+                    sb.Append(string.Format("<a  href='ss.aspx?page={0}&sou={1}&sort={2}&type={3}'>{0}</a>", i, keyWord, sort, type));
+                }
+            }
+            if (currentPageIndex < currentPageCount)
+            {
+                sb.Append(string.Format("<a  href='ss.aspx?page={0}&sou={1}&sort={2}&type={3}'>下一页&gt;</a>", currentPageIndex + 1, keyWord, sort, type));
+            }
+            sb.Append(string.Format("<span>共{0}页</span>",currentPageCount));
+            return sb.ToString();
+        }
+
+      
+                
+       //对关键词进行分词       
+        public  string[] PanGuCut(string kw)
+        {
+            List<string> list = new List<string>();
+            Analyzer analyzer = new PanGuAnalyzer();
+            TokenStream tokenStream = analyzer.TokenStream("", new StringReader(kw));
+            Lucene.Net.Analysis.Token token = null;
+            while ((token = tokenStream.Next()) != null)
+            {
+                list.Add(token.TermText());
+            }
+            return list.ToArray();
+        } 
+
+    //搜索结果
+     public class SeachResult
+    {
+      public string cl_id{get;set;}
+      public string 材料名称{get;set;}
+      public string 材料编码{get;set;}
+        
+    }
 </script>
 <body>
-    <!-- 头部开始-->
+   
+   <!-- 头部开始-->
     <!-- #include file="static/header.aspx" -->
     <!-- 头部结束-->
     <!-- 导航开始-->
@@ -194,104 +270,57 @@
         <div class="xzss">
             <div class="ppxz">
                 <div class="ppxz1">
-                    品牌：</div>
+                    分类：</div>
                 <div class="ppxz2">
-                    <a href="#">
-                        <img src="images/qwez.jpg" /></a> <a href="#">品牌1</a> <a href="#">品牌2</a> <a href="#">
-                            品牌3</a></div>
-            </div>
-            <div class="ppxz">
-                <div class="ppxz1">
-                    区域：</div>
-                <div class="ppxz2">
-                    <a href="#">
-                        <img src="images/qwez.jpg" /></a> <a href="#">朝阳区</a> <a href="#">海淀区</a> <a href="#">
-                            丰台区</a></div>
-            </div>
-            <div class="ppxz">
-                <div class="ppxz1">
-                    材料：</div>
-                <div class="ppxz2">
-                    <a href="#">
-                        <img src="images/qwez.jpg" /></a> <a href="#">材料1</a> <a href="#">材料2</a> <a href="#">
-                            材料3</a></div>
-            </div>
-            <div class="ppxz">
-                <div class="ppxz1">
-                    更多：</div>
-                <div class="ppxz2">
-                    </a> <a href="#">属性1</a> <a href="#">属性2</a> <a href="#">属性3</a></div>
-            </div>
+                     <%=typeList %>
+                   </div>
+            </div>            
             <div class="dlspx">
-                <span class="dlspx1">排序：</span><span class="dlspx2"><a href="#">默认</a></span><span
-                    class="dlspx3"><a href="#">人气</a><img src="images/qweqw_03.jpg" /></span> <span class="dlspx3">
-                        <a href="#">最新</a><img src="images/qweqw_03.jpg" /></span> <span class="dlspx3">
-                            <input name="" type="checkbox" value="" class="fxk" /><a href="#">全选</a></span>
-                <span class="dlspx4"><a href="#">请收藏，便于查找</a></span>
+                <span class="dlspx1">排序：</span>
+                <span class="dlspx2"><a href="ss.aspx?page=1&sou=<%=Request["sou"] %>&sort=id&type=<%=Request["type"] %>" >默认</a></span>
+                 <span class="dlspx3"><a href="ss.aspx?page=1&sou=<%=Request["sou"] %>&sort=updatetime&type=<%=Request["type"]%>">最新</a><img src="images/qweqw_03.jpg" /></span> 
+                 <span class="dlspx3"><input type="checkbox" value="" id="ckAll" class="fx" />全选</span>
+                <span class="dlspx4"><a id="collect" style="cursor:pointer">请收藏，便于查找</a></span>
             </div>
         </div>    
         <div class="dlspxl">
-        <%if(dt_clss.Rows.Count>0) {%>
-            <%foreach(System.Data.DataRow row in this.dt_cl_page.Rows){%>
+        <%if(this.list.Count>0) {%>
+            <%foreach(var item in this.list){
+              String  mc = item.材料名称.ToString();
+               if (mc.Length > 6) {
+                    mc = mc.Substring(0,6)+"..";
+               } 
+            
+            %>
             <div class="dlspxt">
-                <a href="clxx.aspx?cl_id=<%=row["cl_id"]%>">
+                <a href="clxx.aspx?cl_id=<%=item.cl_id%>" title="<%=item.材料名称%>">
                     <%
-					string connString = ConfigurationManager.ConnectionStrings["zcw"].ConnectionString;
-                    SqlConnection con = new SqlConnection(connString);
-                    SqlCommand cmd = new SqlCommand("select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
-                        +row["cl_id"]+"' and 大小='小'", con);
+					string str_sqltop1dz ="select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
+                        +item.cl_id+"' and 大小='小'";
 
-                    String imgsrc= "images/222_03.jpg";
-                    using (con)
-                    {
-                         con.Open();
-                         Object result = cmd.ExecuteScalar();
-                         if (result != null) 
-						 {
-                             imgsrc = result.ToString();
-                         }
-                    }
-                    Response.Write("<img src="+imgsrc+ " width=150px height=150px />");
-                
-				
+                    string imgsrc= "images/222_03.jpg";
+                        object result = dc_obj.DBLook(str_sqltop1dz);
+                        if (result != null) 
+                        {
+                            imgsrc = result.ToString();
+                        }
+                        Response.Write("<img src="+imgsrc+ " width=150px height=150px />") ;
                     %>
                 </a>
                 <div class="dlspxt1">
                     <span class="dlsl">
-                        <%=row["显示名"].ToString()%></span> <span class="dlspx3">
-                            <input name="" type="checkbox" value="" class="fxk" />
-                            收藏</span> <span class="dlsgg">
-                                <%=row["规格型号"].ToString()%></span>
+                        <%=mc%></span> 
+                        <span class="dlspx3">
+                             <input name="item" type="checkbox" value="<%=item.cl_id %>" class="ck" />收藏</span>
                 </div>
             </div>
             <%}%>
             <div class="fy2">
-                <div class="fy3">
-                    <%string key_ss = Request["sou"];  //获取搜索文本框中的值 %>
-                    <% if(current_page!=1) { %>
-                    <a href="ss.aspx?<%=cpPrev %>&sou=<%=key_ss%>" class="p">上一页</a>
-                    <% } %>
-                    <a href="ss.aspx?p=1&sou=<%=key_ss%>" class="p">1</a>
-                    <% if(current_page>1) { %>
-                    <a href="ss.aspx?p=2&sou=<%=key_ss%>" class="p">2</a>
-                    <% } %>
-                    <% if(current_page>2) { %>
-                    <a href="ss.aspx?p=3&sou=<%=key_ss%>" class="p">3···</a>
-                    <% } %>
-                    <% if(current_page<pageCount_page) { %>
-                    <a href="ss.aspx?<%=cpNext %>&sou=<%=key_ss%>" class="p">下一页</a>
-                    <% } %>
-                    <% if(current_page!=pageCount_page) { %>
-                    <a href="ss.aspx?<%=cpLast %>&sou=<%=key_ss%>" class="p">尾页</a>
-                    <% } %>
-                    直接到第
-                    <select onchange="window.location=this.value" name="" class="p">
-                        <% foreach (var v in this.Items)  { %>
-                        <option value="<%=v.Value %>&sou=<%=key_ss%>" <%=v.SelectedString %>>
-                            <%=v.Text %></option>
-                        <%} %>
-                    </select>
-                    页</div>
+               <div class="fy3">
+                     <div class="page_nav">
+                     <%=pageHtml%>
+                     </div>
+               </div>
             </div>
         <% } %>
         <%else{isEmpty=true;}%>
@@ -324,71 +353,12 @@
         <!-- 关于我们 广告服务 投诉建议 开始-->
         <!-- #include file="static/aboutus.aspx" -->
         <!-- 关于我们 广告服务 投诉建议 结束-->
-    </div>
-
-    <div>
+    </div> 
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
-    <!-- footer 结束-->
-    </div>
-    <script type="text/javascript"><!--        //--><![CDATA[//><!--
-        function menuFix() {
-            var sfEls = document.getElementById("nav").getElementsByTagName("li");
-            for (var i = 0; i < sfEls.length; i++) {
-                sfEls[i].onmouseover = function () {
-                    this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-                }
-                sfEls[i].onMouseDown = function () {
-                    this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-                }
-                sfEls[i].onMouseUp = function () {
-                    this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-                }
-                sfEls[i].onmouseout = function () {
-                    this.className = this.className.replace(new RegExp("( ?|^)sfhover\\b"),
-"");
-                }
-            }
-        }
-        window.onload = menuFix;
-        //--><!]]></script>
-    <script type="text/javascript">
-        var speed = 9//速度数值越大速度越慢
-        var demo = document.getElementById("demo");
-        var demo2 = document.getElementById("demo2");
-        var demo1 = document.getElementById("demo1");
-        demo2.innerHTML = demo1.innerHTML
-        function Marquee() {
-            if (demo2.offsetWidth - demo.scrollLeft <= 0)
-                demo.scrollLeft -= demo1.offsetWidth
-            else {
-                demo.scrollLeft++
-            }
-        }
-        var MyMar = setInterval(Marquee, speed)
-        demo.onmouseover = function () { clearInterval(MyMar) }
-        demo.onmouseout = function () { MyMar = setInterval(Marquee, speed) }
-    </script>
-    <script type="text/javascript"><!--        //--><![CDATA[//><!--
-        function menuFix() {
-            var sfEls = document.getElementById("nav").getElementsByTagName("li");
-            for (var i = 0; i < sfEls.length; i++) {
-                sfEls[i].onmouseover = function () {
-                    this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-                }
-                sfEls[i].onMouseDown = function () {
-                    this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-                }
-                sfEls[i].onMouseUp = function () {
-                    this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-                }
-                sfEls[i].onmouseout = function () {
-                    this.className = this.className.replace(new RegExp("( ?|^)sfhover\\b"),
-"");
-                }
-            }
-        }
-        window.onload = menuFix;
-        //--><!]]></script>
+    <!-- footer 结束-->  
+   <div id="type" style="display:none"><%=Request["type"] %></div>
+   <div id="sort" style="display:none"><%=Request["sort"] %></div> 
+   
 </body>
 </html>

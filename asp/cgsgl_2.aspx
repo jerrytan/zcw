@@ -24,7 +24,10 @@
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <link href="css/gl.css" rel="stylesheet" type="text/css" />
-    <script src="js/cgsgl2.js" type="text/javascript"></script>
+    <link href="css/cgsgzl.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>
+     <script src="js/cgsgl2.js" type="text/javascript"></script>
+    <script src="js/cgsgzl.js" type="text/javascript"></script>
 </head>
     
 <body>
@@ -50,7 +53,11 @@
     public DataTable dt = new DataTable();
     public int firstlevel;
     public string xx = "";   //是否存在信息   
-    public string sftg = "";   
+    public string sftg = "";
+
+    protected DataTable dt_type = new DataTable();//一级分类列表    
+    protected List<string> list = new List<string>();//用户已关注类别列表  
+	           
     protected void Page_Load(object sender, EventArgs e)
     {
          if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
@@ -94,29 +101,16 @@
             if (lx != "采购商")
             {
                 string cookieName = "";
-                cookieName = "CGS_QQ_ID";
+                cookieName = "CGS_YH_ID";
                 if (Request.Cookies[cookieName] != null)
                 {
                     HttpCookie myCookie = new HttpCookie(cookieName);
                     myCookie.Expires = DateTime.Now.AddDays(-10d);
                     Response.Cookies.Add(myCookie);
                 }
-                foreach (string cookiename in  Request.Cookies.AllKeys)
-				 {
-					HttpCookie cookies = Request.Cookies[cookiename];
-					if (cookies != null)
-					{
-					   cookies.Expires = DateTime.Today.AddDays(-1);
-					   Response.Cookies.Add(cookies);
-					   Request.Cookies.Remove(cookiename);
-					}
-				 }    
-				Response.Write("<script>window.alert('您不是采购商，不能用采购商身份登录！');window.location.href='index.aspx';</" + "script>");
+                Response.Write("<script>window.alert('您不是采购商，不能用采购商身份登录！');window.location.href='index.aspx';</" + "script>");
             }
-			else
-			{
-				Session["CGS_YH_ID"] = s_yh_id;
-			}           
+            Session["CGS_YH_ID"] = s_yh_id;
              if (!IsPostBack)
             {           
                 sSQL = "select * from 用户表 where yh_id='" + s_yh_id + "'";
@@ -147,7 +141,25 @@
         else
         {
             objConn.MsgBox(this.Page,"QQ_ID不存在，请重新登录！");
-        }
+        } 
+        
+        //加载一级分类
+      string sqlType_yj = "select 分类编码,显示名字 from 材料分类表 where LEN(分类编码)=2 order by 分类编码";
+      dt_type = objConn.GetDataTable(sqlType_yj);
+
+      //加载该用户已关注的类
+      string sqlType_yj_focus = "select 用户关注类别 from 用户表 where yh_id='" + s_yh_id + "' ";
+      string Str_type_yj_focus = objConn.DBLook(sqlType_yj_focus);
+      if (Str_type_yj_focus != "")
+      {
+          string[] strArr = Str_type_yj_focus.Split(',');
+          for (int i = 0; i < strArr.Length; i++)
+          {
+              list.Add(strArr[i]);
+          }
+      }
+        
+        
     }
     public DataTable dt_cgsgzcl_dl = new DataTable();
     public DataTable dt_cgsgzcl_xl = new DataTable();
@@ -349,6 +361,7 @@
             this.companytel.Focus();
             return;
         }
+        string typeList = this.hid.Value.ToString();    
         sSQL   = " update 用户表 " +
                 " set 手机='" +this.contactortel.Value + "', " +
                 " 姓名='" +this.contactorname.Value + "',  " +
@@ -356,9 +369,10 @@
                 " 公司地址='"+this.companyaddress.Value+"',"+
                 " 公司电话='"+this.companytel.Value+"',"+
                 " QQ号码='"+this.QQ_id.Value+"',"+
-                " 是否验证通过='待审核'"+
-                " where yh_id='" + s_yh_id + "'";
-        if (!objConn.ExecuteSQL(sSQL, true))
+                " 是否验证通过='待审核'," + "用户关注类别='" + typeList + "'" +
+                "  where yh_id='" + s_yh_id + "'";
+        
+        if (!objConn.ExecuteSQL(sSQL, true)) 
         {
             objConn.MsgBox(this.Page, "更新失败，请重试！");
         }
@@ -481,8 +495,23 @@
 					    <dd>公司电话：</dd><dt><input class="cgdlex2text"  id="companytel" name="companytel" type="text"  runat="server"/></dt>
                         <dd>您的姓名：</dd><dt><input class="cgdlex2text"  id="contactorname" name="contactorname" runat="server"/></dt>
 					    <dd>您的电话：</dd><dt><input class="cgdlex2text"  id="contactortel" name="contactortel0" runat="server"/></dt>
-					    <dd>您的QQ号：</dd><dt><input class="cgdlex2text"  id="QQ_id" name="contactortel" runat="server"/></dt>					  
+					    <dd>您的QQ号：</dd><dt><input class="cgdlex2text"  id="QQ_id" name="contactortel" runat="server"/></dt>	
+                        <dd>用户关注的类别：</dd><dt><input type="button" name="name" value="请选择" id="btn" style="background-color:#0033FF"/></dt><input type="hidden" name="hid" id="hid" value=""  runat="server"/>	
+                        <div id="show"><span >请选择关注的类别：</span><a id="clos" href="javascript:void(0)" >关闭</a><br />
+                          <% foreach(System.Data.DataRow row in dt_type.Rows){%>
+                                        <% if(this.list.Count>0 &&this.list.Contains(row["分类编码"].ToString())){ %>
+                                           <input type="checkbox"  name="item" value="<%=row["分类编码"].ToString() %>" checked="checked" /><%=row["显示名字"].ToString()%><br />
+                                         <% }
+                                         else
+                                         {%>
+                                          <input type="checkbox"  name="item" value="<%=row["分类编码"].ToString() %>" /><%=row["显示名字"].ToString()%><br />
+                                        <% }                                                                            
+                                    } %> 
+                        <input type="button" name="name" value="保存" id="btnSave" />
+                        </div>
+                        <div id="layer"></div>			  
 				    </dl>
+                    
 				    <asp:Label ID="label2" runat="server" Text="" />
                     <%if (xx == "否")
                       { %>
