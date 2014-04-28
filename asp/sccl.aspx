@@ -17,8 +17,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-    
-	<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
         data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/sccl2.aspx" charset="utf8"></script>
 
     <title>收藏材料</title>
@@ -45,7 +44,8 @@
 			//采购商 
 			HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
             object cgs_yh_id = Session["CGS_YH_ID"];
-			string cl_id = Request["cl_id"];
+			string str_cl = Request["cl_id"];	 
+			string cl_id = "";
 			
 			//供应商 
 			HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
@@ -82,98 +82,134 @@
 					{
 						//查询是否该QQid已经登录过
 						string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + CGS_QQ_ID.Value + "'";
-						s_count1 = objConn.DBLook(str_checkuserexist);     
-						
-						if (s_count1 != "") 
-						{
-							int count = Convert.ToInt32(s_count1);
-							if (count == 0 )  //qq_id不存在，需要增加用户表
-							{
-								string str_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('" + CGS_QQ_ID.Value + "')";
-								objConn.ExecuteSQL(str_insertuser,false);
+						s_count1 = objConn.DBLook(str_checkuserexist);
 
-								string str_updateyhid = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + CGS_QQ_ID.Value + "') where QQ_id = '" + CGS_QQ_ID.Value + "'";
-								objConn.ExecuteSQL(str_updateyhid,true);
-							}
+                        if (s_count1 != "")
+                        {
+                            int count = Convert.ToInt32(s_count1);
+                            if (count == 0)  //qq_id不存在，需要增加用户表
+                            {
+                                string str_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('" + CGS_QQ_ID.Value + "')";
+                                objConn.ExecuteSQL(str_insertuser, false);
 
-							 //获得yh_id，QQ_id应该为
-							 string str_getyhid = "select myId from 用户表 where QQ_id ='" + CGS_QQ_ID.Value + "'";
-							 DataTable dt_yh = objConn.GetDataTable(str_getyhid);
-							 
-							 if(dt_yh != null && dt_yh.Rows.Count>0)
-							 {
-								yh_id = dt_yh.Rows[0]["myID"].ToString();
-							 }
+                                string str_updateyhid = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + CGS_QQ_ID.Value + "') where QQ_id = '" + CGS_QQ_ID.Value + "'";
+                                objConn.ExecuteSQL(str_updateyhid, true);
+                            }
 
-							
-						  
-							//先判断“采购商关注材料表”是否有该记录，如果没有，则插入
-							if(!string.IsNullOrEmpty(cl_id))// 多个材料,(对传递过来的材料ID)
-							{
-								if(cl_id.IndexOf('x')>0)//如果传递的过来的是拼接字符串
+                            //获得yh_id，QQ_id应该为
+                            string str_getyhid = "select myId from 用户表 where QQ_id ='" + CGS_QQ_ID.Value + "'";
+                            DataTable dt_yh = objConn.GetDataTable(str_getyhid);
+
+                            if (dt_yh != null && dt_yh.Rows.Count > 0)
+                            {
+                                yh_id = dt_yh.Rows[0]["myID"].ToString();
+                            }
+
+
+
+                            //先判断“采购商关注材料表”是否有该记录，如果没有，则插入
+                            if (!string.IsNullOrEmpty(str_cl))
+                            {
+								string str_clnumber = ""; //材料编号
+                                string str_ppid = ""; //品牌id
+                                
+								if (str_cl.IndexOf('x') > 0) //多个材料
+                                {
+									Response.Write("多个材料");
+                                    string[] str_parames = cl_id.Split('x');//"0801A01|107x0801B03|10" 材料编码|品牌id x 材料编码|品牌id
+                                    foreach (string s in str_parames)
+                                    {
+                                        if (s.IndexOf('|') > 0)
+                                        {
+                                            string[] str_ps = s.Split('|');	 //["0801A01|107","0801B03|108"] 材料编码|品牌id
+                                            for (int i = 0; i < str_ps.Length; i++)
+                                            {
+
+                                                if (i % 2 == 0)
+                                                {
+                                                    str_clnumber = str_ps[i].ToString();//材料编号
+                                                }
+                                                else
+                                                {
+                                                    str_ppid = str_ps[i].ToString();//品牌id
+                                                }
+                                                //先根据材料编号和品牌id，找到对应的材料id
+                                                string str_sqlfcl = "select cl_id from 材料表 where pp_id='" + str_ppid + "' and 材料编码='" + str_clnumber + "'";
+                                                cl_id = objConn.DBLook(str_sqlfcl);
+
+                                                if (!string.IsNullOrEmpty(cl_id))
+                                                {
+                                                    string cl_count = "";
+                                                    int i_count;
+                                                    string str_check = "select count(*) from 采购商关注材料表 where yh_id = '" + yh_id + "' and cl_id ='" + cl_id + "'";
+                                                    cl_count = objConn.DBLook(str_check);
+                                                    i_count = Convert.ToInt32(cl_count);
+                                                    DataTable dt_clname;
+                                                    if (i_count != 1)
+                                                    {
+                                                        string str_sqlclname = "select 显示名称 from  材料表 where cl_id ='" + cl_id + "' and 材料编码='" + str_clnumber + "'";
+                                                        dt_clname = objConn.GetDataTable(str_sqlclname);
+                                                        string str_clname = "";
+                                                        if (dt_clname != null && dt_clname.Rows.Count > 0)
+                                                        {
+                                                            str_clname = dt_clname.Rows[0]["显示名"].ToString();
+                                                        }
+                                                        string str_updatecl = "insert into 采购商关注材料表 (yh_id,cl_id,材料名称,材料编码) values ('" + yh_id + "','" + cl_id + "','" + str_clname + "','" + str_clnumber + "')";
+                                                        objConn.ExecuteSQL(str_updatecl, true);
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+								}
+								else  //单个材料
 								{
-									string[] cl_splits =  cl_id.Split('x');//对字符串进行分割
-									List<string> list = new List<string>();//用来存储数据
-									foreach(string str_cl in cl_splits)
+                                    if (str_cl.IndexOf('|') > 0)
 									{
-										str_cl.Trim();//去空
-										if(!list.Contains(str_cl))//如果不包含就添加到list中去
+										
+										string[] str_ps = str_cl.Split('|');	 //["0801A01|107","0801B03|108"] 材料编码|品牌id
+										for (int i = 0; i < str_ps.Length; i++)
 										{
-											list.Add(str_cl);
+											if(i%2==0)
+											{
+												str_clnumber = str_ps[i].ToString();//材料编号
+											}
+											else
+											{
+												str_ppid = str_ps[i].ToString();//品牌id
+											}
 										}
-									}
-									foreach(string clid in list)//遍历
-									{
-										if(!string.IsNullOrEmpty(clid))//没有空字符串
+
+										//先根据材料编号和品牌id，找到对应的材料id
+										string str_sqlfcl = "select cl_id from 材料表 where pp_id='" + str_ppid + "' and 材料编码='" + str_clnumber + "'";
+										cl_id = objConn.DBLook(str_sqlfcl);
+
+										if (!string.IsNullOrEmpty(cl_id))
 										{
-											string str_check = "select count(*) from 采购商关注材料表 where yh_id = '" + yh_id + "' and cl_id ='" + clid + "'";
 											string cl_count = "";
 											int i_count;
+											string str_check = "select count(*) from 采购商关注材料表 where yh_id = '" + yh_id + "' and cl_id ='" + cl_id + "'";
 											cl_count = objConn.DBLook(str_check);
 											i_count = Convert.ToInt32(cl_count);
-											DataTable dt_clmsg;
-											string str_name = "";
-											string str_code = "";
-											if (i_count !=1 )
-											{	
-												string str_cl = "select 显示名,材料编码 from 材料表 where cl_id ='" + cl_id + "'";
-												dt_clmsg = objConn.GetDataTable(str_cl);
-												
-												if(dt_clmsg != null && dt_clmsg.Rows.Count>0)
+											DataTable dt_clname;
+											if (i_count != 1)
+											{
+												string str_sqlclname = "select 显示名称 from  材料表 where cl_id ='" + cl_id + "' and 材料编码='" + str_clnumber + "'";
+												dt_clname = objConn.GetDataTable(str_sqlclname);
+												string str_clname = "";
+												if (dt_clname != null && dt_clname.Rows.Count > 0)
 												{
-													str_name = dt_clmsg.Rows[0]["显示名"].ToString();
-													str_code = dt_clmsg.Rows[0]["材料编码"].ToString();
+													str_clname = dt_clname.Rows[0]["显示名"].ToString();
 												}
-												string str_updatecl = "insert into 采购商关注材料表 (yh_id,cl_id,材料名称,材料编码) values ('" + yh_id + "','" + cl_id + "','" + str_name + "','" + str_code + "')";
-												objConn.ExecuteSQL(str_updatecl,true);
+												string str_updatecl = "insert into 采购商关注材料表 (yh_id,cl_id,材料名称,材料编码) values ('" + yh_id + "','" + cl_id + "','" + str_clname + "','" + str_clnumber + "')";
+												objConn.ExecuteSQL(str_updatecl, true);
 											}
-											
 										}
 									}
-								}
-								
-								//传递单个材料
-								string str_checkexist = "select count(*) from 采购商关注材料表 where yh_id = '" + yh_id + "' and cl_id ='" + cl_id + "'";
-								string s_count = "";
-								s_count = objConn.DBLook(str_checkexist);
-								int count1;
-								count1 = Convert.ToInt32(s_count);
-								if (count1 !=1 )
-								{	
-									string str_getcl = "select 显示名,材料编码 from 材料表 where cl_id ='" + cl_id + "'";
-									DataTable dt_cl = objConn.GetDataTable(str_getcl);
-									string str_clname = "";
-									string str_clcode = "";
-									if(dt_cl != null && dt_cl.Rows.Count>0)
-									{
-										str_clname = dt_cl.Rows[0]["显示名"].ToString();
-										str_clcode = dt_cl.Rows[0]["材料编码"].ToString();
-									}
-									string str_addcl = "insert into 采购商关注材料表 (yh_id,cl_id,材料名称,材料编码) values ('" + yh_id + "','" + cl_id + "','" + str_clname + "','" + str_clcode + "')";
-									objConn.ExecuteSQL(str_addcl,true);
-								}
-							}
-						}
+                                }
+                            }
+                        }
 					}
 					catch (Exception ex){
 						Response.Write(ex);
