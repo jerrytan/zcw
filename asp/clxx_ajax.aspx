@@ -18,7 +18,7 @@
         protected string content;   //分销商信息
         protected string fy_list;   //分页信息
 
-        private const int Page_Size = 2; //每页的记录数量
+        private const int Page_Size = 3; //每页的记录数量
         private int CurrentPage = 1;//当前默认页为第一页
         private int PageCount; //总页数
     
@@ -84,14 +84,28 @@
                                 + row["联系人手机"].ToString() + "</li><li>地址："
                                 + row["联系地址"].ToString() + "</li></ul></a></div>";
                         }
-                        //分页信息
-                        if (CurrentPage > 1 && CurrentPage != PageCount)
-                        {
-                            fy_list += "<span style='font-size:12px;color:Black'><a href='clxx.aspx?cl_id="
-                            + cl_id + "&p=" + (CurrentPage - 1).ToString() + "' style='color:Black'>上一页</a><a href='clxx.aspx?cl_id="
-                            + cl_id + "&p=" + (CurrentPage + 1).ToString() + "' style='color:Black'>下一页</a>第"
-                            + CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
-                        }
+                        
+						 //分页显示信息
+						 if((CurrentPage <= 1) && (PageCount <=1)) { //一页
+							fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
+							+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+						}
+						else if((CurrentPage<= 1)  && (PageCount>1)) {//两页 
+							fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<a href='clxx.aspx?cl_id="
+							+ cl_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+							+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+						}   
+						else if(!(CurrentPage<=1)&&!(CurrentPage == PageCount)){  //多页
+							fy_list += "<span style='font-size:12px;color:Black'><a href='clxx.aspx?cl_id="
+							+ cl_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<a href='clxx.aspx?cl_id="
+							+ cl_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+							+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+						}
+						else if((CurrentPage == PageCount) && (PageCount > 1)){  //末页
+							fy_list += "<span style='font-size:12px;color:Black'><a href='clxx.aspx?cl_id="
+							+ cl_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
+							+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>"; 
+						}
                     }
                     Response.Write(content);
                     Response.Write("@");

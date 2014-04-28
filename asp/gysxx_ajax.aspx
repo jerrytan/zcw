@@ -25,7 +25,7 @@
         protected string content;   //分销商信息
         protected string fy_list;   //分页信息
 
-        private const int Page_Size = 2; //每页的记录数量
+        private const int Page_Size = 3; //每页的记录数量
         private int CurrentPage=1;//当前默认页为第一页
         private int PageCount; //总页数
 

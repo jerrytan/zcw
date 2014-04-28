@@ -23,15 +23,15 @@
     <script type="text/javascript" language="javascript">
         var $j = jQuery.noConflict();
         $j(document).ready(function () {
-            $j("#ppxcp").show();
-            $j("#ppxfxs").hide();
+            $j("#ppxfxs").show();
+            $j("#ppxcp").hide();
             $j(".gydl ul li .tab1").click(function () {
-                $j("#ppxcp").show();
-                $j("#ppxfxs").hide();
-            });
-            $j(".gydl ul li .tab2").click(function () {
                 $j("#ppxfxs").show();
                 $j("#ppxcp").hide();
+            });
+            $j(".gydl ul li .tab2").click(function () {
+                $j("#ppxcp").show();
+                $j("#ppxfxs").hide();
             });
 
 
@@ -108,7 +108,7 @@
 
         protected DataTable dt_content = new DataTable();//分页信息
         protected int CurrentPage=1;    
-        protected int Page_Size=2;
+        protected int Page_Size=3;
         protected int PageCount;
         protected string content;
         protected string fy_list;
@@ -185,15 +185,28 @@
                             + row["联系人手机"].ToString() + "</li><li>地址："
                             + row["联系地址"].ToString() + "</li></ul></a></div>";
                     }
-
                     //分页显示信息
-                    if(CurrentPage>1 && CurrentPage!=PageCount)
-                    {
-                        fy_list += "<span style='font-size:12px;color:Black'><a href='ppxx.aspx?pp_id="
-                        + pp_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a><a href='gysxx.aspx?gys_id="
-                        + pp_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>第"
+					 if((CurrentPage <= 1) && (PageCount <=1)) { //一页
+						 fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
                         + CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
-                    }
+
+					}
+					else if((CurrentPage<= 1)  && (PageCount>1)) {//两页 
+						fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<a href='ppxx.aspx?pp_id="
+                        + pp_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+                        + CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+					}   
+					else if(!(CurrentPage<=1)&&!(CurrentPage == PageCount)){  //多页
+						fy_list += "<span style='font-size:12px;color:Black'><a href='ppxx.aspx?pp_id="
+                        + pp_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<a href='ppxx.aspx?pp_id="
+                        + pp_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+                        + CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+					}
+					else if((CurrentPage == PageCount) && (PageCount > 1)){  //末页
+						fy_list += "<span style='font-size:12px;color:Black'><a href='ppxx.aspx?pp_id="
+                        + pp_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
+                        + CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>"; 
+					}
                 }
 
             }
@@ -262,10 +275,10 @@
         <div class="gydl">
             <ul style="padding-left:20px; margin-top:4px;">
                 <li style="float:left; height:28px; line-height:28px; margin-right:2px;">
-                    <a href="javascript:void(0)" class="tab1"  style="border:1px solid Gray; font-size:14px;display:block">该品牌下产品</a>
+                    <a href="javascript:void(0)" class="tab1"  style="border:1px solid Gray; font-size:14px;display:block">该品牌下分销商</a>
                 </li>
                 <li style="float:left; height:28px; line-height:28px; margin-right:2px;">
-                    <a href="javascript:void(0)" class="tab2"  style="border:1px solid Gray; font-size:14px;display:block">该品牌分销商</a>
+                    <a href="javascript:void(0)" class="tab2"  style="border:1px solid Gray; font-size:14px;display:block">该品牌下产品</a>
                 </li>
             </ul>
         </div>
@@ -297,7 +310,7 @@
                 <input type="hidden" id="ppfcount_msg" name="ppfcount_msg" value="<%=GetPPFXSCount() %>" />
 
             <!-- 品牌分销商 显示开始-->
-             <div id="fy_list" style=" margin-left:34%;float:left;height:auto;width:400px;">
+             <div id="fy_list" style=" margin-left:34%;margin-top:10px;float:left;height:auto;width:400px;">
                     <%=fy_list %>
              </div>
             <!-- 品牌分销商 显示结束-->

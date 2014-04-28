@@ -18,7 +18,7 @@
         protected DataConn dc_tool = new DataConn();
         protected DataTable dt_list = new DataTable();
 
-        private const int Page_Size = 2; //每页的记录数量
+        private const int Page_Size = 3; //每页的记录数量
         private int CurrentPage=1;//当前默认页为第一页
         private int PageCount; //总页数
 

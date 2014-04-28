@@ -103,22 +103,22 @@
         protected DataTable dt_content = new DataTable(); //分页后存放的分销商信息
         protected DataTable dt_qymc = new DataTable();// 保存区域名称
 
-        private const int Page_Size = 2; //每页的记录数量
+        private const int Page_Size = 3; //每页的记录数量
         private int CurrentPage=1;//当前默认页为第一页
         private int PageCount; //总页数
 
         protected string content = "";  //存放供应商信息
         protected string fy_list = "";  //存放分页信息
-
+		
+		public string yh_id = "";
+		public string QQ_id="";
+		private string pass="";
+		
         protected void Page_Load(object sender, EventArgs e)
         {
 		    if (!Page.IsPostBack)
             {
                 gys_id = Request["gys_id"];   //获取供应商id 
-
-                /*获取区域信息*/
-                string str_sqlqymc = "select 所属区域编号,所属区域名称  from 地区地域字典 group by 所属区域编号,所属区域名称";
-                dt_qymc = dc.GetDataTable(str_sqlqymc);                    
 
 			    string str_sqlclgys = "select 供应商,单位类型,联系人,联系人手机,联系地址 from 材料供应商信息表 where  gys_id='"+gys_id+"'";            
                 dt_gysxx = dc.GetDataTable(str_sqlclgys);
@@ -210,14 +210,28 @@
                                         + row["联系地址"].ToString() + "</li></ul></a></div>";
                                 }
 
-                                //分页显示信息
-                                if(CurrentPage>1 && CurrentPage!=PageCount)
-                                {
-                                    fy_list += "<span style='font-size:12px;color:Black'><a href='gysxx.aspx?gys_id="
-                                    + gys_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a><a href='gysxx.aspx?gys_id="
-                                    + gys_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>第"
-                                    + CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
-                                }
+                               //分页显示信息
+								if((CurrentPage <= 1) && (PageCount <=1)) { //一页
+									 fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
+									+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+
+								}
+								else if((CurrentPage<= 1)  && (PageCount>1)) {//两页 
+									fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<a href='gysxx.aspx?gys_id="
+									+ gys_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+									+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+								}   
+								else if(!(CurrentPage<=1)&&!(CurrentPage == PageCount)){  //多页
+									fy_list += "<span style='font-size:12px;color:Black'><a href='gysxx.aspx?gys_id="
+									+ gys_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<a href='gysxx.aspx?gys_id="
+									+ gys_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+									+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+								}
+								else if((CurrentPage == PageCount) && (PageCount > 1)){  //末页
+									fy_list += "<span style='font-size:12px;color:Black'><a href='gysxx.aspx?gys_id="
+									+ gys_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
+									+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>"; 
+								}
                             }        
                         }	
                     }	
@@ -282,17 +296,38 @@
                 <%}%>
             </div>
 			 <%
-				HttpCookie CYS_QQ_id = Request.Cookies["GYS_QQ_ID"];   
+				//供应商
+				HttpCookie GYS_QQ_id = Request.Cookies["GYS_QQ_ID"];   
 				Object GYS_YH_id = Session["GYS_YH_ID"];
 				
-				if(CYS_QQ_id != null && GYS_YH_id != null)
-				{%>
-					<div class="gyan"><a href="" onclick="NewWindowRL(<%=gys_id %>)">本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>	
-			<%	}
-				else{%> 
-					<div class="gyan" style="display:none"><a href="" onclick="NewWindowRL(<%=gys_id %>)">本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>
+				if (Request.Cookies["GYS_QQ_ID"]!=null&& Request.Cookies["GYS_QQ_ID"].Value.ToString()!="")
+				{
+					QQ_id= Request.Cookies["GYS_QQ_ID"].Value.ToString();
+				}
+				if(QQ_id != "")
+				{	            
+					string str_sqlyhid  = "select yh_id from 用户表 where QQ_id = '" + QQ_id + "'";
+					yh_id = dc.DBLook(str_sqlyhid);
+					if(yh_id != null && yh_id != "" )
+					{
+						//只要该供应商有审核 或者 该QQ已经认领
+						string str_sql = "select 审批结果 from  供应商认领申请表 where gys_id ='" + gys_id + "' or yh_id ='" + yh_id + "' ";
+						pass = dc.DBLook(str_sql);
+					}
+				}		
+				
+			%>
+			<%	if(pass != "通过")//审核未通过，说明未认领
+				{
+			%>
+					<div class="gyan"><a href="gyszym.aspx" >本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>	
 			<%	}%>
-			<div class="gyan1"><a href="" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
+			
+			<%  if(GYS_QQ_id == null && GYS_YH_id == null) //采购商 用来收藏供应商
+				{
+			%>
+					<div class="gyan1"><a href="" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
+			<%  }%>
         </div>		
 		<div class="gydl">
             <div class="dlpp">地理位置</div>
@@ -419,10 +454,6 @@
         function NewWindow(id) {
             var url = "scgys.aspx?gys_id=" + id;
             window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
-        }
-        function NewWindowRL(id) {
-			var url = "gysdl.aspx?gys_id=" + id;
-			window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
         }
     </script>
 </body>

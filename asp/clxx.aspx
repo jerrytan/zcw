@@ -22,8 +22,9 @@
 <title>材料信息详情页</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
-<script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
-<script src="js/SJLD.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/lrtk.js"></script>
+<script type="text/javascript" src="js/jquery-1.4.2.min.js" ></script>
+<script type="text/javascript" src="js/SJLD.js" ></script>
 <script type="text/javascript" language="javascript">
     var $j = jQuery.noConflict();
     $j(document).ready(function () {
@@ -86,10 +87,12 @@
 		protected DataTable dt_images = new DataTable();  //材料小图片(材料多媒体信息表)
         
         protected int CurrentPage=1;    
-        protected int Page_Size=2;
+        protected int Page_Size=3;
         protected int PageCount;
 
-        private string cl_id;
+        private string cl_id;	//材料id
+        private string cl_number; //材料编号
+		private string ppid;	 //品牌id
         protected DataConn dc_obj = new DataConn();
         protected string content; //保存供应商信息
         protected string fy_list; //保存分页信息
@@ -110,7 +113,7 @@
 			string str_sqlxsmz = "select 显示名字,分类编码 from 材料分类表 where fl_id='"+fl_id+"' ";           
             dt_flxx = dc_obj.GetDataTable(str_sqlxsmz);
 			
-			string str_sqlppmc = "select 品牌名称,规格型号,材料编码 from 材料表 where cl_id='"+cl_id+"' ";            
+			string str_sqlppmc = "select pp_id,品牌名称,规格型号,材料编码 from 材料表 where cl_id='"+cl_id+"' ";            
             dt_ppxx = dc_obj.GetDataTable(str_sqlppmc);
 			
 			string str_sqlgysxx =  "select 联系人手机,供应商,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') ";
@@ -175,13 +178,26 @@
                             + row["联系地址"].ToString() + "</li></ul></a></div>";
                 }
                  //分页显示信息
-                if(CurrentPage>1 && CurrentPage!=PageCount)
-                {
-                    fy_list += "<span style='font-size:12px;color:Black'><a href='clxx.aspx?cl_id="
-                    + cl_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a><a href='clxx.aspx?gys_id="
-                    + cl_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>第"
-                    + CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
-                }
+               	 if((CurrentPage <= 1) && (PageCount <=1)) { //一页
+					fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
+					+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+				}
+				else if((CurrentPage<= 1)  && (PageCount>1)) {//两页 
+					fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<a href='clxx.aspx?cl_id="
+					+ cl_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+					+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+				}   
+				else if(!(CurrentPage<=1)&&!(CurrentPage == PageCount)){  //多页
+					fy_list += "<span style='font-size:12px;color:Black'><a href='clxx.aspx?cl_id="
+					+ cl_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<a href='clxx.aspx?cl_id="
+					+ cl_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+					+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+				}
+				else if((CurrentPage == PageCount) && (PageCount > 1)){  //末页
+					fy_list += "<span style='font-size:12px;color:Black'><a href='clxx.aspx?cl_id="
+					+ cl_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
+					+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>"; 
+				}
             }
         
         }		
@@ -247,21 +263,23 @@
     </div>
     <!-- 导航链接栏 结束 -->
     
-    <!-- 图片列表和收藏 开始 -->
+	<!-- 图片列表和收藏 开始 -->
     <div class="xx1">
         <div class="xx2">
             <div style="HEIGHT: 300px; OVERFLOW: hidden;" id="idTransformView">
                 <ul id="idSlider" class="slider">
-                    <div style="POSITION: relative">
-                    <%
+					<%
 	                foreach(System.Data.DataRow row in dt_images.Rows)
-                    {
+                    {%>
+                    <div style="POSITION: relative">
+                    	<%
 	                    if(dt_images.Rows[0]["存放地址"]!="")
 	                    {%>
                             <a ><img  src="<%=dt_images.Rows[0]["存放地址"].ToString()%>" width="320" height="300" id="bigImage"></a>
-                        <%}
-                    }%>
+                        <%}%>
+                    
                     </div>
+					<%}%>
                 </ul>
             </div>
             <div>
@@ -278,19 +296,34 @@
         </div>
     
         <div class="xx3">
-                                                    <dl>
-                  <% foreach(System.Data.DataRow row in dt_ppxx.Rows){%>
+            <dl>
+                  <% foreach(System.Data.DataRow row in dt_ppxx.Rows){
+					ppid =  row["pp_id"].ToString();
+					cl_number = row["材料编码"].ToString();
+                  %>
                   <dd>品牌:</dd>
-                  <dt><%=row["品牌名称"].ToString() %></dt>
-                  <dd>型号:</dd>
-                  <dt><%=row["规格型号"].ToString() %></dt>
+                  <dt style="height:30px;"><%=row["品牌名称"].ToString() %></dt>
+                  
+				  <dd>型号:</dd>
+                  <dt style="height:30px;"><%=row["规格型号"].ToString() %></dt>
                   <dd>编码:</dd>
-                  <dt><%=row["材料编码"].ToString() %></dt>
+                  <dt style="height:30px;"><%= cl_number %></dt>
                   <%}%> 
             </dl>
-                <span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;"  onclick="sc_login(<%=cl_id %>)">
-                    <a href="" onclick="NewWindow(<%=cl_id %>)">请收藏，便于查找</a>
-                </span>
+			<%
+				//供应商
+				HttpCookie GYS_QQ_id = Request.Cookies["GYS_QQ_ID"];   
+				Object GYS_YH_id = Session["GYS_YH_ID"];  
+				if((GYS_QQ_id == null ) && (GYS_YH_id == null))	//供应商未登录，显示收藏
+				{
+			%>
+					<span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;"  onclick="sc_login(<%=cl_id %>)">
+						<a href="" onclick="NewWindow('<%=cl_number %>',<%=ppid %>)">请收藏，便于查找</a>
+					</span>	
+			<%
+				}
+			%>
+               
         </div>
     </div>
     <!-- 图片列表和收藏 结束 -->
@@ -342,7 +375,7 @@
         </div>
     </div>
     <!-- 显示 下拉列表对应供应商信息 结束 -->
-    <div id="fy_list">
+    <div id="fy_list" style=" margin-left:34%;margin-top:40px;float:left;height:auto;width:400px;">
             <%=fy_list %> 
     </div>
 
@@ -378,13 +411,19 @@
 <!-- footer 结束-->
 
 <script type="text/javascript">
-    function NewWindow(id) {
-        var url = "sccl.aspx?cl_id="+id;
-        window.open(url,"","height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+    function NewWindow(number,ppid) {
+		var url = "sccl.aspx?cl_id=" + number + "|" + ppid;        
+		window.open(url,"","height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
     }
     function changeImage(src) {
         document.getElementById("bigImage").src = src;
     }
 </script>
+
+<script language=javascript>
+  mytv("idNum","idTransformView","idSlider",300,5,true,4000,5,true,"onmouseover");
+  //按钮容器aa，滚动容器bb，滚动内容cc，滚动宽度dd，滚动数量ee，滚动方向ff，延时gg，滚动速度hh，自动滚动ii，
+</script>
+
 </body>
 </html>
