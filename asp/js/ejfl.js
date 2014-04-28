@@ -103,7 +103,8 @@
         });
         s = s.substr(0, s.length - 1);
         if (s != "") {
-            $(this).attr("href", "sccl.aspx?cl_id=" + s);
+            var url = "sccl.aspx?cl_id=" + s;
+            window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
         } else {
             alert("暂时无法收藏，请先选择要收藏的材料");
         }

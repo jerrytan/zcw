@@ -31,6 +31,10 @@
         {
             <%--string indexPath = ConfigurationManager.AppSettings["path"].ToString();--%>
             string indexPath = Server.MapPath("lucenedir\\");
+			 if (!Directory.Exists(indexPath))
+            {
+                Directory.CreateDirectory(indexPath);
+            }
             FSDirectory directory = FSDirectory.Open(new DirectoryInfo(indexPath), new NativeFSLockFactory());
             bool isUpdate = IndexReader.IndexExists(directory);
             if (isUpdate)

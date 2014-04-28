@@ -89,6 +89,10 @@
         {            
             //string indexPath= ConfigurationManager.AppSettings["path"].ToString();
             string indexPath = Server.MapPath("lucenedir\\");
+			 if (!System.IO.Directory.Exists(indexPath))
+            {
+                System.IO.Directory.CreateDirectory(indexPath);
+            }
             string keyWord =Request["sou"];         
             keyWord = keyWord.ToLower();                   
             string[] kw = PanGuCut(keyWord);
@@ -154,7 +158,11 @@
         private string  GetTypeList()
         {
             StringBuilder sb = new StringBuilder();
-            string indexPath = @"C:\lucenedir";
+            string indexPath = Server.MapPath("lucenedir\\");
+		     if (!System.IO.Directory.Exists(indexPath))
+            {
+                System.IO.Directory.CreateDirectory(indexPath);
+            }
             string keyWord = Request["sou"];
             keyWord = keyWord.ToLower();
             string[] kw = PanGuCut(keyWord);
