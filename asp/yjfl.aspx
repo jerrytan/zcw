@@ -76,7 +76,7 @@
             string str_sqlflname = "select  显示名字,fl_id from 材料分类表 where  分类编码='"+name+"' ";                
             dt_yjflmc = dc_obj.GetDataTable(str_sqlflname);      
   
-            string str_sqltop10name = "select  top 10 显示名,cl_id from 材料表 where left(材料编码,2)='"+name+"' order by 访问计数";              
+            string str_sqltop10name = "select  top 10 显示名,cl_id from 材料表 where left(材料编码,2)='"+name+"' order by 访问计数 desc";              
             dt_zclmc = dc_obj.GetDataTable(str_sqltop10name); 
 			
 			string str_top4wz = "select top 4 标题,摘要,wz_id from 文章表 where left(分类编码,2)='"+name+"' ";

@@ -78,7 +78,7 @@
             dt_ejflpp = dc_obj.GetDataTable(str_sqlppmc);
            		
 			
-            string str_sqlcl = "select top 10 显示名,规格型号,分类编码,cl_id from 材料表 where 分类编码='"+name+"' order by 访问计数 ";
+            string str_sqlcl = "select top 10 显示名,规格型号,分类编码,cl_id from 材料表 where 分类编码='"+name+"' order by 访问计数 desc";
             dt_ejflcl = dc_obj.GetDataTable(str_sqlcl);
 			
 			string str_sqltop4 = "select top 4 标题,摘要,wz_id from 文章表 where left(分类编码,4)='"+name+"' ";
