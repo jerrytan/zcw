@@ -82,8 +82,6 @@
         </p> 
          <p>
         </p>
-       
-        <a style="color: Red" onclick="clickMe()">恭喜您，新增分销品牌成功，请点击我返回。</a>
         <script>
             function clickMe() {
                 window.close();

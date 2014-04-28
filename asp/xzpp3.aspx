@@ -71,7 +71,7 @@
         </p>
        <%if(ret!=0&&ret!=2) {%>
         <a style="color: Red" onclick="clickMe()">恭喜您，新增品牌成功，请返回; </a>
-        <%}else{ %>
+        <%}else if(ret==0){ %>
          <a style="color: Red" onclick="clickMe()">新增品牌失败，页面将跳转到主页！</a>
              
         <%} %>
@@ -81,7 +81,7 @@
             <%if(source=="xzym") {%>
               window.close();
                 opener.location.href="gyszym.aspx";
-            <%} else{%>
+            <%} else {%>
                 window.close();
                 opener.location.reload();
                 <%} %>
