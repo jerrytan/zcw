@@ -127,9 +127,9 @@
                 for (var j = 0; j < myobj1.length;j++)
                 {  //遍历,将ajax返回的数据填充到文本框中				
                    
-                    s += "<image src='images/wwwq_03.jpg'/>";
+                    s += " <div class='fgstp'><image src='images/wwwq_03.jpg'/>";
                     s += "  <span class='fdlpp1'>";
-                    s += " <a href='ppxx.aspx?pp_id=" + myobj1[j].pp_id + "' class='fxsfxk'>" + myobj1[j].ppmc + "</a></span>";
+                    s += " <a href='ppxx.aspx?pp_id=" + myobj1[j].pp_id + "' class='fxsfxk'>" + myobj1[j].ppmc + "</a></span></div>";
                 }
                 document.getElementById("ppxx").innerHTML = s;
             }
@@ -474,7 +474,7 @@
                 <span class="fxsxx1"></span>	
                     <div class="ggspp">
                         <span class="ggspp1">贵公司代理分销品牌如下</span> 
-                        <div class="fgstp" id="ppxx">
+                        <div id="ppxx">
                          </div>      
                     </div>	
      <%}
@@ -521,23 +521,22 @@
                  	<span class="fxsxx1"></span>
                     <div class="ggspp">
                         <span class="ggspp1">贵公司代理分销品牌如下</span> 
-                        <div class="fgstp">                                
-                                <span class="fdlpp1">
                                 <%foreach (System.Data.DataRow row in dt_ppxx.Rows)
                                   {%>
-                                  <img src="images/wwwq_03.jpg" />
-                                  <a href="clxx.aspx?cl_id=<%=row["pp_id"].ToString() %>"><%=row["品牌名称"].ToString() %></a>
-                                      <input name="brand" type="checkbox" value="<%=row["pp_id"].ToString() %>" class="fxsfxk" />
-                                      <a  id="brandname" ><%=row["品牌名称"].ToString() %></a>
-                                 <%} %>
-                                </span>
-                         </div>      
+                                   <div class="fgstp">
+                                        <img src="images/wwwq_03.jpg" />
+                                        <span class="fdlpp1">
+                                            <input name="brand" type="checkbox" value="<%=row["pp_id"].ToString() %>" class="fxsfxk" />
+                                            <%=row["品牌名称"].ToString() %>
+                                        </span>
+                                    </div>
+                                 <%} %>     
                     </div>	
              <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">取消选中的分销品牌</a></span>             
              <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新分销品牌</a></span>
-     <%} %>
-     </form>
-     </div>
+     <%} %>   
+      </form>
+        </div>
      <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->  

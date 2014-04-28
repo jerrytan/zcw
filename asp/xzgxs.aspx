@@ -78,8 +78,17 @@
            
                 if (xzlx=="分销商")  //当前用户是生产商
                 {
-                    sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "'";
-                    dt_ppxx = objConn.GetDataTable(sSQL);
+                    if (gxs_id!="")
+                    {
+                        sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "'";
+                        dt_ppxx = objConn.GetDataTable(sSQL);
+                    }
+                    else
+                    {
+                        sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典";
+                        dt_ppxx = objConn.GetDataTable(sSQL);
+                    }
+                   
                 }
                     //else
                     //{                 
@@ -311,12 +320,12 @@
                   for (var i = 0; i < myobj.length; i++)
                   {  //遍历,将ajax返回的数据填充到文本框中				
 
-                      document.getElementById('scs').value = myobj[i].scs;      
-                      document.getElementById('grade').value = myobj[i].dj       
-                      document.getElementById('scope').value = myobj[i].fw;                	 
-                      document.getElementById('fl_name').value = myobj[i].flname;
-                      document.getElementById('pp_id').value = myobj[i].pp_id;
-                      document.getElementById('pp_name').value = myobj[i].ppname;         
+                      document.getElementById('scs').innerHTML = myobj[i].scs;
+                      document.getElementById('grade').innerHTML = myobj[i].dj
+                      document.getElementById('scope').innerHTML = myobj[i].fw;
+                      document.getElementById('fl_name').innerHTML = myobj[i].flname;
+                      document.getElementById('pp_id').innerHTML = myobj[i].pp_id;
+                      document.getElementById('pp_name').innerHTML = myobj[i].ppname;        
                       
                   }
               }
@@ -342,9 +351,8 @@
                     </td>
                     <td align="left">
                         <select id="" name="" style="width: 200px" onchange="updateFLfxs(this.options[this.options.selectedIndex].value)">
-
                             <% for (int i=0;i< dt_ppxx.Rows.Count;i++) {%>
-                               <option value='<%=dt_ppxx.Rows[i]["pp_id"].ToString() %>'><%=dt_ppxx.Rows[i]["品牌名称"]%></option>");
+                               <option value='<%=dt_ppxx.Rows[i]["pp_id"].ToString() %>'><%=dt_ppxx.Rows[i]["品牌名称"]%></option>
                            <% }%>
                         </select>
                     </td>
@@ -353,7 +361,7 @@
                     <td style="width: 120px; color: Blue">*生产商：
                     </td>
                     <td align="left">
-                        <div id="scs"><%=dt_ppxx.Rows[0]["生产商"] %> </div>
+                        <div id="scs"><%=dt_ppxx.Rows[0]["生产商"] %></div>
                     </td>
                 </tr>
                 <tr>

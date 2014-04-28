@@ -131,9 +131,9 @@
                   for (var j = 0; j < myobj1.length; j++)
                   {  //遍历,将ajax返回的数据填充到文本框中				
 
-                      s += "<image src='images/wwwq_03.jpg'/>";
+                      s += "<div class='fgstp'><image src='images/wwwq_03.jpg'/>";
                       s += "  <span class='fdlpp1'>";
-                      s += " <a href='ppxx.aspx?pp_id=" + myobj1[j].pp_id + "' class='fxsfxk'>" + myobj1[j].ppmc + "</a></span>";
+                      s += " <a href='ppxx.aspx?pp_id=" + myobj1[j].pp_id + "' class='fxsfxk'>" + myobj1[j].ppmc + "</a></span></div>";
                   }
                   document.getElementById("ppxx").innerHTML = s;
               }
@@ -435,7 +435,7 @@
           <span class="fxsxx1"></span>	
                     <div class="ggspp">
                         <span class="ggspp1">该厂商的品牌如下</span> 
-                        <div class="fgstp" id="ppxx">
+                        <div id="ppxx">
                          </div>      
                     </div>	
           </div>             
