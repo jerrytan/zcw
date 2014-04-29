@@ -45,7 +45,7 @@
                        string str_update = "update 品牌字典 set pp_id= (select myID from 品牌字典 where 品牌名称='" + pp_name + "'),"
                            + " fl_id = (select fl_id from 材料分类表 where 分类编码='" + clfl + "'),"
                            + " 生产商 = (select 供应商 from 材料供应商信息表 where gys_id = '" + fxs_id + "'),"
-                           + " 分类名称 = (select 显示名字 from 材料分类表 where 分类编码 = '" + clfl + "')"
+                           + " 分类名称 = (select 显示名字 from 材料分类表 where 分类编码 = '" + clfl + "'),updatetime=(select getdate())"
                            + " where 品牌名称='" + pp_name + "'";
 
                        int ret = objConn.ExecuteSQLForCount(str_update, true);
@@ -63,7 +63,7 @@
                     string count = objConn.DBLook(sSQL);
                     if (count=="0")
                     {
-                        sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,yh_id) values('" + pp_id + "','" + pp_name + "', 1,'" + fxs_id + "','" + s_yh_id + "' ) ";
+                        sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,yh_id,updatetime) values('" + pp_id + "','" + pp_name + "', 1,'" + fxs_id + "','" + s_yh_id + "',(select getdate()) ) ";
                         objConn.ExecuteSQL(sSQL, true);
                         Response.Write(" <a style='color: Red' onclick=\"clickMe()\">恭喜您，新增分销品牌成功，请点击我返回。</a>");
                     }

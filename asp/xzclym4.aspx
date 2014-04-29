@@ -28,7 +28,7 @@
 				
                 sSQL = "insert into  材料表(显示名,规格型号,计量单位,单位体积,单位重量,说明,是否启用,pp_id) "
 				+"values('" + cl_name + "','"+cl_type+"','" + cl_bit + "','" + cl_volumetric + "', "
-				+" '" + cl_height + "','"+cl_instruction+"','1','"+brand+"' ) ";          
+				+" '" + cl_height + "','"+cl_instruction+"','1','"+brand+"') ";          
                 //更新材料表
 				objConn.ExecuteSQL(sSQL,false);
 			    
@@ -56,7 +56,7 @@
 				+"fl_id = (select fl_id from 材料分类表 where 分类编码='"+flname+"'),"
 				+"生产厂商 = (select 供应商 from 材料供应商信息表 where gys_id = '"+gys_id+"'),"
 				+"材料编码 ='"+flname+"'+' "+cl_clbm+"'+'"+cl_clbh+"' , 分类编码 = '"+flname+"', 分类名称='"+cl_clflname+"', "
-				+"品牌名称=(select 品牌名称 from 品牌字典 where pp_id='"+brand+"' ) where 显示名='"+cl_name+"' ";
+				+"品牌名称=(select 品牌名称 from 品牌字典 where pp_id='"+brand+"' ),updatetime=(select getdate()) where 显示名='"+cl_name+"' ";
                
                 int ret = objConn.ExecuteSQLForCount(sSQL,false);
 				
@@ -77,7 +77,7 @@
 				}
 				sSQL = "insert into  材料属性表(分类属性名称,分类属性编码,flsx_id,分类属性值,分类属性值编号,flsxz_id) "
 				+"values('" + cl_flsxmc + "','"+sx_codes+"','" + sx_id + "','" + cl_value + "', "
-				+" '" + cl_number + "','"+cl_ids+"' ) "; 
+				+" '" + cl_number + "','"+cl_ids+"') "; 
 				//更新材料属性表
 				objConn.ExecuteSQL(sSQL,true); 
 				
@@ -86,7 +86,7 @@
 				+"cl_id=(select cl_id from 材料表 where 显示名='"+cl_name+"'),"
 				+"fl_id = (select fl_id from 材料分类表 where 分类编码='"+flname+"'),"
 				+"分类名称='"+cl_clflname+"',分类编码='"+flname+"',材料编码='"+flname+"'+' "+cl_clbm+"'+'"+cl_clbh+"', "
-				+"材料名称='"+cl_name+"',属性属性值编码='"+sx_codes+"'+'"+cl_number+"' where 分类属性名称='"+cl_flsxmc+"' "
+				+"材料名称='"+cl_name+"',属性属性值编码='"+sx_codes+"'+'"+cl_number+"',updatetime=(select getdate()) where 分类属性名称='"+cl_flsxmc+"' "
 				+"and flsx_id='"+sx_id+"'and flsxz_id='"+cl_ids+"' ";
 				objConn.ExecuteSQL(sSQL,true);                  
 		

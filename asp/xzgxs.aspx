@@ -195,10 +195,10 @@
                     string str_update = "update 品牌字典 set pp_id= (select myID from 品牌字典 where 品牌名称='" + brandname + "'),"
                     + " fl_id = (select fl_id from 材料分类表 where 分类编码='" + flname + "'),"
                     + " 生产商 = (select 供应商 from 材料供应商信息表 where gys_id = '" + gys_id + "'),"
-                    + " 分类名称 = (select 显示名字 from 材料分类表 where 分类编码 = '" + flname + "')"
+                    + " 分类名称 = (select 显示名字 from 材料分类表 where 分类编码 = '" + flname + "'),updatetime=(select getdate())"
                     + " where 品牌名称='" + brandname + "'";
                     int ret1 = objConn.ExecuteSQLForCount(str_update, false);
-                    sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,yh_id) values('" + " (select myID from 品牌字典 where 品牌名称='" + brandname + "')" + "','" + brandname + "', 1,'" + gys_id + "','" + s_yh_id + "' ) ";
+                    sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,yh_id,updatetime) values('" + " (select myID from 品牌字典 where 品牌名称='" + brandname + "')" + "','" + brandname + "', 1,'" + gys_id + "','" + s_yh_id + "',(select getdate()) ) ";
                     int ret = objConn.ExecuteSQLForCount(sSQL, true);
                     if (ret < 1 || ret1 < 1)
                     {
@@ -213,7 +213,7 @@
 
                 string pp_id = Request["pp_id"];	    //品牌id	
                 string pp_name = Request["pp_name"];   //品牌名称     
-                sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id) values('" + pp_id + "','" + pp_name + "', 1,'" + gys_id + "' ) ";
+                sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,updatetime) values('" + pp_id + "','" + pp_name + "', 1,'" + gys_id + "',(select getdate()) ) ";
                 b = objConn.ExecuteSQL(sSQL, true);
             }
             return b;
@@ -255,7 +255,7 @@
                 "','" + this.qylb.Value + "','" + this.yyzzzch.Value+"','待审核')";
             if (objConn.ExecuteSQL(sSQL, false))
             {
-                sSQL = "update 材料供应商信息表 set gys_id=myid where 供应商='" + this.gys.Value + "' and 营业执照注册号='" + this.yyzzzch.Value + "' and 组织机构编号='" + this.zzjgbh.Value + "'";
+                sSQL = "update 材料供应商信息表 set gys_id=myid,updatetime=(select getdate()) where 供应商='" + this.gys.Value + "' and 营业执照注册号='" + this.yyzzzch.Value + "' and 组织机构编号='" + this.zzjgbh.Value + "'";
                 b = objConn.ExecuteSQL(sSQL, true);
                 if (!b)
                 { objConn.MsgBox(this.Page, sSQL); }

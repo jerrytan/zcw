@@ -46,7 +46,7 @@
                     string str_update = "update 品牌字典 set pp_id= (select myID from 品牌字典 where 品牌名称='" + brandname + "'),"
                         + " fl_id = (select fl_id from 材料分类表 where 分类编码='" + flname + "'),"
                         + " 生产商 = (select 供应商 from 材料供应商信息表 where gys_id = '" + gys_id + "'),"
-                        + " 分类名称 = (select 显示名字 from 材料分类表 where 分类编码 = '" + flname + "')"
+                        + " 分类名称 = (select 显示名字 from 材料分类表 where 分类编码 = '" + flname + "'),updatetime=(select getdate())"
                         + " where 品牌名称='" + brandname + "'";
 
                      ret = objConn.ExecuteSQLForCount(str_update, true);

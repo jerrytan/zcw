@@ -46,28 +46,127 @@
         xmlhttp.send();
               
     }
-	
-	   //二级分类发送ajax 更新的是品牌的名称 
-	   
-      function updateCLFL(id) 
-	  {
-        var xmlhttp;		
-        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();			
+
+    //二级分类发送ajax 更新的是品牌的名称 和材料属性的名称
+    //文件名是xzclym3.aspx 和 xzclymSX.aspx
+    function updateCLFL(id)
+    {
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
         }
-        else {// code for IE6, IE5
+        else
+        {// code for IE6, IE5
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-			 
+
         }
-        xmlhttp.onreadystatechange = function () {
-            
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                
-                document.getElementById("brand").innerHTML = xmlhttp.responseText;			
+        xmlhttp.onreadystatechange = function ()
+        {
+
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+            {
+
+                document.getElementById("brand").innerHTML = xmlhttp.responseText;
             }
         }
         xmlhttp.open("GET", "xzclym3.aspx?id=" + id, true);
         xmlhttp.send();
+
+        var xmlhttp1;
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp1 = new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+            xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp1.open("GET", "xzclymSX.aspx?id=" + id, true);
+        xmlhttp1.send();
+        xmlhttp1.onreadystatechange = function ()
+        {
+
+            if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200)
+            {
+                var array = new Array();           //声明数组
+                array = xmlhttp1.responseText;     //接收返回的json字符串
+
+                var json = array;
+                var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 
+                for (var i = 0; i < myobj.length; i++)
+                {  //遍历			
+
+                    var json = document.getElementById('sx_names');
+                    json.options.add(new Option(myobj[i].SX_name, myobj[i].SX_id));  //下拉框显示属性名称
+
+                    var json_code = document.getElementById('sx_codes');     //下拉框显示属性编码
+                    json_code.options.add(new Option(myobj[i].SX_code, myobj[i].SX_code));
+
+                    var json_id = document.getElementById('sx_id');       //下拉框显示属性id
+                    json_id.options.add(new Option(myobj[i].SX_id, myobj[i].SX_id));
+                }
+            }
+        }
+    }
+
+    //属性名称ajax 更新的是属性值 文件名是:xzclymSX2.aspx
+    //更新的是规格型号 文件名是:xzclymSX3.aspx  (规格型号应该是文本框才合理)
+    function update_clsx(id)
+    {
+
+        var xmlhttp1;
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp1 = new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xmlhttp.open("GET", "xzclymSX2.aspx?id=" + id, true);
+        xmlhttp.send();
+        xmlhttp.onreadystatechange = function ()
+        {
+
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+            {
+                //document.getElementById("cl_value").innerHTML = xmlhttp.responseText;
+
+                var array = new Array();           //声明数组
+                array = xmlhttp.responseText;     //接收替换返回的json字符串
+
+                var json = array;
+                var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 		
+                for (var i = 0; i < myobj.length; i++)
+                {  //遍历	
+                    var json = document.getElementById('cl_value');
+                    json.options.add(new Option(myobj[i].SXZ_name, myobj[i].SXZ_name));  //下拉框显示属性值
+
+                    var json_code = document.getElementById('cl_number');     //下拉框显示属性编号
+                    json_code.options.add(new Option(myobj[i].SXZ_code, myobj[i].SXZ_code));
+
+                    var json_id = document.getElementById('cl_ids');       //下拉框显示属性值id
+                    json_id.options.add(new Option(myobj[i].SXZ_id, myobj[i].SXZ_id));
+                }
+            }
+        }
+
+        xmlhttp1.open("GET", "xzclymSX3.aspx?id=" + id, true);
+        xmlhttp1.send();
+        xmlhttp1.onreadystatechange = function ()
+        {
+            if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200)
+            {
+                var ggxh_value = xmlhttp1.responseText;
+                document.getElementById("cl_type").value = ggxh_value;
+            }
+        }
+
     }
     function SaveAll()
     {
@@ -366,7 +465,8 @@
                              <% } %>           
                         </select></dt>
   
-                    <dd>属性名称：</dd>
+
+         <%--           <dd>属性名称：</dd>
                     <dt>
                         <select name="sx_names" id="sx_names" style="width: 300px" >
 						
@@ -386,8 +486,46 @@
                             <option value="0"><%=v["分类属性值"].ToString()%></option>
 							<%}%>
                            
+                        </select></dt>--%>
+
+
+
+                      <dd>属性名称：</dd>
+                    <dt>
+                        <select name="sx_names" id="sx_names" style="width: 300px" onchange="update_clsx(this.options[this.options.selectedIndex].value)">                                 
+                            <option value="0">请选择属性名称</option>						
                         </select></dt>
-					
+						
+						<dd>属性编码：</dd>
+                    <dt>
+                        <select name="sx_codes" id="sx_codes" style="width: 300px" >                                                                       
+                            <option value="0">请选择属性编码</option>						
+                        </select></dt>
+						
+						<dd>属性id：</dd>
+                    <dt>
+                        <select runat="server" name="sx_id" id="sx_id" style="width: 300px"  >                                                                       
+                            <option value="0">属性id</option>						
+                        </select></dt>
+						
+						
+                    <dd>属性值：</dd>
+                    <dt>
+                        <select name="cl_value" id="cl_value" style="width: 300px"  >                            
+                            <option value="0">请选择属性值</option>                           
+                        </select></dt>
+						
+					<dd>属性值编号：</dd>
+                    <dt>
+                        <select name="cl_number" id="cl_number" style="width: 300px"  >                            
+                            <option value="0">编号</option>                           
+                        </select></dt>
+						
+					<dd>属性值ID号：</dd>
+                    <dt>
+                        <select name="cl_ids" id="cl_ids" style="width: 300px"  >                            
+                            <option value="0">属性值id</option>                           
+                        </select></dt>
 						
 					<dd>规格型号：</dd>                    
                     <dt>
@@ -405,9 +543,7 @@
                     <dd>说明：</dd>
                     <dt>
                         <input name="cl_instruction" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["说明"] %>" /></dt>
-					<dd>报价：</dd>
-					<dt>
-						<input name="cl_instruction" type="text" class="fxsxx3" value="" /></dt>
+					
                 </dl>
 </div>
 

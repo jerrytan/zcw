@@ -110,7 +110,7 @@
         string s_updateUserinfo = " update 用户表   set 手机='" +this.contactortel.Value + "', 姓名='" +this.contactorname.Value +
                                   "',公司名称='" + this.companyname.Value + "',公司地址='"+this.companyaddress.Value+
                                   "',公司电话='" + this.companytel.Value + "',QQ号码='"+this.contactorqqid.Value+
-                                  "',是否验证通过='待审核',类型='采购商' where yh_id='" + s_yh_id + "'";
+                                  "',是否验证通过='待审核',类型='采购商' where yh_id='" + s_yh_id + "',updatetime=(select getdate()";
                                   b=objConn.ExecuteSQL(s_updateUserinfo, true);
          if(!b)
         {
