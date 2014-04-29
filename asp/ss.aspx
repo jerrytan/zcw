@@ -305,7 +305,13 @@
                     <%
 					string str_sqltop1dz ="select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
                         +item.cl_id+"' and 大小='小'";
-
+                    string str_ppid = "select pp_id from 材料表 where cl_id="+item.cl_id.ToString();
+                    object result_ppid = dc_obj.DBLook(str_ppid);
+                    string ppid = "";
+                    if (result_ppid != null)
+                    {
+                        ppid = result_ppid.ToString();
+                    }
                     string imgsrc= "images/222_03.jpg";
                         object result = dc_obj.DBLook(str_sqltop1dz);
                         if (result != null) 
@@ -319,7 +325,10 @@
                     <span class="dlsl">
                         <%=mc%></span> 
                         <span class="dlspx3">
-                             <input name="item" type="checkbox" value="<%=item.cl_id %>" class="ck" />收藏</span>
+                          <%string parm="";
+                            parm = item.材料编码.ToString() + "|" + ppid;
+                             %>
+                             <input name="item" type="checkbox" value="<%=parm%>" class="ck" />收藏</span>
                 </div>
             </div>
             <%}%>

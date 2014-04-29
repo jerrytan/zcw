@@ -26,8 +26,6 @@
     <script src="js/ejfl.js" type="text/javascript"></script> 
 </head>
 <body>
-
-
     <!-- 头部开始-->
     <!-- #include file="static/header.aspx" -->
     <!-- 头部结束-->
@@ -64,6 +62,7 @@
         protected string pageBar="";
         protected string defaultMsg="";//当没有筛选到合适的记录时默认显示的提示信息
 
+       
         protected void Page_Load(object sender, EventArgs e)
         {
             name= Request["name"];//二级分类的名称
@@ -163,32 +162,36 @@
 
         //得到分页信息
          protected DataTable GetPageList(string name,string pp,string sort,string ids,int pageIndex,int pageSize)      
-        {          
-            string sql = @"select ROW_NUMBER() over(order by {0}) as newID, a.显示名,a.材料编码,a.cl_id,a.fl_id,a.规格型号,b.flsxz_id,a.pp_id,a.访问计数,a.updatetime from dbo.材料表 a inner join dbo.材料属性表 b on a.分类编码=b.分类编码 where a.分类编码=@name";
+        {         
+          
+            string sql=@"select a.myID, a.材料编码,a.pp_id,a.cl_id,a.显示名,a.规格型号,a.分类编码,a.访问计数,a.updatetime,b.flsxz_id from  材料表 a ,材料属性表 b where a.cl_id=b.cl_id and a.分类编码=@name";
            if (pp != null && pp != ""&&pp!="0")
             {
                 sql += " and a.pp_id=" + pp;
+              
             }
            if (ids != null && ids != "")
             {
                 sql += " and b.flsxz_id in(" + ids + ")";
+              
             }      
             string orderBy = string.Empty;
             if (sort == "0")
             {
-                orderBy = "a.myid";
+                orderBy = "myid";
             }
             else if (sort == "1")
             {
-                orderBy = "a.访问计数";
+                orderBy = "访问计数";
             }
             else if (sort == "2")
             {
-                orderBy = "a.updatetime";
+                orderBy = "updatetime";
             }
           
-            sql = string.Format(sql, (orderBy != "" && orderBy != null) ? orderBy : "a.myid");
-            sql = "select * from (" + sql + ") as t where t.newID between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize ";
+           string sql1=@"select * from (select  *,ROW_NUMBER() over(order by {0}) as newid2 from (select distinct 材料编码,pp_id,cl_id,显示名,规格型号,分类编码,updatetime,访问计数,myID from ({1} ) aa )bb ) cc ";
+            sql1=string.Format(sql1,(orderBy != "" && orderBy != null) ? orderBy : "myid",sql);
+            sql1=sql1+" where cc.newid2 between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize";
             SqlParameter[] parms ={ 
                                    new SqlParameter("@pageIndex",SqlDbType.Int),
                                    new SqlParameter("@pageSize",SqlDbType.Int),
@@ -196,25 +199,30 @@
                                 };           
             parms[0].Value=pageIndex;
             parms[1].Value=pageSize; 
-            parms[2].Value=name;
-            return  dc_obj.GetDataTable(sql,parms);     
-           
+            parms[2].Value=name;              
+                
+            return  dc_obj.GetDataTable(sql1,parms);
+                 
+          
         }
          
 
         //得到总页数
          private int GetPageCount(string name,int pageSize,string pp,string ids)
         {               
-            string sql = "select COUNT(*) from dbo.材料表 a inner join dbo.材料属性表 b on  a.分类编码=b.分类编码 where a.分类编码="+name;
+          
+           string sql="select a.myID, a.材料编码,a.pp_id,a.显示名,a.规格型号,a.分类编码,a.访问计数,a.updatetime,b.flsxz_id from  材料表 a ,材料属性表 b where a.cl_id=b.cl_id and a.分类编码="+name;
             if (pp != null && pp != "" &&pp!="0")
             {
                 sql += " and a.pp_id=" + pp;
             }
             if (ids != null && ids != "")
             {
-                sql += " and b.flsxz_id in(" + ids + ")";
+               sql += " and b.flsxz_id in(" + ids + ")";
             }     
-             string pageStr = dc_obj.DBLook(sql);
+            string sql1="select count(*) from (select  distinct 材料编码,pp_id,显示名,规格型号,分类编码,updatetime,访问计数,myID from ({0}  ) aa ) bb";
+            sql1=string.Format(sql1,sql);           
+             string pageStr = dc_obj.DBLook(sql1);
              int recordCount =Convert.ToInt32(pageStr);
              return Convert.ToInt32(Math.Ceiling(1.0 * recordCount / pageSize));
       }
@@ -361,7 +369,8 @@
          <!-- 筛选 结束 -->
 
         <!-- 材料显示列表 开始-->
-        <div class="dlspxl" id="dv"><span style="font-size:30px;font-weight:bolder;color:Red;"><%=defaultMsg%></span>
+        <div class="dlspxl" id="dv">
+          <%if(dt_clxx.Rows.Count>0){ %>
             <% foreach(System.Data.DataRow row in dt_clxx.Rows){
                 String  mc = row["显示名"].ToString();
                if (mc.Length > 6) {
@@ -395,6 +404,9 @@
                     </div>              
             </div>
             <% } %>
+            <%}else{ %>
+              <span style="font-size:30px;font-weight:bolder;color:Red;padding:0 300px;"><%=defaultMsg%></span>
+            <%} %>
         </div>
         <!-- 材料显示列表 结束-->
 

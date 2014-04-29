@@ -28,12 +28,11 @@
         }
 
          protected void btnCreatIndex_Click(object sender, EventArgs e)
-        {
-            <%--string indexPath = ConfigurationManager.AppSettings["path"].ToString();--%>
-            string indexPath = Server.MapPath("lucenedir\\");
-			 if (!Directory.Exists(indexPath))
+        {          
+             string indexPath = Server.MapPath("lucenedir\\");
+			 if (!System.IO.Directory.Exists(indexPath))
             {
-                Directory.CreateDirectory(indexPath);
+                System.IO.Directory.CreateDirectory(indexPath);
             }
             FSDirectory directory = FSDirectory.Open(new DirectoryInfo(indexPath), new NativeFSLockFactory());
             bool isUpdate = IndexReader.IndexExists(directory);
