@@ -40,7 +40,7 @@
             var ppfxs_count = $j("#ppfcount_msg").val();
             $j("#s1").change(function () {
                 var item1 = $j("#s1 option:selected").text();
-                var data = { address: item1, pp_id: pp_id, ppfxs_count: ppfxs_count };
+                var data = { address: item1, pp_id: pp_id};
                 $j.post(url, data, function (msg) {
                     var content = msg;
                     if (content.indexOf("@") >= 0) {
@@ -54,7 +54,7 @@
             });
             $j("#s2").change(function () {
                 var item2 = $j("#s2 option:selected").text();
-                var data = { address: item2, pp_id: pp_id, ppfxs_count: ppfxs_count };
+                var data = { address: item2, pp_id: pp_id };
                 $j.post(url, data, function (msg) {
                     var content = msg;
                     if (content.indexOf("@") >= 0) {
@@ -69,7 +69,7 @@
             });
             $j("#s3").change(function () {
                 var item3 = $j("#s3 option:selected").text();
-                var data = { address: item3, pp_id: pp_id, ppfxs_count: ppfxs_count };
+                var data = { address: item3, pp_id: pp_id };
                 $j.post(url, data, function (msg) {
                     var content = msg;
                     if (content.indexOf("@") >= 0) {
@@ -108,7 +108,7 @@
 
         protected DataTable dt_content = new DataTable();//分页信息
         protected int CurrentPage=1;    
-        protected int Page_Size=3;
+        protected int Page_Size=2;
         protected int PageCount;
         protected string content;
         protected string fy_list;
@@ -307,7 +307,6 @@
            </div>
             <!-- 存放传值数据-->
                 <input type="hidden" id="ppfid_msg" name="ppfid_msg" value="<%=pp_id %>"/>
-                <input type="hidden" id="ppfcount_msg" name="ppfcount_msg" value="<%=GetPPFXSCount() %>" />
 
             <!-- 品牌分销商 显示开始-->
              <div id="fy_list" style=" margin-left:34%;margin-top:10px;float:left;height:auto;width:400px;">

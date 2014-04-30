@@ -4,7 +4,6 @@
         传入参数：
                     gys_id 供应商编号
                     address    地址
-                    gys_count  数量
         负责人:任武       
     -->
 <%@ Import Namespace="System.Data" %>
@@ -25,17 +24,14 @@
         protected string content;   //分销商信息
         protected string fy_list;   //分页信息
 
-        private const int Page_Size = 3; //每页的记录数量
+        private const int Page_Size = 2; //每页的记录数量
         private int CurrentPage=1;//当前默认页为第一页
         private int PageCount; //总页数
 
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
-            {
                 gys_id = Request["gys_id"];
-                count =  double.Parse(Request["gys_count"]);
 
                 address = Request["address"];
                 if (!string.IsNullOrEmpty(address))
@@ -58,7 +54,7 @@
                     string strC = "";
                     if(string.IsNullOrEmpty(strC))
                     {
-                        double recordCount = count; 
+                        double recordCount = GetFXSCount(address); 
                         double d1 = recordCount / Page_Size; 
                         double d2 = Math.Ceiling(d1); 
                         int pageCount = (int)d2; 
@@ -80,7 +76,6 @@
                         address="";
                     }
                     dt_msg = this.GetPageList(gys_id,begin,end,address);
-
                     if(dt_msg != null && dt_msg.Rows.Count>0)//有数据,则进行遍历
                     {   
                         //所有的供应商信息
@@ -93,30 +88,66 @@
                                         + row["联系人手机"].ToString() + "</li><li>地址："
                                         + row["联系地址"].ToString() + "</li></ul></a></div>";;
                         }
-                        //分页信息
-                        if(CurrentPage>1 && CurrentPage!=PageCount)
-                        {
-                            fy_list += "<span style='font-size:12px;color:Black'><a href='gysxx.aspx?gys_id="
-                            + gys_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a><a href='gysxx.aspx?gys_id="
-                            + gys_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>第"
-                            + CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
-                        }
+                        
+						//分页显示信息
+						if((CurrentPage <= 1) && (PageCount <=1)) { //一页
+							 fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
+							+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+
+						}
+						else if((CurrentPage<= 1)  && (PageCount>1)) {//两页 
+							fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<a href='gysxx.aspx?gys_id="
+							+ gys_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+							+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+						}   
+						else if(!(CurrentPage<=1)&&!(CurrentPage == PageCount)){  //多页
+							fy_list += "<span style='font-size:12px;color:Black'><a href='gysxx.aspx?gys_id="
+							+ gys_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<a href='gysxx.aspx?gys_id="
+							+ gys_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+							+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+						}
+						else if((CurrentPage == PageCount) && (PageCount > 1)){  //末页
+							fy_list += "<span style='font-size:12px;color:Black'><a href='gysxx.aspx?gys_id="
+							+ gys_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
+							+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>"; 
+						}
+						
                     }
                     Response.Write(content);
                     Response.Write("@");
                     Response.Write(fy_list);
                 }
-            }
         }
-
+		
+		//从数据库获取记录的总数量
+        protected int GetFXSCount(string address)
+        {
+            int i_count=0;
+            try
+            {
+                string gys_id = Request["gys_id"];   //获取供应商id
+				string str_sql_fxsxx = "";
+				if(address.Equals("-省(市)-"))
+				{
+					address="";
+					str_sql_fxsxx = "select gys_id, 供应商,联系人,联系人手机,联系地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )and  联系地址 like '%" +address+ "%'";
+				}
+				str_sql_fxsxx = "select gys_id, 供应商,联系人,联系人手机,联系地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') ) and  联系地址 like '%" +address+ "%'";
+                i_count = dc.GetRowCount(str_sql_fxsxx);
+			}
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return i_count;
+        } 
 
         //获取分页信息:gys_id 生产商id, begin 开始, end 结束, address 地址
         protected DataTable GetPageList(string gys_id, int begin, int end,string address)
         {
-            
             //执行分页的sql语句
-            string str_sqlpage = @"select gys_id,供应商,联系人,联系人手机,联系地址 from (select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表  where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id=@gys_id) ))t where t.RowId between @begin and @end and t.联系地址 like '%'+@address+'%' ";
-            //添加相应参数值
+            string str_sqlpage = @"select gys_id,供应商,联系人,联系人手机,联系地址 from(select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表 where gys_id in (select fxs_id from 分销商和品牌对应关系表 where pp_id in (select pp_id from 品牌字典 where scs_id=@gys_id))and 联系地址 like '%'+@address+'%')t where t.RowId between @begin and @end";
+			//添加相应参数值
             SqlParameter[] parms = new SqlParameter[] 
             {      
                     new SqlParameter("@begin",SqlDbType.Int),

@@ -33,7 +33,7 @@
             var fxscount = $j("#fxscount_msg").val();
             $j("#s1").change(function () {
                 var item1 = $j("#s1 option:selected").text();
-                var data = { address: item1, gys_id: fxsmsg, gys_count: fxscount };
+                var data = { address: item1, gys_id: fxsmsg};
                 $j.post(url, data, function (msg) {
                     var content = msg;
                     if (content.indexOf("@") >= 0) {
@@ -47,7 +47,7 @@
             });
             $j("#s2").change(function () {
                 var item2 = $j("#s2 option:selected").text();
-                var data = { address: item2, gys_id: fxsmsg, gys_count: fxscount };
+                var data = { address: item2, gys_id: fxsmsg};
                 $j.post(url, data, function (msg) {
                     var content = msg;
                     if (content.indexOf("@") >= 0) {
@@ -61,7 +61,7 @@
             });
             $j("#s3").change(function () {
                 var item3 = $j("#s3 option:selected").text();
-                var data = { address: item3, gys_id: fxsmsg, gys_count: fxscount };
+                var data = { address: item3, gys_id: fxsmsg };
                 $j.post(url, data, function (msg) {
                     var content = msg;
                     if (content.indexOf("@")>= 0) {
@@ -103,7 +103,7 @@
         protected DataTable dt_content = new DataTable(); //分页后存放的分销商信息
         protected DataTable dt_qymc = new DataTable();// 保存区域名称
 
-        private const int Page_Size = 3; //每页的记录数量
+        private const int Page_Size = 2; //每页的记录数量
         private int CurrentPage=1;//当前默认页为第一页
         private int PageCount; //总页数
 
@@ -245,7 +245,8 @@
             try
             {
                 string gys_id = Request["gys_id"];   //获取供应商id
-                string str_sql_fxsxx = "select gys_id, 供应商,联系人,联系人手机,联系地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )"; 
+				string str_sql_fxsxx = "";
+				str_sql_fxsxx = "select gys_id, 供应商,联系人,联系人手机,联系地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )";
                 i_count = dc.GetRowCount(str_sql_fxsxx);
             }
             catch (Exception e)
@@ -300,6 +301,9 @@
 				HttpCookie GYS_QQ_id = Request.Cookies["GYS_QQ_ID"];   
 				Object GYS_YH_id = Session["GYS_YH_ID"];
 				
+				HttpCookie CGS_QQ_id = Request.Cookies["CGS_QQ_ID"];
+				Object CGS_YH_id = Session["CGS_YH_ID"];
+				
 				if (Request.Cookies["GYS_QQ_ID"]!=null&& Request.Cookies["GYS_QQ_ID"].Value.ToString()!="")
 				{
 					QQ_id= Request.Cookies["GYS_QQ_ID"].Value.ToString();
@@ -317,17 +321,21 @@
 				}		
 				
 			%>
-			<%	if(pass != "通过")//审核未通过，说明未认领
+			
+			<%	
+			if(GYS_QQ_id != null && GYS_YH_id != null)//说明已经供应商已经登录成功
+			{
+				if(pass != "通过")//审核未通过，说明未认领
 				{
 			%>
 					<div class="gyan"><a href="gyszym.aspx" >本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>	
 			<%	}%>
+				
+		<%	}else{%>
+				<div class="gyan1"><a href="" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
+		<%	}%>
+					
 			
-			<%  if(GYS_QQ_id == null && GYS_YH_id == null) //采购商 用来收藏供应商
-				{
-			%>
-					<div class="gyan1"><a href="" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
-			<%  }%>
         </div>		
 		<div class="gydl">
             <div class="dlpp">地理位置</div>
@@ -423,7 +431,6 @@
                <!-- 动态显示 开始-->
                 <!-- 存放传值数据-->
                 <input type="hidden" id="fxsid_msg" name="fxsid_msg" value="<%=gys_id %>"/>
-                <input type="hidden" id="fxscount_msg" name="fxscount_msg" value="<%=GetFXSCount() %>" />
             
             <div id="fxsxx_list">
                 <%=content %>

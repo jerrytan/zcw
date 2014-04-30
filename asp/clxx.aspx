@@ -22,7 +22,8 @@
 <title>材料信息详情页</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="css/all of.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="js/lrtk.js"></script>
+
+<script type="text/javascript" src="js/lrtk.js" ></script>
 <script type="text/javascript" src="js/jquery-1.4.2.min.js" ></script>
 <script type="text/javascript" src="js/SJLD.js" ></script>
 <script type="text/javascript" language="javascript">
@@ -34,7 +35,7 @@
 
         $j("#s1").change(function () {
             var item1 = $j("#s1 option:selected").text();
-            var data = { address: item1, cl_id: fxsmsg, gys_count: fxscount };
+            var data = { address: item1, cl_id: fxsmsg};
             $j.post(url, data, function (msg) {
                 var content = msg;
                 if (content.indexOf("@") >= 0) {
@@ -48,7 +49,7 @@
         });
         $j("#s2").change(function () {
             var item2 = $j("#s2 option:selected").text();
-            var data = { address: item2, cl_id: fxsmsg, gys_count: fxscount };
+            var data = { address: item2, cl_id: fxsmsg};
             $j.post(url, data, function (msg) {
                 var content = msg;
                 if (content.indexOf("@") >= 0) {
@@ -62,7 +63,7 @@
         });
         $j("#s3").change(function () {
             var item3 = $j("#s3 option:selected").text();
-            var data = { address: item3, cl_id: fxsmsg, gys_count: fxscount };
+            var data = { address: item3, cl_id: fxsmsg};
             $j.post(url, data, function (msg) {
                 var content = msg;
                 if (content.indexOf("@") >= 0) {
@@ -87,7 +88,7 @@
 		protected DataTable dt_images = new DataTable();  //材料小图片(材料多媒体信息表)
         
         protected int CurrentPage=1;    
-        protected int Page_Size=3;
+        protected int Page_Size=2;
         protected int PageCount;
 
         private string cl_id;	//材料id
@@ -273,9 +274,9 @@
                     {%>
                     <div style="POSITION: relative">
                     	<%
-	                    if(dt_images.Rows[0]["存放地址"]!="")
+	                    if(row["存放地址"].ToString()!="")
 	                    {%>
-                            <a ><img  src="<%=dt_images.Rows[0]["存放地址"].ToString()%>" width="320" height="300" id="bigImage"></a>
+                            <a ><img  src="<%=row["存放地址"].ToString()%>" width="320" height="300" id="bigImage"></a>
                         <%}%>
                     
                     </div>
@@ -288,7 +289,7 @@
                     System.Data.DataRow row =dt_images.Rows[i];
                 %>   
                     <li>
-                        <img src='<%=row["存放地址"].ToString()%>' width="61px" height="45px" ="changeImage('<%=row["存放地址"].ToString()%>')">
+                        <img src='<%=row["存放地址"].ToString()%>' width="61px" height="45px" click="changeImage('<%=row["存放地址"].ToString()%>')">
                     </li>
                 <%}%>
                 </ul>
@@ -367,8 +368,6 @@
             </div>
             <!-- 存放传值数据-->
                 <input type="hidden" id="fxsid_msg" name="fxsid_msg" value="<%=cl_id %>"/>
-                <input type="hidden" id="fxscount_msg" name="fxscount_msg" value="<%=GetCLFXSCount() %>" />
-
             <div id="clfxs_list">
                 <%=content %>
             </div>
@@ -409,6 +408,11 @@
 <!--  footer 开始-->
 <!-- #include file="static/footer.aspx" -->
 <!-- footer 结束-->
+<script language="javascript">
+  mytv("idNum","idTransformView","idSlider",300,5,true,2000,5,true,"onmouseover");
+  //按钮容器aa，滚动容器bb，滚动内容cc，滚动宽度dd，滚动数量ee，滚动方向ff，延时gg，滚动速度hh，自动滚动ii，
+ </script>
+
 
 <script type="text/javascript">
     function NewWindow(number,ppid) {
@@ -419,11 +423,5 @@
         document.getElementById("bigImage").src = src;
     }
 </script>
-
-<script language=javascript>
-  mytv("idNum","idTransformView","idSlider",300,5,true,4000,5,true,"onmouseover");
-  //按钮容器aa，滚动容器bb，滚动内容cc，滚动宽度dd，滚动数量ee，滚动方向ff，延时gg，滚动速度hh，自动滚动ii，
-</script>
-
 </body>
 </html>

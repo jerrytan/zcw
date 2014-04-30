@@ -60,7 +60,7 @@
     </script>
 </div>
 
-<span class="gd"><a href="#">查看更多材料...</a></span>
+<span class="gd"><a href="#"></a></span>
 
 
 
