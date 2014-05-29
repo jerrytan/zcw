@@ -26,8 +26,11 @@
             if (!Page.IsPostBack)
             {
                 cl_id = Request["cl_id"];
+				Response.Write("材料id="+cl_id);
+				Response.Write("<br>");
                 address = Request["address"];
-                if (!string.IsNullOrEmpty(address))
+                Response.Write("地址="+address);
+				if (!string.IsNullOrEmpty(address))
                 {
                     string strP = Request.QueryString["p"];
                     if (string.IsNullOrEmpty(strP))//判断传过来的参数是否为空  
@@ -48,6 +51,7 @@
                     if (string.IsNullOrEmpty(strC))
                     {
                         double recordCount = GetCLFXSCount(address);
+						Response.Write("记录数count=" +recordCount);
                         double d1 = recordCount / Page_Size;
                         double d2 = Math.Ceiling(d1);
                         int pageCount = (int)d2;
@@ -122,17 +126,24 @@
 				string str_sql_fxsxx="";
 				if(address.Equals("-省(市)-"))
 				{
+					Response.Write("进入");
+					Response.Write("<br>");
 					str_sql_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"'))";
 				}
-				str_sql_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"')) and 联系地址 like '%"+address+"%'";
-                 
+				else
+				{
+					str_sql_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"')) and 联系地址 like '%"+address+"%'";
+				}
+				Response.Write("str_sql_fxsxx="+str_sql_fxsxx);
+				Response.Write("<br>");
                 i_count = dc_obj.GetRowCount(str_sql_fxsxx);
+				Response.Write("从数据库中获取总数量i="+i_count);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            return i_count;
+		    return i_count;
         } 
 		
         //获取分页信息:cl_id 材料id, begin 开始, end 结束

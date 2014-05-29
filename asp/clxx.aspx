@@ -100,107 +100,108 @@
 
         protected void Page_Load(object sender, EventArgs e)
         {		      
-        
-			cl_id = Request["cl_id"];
+			  if (!Page.IsPostBack)
+            {
+				cl_id = Request["cl_id"];
 
-            string str_sqlclname = "select 显示名,fl_id,材料编码 from 材料表 where cl_id='"+cl_id+"' ";           
-            dt_clxx = dc_obj.GetDataTable(str_sqlclname);
+				string str_sqlclname = "select 显示名,fl_id,材料编码 from 材料表 where cl_id='"+cl_id+"' ";           
+				dt_clxx = dc_obj.GetDataTable(str_sqlclname);
 
-             //材料表访问计数加1
-            string str_updatecounter = "update 材料表 set 访问计数 = (select 访问计数 from 材料表 where cl_id = '"+ cl_id +"')+1 where cl_id = '"+ cl_id +"'";   
-            dc_obj.ExecuteSQL(str_updatecounter,true);
+				 //材料表访问计数加1
+				string str_updatecounter = "update 材料表 set 访问计数 = (select 访问计数 from 材料表 where cl_id = '"+ cl_id +"')+1 where cl_id = '"+ cl_id +"'";   
+				dc_obj.ExecuteSQL(str_updatecounter,true);
+				
+				string fl_id = Convert.ToString(dt_clxx.Rows[0]["fl_id"]);
+				string str_sqlxsmz = "select 显示名字,分类编码 from 材料分类表 where fl_id='"+fl_id+"' ";           
+				dt_flxx = dc_obj.GetDataTable(str_sqlxsmz);
+				
+				string str_sqlppmc = "select pp_id,品牌名称,规格型号,材料编码 from 材料表 where cl_id='"+cl_id+"' ";            
+				dt_ppxx = dc_obj.GetDataTable(str_sqlppmc);
+				
+				string str_sqlgysxx =  "select 联系人手机,供应商,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') ";
+				dt_scsxx = dc_obj.GetDataTable(str_sqlgysxx);
+				
+				string str_sqltop3 =  "select top 3 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='大'";        
+				dt_image = dc_obj.GetDataTable(str_sqltop3);
+				
+				string str_sqlfcdz = "select 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='小'";            
+				dt_images = dc_obj.GetDataTable(str_sqlfcdz);
 			
-            string fl_id = Convert.ToString(dt_clxx.Rows[0]["fl_id"]);
-			string str_sqlxsmz = "select 显示名字,分类编码 from 材料分类表 where fl_id='"+fl_id+"' ";           
-            dt_flxx = dc_obj.GetDataTable(str_sqlxsmz);
-			
-			string str_sqlppmc = "select pp_id,品牌名称,规格型号,材料编码 from 材料表 where cl_id='"+cl_id+"' ";            
-            dt_ppxx = dc_obj.GetDataTable(str_sqlppmc);
-			
-			string str_sqlgysxx =  "select 联系人手机,供应商,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') ";
-            dt_scsxx = dc_obj.GetDataTable(str_sqlgysxx);
-			
-			string str_sqltop3 =  "select top 3 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='大'";        
-            dt_image = dc_obj.GetDataTable(str_sqltop3);
-			
-			string str_sqlfcdz = "select 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='小'";            
-            dt_images = dc_obj.GetDataTable(str_sqlfcdz);
-        
-            string str_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"'))";         
-            dt_fxsxx = dc_obj.GetDataTable(str_fxsxx);
-			
-            string strP = Request.QueryString["p"];
-            if(string.IsNullOrEmpty(strP))//判断传过来的参数是否为空  
-            {
-                strP = "1";
-            }
-            
-            int p;
-            bool b1 = int.TryParse(strP, out p);
-            if (b1 == false)
-            {
-                p = 1;
-            }
-            CurrentPage = p;
-                
-            //获取"总页数"
-            string strC = "";
-            if(string.IsNullOrEmpty(strC))
-            {
-                double recordCount = this.GetCLFXSCount(); 
-                double d1 = recordCount / Page_Size; 
-                double d2 = Math.Ceiling(d1); 
-                int pageCount = (int)d2; 
-                strC = pageCount.ToString();
-            }
-            int c;
-            bool b2 = int.TryParse(strC,out c);
-            if (b2 == false)
-            {
-                c = 1;
-            }
-            PageCount = c;
-
-            //计算/查询分页数据
-            int begin = (p - 1) * Page_Size + 1;
-            int end = p * Page_Size;
-            dt_fxsxx = this.GetPageList(cl_id,begin,end);
-
-            if(dt_fxsxx != null && dt_fxsxx.Rows.Count>0 )
-            {
-                //供应商列表
-                foreach(System.Data.DataRow row in dt_fxsxx.Rows)
-                {
-                     content += "<div class='fxs2'><a href='gysxx.aspx?gys_id="
-                            + row["gys_id"].ToString() + "'><ul><li class='fxsa'>"
-                            + row["供应商"].ToString() + "</li><li>联系人："
-                            + row["联系人"].ToString() + "</li><li>电话："
-                            + row["联系人手机"].ToString() + "</li><li>地址："
-                            + row["联系地址"].ToString() + "</li></ul></a></div>";
-                }
-                 //分页显示信息
-               	 if((CurrentPage <= 1) && (PageCount <=1)) { //一页
-					fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
-					+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+				string str_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"'))";         
+				dt_fxsxx = dc_obj.GetDataTable(str_fxsxx);
+				
+				string strP = Request.QueryString["p"];
+				if(string.IsNullOrEmpty(strP))//判断传过来的参数是否为空  
+				{
+					strP = "1";
 				}
-				else if((CurrentPage<= 1)  && (PageCount>1)) {//两页 
-					fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<a href='clxx.aspx?cl_id="
-					+ cl_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
-					+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
-				}   
-				else if(!(CurrentPage<=1)&&!(CurrentPage == PageCount)){  //多页
-					fy_list += "<span style='font-size:12px;color:Black'><a href='clxx.aspx?cl_id="
-					+ cl_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<a href='clxx.aspx?cl_id="
-					+ cl_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
-					+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+				
+				int p;
+				bool b1 = int.TryParse(strP, out p);
+				if (b1 == false)
+				{
+					p = 1;
 				}
-				else if((CurrentPage == PageCount) && (PageCount > 1)){  //末页
-					fy_list += "<span style='font-size:12px;color:Black'><a href='clxx.aspx?cl_id="
-					+ cl_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
-					+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>"; 
+				CurrentPage = p;
+					
+				//获取"总页数"
+				string strC = "";
+				if(string.IsNullOrEmpty(strC))
+				{
+					double recordCount = this.GetCLFXSCount(); 
+					double d1 = recordCount / Page_Size; 
+					double d2 = Math.Ceiling(d1); 
+					int pageCount = (int)d2; 
+					strC = pageCount.ToString();
 				}
-            }
-        
+				int c;
+				bool b2 = int.TryParse(strC,out c);
+				if (b2 == false)
+				{
+					c = 1;
+				}
+				PageCount = c;
+
+				//计算/查询分页数据
+				int begin = (p - 1) * Page_Size + 1;
+				int end = p * Page_Size;
+				dt_fxsxx = this.GetPageList(cl_id,begin,end);
+
+				if(dt_fxsxx != null && dt_fxsxx.Rows.Count>0 )
+				{
+					//供应商列表
+					foreach(System.Data.DataRow row in dt_fxsxx.Rows)
+					{
+						 content += "<div class='fxs2'><a href='gysxx.aspx?gys_id="
+								+ row["gys_id"].ToString() + "'><ul><li class='fxsa'>"
+								+ row["供应商"].ToString() + "</li><li>联系人："
+								+ row["联系人"].ToString() + "</li><li>电话："
+								+ row["联系人手机"].ToString() + "</li><li>地址："
+								+ row["联系地址"].ToString() + "</li></ul></a></div>";
+					}
+					 //分页显示信息
+					 if((CurrentPage <= 1) && (PageCount <=1)) { //一页
+						fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
+						+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+					}
+					else if((CurrentPage<= 1)  && (PageCount>1)) {//两页 
+						fy_list += "<span style='font-size:12px;color:Black'><font style='color:Gray'>上一页</font>&nbsp;<a href='clxx.aspx?cl_id="
+						+ cl_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+						+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+					}   
+					else if(!(CurrentPage<=1)&&!(CurrentPage == PageCount)){  //多页
+						fy_list += "<span style='font-size:12px;color:Black'><a href='clxx.aspx?cl_id="
+						+ cl_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<a href='clxx.aspx?cl_id="
+						+ cl_id + "&p=" + (CurrentPage+1).ToString() + "' style='color:Black'>下一页</a>&nbsp;&nbsp;第"
+						+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>";
+					}
+					else if((CurrentPage == PageCount) && (PageCount > 1)){  //末页
+						fy_list += "<span style='font-size:12px;color:Black'><a href='clxx.aspx?cl_id="
+						+ cl_id + "&p=" + (CurrentPage-1).ToString() + "' style='color:Black'>上一页</a>&nbsp;<font style='color:Gray'>下一页</font>&nbsp;&nbsp;第"
+						+ CurrentPage.ToString() + "页/共" + PageCount.ToString() + "页</span>"; 
+					}
+				}
+			}
         }		
          //从数据库获取记录的总数量
         protected int GetCLFXSCount()
@@ -208,6 +209,7 @@
             int i_count=0;
             try
             {
+				
                 string cl_id = Request["cl_id"];   //获取供应商id
                 string str_sql_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"'))"; 
                 i_count = dc_obj.GetRowCount(str_sql_fxsxx);
