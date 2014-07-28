@@ -14,7 +14,7 @@
 </head>
 
 <body>
-<a href="TestPage.htm">手机页面</a>
+ 
     <!-- 头部 开始-->
     <!-- #include file="static/header.aspx" -->
     <!-- 头部 结束-->
