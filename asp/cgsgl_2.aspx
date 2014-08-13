@@ -68,7 +68,7 @@
         {
             sSQL = "select count(*) from 用户表 where QQ_id = '" + s_QQid + "'";
            string count = objConn.DBLook(sSQL);
-           if (Convert.ToInt32(count)==0)  //qq_id 不存在，需要增加到用户表
+           if (Convert.ToInt32(count)==0)  //qq_id 不存在，需要增加用户表
             {
                 sSQL = "insert into 用户表 (QQ_id) VALUES ('" + s_QQid + "')";
                if(!objConn.ExecuteSQL(sSQL,false))

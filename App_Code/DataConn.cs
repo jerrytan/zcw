@@ -15,7 +15,7 @@ using System.Data.SqlClient;
 public class DataConn : System.Web.UI.Page
 {
     private SqlConnection objConn = null;
-    private string ABC = "admin";
+    private string ABC = "admin112";
     private string strConnString = "";
     #region 构造函数
     /// <summary>
