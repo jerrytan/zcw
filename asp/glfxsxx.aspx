@@ -465,7 +465,7 @@
                <%} %>	
                </div>
                <div class="fxsxx2">             
-                        <span class="fxsbc" >
+                        <span class="fxsbc">
                             <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" />
                             <input type="submit"  onclick="Update_gysxx()"  value="更改"/>
                          <%--   <span class="zjgxs1"> <a id="ck_fgxsxx">查看分销商主页</a></span>--%>

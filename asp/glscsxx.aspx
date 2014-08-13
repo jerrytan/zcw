@@ -70,7 +70,7 @@
                   {
                       document.getElementById('companyname').value = "";       //供应商
                       document.getElementById('address').value = "";        //地址
-                      document.getElementById('tel').value = "";                //电话  			 
+                      document.getElementById('tel').value = "";                //电话  		 
                       document.getElementById('homepage').value = "";       //主页
                       document.getElementById('fax').value = "";                 //传真
                       document.getElementById('area').value = "";               //地区名称
@@ -90,7 +90,7 @@
 
                       document.getElementById('companyname').value = myobj[i].gys_name;       //供应商
                       document.getElementById('address').value = myobj[i].gys_address;        //地址
-                      document.getElementById('tel').value = myobj[i].gys_tel;                //电话  			 
+                      document.getElementById('tel').value = myobj[i].gys_tel;                //电话  
                       document.getElementById('homepage').value = myobj[i].gys_homepage;       //主页
                       document.getElementById('fax').value = myobj[i].gys_fax;                 //传真
                       document.getElementById('area').value = myobj[i].gys_area;               //地区名称
@@ -106,7 +106,6 @@
                           document.getElementById('sh').style.visibility = "hidden";
                       }
                   }
-
               }
           }
           xmlhttp.open("GET", "glscsxx3.aspx?id=" + id, true);
@@ -119,17 +118,15 @@
           {
               xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
           }
-          xmlhttp1.onreadystatechange = function ()
-          {
-              if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200)
-              {
+          xmlhttp1.onreadystatechange = function () {
+              if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200) {
                   var array1 = new Array();           //声明数组
                   array1 = xmlhttp1.responseText;     //接收替换返回的json字符串
                   var json1 = array1;
-                  var myobj1 = eval(json1);              //将返回的JSON字符串转成JavaScript对象 	
+                  var myobj1 = eval(json1);              //将返回的JSON字符串转成JavaScript对象 
+                  
                   var s = "";
-                  for (var j = 0; j < myobj1.length; j++)
-                  {  //遍历,将ajax返回的数据填充到文本框中				
+                  for (var j = 0; j < myobj1.length; j++) {  //遍历,将ajax返回的数据填充到文本框中				
 
                       s += "<div class='fgstp'><image src='images/wwwq_03.jpg'/>";
                       s += "  <span class='fdlpp1'>";
@@ -210,7 +207,6 @@
                     sSQL = "select pp_id,品牌名称 from 分销商和品牌对应关系表 where fxs_id='" + gys_id + "'";
                     dt_ppxx = objConn.GetDataTable(sSQL);
                 }    
-               
                 if (Request["id"]!=null&&Request["id"].ToString()!="")
                 {
                     id = Request["id"].ToString();    //获取glfxsxx2页面返回的供应商id
@@ -283,7 +279,6 @@
 			+"经营范围,gys_id  from 供应商自己修改待审核表  where gys_id ='"+id+"'";           
             dt_gysxx = objConn.GetDataTable(sSQL);
         }
-
     }    
 </script>
 <body>
@@ -327,7 +322,7 @@
                 <dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人手机"] %>" /></dt>
                 <dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></dt>
              </dl>
-           <%} %>				
+           <%}%>				
                 <span class="fxsbc">
                     <input name="gys_id" type="hidden" id="Hidden1" class="fxsxx3" value=""/>
                     <input type="submit" value="更改" />
@@ -347,7 +342,7 @@
                         </span>
                     </div>
                     <%} %>
-                    
+            
                 </div>
             <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">删除选中品牌</a></span>
             <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新品牌</a></span>

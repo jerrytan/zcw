@@ -99,7 +99,7 @@
 
 
                 var array = new Array();           //声明数组
-                array = xmlhttp1.responseText;     //接收返回的json字符串
+                array = xmlhttp1.responseText;     //接收xzclymSX.aspx页面返回的json字符串
 
                 var json = array;
                 var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 
