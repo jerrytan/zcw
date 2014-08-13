@@ -189,12 +189,12 @@
 		    if (passed!="通过")
             {
     %>
-
     <div class="gyzy2">
-        <span class="zyy1"><a href="gysbtxx.aspx">认领厂商</a></span>
-        <span class="zyy1"><a href="gysbtxx.aspx">管理生厂商信息</a></span>
-        <span class="zyy1"><a href="gysbtxx.aspx">管理分销商信息</a></span>
-        <span class="zyy1"><a href="gysbtxx.aspx">管理材料信息</a></span>
+    <%--蒋桂娥，2014年8月13日注释认领厂商
+        <span class="zyy1"><a href="gysbtxx.aspx">认领厂商</a></span>--%>
+        <span class="zyy1" style="margin-left:100px;"><a href="gysbtxx.aspx">管理生厂商信息</a></span>
+        <span class="zyy1" style="margin-left:100px;"><a href="gysbtxx.aspx">管理分销商信息</a></span>
+        <span class="zyy1" style="margin-left:100px;"><a href="gysbtxx.aspx">管理材料信息</a></span>
         
     </div>
     <% }%>
@@ -204,19 +204,24 @@
 	             if (passed.Equals("通过")&&(passed_gys==""||passed_gys.Equals("待审核"))){	
 	     %>
 	     <div class="gyzy2">
-             <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>
-             <span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理生产商信息</a></span>
+          <%--蒋桂娥，2014年8月13日注释认领厂商，并改<span>标签的单击事件alert（"请先认领厂商"）改为alert（"请完善个人信息"）
+             <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>--%>
+             <%--<span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理生产商信息</a></span>
              <span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理分销商信息</a></span>
-             <span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理材料信息</a></span>
+             <span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理材料信息</a></span>--%>
+              <span class="zyy1"style="margin-left:100px;"><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理生产商信息</a></span>
+             <span class="zyy1" style="margin-left:100px;><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理分销商信息</a></span>
+             <span class="zyy1" style="margin-left:100px;><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理材料信息</a></span>
         
          </div>
 	    <%}
 	   if (passed_gys.Equals("通过")&&passed=="通过"){ %>
         <div class="gyzy2">
-            <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>
-            <span class="zyy1"><a href="glscsxx.aspx">管理生产商信息</a></span>
-            <span class="zyy1"><a href="glfxsxx.aspx">管理分销商信息</a></span>
-            <span class="zyy1"><a href="gysglcl.aspx">管理材料信息</a></span>        
+        <%--蒋桂娥，2014年8月13日注释认领厂商
+            <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>--%>
+            <span class="zyy1" style="margin-left:100px;><a href="glscsxx.aspx">管理生产商信息</a></span>
+            <span class="zyy1" style="margin-left:100px;><a href="glfxsxx.aspx">管理分销商信息</a></span>
+            <span class="zyy1" style="margin-left:100px;><a href="gysglcl.aspx">管理材料信息</a></span>        
         </div>	
     <%} %>
    
