@@ -30,6 +30,7 @@
     public string s_QQ_id="";
     public string passed="";
     public string name="";
+    //蒋，2014年8月13日，注释从供应商申请认领表中取出的审核结果字段
     public string passed_gys = "";
     public string s_yh_id = "";
     public string lx="";
@@ -96,7 +97,7 @@
 				}    
 				Response.Write("<script>window.alert('您是采购商，不能用供销商身份登录！');window.location.href='index.aspx';</" + "script>");
             }
-                
+
             else
             {
 
@@ -105,14 +106,14 @@
                 Session["GYS_YH_ID"] = s_yh_id;
 
                 //(供应商申请)的yh_id 是在认领厂商之后更新的
-
-                string sSQL = "select 审批结果 from 供应商认领申请表 where yh_id='" + s_yh_id + "' ";
-                DataTable dt_gyssq = new DataTable();
-                dt_gyssq = objConn.GetDataTable(sSQL);
-                if (dt_gyssq != null && dt_gyssq.Rows.Count > 0)
-                {
-                    passed_gys = dt_gyssq.Rows[0]["审批结果"].ToString();
-                }
+                //蒋，2014年8月13日，注释sql以下语句
+                //string sSQL = "select 审批结果 from 供应商认领申请表 where yh_id='" + s_yh_id + "' ";
+                //DataTable dt_gyssq = new DataTable();
+                //dt_gyssq = objConn.GetDataTable(sSQL);
+                //if (dt_gyssq != null && dt_gyssq.Rows.Count > 0)
+                //{
+                //    passed_gys = dt_gyssq.Rows[0]["审批结果"].ToString();
+                //}
             }
        }
      else
@@ -128,7 +129,7 @@
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部2结束-->
     <div class="gyzy1">
-        <span class="zy1">&nbsp&nbsp &nbsp&nbsp 身份信息经过我方工作人员确认后，您可以认领已有的供应商，或者增加新的供应商信息，还可以添加新产品信息（图1)
+        <span class="zy1">&nbsp&nbsp &nbsp&nbsp 身份信息经过我方工作人员确认后，您可以管理生厂商、管理分销商和管理材料信息（图1)
 		<p>
 	    </p>
 		&nbsp&nbsp &nbsp&nbsp &nbsp&nbsp  
@@ -140,14 +141,16 @@
                 }
                 else if (passed == "通过")
                 {
-                    if (passed_gys == "通过")
-                    {
-                        Response.Write("恭喜您!厂商已认领成功,可以进行管理");
-                    }
-                    else if (passed_gys != "通过")
-                    {
-                        Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领");
-                    }
+                    //蒋，2014年8月13日注释厂商认领模块，添加输出语句
+                    //if (passed_gys == "通过")
+                    //{
+                    //    Response.Write("恭喜您!厂商已认领成功,可以进行管理");
+                    //}
+                    //else if (passed_gys != "通过")
+                    //{
+                    //    Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领");
+                    //}
+                   Response.Write("恭喜您!审核已通过，您可以对生厂商、分销商和材料信息的进行管理");
                 }
                 else
                 {
@@ -170,7 +173,9 @@
                   //}				  
 		%>
         <%
-            if (passed != "待审核"&&passed != "通过")
+            //蒋，2014年8月13更改判断语句
+            //if (passed != "待审核"&&passed != "通过")
+                if (passed != "待审核" && name=="")
             {%>
                <span class="zyy1"><a href="gysbtxx.aspx">补填个人信息</a></span>
             <%}  %>
@@ -200,8 +205,9 @@
     <% }%>
 
 		<%
-	        
-	             if (passed.Equals("通过")&&(passed_gys==""||passed_gys.Equals("待审核"))){	
+	        //蒋，2014年8月13日，注释了判断语句，新增了if语句
+	             //if (passed.Equals("通过")&&(passed_gys==""||passed_gys.Equals("待审核"))){	
+                     if(passed.Equals("通过")&&(name=="")){
 	     %>
 	     <div class="gyzy2">
           <%--蒋桂娥，2014年8月13日注释认领厂商，并改<span>标签的单击事件alert（"请先认领厂商"）改为alert（"请完善个人信息"）
@@ -210,20 +216,31 @@
              <span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理分销商信息</a></span>
              <span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理材料信息</a></span>--%>
               <span class="zyy1"style="margin-left:100px;"><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理生产商信息</a></span>
-             <span class="zyy1" style="margin-left:100px;><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理分销商信息</a></span>
-             <span class="zyy1" style="margin-left:100px;><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理材料信息</a></span>
+             <span class="zyy1" style="margin-left:100px;"><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理分销商信息</a></span>
+             <span class="zyy1" style="margin-left:100px;"><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理材料信息</a></span>
         
          </div>
 	    <%}
-	   if (passed_gys.Equals("通过")&&passed=="通过"){ %>
+          //蒋桂娥，2014年8月13日,注释if语句，新增else-if语句
+       //if (passed_gys.Equals("通过")&&passed=="通过"){ 
+                     else if (passed.Equals("通过") && name != "")
+                     { 
+           %>
         <div class="gyzy2">
-        <%--蒋桂娥，2014年8月13日注释认领厂商
+        <%--蒋桂娥，2014年8月13日注释认领厂商，并添加了类型的判断（if-else）以及权限的显示
             <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>--%>
-            <span class="zyy1" style="margin-left:100px;><a href="glscsxx.aspx">管理生产商信息</a></span>
-            <span class="zyy1" style="margin-left:100px;><a href="glfxsxx.aspx">管理分销商信息</a></span>
-            <span class="zyy1" style="margin-left:100px;><a href="gysglcl.aspx">管理材料信息</a></span>        
-        </div>	
-    <%} %>
+            <% if (lx == "生产商")
+               {%>
+            <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx">管理生产商信息</a></span>
+            <span class="zyy1" style="margin-left:100px;"><a href="glfxsxx.aspx">管理分销商信息</a></span>
+            <span class="zyy1" style="margin-left:100px;"><a href="gysglcl.aspx">管理材料信息</a></span>
+            <%}%> 
+            <%else
+                { %>
+            <span class="zyy1" style="margin-left:180px;"><a href="glfxsxx.aspx">管理分销商信息</a></span>
+            <span class="zyy1" style="margin-left:180px;"><a href="gysglcl.aspx">管理材料信息</a></span>       
+    <%} }%>
+    </div>	
    
    
    

@@ -47,37 +47,38 @@
 
 	 function Form_submit()
 	 {
-		
-		if(document.form1.gys_name.value=="")
-		{
-			alert("贵公司名称不能为空,请填写!");
-			document.form1.gys_name.focus();
-			return false;
-		}
-		else if(document.form1.gys_address.value=="")
-		{
-			alert("贵公司地址不能为空,请填写!");
-			document.form1.gys_address.focus();
-			return false;
-		}		
-		else if(document.form1.gys_phone.value=="")
-		{
-			alert("贵公司电话不能为空,请填写!");
-			document.form1.gys_phone.focus();
-			return false;
-		}
-		else if(document.form1.user_name.value=="")
-		{
-			alert("您的姓名不能为空,请填写!");
-			document.form1.user_name.focus();
-			return false;
-		}
-		else if(document.form1.user_phone.value=="")
-		{
-			alert("你的手机号码不能为空,请填写");
-			document.form1.user_phone.focus();
-			return false;
-		}
+
+	     if (document.form1.gys_name.value == "") {
+	         alert("贵公司名称不能为空,请填写!");
+	         document.form1.gys_name.focus();
+	         return false;
+	     }
+	     else if (document.form1.gys_address.value == "") {
+	         alert("贵公司地址不能为空,请填写!");
+	         document.form1.gys_address.focus();
+	         return false;
+	     }
+	     else if (document.form1.gys_phone.value == "") {
+	         alert("贵公司电话不能为空,请填写!");
+	         document.form1.gys_phone.focus();
+	         return false;
+	     }
+         //蒋，2014年8月13日，添加单位类型验证，以便后面判断类型（生产商/分销商）
+	     else if (document.form1.scs_type.value == "") {
+	         alert("请选择贵公司的单位类型!");
+	         document.form1.scs_type.focus();
+	         return false;
+         }
+	     else if (document.form1.user_name.value == "") {
+	         alert("您的姓名不能为空,请填写!");
+	         document.form1.user_name.focus();
+	         return false;
+	     }
+	     else if (document.form1.user_phone.value == "") {
+	         alert("你的手机号码不能为空,请填写");
+	         document.form1.user_phone.focus();
+	         return false;
+	     }
 	 }
 </script>
 
@@ -112,13 +113,27 @@
             }
             else if(dt_yh.Rows[0]["是否验证通过"].ToString()=="通过")
             {
-                Response.Write("<font color='green'>恭喜您!审核已通过,可以对生产厂商进行认领.</font>");				 
-			    Response.Write("<br>");								 
-			    Response.Write("<dd>");
-			    Response.Write("您的信息如下:");
-			    Response.Write("</dd>");
-			    Response.Write("<dt>");
-			    Response.Write("</dt>");
+               //蒋，2014年8月13日，添加if-else判断用户类型
+               if(dt_yh.Rows[0]["类型"].ToString()=="生产商")
+               {
+                  Response.Write("<font color='green'>恭喜您!审核已通过,可以对生产厂商、分销商以及材料信息进行管理.</font>");				 
+			      Response.Write("<br>");								 
+			      Response.Write("<dd>");
+			      Response.Write("您的信息如下:");
+			      Response.Write("</dd>");
+			      Response.Write("<dt>");
+			      Response.Write("</dt>");
+                }
+                else
+                {
+                   Response.Write("<font color='green'>恭喜您!审核已通过,可以对分销商和材料信息进行管理.</font>");				 
+			       Response.Write("<br>");								 
+			       Response.Write("<dd>");
+			       Response.Write("您的信息如下:");
+			       Response.Write("</dd>");
+			       Response.Write("<dt>");
+			       Response.Write("</dt>");
+                }
             }
             else if(dt_yh.Rows[0]["是否验证通过"].ToString()=="不通过")
             {
