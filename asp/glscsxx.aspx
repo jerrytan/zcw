@@ -55,19 +55,16 @@
           {
               xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
           }
-          xmlhttp.onreadystatechange = function ()
-          {
-             
-              if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-              {
+          xmlhttp.onreadystatechange = function () {
+
+              if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                   var array = new Array();           //声明数组
                   array = xmlhttp.responseText;     //接收替换返回的json字符串
 
                   var json = array;
                   var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 			
 
-                  if (myobj.length == 0)
-                  {
+                  if (myobj.length == 0) {
                       document.getElementById('companyname').value = "";       //供应商
                       document.getElementById('address').value = "";        //地址
                       document.getElementById('tel').value = "";                //电话  			 
@@ -77,16 +74,13 @@
                       document.getElementById('name').value = "";               //联系人
                       document.getElementById('phone').value = "";        //联系人电话 
                       document.getElementById('sh').style.visibility = "hidden";
-					   if (id!="0")
-						{
-						  if (confirm("该生产商尚未填写详细信息,是否补填？"))
-						  {
-							  window.location.href = "btgysxx.aspx?gxs_id=" + id + "&lx=scs";
-						  }
-					   }
+                      if (id != "0") {
+                          if (confirm("该生产商尚未填写详细信息,是否补填？")) {
+                              window.location.href = "btgysxx.aspx?gxs_id=" + id + "&lx=scs";
+                          }
+                      }
                   }
-                  for (var i = 0; i < myobj.length; i++)
-                  {  //遍历,将ajax返回的数据填充到文本框中				
+                  for (var i = 0; i < myobj.length; i++) {  //遍历,将ajax返回的数据填充到文本框中				
 
                       document.getElementById('companyname').value = myobj[i].gys_name;       //供应商
                       document.getElementById('address').value = myobj[i].gys_address;        //地址
@@ -97,12 +91,10 @@
                       document.getElementById('name').value = myobj[i].gys_user;               //联系人
                       document.getElementById('phone').value = myobj[i].gys_user_phone;          //联系人电话
                       document.getElementById('gys_id').value = myobj[i].gys_id;           //ajax返回的供应商id	供向表单提交时使用	
-                      if (myobj[i].sh == "待审核")
-                      {
+                      if (myobj[i].sh == "待审核") {
                           document.getElementById('sh').style.visibility = "visible";
                       }
-                      else
-                      {
+                      else {
                           document.getElementById('sh').style.visibility = "hidden";
                       }
                   }
@@ -169,7 +161,11 @@
               window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
           }
       }
-</script>
+      function companyname_onclick() {
+
+      }
+
+  </script>
   <script runat="server">
         protected DataTable dt_gysxx = new DataTable();  //分销商信息(材料供应商信息表)
         public DataTable dt_ppxx = new DataTable();   //分销商信息(材料供应商信息表)
@@ -205,11 +201,12 @@
                     if (dt_gysxx.Rows.Count == 0)
                         Response.Redirect("gysbtxx.aspx");
                 }
-                else if (gys_type == "分销商")
-                {
-                    sSQL = "select pp_id,品牌名称 from 分销商和品牌对应关系表 where fxs_id='" + gys_id + "'";
-                    dt_ppxx = objConn.GetDataTable(sSQL);
-                }    
+                    //蒋，2014年8月13日，用户类型是分销商，没有管理生产商信息的权限，所以应注释
+                //else if (gys_type == "分销商")
+                //{
+                //    sSQL = "select pp_id,品牌名称 from 分销商和品牌对应关系表 where fxs_id='" + gys_id + "'";
+                //    dt_ppxx = objConn.GetDataTable(sSQL);
+                //}    
                
                 if (Request["id"]!=null&&Request["id"].ToString()!="")
                 {
@@ -239,17 +236,18 @@
                         spjg(sp_result, gys_id, id);
                     } 
             }
-            if (str_gysid_type.Equals("分销商"))
-            {
-                  //如果 供应商自己修改待审核表 有记录 查询审批结果
-                    sSQL = "select 审批结果 from 供应商自己修改待审核表 where gys_id='" + id + "'";
-                    DataTable dt_select = objConn.GetDataTable(sSQL);
-                    sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);
-                    if (sp_result != "")
-                    {
-                        spjg(sp_result, gys_id, id);
-                    }                 
-            }
+            //蒋，2014年13日，用户类型是分销商，没有管理生产商信息的权限，所以应注释
+            //if (str_gysid_type.Equals("分销商"))
+            //{
+            //      //如果 供应商自己修改待审核表 有记录 查询审批结果
+            //        sSQL = "select 审批结果 from 供应商自己修改待审核表 where gys_id='" + id + "'";
+            //        DataTable dt_select = objConn.GetDataTable(sSQL);
+            //        sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);
+            //        if (sp_result != "")
+            //        {
+            //            spjg(sp_result, gys_id, id);
+            //        }                 
+            //}
         }
     public void spjg(string sp_result,string gys_id, string id)
     {
@@ -296,14 +294,32 @@
          <div class="fxsxx">
 		   <span class="fxsxx1">
 		    </span>
+            <%--蒋，2014年8月13日，添加“贵公司代理品牌”和“该品牌下的分销商”两个下拉框（298-313行）--%>
+            <div class="zjgxs">
+                 <span>贵公司代理品牌：</span><br />
+			        <select name="pp" id="pp" class="fug" style="width:200px" onchange="Update(this.options[this.options.selectedIndex].value)">
+			          <option value="0">请选择品牌</option>
+                      <% foreach (System.Data.DataRow row_fxs in dt_ppxx.Rows)
+                        { %>			
+			             <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
+	                <% }%>
+                    </select> 			
+			    </div>
+			    <div class="zjgxs">
+                     <span>该品牌下的分销商：</span><br />
+			        <select name="scs_PP" id="scs_PP" class="fug" style="width:200px" onchange="Update_scs(this.options[this.options.selectedIndex].value)">			
+			        </select> 
+			        <span class="zjgxs1"><a href="xzgxs.aspx?xzlx=scs&gxs_id=<%=gys_id %>"> 增加新的生产商</a></span>
+			    </div>
+         
             <span class="fxsxx1">贵公司的详细信息如下:</span>
-
+            
             <div class="fxsxx2">
            <%if (sp_result == "待审核")
              {%>
              <dl>
              <span class="fxsxx1">贵公司的信息如下正在审核中</span>
-                <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" /></dt>
+                <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" onclick="return companyname_onclick()" /></dt>
                 <dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>"/></dt>
                 <dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>"/></dt>
                 <dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" /></dt>
@@ -353,21 +369,22 @@
             <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新品牌</a></span>
 
     <%}
-      else if(gys_type=="分销商")
-      { %>
+        //蒋，2014年8月13日，用户类型是分销商，没有管理生产商信息的权限，所以应注释分销商的相关信息
+      //else if (gys_type == "分销商")
+      //{ %>
       
-        <div class="fxsxx">
+        <%--<div class="fxsxx">
 		   <span class="fxsxx1">
 		    </span>
                 <div class="zjgxs">
                  <span>贵公司代理品牌：</span><br />
 			        <select name="pp" id="pp" class="fug" style="width:200px" onchange="Update(this.options[this.options.selectedIndex].value)">
-			          <option value="0">请选择品牌</option>
-                     <% foreach (System.Data.DataRow row_fxs in dt_ppxx.Rows)
-                         { %>			
+			          <option value="0">请选择品牌</option>--%>
+                    <%-- <% foreach (System.Data.DataRow row_fxs in dt_ppxx.Rows)
+                        { %>			
 			             <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
-	                <% }%>			
-			        </select> 			
+	                <% }%>	--%>		
+			    <%--    </select> 			
 			    </div>
 			    <div class="zjgxs">
                      <span>该品牌下的分销商：</span><br />
@@ -378,12 +395,12 @@
          
             <span class="fxsxx1">该公司的详细信息如下:</span>
 
-            <div class="fxsxx2">
-           <%if (dt_gysxx != null && dt_gysxx.Rows.Count > 0)
+            <div class="fxsxx2">--%>
+          <%-- <%if (dt_gysxx != null && dt_gysxx.Rows.Count > 0)
              {
                  if (sp_result == "待审核")
-                 {%>
-               <span  class="fxsxx1">该分销商的信息正在审核中</span>
+                 {%>--%>
+             <%--  <span  class="fxsxx1">该分销商的信息正在审核中</span>
              <dl>
                 <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" /></dt>
                 <dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>"/></dt>
@@ -394,12 +411,12 @@
                 <dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人姓名"] %>" /></dt>
                 <dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人电话"] %>" /></dt>
                 <dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></dt>
-             </dl>
-           <%}
+             </dl>--%>
+          <%-- <%}
                  else
                  { %>
-
-              <dl>
+--%>
+             <%-- <dl>
                 <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" /></dt>
                 <dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系地址"] %>"/></dt>
                 <dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>"/></dt>
@@ -409,12 +426,12 @@
                 <dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人"] %>" /></dt>
                 <dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人手机"] %>" /></dt>
                 <dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></dt>
-             </dl>
-           <%}
+             </dl>--%>
+          <%-- <%}
              }
              else
-             {%>
-               <span class="fxsxx1" id="sh" style=" visibility:hidden">该分销商的信息正在审核中</span>
+             {%>--%>
+             <%--  <span class="fxsxx1" id="sh" style=" visibility:hidden">该分销商的信息正在审核中</span>
               <dl>
                 <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3"/></dt>
                 <dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" /></dt>
@@ -425,21 +442,22 @@
                 <dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3" /></dt>
                 <dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3"  /></dt>
                 <dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3"  /></dt>
-             </dl>
-             <%} %>				
+             </dl>--%>
+            <%-- <%}  }%>				
                 <span class="fxsbc">
                     <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" value=""/>                 
                     <input type="submit" value="更改" />                     
                 </span>
-          </div>
+          </div>--%>
           <span class="fxsxx1"></span>	
                     <div class="ggspp">
                         <span class="ggspp1">该厂商的品牌如下</span> 
                         <div id="ppxx">
                          </div>      
                     </div>	
-          </div>             
-      <%} %>
+           <%--蒋，2014年8月13日，注释该大括号，调整页面     --%>
+        <%--  </div>       
+      <%} %>--%>
         
                      </form>
       
