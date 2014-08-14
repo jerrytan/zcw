@@ -87,8 +87,9 @@
                    {
                          str_gysid = dt_gys_id.Rows[0]["gys_id"].ToString();   //获取供应商id  141
                          str_gys_type =dt_gys_id.Rows[0]["单位类型"].ToString();   
-                   }			    
-				   if(str_gys_type.Equals("分销商"))
+                   }	
+                   <%--蒋，2014年8月14日注释分销商模块		--%>    
+				  <%-- if(str_gys_type.Equals("分销商"))
 				   {
 				       sSQL = "select pp_id from  材料供应商信息从表 where gys_id='"+str_gysid+"' ";   //183				
                     
@@ -125,7 +126,7 @@
 					          objConn.ExecuteSQL(sSQL,true);                            
                        }			 				    
 				   }
-				   
+				   --%>
 			       if(str_gys_type.Equals("生产商"))
 				   {
 			         
@@ -142,10 +143,10 @@
 						   sSQL = "insert into 供应商自己修改待审核表 (gys_id)values('"+str_gysid+"')";
 				             objConn.ExecuteSQL(sSQL,false);
 				        }  
-
+                       <%--蒋，2014年8月14日， 将下面的sql语句中单位类型从分销商改为生产商--%>
 						sSQL = "update 供应商自己修改待审核表 set 贵公司名称='"+companyname+"',贵公司地址='"+address+"',"
 				        +"贵公司电话='"+tel+"',贵公司主页='"+homepage+"',贵公司地区='"+area+"',贵公司传真='"+fax+"',是否启用='1',"
-				        +"联系人姓名='"+name+"',联系人电话='"+phone+"',单位类型='分销商',经营范围='"+Business_Scope+"',"
+				        +"联系人姓名='"+name+"',联系人电话='"+phone+"',单位类型='生产商',经营范围='"+Business_Scope+"',"
 				        +"审批结果='待审核',updatetime=(select getdate()),yh_id='"+yh_id+"' where gys_id = '"+str_gysid+"'";					  
 				       objConn.ExecuteSQL(sSQL,true);
                       }			 				  
