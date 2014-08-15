@@ -4,7 +4,7 @@
         传入参数：gys_id    供应商编号
         负责人:任武       
     -->
-<%@ Register Src="/asp/include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
+<%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>

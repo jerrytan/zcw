@@ -5,7 +5,7 @@
         owner:丁传宇
         首页导航根据用户关注类别动态匹配
         author:lilifeng
-        
+        修改：苑伟业 导航条上"更多"链接到"gdfl.aspx"页面
     -->
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
@@ -161,8 +161,8 @@
         </li>
 
         <% } %>
-        <li><a href="#">更多</a>
-            <ul style="left: -677px;">
+        <li><a href="gdfl.aspx">更多</a>
+            <%--<ul style="left: -677px;">
                 <li></li>
                 <li></li>
                 <% foreach (var v1 in this.Items3){%>
@@ -178,7 +178,7 @@
                     </ul>
                 </li>
                 <% } %>
-            </ul>
+            </ul>--%>
 
         </li>
     </ul>
