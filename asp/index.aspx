@@ -74,7 +74,7 @@
     <!-- Î²²¿ footer.aspx ½áÊø-->
 
 
-<script type=text/javascript><!--    //--><![CDATA[//><!--
+<%--<script type=text/javascript><!--    //--><![CDATA[//><!--
     function menuFix() {
         var sfEls = document.getElementById("nav").getElementsByTagName("li");
         for (var i = 0; i < sfEls.length; i++) {
@@ -132,6 +132,6 @@
         }
     }
     window.onload = menuFix;
-    //--><!]]></script>
+    //--><!]]></script>--%>
 </body>
 </html>

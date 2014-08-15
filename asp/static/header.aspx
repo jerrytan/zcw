@@ -14,7 +14,9 @@
         <a href="index.aspx">
             <img src="images/logo_03.jpg" /></a>
     </div>
-  
+    <div class="hydl_an">
+        <a href="gyszc.aspx"><img src="images/anniu_hyzc.jpg" width="96" height="30" /></a>
+    </div>
     <div class="sous">
         <form id="form1" name="form1" method="get" action="ss.aspx">
             <%string keyWord=Request["sou"];%>            
