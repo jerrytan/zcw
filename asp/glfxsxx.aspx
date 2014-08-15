@@ -207,18 +207,24 @@
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
+            Response.Write(s_yh_id);
         }
-            sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型
+             //蒋，2014年8月15日,注释从材料供应商表中取值，改为从用户表中取值
+            //sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型
+            sSQL = "select 类型 from 用户表 where yh_id='" + s_yh_id + "' ";//查询类型
             DataTable dt_type = objConn.GetDataTable(sSQL);
             if (dt_type != null && dt_type.Rows.Count > 0)
             {
-                s_gys_type = dt_type.Rows[0]["单位类型"].ToString();
-                gys_id = dt_type.Rows[0]["gys_id"].ToString();
+                s_gys_type = dt_type.Rows[0]["类型"].ToString();
+                //蒋，2014年8月15日
+               // gys_id = dt_type.Rows[0]["gys_id"].ToString();
             }
             if (s_gys_type == "生产商")
             {
                 string ppid="";
-                sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id='" + gys_id + "' order by scs_id "; //查询品牌id		
+                //蒋，2014年8月15日
+                //sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id='" + gys_id + "' order by scs_id "; //查询品牌id
+                sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id='" + s_yh_id + "' order by scs_id "; //查询品牌id		
                 dt_pp_id = objConn.GetDataTable(sSQL);
                 if (dt_pp_id != null && dt_pp_id.Rows.Count > 0)
                 {
