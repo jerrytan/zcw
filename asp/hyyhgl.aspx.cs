@@ -47,6 +47,10 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     }
 
 
+    protected void btnDelete_Click(object sender, EventArgs e)
+    {
+        
+    }
 
 
 }

@@ -348,7 +348,7 @@
                     <input name="txt_gsdz" type="text" class="hyzhc_shrk" id="txt_gsdz" runat="server"/>
                 </td>
                 <td>
-                    &nbsp;
+                    <span class="xinghao">*</span>
                 </td>
                 <td>
                     公司电话：
@@ -368,7 +368,7 @@
                     <input name="txt_gszy" maxlength="80" type="text" class="hyzhc_shrk" id="txt_gszy" runat="server" onblur="gszyCheck(this)"/>
                 </td>
                 <td>
-                    <span class="xinghao">*</span>
+                    &nbsp;
                 </td>
                 <td>
                      公司邮编：

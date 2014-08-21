@@ -36,10 +36,18 @@
     public string lx="";
     protected void Page_Load(object sender, EventArgs e)
     {
-        //获取QQ_id，如果数据库不存在此id，则跳转到QQ验证页面  苑,2014年8月21日
+        //获取QQ_id，如果数据库不存在此id，则跳转到QQ验证页面  苑
         string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
         string sqlExistQQ_id = "select * from 用户表 where QQ_id='" + gys_QQ_id + "'";
-        if (objConn.GetRowCount(sqlExistQQ_id) == 0)
+        string sql_Level = "select 等级 from 用户表 where QQ_id='" + gys_QQ_id + "'";
+        if (objConn.GetRowCount(sqlExistQQ_id) > 0)
+        {
+            if (objConn.DBLook(sql_Level) == "企业用户")
+            {
+                Response.Redirect("hyyhgl.aspx");
+            }
+        }
+        else
         {
             Response.Redirect("QQ_dlyz.aspx");
         }

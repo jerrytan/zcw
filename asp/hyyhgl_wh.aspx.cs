@@ -7,25 +7,27 @@ using System.Web.UI.WebControls;
 
 public partial class asp_hyyhgl_wh : System.Web.UI.Page
 {
-    int State = 0;
+    int State = 0; //状态标识（0-添加，1-修改）
     protected void Page_Load(object sender, EventArgs e)
     {
-       
-        
+        State = Convert.ToInt32(Request.QueryString["state"]);
+        if (State == 1)
+        {
+            this.txt_QQ.Value = Request.QueryString["qq"];
+            this.txt_name.Value = Request.QueryString["name"];
+            this.txt_phone.Value = Request.QueryString["phone"];
+            this.txt_Email.Value = Request.QueryString["email"];
+        }
+  
     }
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
-        State = Convert.ToInt32(Request.QueryString["state"]);
         if (State == 0)
         {
             Add();
         }
         else
         {
-            this.txt_QQ.Value = Request.QueryString["qq"];
-            this.txt_name.Value = Request.QueryString["name"];
-            this.txt_phone.Value = Request.QueryString["phone"];
-            this.txt_Email.Value = Request.QueryString["email"];
             Update();
         }
     }
