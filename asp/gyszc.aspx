@@ -351,10 +351,10 @@
                     &nbsp;
                 </td>
                 <td>
-                    公司邮箱：
+                    公司电话：
                 </td>
                 <td>
-                    <input name="txt_gsyx" type="text" class="hyzhc_shrk" id="txt_gsyx" runat="server" onblur="gsyxCheck(this)"/>
+                      <input name="txt_gsdh" type="text" class="hyzhc_shrk" id="txt_gsdh" runat="server" onblur="isTelePhone(this);"/>
                 </td>
             </tr>
             <tr>
@@ -371,10 +371,10 @@
                     <span class="xinghao">*</span>
                 </td>
                 <td>
-                    公司电话：
+                     公司邮编：
                 </td>
                 <td>
-                    <input name="txt_gsdh" type="text" class="hyzhc_shrk" id="txt_gsdh" runat="server" onblur="isTelePhone(this);"/>
+                    <input name="txt_gsyb" type="text" class="hyzhc_shrk" id="txt_gsyb" runat="server"/>
                 </td>
             </tr>
             <tr>
@@ -391,10 +391,10 @@
                     &nbsp;
                 </td>
                 <td>
-                    公司邮编：
+                    
                 </td>
                 <td>
-                    <input name="txt_gsyb" type="text" class="hyzhc_shrk" id="txt_gsyb" runat="server"/>
+                    
                 </td>
             </tr>
             <tr>
@@ -443,13 +443,13 @@
                     <input name="txt_xm" maxlength="20" type="text" class="hyzhc_shrk" id="txt_xm" runat="server"/>
                 </td>
                 <td>
-                    &nbsp;
+                    <span class="xinghao">*</span>
                 </td>
                 <td>
-                    所在部门：
+                    联系地址：
                 </td>
                 <td>
-                     <input name="txt_bm" maxlength="20" type="text" class="hyzhc_shrk" id="txt_bm" runat="server"/>
+                     <input name="txt_lxdz" maxlength="20" type="text" class="hyzhc_shrk" id="txt_lxdz" runat="server"/>
                 </td>
             </tr>
             <tr>
