@@ -27,7 +27,7 @@
         }
     </script>
 </head>
-<body>
+<body onload="load();">
     <!-- 头部2开始-->
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部2结束-->
@@ -93,11 +93,11 @@
                 <dt>
                     <input class="gysggg" id="user_phone" type="text" name="user_phone" runat="server"/></dt>
                 <dd style="width: 300px; color: red">
-                    注意：*号的为必填项,不能为空!
+                   <%-- 注意：*号的为必填项,不能为空!--%>
                 </dd>
                 <dt style="width: 80%;">
-                     <asp:ImageButton  id="btnSave" runat="server" ImageUrl="images/bbc_03.jpg" 
-                         onclick="btnSave_Click" />
+                     <%--<asp:ImageButton  id="btnSave" runat="server" ImageUrl="images/bbc_03.jpg" 
+                         onclick="btnSave_Click" />--%>
                     <%--<img src="images/bbc_03.jpg" alt="" />--%>
                 </dt>
             </dl>

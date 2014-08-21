@@ -17,7 +17,7 @@ public partial class asp_QQ_dlyz : System.Web.UI.Page
     protected void btnCheck_Click(object sender, ImageClickEventArgs e)
     {
         string QQ = Request.Form["user_qq"];
-        string gys_qq_id = Request.Form["gys_QQ_id"];
+        string gys_qq_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
         DataConn dc = new DataConn();
 
         string sql_Check_QQ = "select * from 用户表 where QQ号码='" + QQ+"'";
@@ -52,25 +52,26 @@ public partial class asp_QQ_dlyz : System.Web.UI.Page
             Response.Write("此账号还未注册");
         }
     }
-    protected void btnSave_Click(object sender, ImageClickEventArgs e)
-    {
-        DataConn dc = new DataConn();
-
-        string sql_Save = "update 用户表 set 公司名称='" + this.gys_name.Value + "',公司地址='" + this.gys_address.Value + "',"
-        + "公司电话='" + this.gys_phone.Value + "',公司主页='" + this.gys_homepage.Value + "',类型='" + this.gslx.Value + "',"
-        + "姓名='" + this.user_name.Value + "',手机='" + this.user_phone.Value + "' where QQ号码='" + this.user_qq.Value + "'";
-
-        if(dc.RunSqlTransaction(sql_Save))
-        {
-            Response.Write("修改成功");
-        }
-        else
-        {
-            Response.Write("修改失败");
-        }
 
 
-    }
+    //protected void btnSave_Click(object sender, ImageClickEventArgs e)
+    //{
+    //    DataConn dc = new DataConn();
+
+    //    string sql_Save = "update 用户表 set 公司名称='" + this.gys_name.Value + "',公司地址='" + this.gys_address.Value + "',"
+    //    + "公司电话='" + this.gys_phone.Value + "',公司主页='" + this.gys_homepage.Value + "',类型='" + this.gslx.Value + "',"
+    //    + "姓名='" + this.user_name.Value + "',手机='" + this.user_phone.Value + "' where QQ号码='" + this.user_qq.Value + "'";
+
+    //    if(dc.RunSqlTransaction(sql_Save))
+    //    {
+    //        Response.Write("修改成功");
+    //    }
+    //    else
+    //    {
+    //        Response.Write("修改失败");
+    //    }
+
+    //}
 
 
 
