@@ -106,7 +106,7 @@
                 <li>3、注册成功</li>
             </ul>
         </div>
-        <table width="998px" border="0" cellspacing="0" style="border: 1px solid #dddddd">
+        <table width="998px" border="0" cellspacing="0" style="border: 1px solid #dddddd;font-size:12px;">
             <tr>
                 <td height="34" colspan="6" bgcolor="#f7f7f7">
                     <strong class="left_jianju">公司信息</strong>
@@ -348,7 +348,7 @@
                     <input name="txt_gsdz" type="text" class="hyzhc_shrk" id="txt_gsdz" runat="server"/>
                 </td>
                 <td>
-                    <span class="xinghao">*</span>
+                    &nbsp;
                 </td>
                 <td>
                     公司邮箱：
@@ -368,7 +368,7 @@
                     <input name="txt_gszy" maxlength="80" type="text" class="hyzhc_shrk" id="txt_gszy" runat="server" onblur="gszyCheck(this)"/>
                 </td>
                 <td>
-                    &nbsp;
+                    <span class="xinghao">*</span>
                 </td>
                 <td>
                     公司电话：
