@@ -25,8 +25,9 @@ public partial class asp_hyyhgl : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        string sql_GetData = "select * from 用户表 where 等级 = '二级'";    //测试
-        //string sql_GetData = "select * from 用户表 where dw_id = ''";  
+        string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+        string sql_GetData = "select * from 用户表 where dw_id = (select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "')";   
+        //string sql_GetData = "select * from 用户表 where dw_id = ''";   //测试
 
         dtGys = dc.GetDataTable(sql_GetData);
 
@@ -47,10 +48,10 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     }
 
 
-    protected void btnDelete_Click(object sender, EventArgs e)
-    {
+    //protected void btnDelete_Click(object sender, EventArgs e)
+    //{
         
-    }
+    //}
 
 
 }

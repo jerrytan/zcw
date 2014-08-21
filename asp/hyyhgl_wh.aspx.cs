@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 public partial class asp_hyyhgl_wh : System.Web.UI.Page
 {
-    int State = 0; //状态标识（0-添加，1-修改）
+    int State = 0; //状态标识（0-添加，1-编辑）
     protected void Page_Load(object sender, EventArgs e)
     {
         State = Convert.ToInt32(Request.QueryString["state"]);
@@ -17,6 +17,7 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
             this.txt_name.Value = Request.QueryString["name"];
             this.txt_phone.Value = Request.QueryString["phone"];
             this.txt_Email.Value = Request.QueryString["email"];
+            this.txt_QQ.Disabled = true;
         }
   
     }
@@ -62,9 +63,9 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
 
         //单位id
         //string sql_Get_dw_id = "select yh_id from 用户表 where QQ_id = '' ";
-
-        string sql_Add = "insert into 用户表 (QQ号码,姓名,手机,等级,角色权限) values ('" + this.txt_QQ.Value + "'"
-        + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','二级','" + power + "')";
+        string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+        string sql_Add = "insert into 用户表 (QQ号码,姓名,手机,等级,角色权限,dw_id) values ('" + this.txt_QQ.Value + "'"
+        + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','普通用户','" + power + "',(select dw_id from 用户表 where QQ_id='"+gys_QQ_id+"'))";
         string sql_AddYh_id = "update 用户表 set yh_id=myID where QQ号码='" + this.txt_QQ.Value + "';";
         string sqlAll = sql_Add + sql_AddYh_id;
 
@@ -101,12 +102,11 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
 
         DataConn dc = new DataConn();
 
-        //单位id
-        //string sql_Get_dw_id = "select yh_id from 用户表 where QQ_id = '' ";
+        Response.Write(this.txt_name.Value);
 
-
-        string sql_Update = "update 用户表 set QQ号码='" + this.txt_QQ.Value + "',姓名='" + this.txt_name.Value + "',"
-        + "手机='" + this.txt_phone.Value + "',角色权限='" + power + "' where yh_id = ''";
+        //暂时获取不到页面修改值
+        string sql_Update = "update 用户表 set 姓名='" + this.txt_name.Value + "',"
+        + "手机='" + this.txt_phone.Value + "',邮箱 = '" + this.txt_Email.Value + "',角色权限='" + power + "' where QQ号码='" + this.txt_QQ.Value + "'";
 
         if (dc.RunSqlTransaction(sql_Update))
         {

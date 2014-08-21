@@ -71,16 +71,16 @@
             height: 20px; width: 37px;" />&nbsp;&nbsp;
         <input type="button" id="btnFilter" value="组合查询" onclick="btnFilter_Click()" style="height: 20px;
             width: 64px; border-style: none; font-family: 宋体; font-size: 12px;" />&nbsp;&nbsp;
-      <%--  <input type="submit" name="btnDelete" value="删除选中行" onclick="return confirm(&#39;真的彻底删除选中的记录吗？&#39;);"
+        <input type="submit" name="btnDelete" value="删除选中行" onclick="return confirm(&#39;真的彻底删除选中的记录吗？&#39;);"
             id="btnDelete" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
-            font-size: 12px; height: 20px; width: 72px;" />--%>
-            <asp:Button ID="btnDelete" runat="server" Text="删除选中行" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
-            font-size: 12px; height: 20px; width: 72px;" onclick="btnDelete_Click"/>
+            font-size: 12px; height: 20px; width: 72px;" />
+          <%--  <asp:Button ID="btnDelete" runat="server" Text="删除选中行" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
+            font-size: 12px; height: 20px; width: 72px;" onclick="btnDelete_Click"/>--%>
     </div>
     <!-- 检索 结束-->
     <!-- 用户信息 开始 -->
     <div class="yhb">
-        <table border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" id="Gys_Table" runat="server">
+        <table border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" id="Gys_Table" >
             <thead>
                 <tr>
                     <th align="center">
