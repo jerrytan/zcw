@@ -51,7 +51,7 @@
             }
             string jsonStr = serializer.Serialize(Items);
             Response.Clear();
-            Response.Write(jsonStr);   //向前端glscsxx.aspx输出json字符串
+            Response.Write(jsonStr);   //向前端xzgxs.aspx输出json字符串
             Response.End();
         }
      </script>

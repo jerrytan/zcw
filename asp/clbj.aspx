@@ -448,8 +448,8 @@
 <span class="xzz1"><a href="#">模板下载地址</a></span>
 </div>
 </div>
-
-    <div class="fxsxx2">
+    <%--蒋，2014年8月19日，该下面的div样式为“gysgybtr”--%>
+    <div class="gysgybtr">
 <span class="srcl">材料信息如下:</span>
  <dl>
                     <dd>材料名字：</dd>

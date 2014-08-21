@@ -97,9 +97,10 @@
         </p>             
         <a href="gysglcl.aspx" style="color: Blue" onclick="clickMe() ">新增材料成功!请返回; </a>
         <script>
-            function clickMe() 
-			{
-                window.close();
+            function clickMe() {
+                //蒋，2014年8月19日，注释窗口关闭，添加窗口跳转管理材料页面
+                //window.close();
+                window.location = "gysglcl.aspx";
                 opener.location.reload();
             }
         </script> 

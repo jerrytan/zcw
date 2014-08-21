@@ -317,7 +317,7 @@
              </dl>
            <%}
              else
-             { %>
+             {%>
               <dl>
                 <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" /></dt>
                 <dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地址"] %>"/></dt>

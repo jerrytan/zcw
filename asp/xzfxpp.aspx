@@ -95,8 +95,6 @@
             document.getElementById("pp_id").value = pp_id_array[id];
             document.getElementById("pp_name").value = pp_name_array[id];
         }
-
-
     </script>
 </head>
 <body>
@@ -159,7 +157,7 @@
                         <input type="hidden" id="fxs_id" name="fxs_id" value="<%=gys_id %>" />
                         <input type="hidden" id="pp_id" name="pp_id" value="<%=dt_ppxx.Rows[0]["pp_id"] %> " />
                         <input type="hidden" id="pp_name" name="pp_name" value="<%=dt_ppxx.Rows[0]["品牌名称"] %> " />
-                        <input type="submit" id="send" value="保存" style="width: 100px" />
+                        <input type="submit" id="send" value="保存"style="width: 100px" />
                     </td>
                     <td align="left">
                         <input type="button" id="close" value="关闭" onclick="window.close();" style="width: 100px" />

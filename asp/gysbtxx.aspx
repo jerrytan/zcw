@@ -4,7 +4,9 @@
 		传入参数：s_yh_id  用户id
         author:张新颖
 -->
-
+<!-- 
+蒋，2014年8月13日，118行添加if-else判断用户类型
+-->
 
 <%@ Register Src="include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
 <%@ Import Namespace="System" %>
@@ -113,7 +115,6 @@
             }
             else if(dt_yh.Rows[0]["是否验证通过"].ToString()=="通过")
             {
-               //蒋，2014年8月13日，添加if-else判断用户类型
                if(dt_yh.Rows[0]["类型"].ToString()=="生产商")
                {
                   Response.Write("<font color='green'>恭喜您!审核已通过,可以对生产厂商、分销商以及材料信息进行管理.</font>");				 

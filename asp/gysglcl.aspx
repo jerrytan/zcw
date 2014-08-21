@@ -47,29 +47,31 @@
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
         Products_gys_cl();
+        
         if(!IsPostBack)
         {
-           sSQL = "select 公司名称,公司地址,公司电话,公司主页,类型,手机,类型,QQ号码,姓名,是否验证通过 from 用户表 where  yh_id='"+s_yh_id+"' ";
-           DataTable dt_yh=objConn.GetDataTable(sSQL);
-           if(dt_yh!=null&&dt_yh.Rows.Count>0)
-           {
-                string lx="";
-                this.companyname.Value = dt_yh.Rows[0]["公司名称"].ToString();
-                this.companytel.Value = dt_yh.Rows[0]["公司地址"].ToString();
-                this.companyaddress.Value = dt_yh.Rows[0]["公司电话"].ToString();
-                this.contactorname.Value = dt_yh.Rows[0]["姓名"].ToString();
-                this.contactortel.Value = dt_yh.Rows[0]["手机"].ToString();
-                this.QQ_id.Value = dt_yh.Rows[0]["QQ号码"].ToString();
-                lx=dt_yh.Rows[0]["类型"].ToString();
-                if(lx=="生产商")
-                {
-                     this.scs.Checked = true;  
-                }
-                else if(lx=="分销商")
-                {
-                    this.gxs.Checked = true;
-                }
-           }
+        //蒋，2014年8月18日
+    //       sSQL = "select 公司名称,公司地址,公司电话,公司主页,类型,手机,类型,QQ号码,姓名,是否验证通过 from 用户表 where  yh_id='"+s_yh_id+"' ";
+    //       DataTable dt_yh=objConn.GetDataTable(sSQL);
+    //       if(dt_yh!=null&&dt_yh.Rows.Count>0)
+    //       {
+    //            string lx="";
+    //            this.companyname.Value = dt_yh.Rows[0]["公司名称"].ToString();
+    //            this.companytel.Value = dt_yh.Rows[0]["公司地址"].ToString();
+    //            this.companyaddress.Value = dt_yh.Rows[0]["公司电话"].ToString();
+    //            this.contactorname.Value = dt_yh.Rows[0]["姓名"].ToString();
+    //            this.contactortel.Value = dt_yh.Rows[0]["手机"].ToString();
+    //            this.QQ_id.Value = dt_yh.Rows[0]["QQ号码"].ToString();
+    //            lx=dt_yh.Rows[0]["类型"].ToString();
+    //            if(lx=="生产商")
+    //            {
+    //                 this.scs.Checked = true;  
+    //            }
+    //            else if(lx=="分销商")
+    //            {
+    //                this.gxs.Checked = true;
+    //            }
+    //       }
         }
             CancelFollowButton.Attributes.Add("onClick", "return confirm('您确定要删除该选中的材料吗？');");      
        
@@ -251,65 +253,71 @@
             Response.Write("<script>window.alert('您没有选中任何材料！')</" + "script>");
         }
     }
-    protected void updateUserInfo(object sender, EventArgs e)
-    {      
-		if(Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="") 
-		{
-		  s_yh_id = Session["CGS_YH_ID"].ToString();
-		}
-        string s_lx="";
-        if (this.gxs.Checked)
-        {
-            s_lx = "分销商";
-        }
-        else if (this.scs.Checked)
-        {
-            s_lx = "生产商";
-        }
-		    if (this.contactortel.Value == "")
-        {
-            objConn.MsgBox(this.Page, "手机不能为空,请填写!");
-            this.contactortel.Focus();
-            return;
-        }
-        if (this.contactorname.Value == "")
-        {
-            objConn.MsgBox(this.Page, "姓名不能为空,请填写!");
-            this.contactorname.Focus();
-            return;
-        }
-        if (this.companyname.Value == "")
-        {
-            objConn.MsgBox(this.Page, "公司名称不能为空,请填写!");
-            this.companyname.Focus();
-            return;
-        }
-        if (this.companyaddress.Value == "")
-        {
-            objConn.MsgBox(this.Page, "公司地址不能为空,请填写!");
-            this.companyaddress.Focus();
-            return;
-        }
-        if (this.companytel.Value == "")
-        {
-            objConn.MsgBox(this.Page, "公司电话不能为空,请填写!");
-            this.companytel.Focus();
-            return;
-        }
-        string s_updateUserinfo = " update 用户表   set 手机='" +this.contactortel.Value + "', 姓名='" +this.contactorname.Value +
-                                  "',公司名称='" + this.companyname.Value + "',公司地址='"+this.companyaddress.Value+
-                                  "',公司电话='" + this.companytel.Value + "',QQ号码='"+this.QQ_id.Value+
-                                  "',类型='"+s_lx+"',是否验证通过='待审核' where yh_id='" + s_yh_id + "'";
-         if(!objConn.ExecuteSQL(s_updateUserinfo, true))
-        {
-            objConn.MsgBox(this.Page, "更新失败，请重试！");
-        }
-        else
-        {
-            Response.Redirect("gyszym.aspx");
-        }
-    }
-    </script>
+        //蒋，2014年8月18日，注释表单中的字段非空验证
+    //protected void updateUserInfo(object sender, EventArgs e)
+    //{      
+    //    if(Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="") 
+    //    {
+    //      s_yh_id = Session["CGS_YH_ID"].ToString();
+    //    }
+    //    string s_lx="";
+    //    if (this.gxs.Checked)
+    //    {
+    //        s_lx = "分销商";
+    //    }
+    //    else if (this.scs.Checked)
+    //    {
+    //        s_lx = "生产商";
+    //    }
+    //        if (this.contactortel.Value == "")
+    //    {
+    //        objConn.MsgBox(this.Page, "手机不能为空,请填写!");
+    //        this.contactortel.Focus();
+    //        return;
+    //    }
+    //    if (this.contactorname.Value == "")
+    //    {
+    //        objConn.MsgBox(this.Page, "姓名不能为空,请填写!");
+    //        this.contactorname.Focus();
+    //        return;
+    //    }
+    //    if (this.companyname.Value == "")
+    //    {
+    //        objConn.MsgBox(this.Page, "公司名称不能为空,请填写!");
+    //        this.companyname.Focus();
+    //        return;
+    //    }
+    //    if (this.companyaddress.Value == "")
+    //    {
+    //        objConn.MsgBox(this.Page, "公司地址不能为空,请填写!");
+    //        this.companyaddress.Focus();
+    //        return;
+    //    }
+    //    if (this.companytel.Value == "")
+    //    {
+    //        objConn.MsgBox(this.Page, "公司电话不能为空,请填写!");
+    //        this.companytel.Focus();
+    //        return;
+    //    }
+    //    string s_updateUserinfo = " update 用户表   set 手机='" +this.contactortel.Value + "', 姓名='" +this.contactorname.Value +
+    //                              "',公司名称='" + this.companyname.Value + "',公司地址='"+this.companyaddress.Value+
+    //                              "',公司电话='" + this.companytel.Value + "',QQ号码='"+this.QQ_id.Value+
+    //                              "',类型='"+s_lx+"',是否验证通过='待审核' where yh_id='" + s_yh_id + "'";
+    //     if(!objConn.ExecuteSQL(s_updateUserinfo, true))
+    //    {
+    //        objConn.MsgBox(this.Page, "更新失败，请重试！");
+    //    }
+    //    else
+    //    {
+    //        Response.Redirect("gyszym.aspx");
+    //    }
+    //}
+    
+protected void  Delete_cl(object sender, ImageClickEventArgs e)
+{
+
+}
+</script>
     <form id="form1" runat="server">
     <div class="dlqqz">
         <div class="dlqqz1">
@@ -367,8 +375,7 @@
         <div class="dlqqz3" style="width: 260px;">
             <a href="xzclym.aspx?gys_id=<%=gys_id %>">
                 <img src="images/xzcl.jpg" border="0" /></a>&nbsp;
-            <asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server"
-                OnClick="Delete_cl" />
+            <asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="Delete_cl" />
         </div>
     </div>
     <div class="dlex">
@@ -378,18 +385,21 @@
         <div class="dlex1">
             <asp:Button runat="server" ID="button1" Text="选择数据进入自身内部系统" OnClick="dumpFollowCLs" />
         </div>
-        <%}else { %>
-        <div class="dlex1">
+        <%}
+            //蒋，2014年8月18日，只有采购商有导出的权限
+      //else { %>
+        <<%--div class="dlex1">
             您可以把你管理的材料数据导出为excel，供下线使用
             <asp:Button runat="server" ID="button2" Text="全部导出为EXCEL" OnClick="dumpFollowCLs" />
-        </div>
-        <%
+        </div>--%>
+       <%-- <%
 	}	
-        %>
+       // %>--%>
     </div>
  
    <div class="cgdlqq">
-		    <div class="cgdlex">
+  <%-- 蒋，2014年8月18日注释该表单，在会员注册时审核过了，不需要再有表单显示信息--%>
+		   <%-- <div class="cgdlex">
 			    <div class="cgdlex2">
 				    <span class="cgdlex3">您的信息如下，如需更改请单击更改按钮</span>
 				    <dl>						
@@ -406,7 +416,7 @@
 				    <asp:Label ID="label2" runat="server" Text="" />
 				    <span class="cggg"><asp:ImageButton ID="updateButtion" ImageUrl="images/12ff_03.jpg"  OnClick="updateUserInfo" runat="server" /></span>
 			    </div>
-		    </div>
+		    </div>--%>
 	    </div>
 
     </form>

@@ -45,10 +45,12 @@
             if (Request["id"] != null && Request["id"].ToString() != "")
             {
                 fxs_id = Request["id"].ToString();
+                Response.Write(fxs_id+"∑÷œ˙…Ãid");
             }
             if (Request["lx"]!=null&&Request["lx"].ToString()!="")
             {
                 lx = Request["lx"].ToString();
+                Response.Write(lx);
             }
             if (lx=="")
             {

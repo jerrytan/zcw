@@ -40,6 +40,7 @@
             }
         }
         xmlhttp.open("GET", "glfxsxx4.aspx?id=" + id + "&lx=pp", true);
+        alert(id);
         xmlhttp.send();
     }
     function Update_gys(id)
@@ -115,18 +116,15 @@
         {
             xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp1.onreadystatechange = function ()
-        {
-            if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200)
-            {
+        xmlhttp1.onreadystatechange = function () {
+            if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200) {
                 var array1 = new Array();           //声明数组
                 array1 = xmlhttp1.responseText;     //接收替换返回的json字符串
                 var json1 = array1;
                 var myobj1 = eval(json1);              //将返回的JSON字符串转成JavaScript对象 	
-                var s = "";		
-                for (var j = 0; j < myobj1.length;j++)
-                {  //遍历,将ajax返回的数据填充到文本框中				
-                   
+                var s = "";
+                for (var j = 0; j < myobj1.length; j++) {  //遍历,将ajax返回的数据填充到文本框中				
+
                     s += " <div class='fgstp'><image src='images/wwwq_03.jpg'/>";
                     s += "  <span class='fdlpp1'>";
                     s += " <a href='ppxx.aspx?pp_id=" + myobj1[j].pp_id + "' class='fxsfxk'>" + myobj1[j].ppmc + "</a></span></div>";
@@ -187,6 +185,14 @@
         alert("您更新的信息已提交,等待审核,请返回!");
     }
 
+    function tel_onclick() {
+
+    }
+
+    function scs_onclick() {
+
+    }
+
 </script>
 	
 <script runat="server">
@@ -207,31 +213,24 @@
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
-            Response.Write(s_yh_id);
         }
-             //蒋，2014年8月15日,注释从材料供应商表中取值，改为从用户表中取值
-            //sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型
-            sSQL = "select 类型 from 用户表 where yh_id='" + s_yh_id + "' ";//查询类型
+            sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型
             DataTable dt_type = objConn.GetDataTable(sSQL);
             if (dt_type != null && dt_type.Rows.Count > 0)
             {
-                s_gys_type = dt_type.Rows[0]["类型"].ToString();
-                //蒋，2014年8月15日
-               // gys_id = dt_type.Rows[0]["gys_id"].ToString();
+                s_gys_type = dt_type.Rows[0]["单位类型"].ToString();
+               gys_id = dt_type.Rows[0]["gys_id"].ToString();
             }
             if (s_gys_type == "生产商")
             {
                 string ppid="";
-                //蒋，2014年8月15日
-                //sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id='" + gys_id + "' order by scs_id "; //查询品牌id
-                sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id='" + s_yh_id + "' order by scs_id "; //查询品牌id		
+                sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id='" + gys_id + "' order by scs_id "; //查询品牌id
                 dt_pp_id = objConn.GetDataTable(sSQL);
                 if (dt_pp_id != null && dt_pp_id.Rows.Count > 0)
                 {
-                    ppid = dt_pp_id.Rows[0]["pp_id"].ToString();         //获取品牌id
+                    ppid = dt_pp_id.Rows[0]["pp_id"].ToString(); //获取品牌id
                 }
-
-                sSQL = "select fxs_id,分销商 from 分销商和品牌对应关系表 where pp_id='" + ppid + "' "; //查询分销商id	
+                sSQL = "select fxs_id,分销商 from 分销商和品牌对应关系表 where pp_id='" + ppid + "' ";//查询分销商id
                 dt_fxs = objConn.GetDataTable(sSQL);
                 string str_fxsid = "";
                 if (dt_fxs!=null&&dt_fxs.Rows.Count>0)
@@ -289,9 +288,8 @@
              dt_pp_id = objConn.GetDataTable(sSQL);
             if(dt_pp_id!=null&&dt_pp_id.Rows.Count>0)
             {
-                str_ppid = Convert.ToString(dt_pp_id.Rows[0]["pp_id"]);   //获取品牌id	185
+                str_ppid = Convert.ToString(dt_pp_id.Rows[0]["pp_id"]);   //获取品牌id	
             }
-
             sSQL = "select count(*) from 供应商自己修改待审核表 where gys_id in "    //139
             + "(select top 1 fxs_id from 分销商和品牌对应关系表 where pp_id='" + str_ppid + "')";
             int count = objConn.ExecuteSQLForCount(sSQL, false);
@@ -404,12 +402,13 @@
        {%>
              <div class="zjgxs">
              <span>贵公司品牌：</span><br />
-			    <select name="scs" id="scs" class="fug" style="width:200px" onchange="Update_CS(this.options[this.options.selectedIndex].value)">
+			    <select name="scs" id="scs" class="fug" style="width:200px" onchange="Update_CS(this.options[this.options.selectedIndex].value)" onclick="return scs_onclick()">
 			        <option value="0">请选择品牌</option>
                  <% foreach (System.Data.DataRow row_fxs in dt_pp_id.Rows)
                   { %>			
 			         <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
-	            <% }%>			
+	            <%Response.Write("品牌编号："+row_fxs["pp_id"]);
+                  }%>			
 			    </select> 			
 			</div>
            <br />
@@ -421,7 +420,7 @@
 			    <span class="zjgxs1"><a href="xzgxs.aspx?xzlx=fxs&gxs_id=<%=gys_id %>">增加新的分销商</a></span>
 			</div>
              <span class="fxsxx1">该分销商的信息如下:</span>
-             <div class="fxsxx2">
+             <div class="gysgybtr">
              <% if (dt_gysxx.Rows.Count > 0)
                {
                    if (sp_result == "待审核")
@@ -484,6 +483,7 @@
                          </div>      
                     </div>	
      <%}
+           //分销商身份的操作权限
        else
        { %>
              <span class="fxsxx1">贵公司的详细信息如下:</span>	
@@ -494,7 +494,7 @@
                     <span class="fxsxx1">贵公司的信息正在审核中</span>	
 				<dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" /></dt>
 				<dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>" /></dt>
-				<dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>" /></dt>
+				<dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>" onclick="return tel_onclick()" /></dt>
 				<dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" /></dt>
 				<dd>贵公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司传真"] %>" /></dt>
 				<dd>贵公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地区"] %>" /></dt>

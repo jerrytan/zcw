@@ -58,6 +58,7 @@
 
     //二级分类发送ajax 更新的是品牌的名称 和材料属性的名称
     //文件名是xzclym3.aspx 和 xzclymSX.aspx
+    //小类（二级分类）
     function updateCLFL(id)
     {
 
@@ -314,8 +315,8 @@
                     <span class="xzz1"><a href="#">模板下载地址</a></span>
                 </div>
             </div>
-
-            <div class="fxsxx2">
+            <%--蒋，2014年8月19日，改div原有样式“fxsxx2”改为“gysgybtr”--%>
+            <div class="gysgybtr">
                 <span class="srcl">请输入材料信息</span>
                 <dl>
                     <dd>材料名字：</dd>

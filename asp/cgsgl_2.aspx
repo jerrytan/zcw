@@ -111,30 +111,32 @@
                 Response.Write("<script>window.alert('您不是采购商，不能用采购商身份登录！');window.location.href='index.aspx';</" + "script>");
             }
             Session["CGS_YH_ID"] = s_yh_id;
+         
              if (!IsPostBack)
-            {           
-                sSQL = "select * from 用户表 where yh_id='" + s_yh_id + "'";
+            {
+                //蒋，2014年8月18日   
+            //    sSQL = "select * from 用户表 where yh_id='" + s_yh_id + "'";
 
-                DataTable dt_userInfo = new DataTable();
-                dt_userInfo = objConn.GetDataTable(sSQL);
-                if (dt_userInfo != null && dt_userInfo.Rows.Count > 0)
-                {
-                    this.companyname.Value = dt_userInfo.Rows[0]["公司名称"].ToString();
-                    this.companytel.Value = dt_userInfo.Rows[0]["公司电话"].ToString();
-                    this.companyaddress.Value = dt_userInfo.Rows[0]["公司地址"].ToString();
-                    this.contactorname.Value = dt_userInfo.Rows[0]["姓名"].ToString();
-                    this.contactortel.Value = dt_userInfo.Rows[0]["手机"].ToString();
-                    this.QQ_id.Value = dt_userInfo.Rows[0]["QQ号码"].ToString();
-                    if ( dt_userInfo.Rows[0]["公司名称"].ToString()==""&&dt_userInfo.Rows[0]["公司电话"].ToString()==""&&dt_userInfo.Rows[0]["公司地址"].ToString()==""
-                        && dt_userInfo.Rows[0]["姓名"].ToString() == "" && dt_userInfo.Rows[0]["手机"].ToString()=="")
-                    {
-                        xx = "否";
-                    }
-                    else
-                    {
-                        xx = "是";
-                    }
-                } 
+            //    DataTable dt_userInfo = new DataTable();
+            //    dt_userInfo = objConn.GetDataTable(sSQL);
+            //    if (dt_userInfo != null && dt_userInfo.Rows.Count > 0)
+            //    {
+            //        this.companyname.Value = dt_userInfo.Rows[0]["公司名称"].ToString();
+            //        this.companytel.Value = dt_userInfo.Rows[0]["公司电话"].ToString();
+            //        this.companyaddress.Value = dt_userInfo.Rows[0]["公司地址"].ToString();
+            //        this.contactorname.Value = dt_userInfo.Rows[0]["姓名"].ToString();
+            //        this.contactortel.Value = dt_userInfo.Rows[0]["手机"].ToString();
+            //        this.QQ_id.Value = dt_userInfo.Rows[0]["QQ号码"].ToString();
+            //        if ( dt_userInfo.Rows[0]["公司名称"].ToString()==""&&dt_userInfo.Rows[0]["公司电话"].ToString()==""&&dt_userInfo.Rows[0]["公司地址"].ToString()==""
+            //            && dt_userInfo.Rows[0]["姓名"].ToString() == "" && dt_userInfo.Rows[0]["手机"].ToString()=="")
+            //        {
+            //            xx = "否";
+            //        }
+            //        else
+            //        {
+            //            xx = "是";
+            //        }
+            //    } 
             }
             listFollowCLIDs();
         }
@@ -323,60 +325,60 @@
         objConn.ExecuteSQL(sSQL, true);
         listFollowCLIDs();
     }
-
-        protected void updateUserInfo(object sender, EventArgs e)
-    {
-        if (Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="")
-        {
-            s_yh_id = Session["CGS_YH_ID"].ToString();
-        }
+        //蒋，2014年8月18日
+    //    protected void updateUserInfo(object sender, EventArgs e)
+    //{
+    //    if (Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="")
+    //    {
+    //        s_yh_id = Session["CGS_YH_ID"].ToString();
+    //    }
       
-		if (this.contactortel.Value == "")
-        {
-            objConn.MsgBox(this.Page, "手机不能为空,请填写!");
-            this.contactortel.Focus();
-            return;
-        }
-        if (this.contactorname.Value == "")
-        {
-            objConn.MsgBox(this.Page, "姓名不能为空,请填写!");
-            this.contactorname.Focus();
-            return;
-        }
-        if (this.companyname.Value == "")
-        {
-            objConn.MsgBox(this.Page, "公司名称不能为空,请填写!");
-            this.companyname.Focus();
-            return;
-        }
-        if (this.companyaddress.Value == "")
-        {
-            objConn.MsgBox(this.Page, "公司地址不能为空,请填写!");
-            this.companyaddress.Focus();
-            return;
-        }
-        if (this.companytel.Value == "")
-        {
-            objConn.MsgBox(this.Page, "公司电话不能为空,请填写!");
-            this.companytel.Focus();
-            return;
-        }
-        string typeList = this.hid.Value.ToString();    
-        sSQL   = " update 用户表 " +
-                " set 手机='" +this.contactortel.Value + "', " +
-                " 姓名='" +this.contactorname.Value + "',  " +
-                " 公司名称='"+this.companyname.Value+"',"+
-                " 公司地址='"+this.companyaddress.Value+"',"+
-                " 公司电话='"+this.companytel.Value+"',"+
-                " QQ号码='"+this.QQ_id.Value+"',"+
-                " 是否验证通过='待审核'," + "用户关注类别='" + typeList + "'" +
-                "  where yh_id='" + s_yh_id + "'";
+    //    if (this.contactortel.Value == "")
+    //    {
+    //        objConn.MsgBox(this.Page, "手机不能为空,请填写!");
+    //        this.contactortel.Focus();
+    //        return;
+    //    }
+    //    if (this.contactorname.Value == "")
+    //    {
+    //        objConn.MsgBox(this.Page, "姓名不能为空,请填写!");
+    //        this.contactorname.Focus();
+    //        return;
+    //    }
+    //    if (this.companyname.Value == "")
+    //    {
+    //        objConn.MsgBox(this.Page, "公司名称不能为空,请填写!");
+    //        this.companyname.Focus();
+    //        return;
+    //    }
+    //    if (this.companyaddress.Value == "")
+    //    {
+    //        objConn.MsgBox(this.Page, "公司地址不能为空,请填写!");
+    //        this.companyaddress.Focus();
+    //        return;
+    //    }
+    //    if (this.companytel.Value == "")
+    //    {
+    //        objConn.MsgBox(this.Page, "公司电话不能为空,请填写!");
+    //        this.companytel.Focus();
+    //        return;
+    //    }
+    //    string typeList = this.hid.Value.ToString();    
+    //    sSQL   = " update 用户表 " +
+    //            " set 手机='" +this.contactortel.Value + "', " +
+    //            " 姓名='" +this.contactorname.Value + "',  " +
+    //            " 公司名称='"+this.companyname.Value+"',"+
+    //            " 公司地址='"+this.companyaddress.Value+"',"+
+    //            " 公司电话='"+this.companytel.Value+"',"+
+    //            " QQ号码='"+this.QQ_id.Value+"',"+
+    //            " 是否验证通过='待审核'," + "用户关注类别='" + typeList + "'" +
+    //            "  where yh_id='" + s_yh_id + "'";
         
-        if (!objConn.ExecuteSQL(sSQL, true)) 
-        {
-            objConn.MsgBox(this.Page, "更新失败，请重试！");
-        }
-    }
+    //    if (!objConn.ExecuteSQL(sSQL, true)) 
+    //    {
+    //        objConn.MsgBox(this.Page, "更新失败，请重试！");
+    //    }
+    //}
     </script>
        <form id="form1" runat="server">
        <div class="dlqqz">
@@ -452,12 +454,13 @@
         <asp:Label ID="label1" runat="server" Text="" />
         <%
 	if (userIsVIP){
-        %>
-        <div class="dlex1">
+        %> 
+        <%--蒋，2014年8月18日--%>
+        <%--<div class="dlex1">
             <div class="dlex1">
                 <asp:Button runat="server" ID="button1" Text="选择数据进入自身内部系统" OnClick="dumpFollowCLs" />
             </div>
-        </div>
+        </div>--%>
         <%
 	}else {
         %>
@@ -482,14 +485,15 @@
                       {%>
                        <span class="cgdlex3">您提交的信息未通过审核，请修改后提交！</span>
                       <%}
-                      else
-                      {
+                      //蒋，2014年8月18日注释，表单数据，
+                      //else
+                      //{
                        %>
-                   <span class="cgdlex3">您的信息如下，如需更改请单击更改按钮</span>
-                <%}
+                   <%--<span class="cgdlex3">您的信息如下，如需更改请单击更改按钮</span>--%>
+                <%//}
                   }%>
 				   
-				    <dl>						
+				   <%-- <dl>						
 					    <dd>公司名称：</dd><dt><input class="cgdlex2text" id="companyname" name="companyname" type="text"   runat="server" /></dt>
 					    <dd>公司地址：</dd><dt><input class="cgdlex2text"  id="companyaddress" name="companyaddress" type="text"  runat="server" /></dt>
 					    <dd>公司电话：</dd><dt><input class="cgdlex2text"  id="companytel" name="companytel" type="text"  runat="server"/></dt>
@@ -512,20 +516,21 @@
                         <div id="layer"></div>			  
 				    </dl>
                     
-				    <asp:Label ID="label2" runat="server" Text="" />
-                    <%if (xx == "否")
+				    <asp:Label ID="label2" runat="server" Text="" />--%>
+                   <%-- <%if (xx == "否")
                       { %>
                       <span class="cggg"><asp:ImageButton runat="server" ID="ImageButton1" ImageUrl="images/aaaa_03.jpg"  OnClick="updateUserInfo"  /></span>
                     <%}
                       else
                       { %>
                        <span class="cggg"><asp:ImageButton ID="updateButtion" ImageUrl="images/12ff_03.jpg"  OnClick="updateUserInfo" runat="server" /></span>
-                    <%} %>				   
+                    <%} %>		--%>		   
 			    </div>
 		    </div>
 	    </div>
         </form>
-            <div class="gyzy2"></div>
+        <%--蒋，2014年8月19日，注释该空div，调整页面--%>
+          <%--  <div class="gyzy2"></div>--%>
     <div>
         <!-- 关于我们 广告服务 投诉建议 开始-->
         <!-- #include file="static/aboutus.aspx" -->
