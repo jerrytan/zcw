@@ -59,14 +59,8 @@
             var name = tds[3].innerText;
             var phone = tds[4].innerText;
             var email = tds[5].innerText;
-            var cb1 = false;
-            var cb2 = false;
-            var cb3 = false;
-//            if (tds[6].checked) { cb1 = true; }
-//            alert(tds[6].innerHTML);
-//            if (tds[8].checked) { cb2 = true; }
-//            if (tds[10].checked) { cb3 = true; }
-            newwin = window.open('hyyhgl_wh.aspx?qq=' + qq + '&name=' + name + '&phone=' + phone + '&email=' + email + '&cb1=' + cb1 + '&cb2=' + cb2 + '&cb3=' + cb3 + '&state=1', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
+
+            newwin = window.open('hyyhgl_wh.aspx?qq=' + qq + '&name=' + name + '&phone=' + phone + '&email=' + email + '&state=1', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
         //        function Checked(obj) {
         //            if (!obj.checked) {

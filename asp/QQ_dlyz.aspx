@@ -17,13 +17,13 @@
             }
         }
         function load() {
-            document.getElementById("gys_name").readOnly = true;
-            document.getElementById("gys_address").readOnly = true;
-            document.getElementById("gys_phone").readOnly = true;
-            document.getElementById("gys_homepage").readOnly = true;
-            document.getElementById("gslx").readOnly = true;
-            document.getElementById("user_name").readOnly = true;
-            document.getElementById("user_phone").readOnly = true;
+            document.getElementById("gys_name").disabled = true;
+            document.getElementById("gys_address").disabled = true;
+            document.getElementById("gys_phone").disabled = true;
+            document.getElementById("gys_homepage").disabled = true;
+            document.getElementById("gslx").disabled = true;
+            document.getElementById("user_name").disabled = true;
+            document.getElementById("user_phone").disabled = true;
         }
     </script>
 </head>

@@ -18,8 +18,8 @@ public partial class asp_gyszc : System.Web.UI.Page
     protected void Submit1_Click(object sender, ImageClickEventArgs e)
     {
         DataConn dc = new DataConn();
-        string sqlIsExist = "select * from 用户表 where QQ号码='"+this.txt_gsQQ.Value+"' ";
-
+        string sqlIsExistQQ = "select * from 用户表 where QQ号码='"+this.txt_gsQQ.Value+"' ";
+        string sqlIsExistGs = "select * from 用户表 where 公司名称='" + this.txt_gsmc.Value + "' ";
 
         qymc = this.s1.Value + this.s2.Value + this.s3.Value;
 
@@ -30,6 +30,14 @@ public partial class asp_gyszc : System.Web.UI.Page
             this.txt_gsmc.Focus();
             return;
         }
+        else
+        {
+            if (dc.GetRowCount(sqlIsExistGs) > 0)
+            {
+                Response.Write("<script>window.alert('该公司已注册，请联系公司管理员');</script>");
+                Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
+            }
+        }
         if (string.IsNullOrEmpty(this.txt_gsQQ.Value))
         {
             Response.Write("<script>alert('请输入公司QQ')</script>");
@@ -38,7 +46,7 @@ public partial class asp_gyszc : System.Web.UI.Page
         }
         else
         {
-            if (dc.GetRowCount(sqlIsExist) > 0)
+            if (dc.GetRowCount(sqlIsExistQQ) > 0)
             {
                 Response.Write("<script>window.alert('该用户已存在');</script>");
                 this.txt_gsQQ.Focus();
@@ -123,7 +131,7 @@ public partial class asp_gyszc : System.Web.UI.Page
         if (dc.RunSqlTransaction(sqlAll))
         {
             Response.Write("<script>window.alert('注册信息已提交,请等待审核');</script>");
-            return;
+            Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
         }
         else
         {
