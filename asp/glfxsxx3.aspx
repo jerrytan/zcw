@@ -50,7 +50,6 @@
             if (Request["lx"]!=null&&Request["lx"].ToString()!="")
             {
                 lx = Request["lx"].ToString();
-                Response.Write(lx);
             }
             if (lx=="")
             {

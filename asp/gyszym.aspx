@@ -200,13 +200,13 @@
                   //}				  
 		%>
 <%--蒋，2014年8月21日--%>
-       <%-- <%
+        <%--<%
             //蒋，2014年8月13更改判断语句
             //if (passed != "待审核"&&passed != "通过")
-                if (passed != "待审核" && name=="")
-            {%>
+               if (passed != "待审核" && name=="")
+            {%>--%>
                <span class="zyy1"><a href="grxx.aspx">补填个人信息</a></span>
-            <%}  %>--%>
+           <%-- <%}  %>--%>
 		</span>
 		</span>
 		<span class="zy2">
@@ -265,8 +265,7 @@
             <span class="zyy1" style="margin-left:100px;"><a href="gysglcl.aspx">管理材料信息</a></span>
             <%}%> 
             <%else
-                {
-                    Response.Write("分销商权限"); %>
+                {%>
             <span class="zyy1" style="margin-left:180px;"><a href="glfxsxx.aspx">管理分销商信息</a></span>
             <span class="zyy1" style="margin-left:180px;"><a href="gysglcl.aspx">管理材料信息</a></span>       
     <%} %>

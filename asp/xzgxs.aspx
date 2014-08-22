@@ -83,7 +83,8 @@
             }
             if (Request["gxs_id"]!=null&&Request["gxs_id"].ToString()!="")
             {
-                gxs_id = Request["gxs_id"].ToString();
+                gxs_id = Request.QueryString["gxs_id"].ToString();
+                Response.Write("供应商编号："+gxs_id);//253
             }           
            
                 if (xzlx=="分销商")  //当前用户是生产商
@@ -116,13 +117,16 @@
           
             sSQL = "select 分类编码,显示名字 from 材料分类表 where 是否启用=1";
             dt_clfl = objConn.GetDataTable(sSQL);
-            
          }
         protected void updateUserInfo(object sender, EventArgs e)
         {
             //蒋，2014年8月21日
-            string pp_id = Request["pp_id"];	    //品牌id	
-            string pp_name = Request["pp_name"];   //品牌名称
+            string pp_id = dt_ppxx.Rows[0]["pp_id"].ToString();	    //品牌id	
+            string pp_name = dt_ppxx.Rows[0]["品牌名称"].ToString();  //品牌名称
+            Response.Write("品牌编号 :" + pp_id);
+            Response.Write("品牌名 :" + pp_name);
+            sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "'";
+            dt_ppxx = objConn.GetDataTable(sSQL);
             qymc = this.s0.Value + this.s1.Value + this.s2.Value + this.s3.Value;
             if (this.gys.Value == "")
             {
@@ -181,8 +185,8 @@
                 {
                     Response.Write("<script>window.alert('添加成功！');</" + "script>");
                     //蒋，2014年8月21日，当前品牌信息录入材料供应商信息从表 
-                    string addppxx = "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,范围,供应商,updatetime)"+
-                        "values('"+pp_id+"','"+dt_ppxx.Rows[0]["品牌名称"]+"',1,'"+gys_id+"','"+dt_ppxx.Rows[0]["范围"] +"',"+
+                    string addppxx = "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime)"+
+                        "values('" + pp_id + "','" + dt_ppxx.Rows[0]["品牌名称"] + "',1,'" + gys_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
                         "'" + this.gys.Value + "',(select getdate()))";
                     objConn.ExecuteSQL(addppxx, true);
                     string update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息表 where 供应商 ='"+this.gys.Value+"')";
@@ -236,7 +240,6 @@
                 //  string fxs_id = Request["gys_id_hid"]; 	//分销商id	
                 string pp_id = Request["pp_id"];	    //品牌id	
                 string pp_name = Request["pp_name"];   //品牌名称
-                Response.Write("品牌名称：" + pp_name+"||");
                 //蒋，2014年8月21日，
                 //sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,updatetime) values('" + pp_id + "','" + pp_name + "', 1,'" + gys_id + "',(select getdate()) ) ";   
                 sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,分销商,updatetime) values('" + pp_id + "','" + pp_name + "', 1,'" + gys_id + "','"+this.gys.Value+"',(select getdate()) ) ";
@@ -350,32 +353,25 @@
           {// code for IE6, IE5
               xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
           }
-          xmlhttp.onreadystatechange = function ()
-          {
-              if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-              {
+          xmlhttp.onreadystatechange = function () {
+              if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                   var array = new Array();           //声明数组
                   array = xmlhttp.responseText;     //接收替换返回的json字符串
-
                   var json = array;
                   var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 	
-                  for (var i = 0; i < myobj.length; i++)
-                  {  //遍历,将ajax返回的数据填充到文本框中				
+                  for (var i = 0; i < myobj.length; i++) {  //遍历,将ajax返回的数据填充到文本框中				
 
                       document.getElementById('scs').innerHTML = myobj[i].scs;
                       document.getElementById('grade').innerHTML = myobj[i].dj
                       document.getElementById('scope').innerHTML = myobj[i].fw;
                       document.getElementById('fl_name').innerHTML = myobj[i].flname;
                       document.getElementById('pp_id').innerHTML = myobj[i].pp_id;
-                      document.getElementById('pp_name').innerHTML = myobj[i].ppname;        
-                      
+                      document.getElementById('pp_name').innerHTML = myobj[i].ppname;
                   }
               }
           }
           xmlhttp.open("GET", "xzgxs2.aspx?id=" + id, true);
-          alert("品牌："+id);
-          xmlhttp.send();
-            
+          xmlhttp.send();  
         }    
  </script>
 <body >

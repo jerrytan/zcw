@@ -33,6 +33,7 @@
             }
             string sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where pp_id='"+pp_id+"'";
             DataTable dt_pp_xx = objConn.GetDataTable(sSQL);
+            Response.Write(dt_pp_xx.Rows[0]["品牌名称"]);
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             this.Items = new List<Option_gys>();  //数据表DataTable转集合  
             if (dt_pp_xx!=null&&dt_pp_xx.Rows.Count>0)

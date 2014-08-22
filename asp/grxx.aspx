@@ -39,14 +39,14 @@
 		}
 		if(s_yh_id!="")
 		{
-			sSQL = "select 公司名称,公司地址,公司电话,公司主页,手机,类型,QQ号码,姓名,是否验证通过 from 用户表 where  yh_id='"+s_yh_id+"' ";
+			<%--sSQL = "select 公司名称,公司地址,公司电话,公司主页,手机,类型,QQ号码,姓名,是否验证通过 from 用户表 where  yh_id='"+s_yh_id+"' ";--%>
+            sSQL="select 姓名,手机,QQ号码,类型,是否验证通过 from 用户表 where yh_id='"+s_yh_id+"'";
 		    dt_yh = objConn.GetDataTable(sSQL); 	              
 		}		            	
 	}				   
 </script>
 
 <script language="javascript">
-
 	 function Form_submit()
 	 {
 
@@ -150,7 +150,7 @@
 		%>
 		</span>
         <%if(dt_yh!=null&&dt_yh.Rows.Count>0) { %>
-                <dd>贵公司名称：</dd> <dt><input name="gys_name" id="Text1" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /><font color="red"><strong>*</strong></font></dt>
+                <%--<dd>贵公司名称：</dd> <dt><input name="gys_name" id="Text1" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /><font color="red"><strong>*</strong></font></dt>
 	            <dd>贵公司地址：</dd>	<dt><input name="gys_address" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司地址"] %>"/><font color="red"><strong>*</strong></font></dt>
 	            <dd>贵公司电话：</dd> <dt><input name="gys_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司电话"] %>"/><font color="red"><strong>*</strong></font></dt>
 	            <dd>&nbsp;贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
@@ -172,15 +172,15 @@
                                               <%} %>               
 									            </select>
 								            </dt>
-
-	            <dd>您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"] %>"/><font color="red"><strong>*</strong></font></dt>
+--%>
+	            <dd>您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"] %>" disabled/><font color="red"><strong>*</strong></font></dt>
 	            <dd>您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["手机"] %>"/><font color="red"><strong>*</strong></font></dt>
-	            <dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"] %>"/></dt>
+	            <dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"] %>" disabled/></dt>
 
         <%} 
         else
         {%>
-	        <dd>贵公司名称：</dd>  <dt><input name="gys_name" id="gys_name" type="text" class="gysggg" value=""  /><font color="red"><strong>*</strong></font></dt>
+	     <%--   <dd>贵公司名称：</dd>  <dt><input name="gys_name" id="gys_name" type="text" class="gysggg" value=""  /><font color="red"><strong>*</strong></font></dt>
 	        <dd>贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="gysggg" value=""/><font color="red"><strong>*</strong></font></dt>
 	        <dd>贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="gysggg" value=""/><font color="red"><strong>*</strong></font></dt>
 	        <dd>&nbsp;贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="gysggg" value=""/></dt>
@@ -192,10 +192,10 @@
 										        <option value="生产商">生产商</option>
 										        <option value="分销商">分销商</option>                        
 									        </select>
-								        </dt>
-	        <dd>您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value=""/><font color="red"><strong>*</strong></font></dt>
+								        </dt>--%>
+	        <dd>您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"]%>" disabled/><font color="red"><strong>*</strong></font></dt>
 	        <dd>您的手机：</dd>    <dt><input name="user_phone" type="text" class="gysggg" value=""/><font color="red"><strong>*</strong></font></dt>
-	        <dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value=""/></dt>
+	        <dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"] %>" disabled/></dt>
       <% } %> 
 	<!--
 	<dd>贵公司的营业执照： </dd><dt><input name="gys_license" type="file" class="ggg" /> 

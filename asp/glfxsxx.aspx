@@ -40,7 +40,7 @@
             }
         }
         xmlhttp.open("GET", "glfxsxx4.aspx?id=" + id + "&lx=pp", true);
-        alert(id);
+        alert("传往gl4的id："+id);
         xmlhttp.send();
     }
     function Update_gys(id)
@@ -53,18 +53,17 @@
         {
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.onreadystatechange = function ()
-        {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-            {
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var array = new Array();           //声明数组
                 array = xmlhttp.responseText;     //接收替换返回的json字符串
 
                 var json = array;
                 var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 			
 
-                if (myobj.length == 0)
+                if (myobj.length == 0) 
                 {
+                    alert("判断成功！");
                     document.getElementById('companyname').value = "";       //供应商
                     document.getElementById('address').value = "";        //地址
                     document.getElementById('tel').value = "";                //电话  			 
@@ -74,16 +73,13 @@
                     document.getElementById('name').value = "";               //联系人
                     document.getElementById('phone').value = "";        //联系人电话 
                     document.getElementById('sh').style.visibility = "hidden";
-                    if (id != "0")
-                    {
-                        if (confirm("该分销商尚未填写详细信息,是否补填？"))
-                        {
-                            window.location.href = "btgysxx.aspx?gxs_id=" + id + "&lx=fxs";
+                    if (id != "0") {
+                        if (confirm("该分销商尚未填写详细信息,是否补填？")) {
+                            window.location.href = "grxx.aspx?gxs_id=" + id + "&lx=fxs";
                         }
                     }
                 }
-                for (var i = 0; i < myobj.length; i++)
-                {  //遍历,将ajax返回的数据填充到文本框中				
+                for (var i = 0; i < myobj.length; i++) {  //遍历,将ajax返回的数据填充到文本框中				
 
                     document.getElementById('companyname').value = myobj[i].gys_name;       //供应商
                     document.getElementById('address').value = myobj[i].gys_address;        //地址
@@ -93,12 +89,10 @@
                     document.getElementById('area').value = myobj[i].gys_area;               //地区名称
                     document.getElementById('name').value = myobj[i].gys_user;               //联系人
                     document.getElementById('phone').value = myobj[i].gys_user_phone;        //联系人电话 	
-                    if (myobj[i].sh == "待审核")
-                    {
+                    if (myobj[i].sh == "待审核") {
                         document.getElementById('sh').style.visibility = "visible";
                     }
-                    else
-                    {
+                    else {
                         document.getElementById('sh').style.visibility = "hidden";
                     }
                 }
@@ -106,6 +100,7 @@
             }
         }
         xmlhttp.open("GET", "glfxsxx3.aspx?id=" + id, true);
+        alert("传往gl3的id："+id);
         xmlhttp.send();
 
         if (window.XMLHttpRequest)
