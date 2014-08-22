@@ -91,7 +91,7 @@
 <uc2:Header2 ID="Header2" runat="server" />
 <!-- Í·²¿2½áÊø-->
 
-<form name="form1" action="gysbtxx2.aspx" method="post" onsubmit="return Form_submit()">
+<form name="form1" action="grxx2.aspx" method="post" onsubmit="return Form_submit()">
 
 <div class="gysgytb">
 

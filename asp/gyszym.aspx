@@ -27,60 +27,69 @@
 <script  runat="server">
     public DataTable dt_yh=new  DataTable();
     public DataConn objConn=new DataConn();
-    public string s_QQ_id="";
+    //public string s_QQ_id="";
     public string passed="";
     public string name="";
     //蒋，2014年8月13日，注释从供应商申请认领表中取出的审核结果字段
-    public string passed_gys = "";
+    //public string passed_gys = "";
+    public string gys_QQ_id = "";//蒋，2014年8月21日(供应商id)
+    public string power = "";//用户权限（蒋，22日）
     public string s_yh_id = "";
     public string lx="";
     protected void Page_Load(object sender, EventArgs e)
     {
-        //获取QQ_id，如果数据库不存在此id，则跳转到QQ验证页面  苑
-        string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-        string sqlExistQQ_id = "select * from 用户表 where QQ_id='" + gys_QQ_id + "'";
-        string sql_Level = "select 等级 from 用户表 where QQ_id='" + gys_QQ_id + "'";
-        if (objConn.GetRowCount(sqlExistQQ_id) > 0)
-        {
-            if (objConn.DBLook(sql_Level) == "企业用户")
+            if (Request.Cookies["GYS_QQ_ID"] != null && Request.Cookies["GYS_QQ_ID"].Value.ToString() != "")
             {
-                Response.Redirect("hyyhgl.aspx");
+                //s_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+                gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();//蒋,2014年8月22日
             }
-        }
-        else
+            //获取QQ_id，如果数据库不存在此id，则跳转到QQ验证页面  苑
+            //string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();蒋,2014年8月21日
+            string sqlExistQQ_id = "select * from 用户表 where QQ_id='" + gys_QQ_id + "'";
+            string sql_Level = "select 等级 from 用户表 where QQ_id='" + gys_QQ_id + "'";
+            if (objConn.GetRowCount(sqlExistQQ_id) > 0)
+            {
+                if (objConn.DBLook(sql_Level) == "企业用户")
+                {
+                    Response.Redirect("hyyhgl.aspx");
+                }
+            }
+            else
+            {
+                Response.Redirect("QQ_dlyz.aspx");
+            }
+
+
+            //蒋，2014年8月21日
+            string sql_Power = "select 角色权限 from 用户表 where QQ_id='"+gys_QQ_id+"'";
+            power = objConn.DBLook(sql_Power).ToString();//21日
+
+        if (gys_QQ_id != "")
         {
-            Response.Redirect("QQ_dlyz.aspx");
-        }
-        
-              
-        if (Request.Cookies["GYS_QQ_ID"]!=null&& Request.Cookies["GYS_QQ_ID"].Value.ToString()!="")
-        {
-             s_QQ_id= Request.Cookies["GYS_QQ_ID"].Value.ToString();
-        }
-        if(s_QQ_id!="")
-        {            
-            string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + s_QQ_id + "'";
+            //蒋，2014年8月21日          
+            //string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + s_QQ_id + "'";
+            string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + gys_QQ_id + "'";
             string s_Count=objConn.DBLook(str_checkuserexist);    
             if (s_Count != "")
             {
                 int count = Convert.ToInt32(s_Count);
                 if (count == 0)  //qq_id 不存在，需要增加用户表
                 {
-                    string str_insertuser = "insert into 用户表 (QQ_id) VALUES ('" + s_QQ_id + "')";
+                    string str_insertuser = "insert into 用户表 (QQ_id) VALUES ('" + gys_QQ_id + "')";
                      if(!objConn.ExecuteSQL(str_insertuser,false))
                        {
                          // objConn.MsgBox(this.Page,"执行SQL语句失败"+str_insertuser);
                        }
-               
-                    string str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + s_QQ_id + "')"
-				    +",updatetime=(select getdate()),注册时间=(select getdate())where QQ_id = '" + s_QQ_id + "'";
+
+                     string str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + gys_QQ_id + "')"
+                    + ",updatetime=(select getdate()),注册时间=(select getdate())where QQ_id = '" + gys_QQ_id + "'";
                      if(!objConn.ExecuteSQL(str_updateuser,false))
                        {
                           //objConn.MsgBox(this.Page,"执行SQL语句失败"+str_updateuser);
                        }
                 } 
             }
-            string s_SQL="select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='" + s_QQ_id + "'";      
+            string s_SQL = "select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='" + gys_QQ_id + "'";      
              dt_yh = objConn.GetDataTable(s_SQL);
              
             if(dt_yh!=null&&dt_yh.Rows.Count>0)
@@ -152,27 +161,28 @@
 		&nbsp&nbsp &nbsp&nbsp &nbsp&nbsp  
 		<span style="color: Red;font-size:16px">
 		<%
-                if (passed == "待审核")
-                {
-                    Response.Write("请耐心等候,您更新的个人资料已提交,正在审核当中,我方工作人员会尽快给您答复!");
-                }
-                else if (passed == "通过")
-                {
-                    //蒋，2014年8月13日注释厂商认领模块，添加输出语句
-                    //if (passed_gys == "通过")
-                    //{
-                    //    Response.Write("恭喜您!厂商已认领成功,可以进行管理");
-                    //}
-                    //else if (passed_gys != "通过")
-                    //{
-                    //    Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领");
-                    //}
-                   Response.Write("恭喜您!审核已通过，您可以对生厂商、分销商和材料信息的进行管理");
-                }
-                else
-                {
-                    Response.Write("您尚未补充个人信息，请填写个人信息");
-                }    
+            //蒋，2014年8月21日    
+                //if (passed == "待审核")
+                //{
+                //    Response.Write("请耐心等候,您更新的个人资料已提交,正在审核当中,我方工作人员会尽快给您答复!");
+                //}
+                //else if (passed == "通过")
+                //{
+                //    //蒋，2014年8月13日注释厂商认领模块，添加输出语句
+                //    //if (passed_gys == "通过")
+                //    //{
+                //    //    Response.Write("恭喜您!厂商已认领成功,可以进行管理");
+                //    //}
+                //    //else if (passed_gys != "通过")
+                //    //{
+                //    //    Response.Write("恭喜您!审核已通过,可以对生产厂商进行认领");
+                //    //}
+                //   Response.Write("恭喜您!审核已通过，您可以对生厂商、分销商和材料信息的进行管理");
+                //}
+                //else
+                //{
+                //    Response.Write("您尚未补充个人信息，请填写个人信息");
+                //}    
                   //if(passed_gys.Equals("通过")&&Convert.ToString(row["是否验证通过"])=="通过")  
                   //{
                   //   Response.Write("恭喜您!厂商已认领成功,可以进行管理.");					 
@@ -189,13 +199,14 @@
                   //    }	
                   //}				  
 		%>
-        <%
+<%--蒋，2014年8月21日--%>
+       <%-- <%
             //蒋，2014年8月13更改判断语句
             //if (passed != "待审核"&&passed != "通过")
                 if (passed != "待审核" && name=="")
             {%>
-               <span class="zyy1"><a href="gysbtxx.aspx">补填个人信息</a></span>
-            <%}  %>
+               <span class="zyy1"><a href="grxx.aspx">补填个人信息</a></span>
+            <%}  %>--%>
 		</span>
 		</span>
 		<span class="zy2">
@@ -206,57 +217,59 @@
 		</span>
 			
     </div>	
-
-      <%                   
-		    if (passed!="通过")
+    <%--/蒋，2014年8月22日--%>
+    <%--  <%                   
+          if (power)//判断权限
             {
-    %>
-    <div class="gyzy2">
+    %>--%>
+     <%--/蒋，2014年8月22日--%>
+   <%--<div class="gyzy2">--%>
     <%--蒋桂娥，2014年8月13日注释认领厂商
         <span class="zyy1"><a href="gysbtxx.aspx">认领厂商</a></span>--%>
-        <span class="zyy1" style="margin-left:100px;"><a href="gysbtxx.aspx">管理生厂商信息</a></span>
-        <span class="zyy1" style="margin-left:100px;"><a href="gysbtxx.aspx">管理分销商信息</a></span>
-        <span class="zyy1" style="margin-left:100px;"><a href="gysbtxx.aspx">管理材料信息</a></span>
+        <%--<span class="zyy1" style="margin-left:100px;"><a href="grxx.aspx">管理生厂商信息</a></span>
+        <span class="zyy1" style="margin-left:100px;"><a href="grxx.aspx">管理分销商信息</a></span>
+        <span class="zyy1" style="margin-left:100px;"><a href="grxx.aspx">管理材料信息</a></span>
         
-    </div>
-    <% }%>
+    </div>--%>
+    <%--<% }%>--%>
 
-		<%
+		<%--<%
 	        //蒋，2014年8月13日，注释了判断语句，新增了if语句
 	             //if (passed.Equals("通过")&&(passed_gys==""||passed_gys.Equals("待审核"))){	
                      if(passed.Equals("通过")&&(name=="")){
-	     %>
-	     <div class="gyzy2">
+	     %>--%>
+	     <%--<div class="gyzy2">--%>
           <%--蒋桂娥，2014年8月13日注释认领厂商，并改<span>标签的单击事件alert（"请先认领厂商"）改为alert（"请完善个人信息"）
              <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>--%>
              <%--<span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理生产商信息</a></span>
              <span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理分销商信息</a></span>
              <span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理材料信息</a></span>--%>
-              <span class="zyy1"style="margin-left:100px;"><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理生产商信息</a></span>
+             <%-- <span class="zyy1"style="margin-left:100px;"><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理生产商信息</a></span>
              <span class="zyy1" style="margin-left:100px;"><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理分销商信息</a></span>
              <span class="zyy1" style="margin-left:100px;"><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理材料信息</a></span>
         
-         </div>
-	    <%}
-          //蒋桂娥，2014年8月13日,注释if语句，新增else-if语句
+         </div>--%>
+	  <%--  <%}--%>
+          <%--//蒋桂娥，2014年8月13日,注释if语句，新增else-if语句
        //if (passed_gys.Equals("通过")&&passed=="通过"){ 
                      else if (passed.Equals("通过") && name != "")
                      { 
-           %>
+           %>--%>
         <div class="gyzy2">
         <%--蒋桂娥，2014年8月13日注释认领厂商，并添加了类型的判断（if-else）以及权限的显示
             <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>--%>
-            <% if (lx == "生产商")
+            <% if (power.Contains("管理生产商"))
                {%>
             <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx">管理生产商信息</a></span>
             <span class="zyy1" style="margin-left:100px;"><a href="glfxsxx.aspx">管理分销商信息</a></span>
             <span class="zyy1" style="margin-left:100px;"><a href="gysglcl.aspx">管理材料信息</a></span>
             <%}%> 
             <%else
-                { %>
+                {
+                    Response.Write("分销商权限"); %>
             <span class="zyy1" style="margin-left:180px;"><a href="glfxsxx.aspx">管理分销商信息</a></span>
             <span class="zyy1" style="margin-left:180px;"><a href="gysglcl.aspx">管理材料信息</a></span>       
-    <%} }%>
+    <%} %>
     </div>	
    
    
