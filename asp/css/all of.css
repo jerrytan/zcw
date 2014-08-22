@@ -35,7 +35,7 @@
 
 /* 石材 */
 
-.sc{ width:1000px; height:auto; float:left; margin:20px 0 20px 10px; display:inline;}
+.sc{ width:980px; height:auto; float:left; margin:20px 0 20px 10px; display:inline;}
 .sc1{ width:950px; height:30px; float:left; border-bottom:#FF0000 solid 1px; line-height:30px; font-size:14px; color:#707070; padding:0 0 0 30px;}
 .sc2{ width:980px; height:30px; float:left; margin-top:10px;}
 .sc2 a{ width:100px; height:30px; float:left; margin:0 30px 0 30px; display:inline; line-height:30px; color:#707070; font-size:14px;}
@@ -51,11 +51,11 @@
 .pxleft{ width:730px; height:auto; float:left;}
 .pxtu{ width:166px; height:auto; float:left; margin:20px 0 0 10px; display:inline;}
 .pxtu img{padding:2px; border:#a1a1a1 solid 1px;}
-.pxtu1{  color:#0071b3; width:156px; height:30px; line-height:30px; margin:0 0 0 10px; display:inline; float:left;}
+.pxtu1{  color:#0033FF; width:156px; height:30px; line-height:30px; margin:0 0 0 10px; display:inline; float:left;}
 .pxtu2{ float:left; margin:0 0 0 10px; display:inline;  line-height:24px;}
 .fy2{ width:400px; margin:0 auto;}
 .fy3{ width:400px; height:50px; margin:20px 0 20px 0; display:inline; float:left;}
-.pxright0{ width:208px; height:auto; float:right; display:inline;}
+.pxright0{ width:208px; height:auto; float:right; margin:20px 10px 0 0; display:inline;}
 .pxright{ width:208px; height:368px; float:left;  background:url(../images/234_03.jpg);}
 .pxright1{ width:150px; height:auto; margin:0 auto;}
 .pxright1 ul{ width:150px; height:auto; margin:75px 0 0 0;}
@@ -69,37 +69,22 @@
 .xzss{ width:980px; height:auto; float:left; margin:20px 0 0 0;}
 .ppxz{ width:950px; height:auto; float:left; margin:0 0 0 30px; display:inline;}
 .ppxz1{ width:50px; height:30px; float:left; line-height:30px;}
-.ppxz2 a{ width:45px; float:left; padding:0 10px 0 10px; line-height:30px; color:#0071b3;}
+.ppxz2 a{ width:45px; float:left; padding:0 10px 0 10px; line-height:30px; color:#0033FF;}
 .ppxz2 a img{ padding:5px 0 0 0;}
 .dlspx{ width:980px; height:30px; float:left; padding-left:30px; display:inline; border-top:#707070 solid 1px; margin-top:20px;}
 .dlspx1{  width:50px; height:30px; float:left; line-height:30px;}
 .dlspx2{ width:50px; height:30px; float:left; line-height:30px;}
-.dlspx2 a{ color:#0071b3;}
+.dlspx2 a{ color:#0033FF;}
 .dlspx3{ width:50px; height:30px; float:left; line-height:30px; margin-right:10px; display:inline;}
 .dlspx3 img{ float:right; padding:9px 0 0 5px; display:inline;}
 .fxk{ float:left; margin:8px 5px 0 0; display:inline;}
 .dlspx4{ width:128px; height:22px; float:left; margin:4px 0 0 10px; display:inline; line-height:22px; text-align:center; font-size:14px; background:url(../images/qwqa.jpg);}
 .dlspx4 a{ color:#fff;}
-.dlspxl{
-	width:770px;
-	height:auto;
-	float:left;
-	border:1px solid #ddd;
-}
-.dlspxt{
-	width:172px;
-	height:auto;
-	float:left;
-	margin:20px 0 0 13px;
-	display:inline;
-	border:1px solid #ddd;
-	background-color:#F0F0F0;
-}
-.dlspxt img{padding:5px; border:#a1a1a1 solid 0px;}
-.dlsl{ width:96px; height:30px; float:left; margin:0 0 0 10px; display:inline; color:#0071b3; line-height:30px;}
+.dlspxl{ width:730px; height:auto; float:left;}
+.dlspxt{ width:166px; height:auto; float:left; margin:10px 0 0 10px; display:inline;}
+.dlspxt img{padding:2px; border:#a1a1a1 solid 1px;}
+.dlsl{ width:96px; height:30px; float:left; margin:0 0 0 10px; display:inline; color:#0033FF; line-height:30px;}
 .dlsgg{ width:156px; height:30px; float:left; margin:0 0 0 10px; display:inline; line-height:30px;}
-
-
 
 
 /* 详细 */
@@ -345,7 +330,7 @@
 }
 /*第一种颜色*/
 #table tr.color1{
-	background-color:#f9fbff;
+	background-color:#f2f6ff;
 }
 /*第二种颜色*/
 #table tr.color2 {

@@ -26,8 +26,7 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-        string sql_GetData = "select * from 用户表 where dw_id = (select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "')";   
-        //string sql_GetData = "select * from 用户表 where dw_id = ''";   //测试
+        string sql_GetData = "select * from 用户表 where dw_id = (select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "') and 等级='普通用户'";   
 
         dtGys = dc.GetDataTable(sql_GetData);
 
@@ -39,7 +38,7 @@ public partial class asp_hyyhgl : System.Web.UI.Page
             ug.QQ = dr["QQ号码"].ToString();
             ug.Name = dr["姓名"].ToString();
             ug.Phone = dr["手机"].ToString();
-            ug.Email = "";     //dr["邮箱"].ToString();
+            ug.Email = dr["邮箱"].ToString();
             ug.Power = dr["角色权限"].ToString();
             listGys.Add(ug);
         }

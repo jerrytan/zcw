@@ -9,6 +9,46 @@
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all%20of.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
+        function onloadEvent(func) {
+            var one = window.onload
+            if (typeof window.onload != 'function') {
+                window.onload = func
+            }
+            else {
+                window.onload = function () {
+                    one();
+                    func();
+                }
+            }
+        }
+        function showtable() {
+            var tableid = 'table'; 	//表格的id
+            var overcolor = '#fff0e9'; //鼠标经过颜色
+            var color1 = '#f2f6ff'; //第一种颜色
+            var color2 = '#fff'; 	//第二种颜色
+            var tablename = document.getElementById(tableid)
+            var tr = tablename.getElementsByTagName("tr")
+            for (var i = 1; i < tr.length; i++) {
+                tr[i].onmouseover = function () {
+                    this.style.backgroundColor = overcolor;
+                }
+                tr[i].onmouseout = function () {
+                    if (this.rowIndex % 2 == 0) {
+                        this.style.backgroundColor = color1;
+                    } else {
+                        this.style.backgroundColor = color2;
+                    }
+                }
+                if (i % 2 == 0) {
+                    tr[i].className = "color1";
+                } else {
+                    tr[i].className = "color2";
+                }
+            }
+        }
+        onloadEvent(showtable);
+    </script>
+    <script type="text/javascript">
         function addPage() {
             newwin = window.open('hyyhgl_wh.aspx?state=0', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
@@ -19,20 +59,27 @@
             var name = tds[3].innerText;
             var phone = tds[4].innerText;
             var email = tds[5].innerText;
-            newwin = window.open('hyyhgl_wh.aspx?qq='+qq+'&name='+name+'&phone='+phone+'&email='+email+'&state=1', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
+            var cb1 = false;
+            var cb2 = false;
+            var cb3 = false;
+//            if (tds[6].checked) { cb1 = true; }
+//            alert(tds[6].innerHTML);
+//            if (tds[8].checked) { cb2 = true; }
+//            if (tds[10].checked) { cb3 = true; }
+            newwin = window.open('hyyhgl_wh.aspx?qq=' + qq + '&name=' + name + '&phone=' + phone + '&email=' + email + '&cb1=' + cb1 + '&cb2=' + cb2 + '&cb3=' + cb3 + '&state=1', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
-//        function Checked(obj) {
-//            if (!obj.checked) {
-//                return;
-//            }
-//            var tr = obj.parentNode.parentNode;
-//            var tds = tr.cells;
-//            var str = "你选中";
-//            for (var i = 0; i < tds.length; i++) {
-//                str += tds[i].innerText+"--";
-//            }
-//            alert(str);
-//        }
+        //        function Checked(obj) {
+        //            if (!obj.checked) {
+        //                return;
+        //            }
+        //            var tr = obj.parentNode.parentNode;
+        //            var tds = tr.cells;
+        //            var str = "你选中";
+        //            for (var i = 0; i < tds.length; i++) {
+        //                str += tds[i].innerText+"--";
+        //            }
+        //            alert(str);
+        //        }
     </script>
 </head>
 <body>
@@ -62,9 +109,8 @@
             border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
         <input id="chkSearchInResult" type="checkbox" name="chkSearchInResult" checked="checked" /><label
             for="chkSearchInResult">在结果中检索</label>&nbsp;&nbsp;
-        <input type="submit" name="filter" value="检索" id="filter" class="filter" 
-            style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
-            width: 37px;" />
+        <input type="submit" name="filter" value="检索" id="filter" class="filter" style="color: Black;
+            border-style: None; font-family: 宋体; font-size: 12px; height: 20px; width: 37px;" />
         &nbsp;&nbsp;
         <input type="submit" name="btnDocNew" value="添加" onclick="addPage();" id="btnDocNew"
             class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;
@@ -74,13 +120,13 @@
         <input type="submit" name="btnDelete" value="删除选中行" onclick="return confirm(&#39;真的彻底删除选中的记录吗？&#39;);"
             id="btnDelete" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
             font-size: 12px; height: 20px; width: 72px;" />
-          <%--  <asp:Button ID="btnDelete" runat="server" Text="删除选中行" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
+        <%--  <asp:Button ID="btnDelete" runat="server" Text="删除选中行" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
             font-size: 12px; height: 20px; width: 72px;" onclick="btnDelete_Click"/>--%>
     </div>
     <!-- 检索 结束-->
     <!-- 用户信息 开始 -->
     <div class="yhb">
-        <table border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" id="Gys_Table" >
+        <table border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" id="table">
             <thead>
                 <tr>
                     <th align="center">
@@ -114,7 +160,7 @@
                   { %>
                 <tr>
                     <td align="center">
-                        <input type="checkbox"/>
+                        <input type="checkbox" />
                     </td>
                     <td align="center">
                         <%=i+1 %>
@@ -132,114 +178,116 @@
                         <%=listGys[i].Email%>
                     </td>
                     <td>
-                         <%if (listGys[i].Power.ToString().Contains("管理生产商,管理分销商,管理材料信息")) %>
-                        <%{%>                            
+                        <%string powerGys = listGys[i].Power.ToString(); %>
+                        <%if (powerGys.Contains("管理生产商") && powerGys.Contains("管理分销商") && powerGys.Contains("管理材料信息")) %>
+                        <%{%>
                         <label>
-                            <input   type="checkbox"  checked="checked"  value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
                         </label>
                         <label>
-                            <input   type="checkbox" checked="checked"  value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
                             管理分销商</label>
                         <label>
-                            <input    type="checkbox" checked="checked"  value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
                             管理材料信息</label>
-                         <% } %>
-                         <%else if (listGys[i].Power.ToString().Contains("管理生产商,管理分销商")) %>
-                        <%{%>                            
+                        <% } %>
+                        <%else if (powerGys.Contains("管理生产商") && powerGys.Contains("管理分销商")) %>
+                        <%{%>
                         <label>
-                            <input  type="checkbox"  checked="checked"  value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
                         </label>
                         <label>
-                            <input   type="checkbox" checked="checked"  value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
                             管理分销商</label>
                         <label>
-                            <input    type="checkbox"   value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
                             管理材料信息</label>
-                         <% } %>
-                          <%else if (listGys[i].Power.ToString().Contains("管理生产商,理材料信息")) %>
-                        <%{%>                            
+                        <% } %>
+                        <%else if (powerGys.Contains("管理生产商") && powerGys.Contains("管理材料信息")) %>
+                        <%{%>
                         <label>
-                            <input   type="checkbox"  checked="checked"  value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
                         </label>
                         <label>
-                            <input  type="checkbox"   value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" value="管理分销商" name="cbx2" runat="server" />
                             管理分销商</label>
                         <label>
-                            <input  type="checkbox"  checked="checked" value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
                             管理材料信息</label>
-                         <% } %>
-                           <%else if (listGys[i].Power.ToString().Contains("管理分销商,理材料信息")) %>
-                        <%{%>                            
+                        <% } %>
+                        <%else if (powerGys.Contains("管理分销商") && powerGys.Contains("管理材料信息")) %>
+                        <%{%>
                         <label>
-                            <input   type="checkbox"    value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
                         </label>
                         <label>
-                            <input  type="checkbox"  checked="checked" value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
                             管理分销商</label>
                         <label>
-                            <input   type="checkbox"  checked="checked" value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
                             管理材料信息</label>
-                         <% } %>
-                        <%else if (listGys[i].Power.ToString().Contains("管理生产商")) %>
-                        <%{%>                            
+                        <% } %>
+                        <%else if (powerGys.Contains("管理生产商")) %>
+                        <%{%>
                         <label>
-                            <input  type="checkbox"  checked="checked"  value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
                         </label>
                         <label>
-                            <input  type="checkbox"   value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" value="管理分销商" name="cbx2" runat="server" />
                             管理分销商</label>
                         <label>
-                            <input   type="checkbox"   value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
                             管理材料信息</label>
-                         <% } %>
-                         <%else if(listGys[i].Power.ToString().Contains("管理分销商")){ %>
-                           <label>
-                            <input   type="checkbox"    value="管理生产商" name="cbx1" runat="server" />
+                        <% } %>
+                        <%else if (powerGys.Contains("管理分销商"))
+                            { %>
+                        <label>
+                            <input type="checkbox" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
                         </label>
                         <label>
-                            <input   type="checkbox"  checked="checked"  value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
                             管理分销商</label>
                         <label>
-                            <input  type="checkbox"   value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
                             管理材料信息</label>
-                         <%} %>
-                           <%else if (listGys[i].Power.ToString().Contains("管理材料信息"))
-                               { %>
-                           <label>
-                            <input    type="checkbox"    value="管理生产商" name="cbx1" runat="server" />
+                        <%} %>
+                        <%else if (powerGys.Contains("管理材料信息"))
+                            { %>
+                        <label>
+                            <input type="checkbox" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
                         </label>
                         <label>
-                            <input   type="checkbox"  value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" value="管理分销商" name="cbx2" runat="server" />
                             管理分销商</label>
                         <label>
-                            <input   type="checkbox"   checked="checked"  value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
                             管理材料信息</label>
-                         <%} %>
-                          <%else 
-                               { %>
-                           <label>
-                            <input  type="checkbox"  value="管理生产商" name="cbx1" runat="server" />
+                        <%} %>
+                        <%else
+                            { %>
+                        <label>
+                            <input type="checkbox" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
                         </label>
                         <label>
-                            <input  type="checkbox"  value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" value="管理分销商" name="cbx2" runat="server" />
                             管理分销商</label>
                         <label>
-                            <input  type="checkbox"  value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
                             管理材料信息</label>
-                         <%} %>
+                        <%} %>
                     </td>
                     <td align="center">
-                        <input type="button" name="filter" value="编辑" id="Submit1" onclick="changePage(this);" class="filter" 
-                            style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
-                            width: 37px;" />
+                        <input type="button" name="filter" value="编辑" id="Submit1" onclick="changePage(this);"
+                            class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;
+                            height: 20px; width: 37px;" />
                     </td>
                 </tr>
                 <%} %>
