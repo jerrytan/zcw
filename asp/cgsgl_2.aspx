@@ -475,10 +475,11 @@
     <div class="cgdlqq">
 		    <div class="cgdlex">
 			    <div class="cgdlex2">
-                <%if (xx == "否")
+                <%--蒋，2014年8月25日，注释if判断--%>
+                <%--<%if (xx == "否")
                   {%>
                    <span class="cgdlex3">请补填您的详细信息</span>
-                <%}
+                <%}--%>
                   else
                   {
                       if (sftg == "不通过")

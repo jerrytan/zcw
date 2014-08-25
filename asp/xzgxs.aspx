@@ -62,12 +62,10 @@
         public DataTable dt_fxpp = new DataTable();
         protected void Page_Load(object sender, EventArgs e)
         {
-            
             if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
             {
                 s_yh_id = Session["GYS_YH_ID"].ToString();
             }
-                
             if (Request["xzlx"]!=null&&Request["xzlx"].ToString()!="")
             {
                 xzlx = Request["xzlx"].ToString();
@@ -84,7 +82,6 @@
             if (Request["gxs_id"]!=null&&Request["gxs_id"].ToString()!="")
             {
                 gxs_id = Request.QueryString["gxs_id"].ToString();
-                Response.Write("供应商编号："+gxs_id);//253
             }           
            
                 if (xzlx=="分销商")  //当前用户是生产商
@@ -120,13 +117,11 @@
          }
         protected void updateUserInfo(object sender, EventArgs e)
         {
-            //蒋，2014年8月21日
-            string pp_id = dt_ppxx.Rows[0]["pp_id"].ToString();	    //品牌id	
-            string pp_name = dt_ppxx.Rows[0]["品牌名称"].ToString();  //品牌名称
-            Response.Write("品牌编号 :" + pp_id);
-            Response.Write("品牌名 :" + pp_name);
-            sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "'";
-            dt_ppxx = objConn.GetDataTable(sSQL);
+            //蒋，2014年8月21日 
+            //string pp_id =Request["pp_id"];	//品牌id	
+            string pp_id = this.txt_ppid.Value;//品牌id	
+            Response.Write("品牌编号：" + pp_id);
+            //蒋，2014年8月25日
             qymc = this.s0.Value + this.s1.Value + this.s2.Value + this.s3.Value;
             if (this.gys.Value == "")
             {
@@ -183,16 +178,17 @@
                 bool b = xzpp(id);
                 if (b)
                 {
-                    Response.Write("<script>window.alert('添加成功！');</" + "script>");
+                    Response.Write("成功进入");
                     //蒋，2014年8月21日，当前品牌信息录入材料供应商信息从表 
-                    string addppxx = "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime)"+
-                        "values('" + pp_id + "','" + dt_ppxx.Rows[0]["品牌名称"] + "',1,'" + gys_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
+                    string addppxx = "insert into 材料供应商信息从表(pp_id,是否启用,gys_id,等级,范围,供应商,updatetime)"+
+                        "values('" + pp_id + "',1,'" + gys_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
                         "'" + this.gys.Value + "',(select getdate()))";
                     objConn.ExecuteSQL(addppxx, true);
                     string update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息表 where 供应商 ='"+this.gys.Value+"')";
                     objConn.ExecuteSQL(update,true);
                     Response.Write("<script>window.location.href='gyszym.aspx';</" + "script>");
                     //string update = "u";
+                    //Response.Write("<script>window.alert('添加成功！');</" + "script>");
                 }
                 else
                 {
@@ -238,11 +234,15 @@
             if(xzlx=="分销商")//当前用户是生产商
             {
                 //  string fxs_id = Request["gys_id_hid"]; 	//分销商id	
-                string pp_id = Request["pp_id"];	    //品牌id	
-                string pp_name = Request["pp_name"];   //品牌名称
+                string pp_id = this.txt_ppid.Value;	
+                //蒋，2014年8月25日，注释获取品牌名和pp_id
+                //string pp_id = Request["pp_id"];	    //品牌id
+                //string sqlppname = "select 品牌名称 from 品牌字典  where pp_id='"+pp_id+"'";
+                //Response.Write(sqlppname);
+                //string pp_name = Request["pp_name"];   //品牌名称
                 //蒋，2014年8月21日，
                 //sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,updatetime) values('" + pp_id + "','" + pp_name + "', 1,'" + gys_id + "',(select getdate()) ) ";   
-                sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,分销商,updatetime) values('" + pp_id + "','" + pp_name + "', 1,'" + gys_id + "','"+this.gys.Value+"',(select getdate()) ) ";
+                sSQL = "insert into  分销商和品牌对应关系表 (pp_id,是否启用,fxs_id,分销商,updatetime) values('" + pp_id + "',1,'" + gys_id + "','" + this.gys.Value + "',(select getdate()) ) ";
                 b = objConn.ExecuteSQL(sSQL, true);
                 
             }
@@ -311,7 +311,6 @@
             sSQL = "select gys_id from 材料供应商信息表 where 供应商='" + this.gys.Value + "' and 联系人手机='" + this.lxrsj.Value + "' and 组织机构编号='" + this.zzjgbh.Value + "'";
             gys_id = objConn.DBLook(sSQL);
             this.gys_id_hid.Value = gys_id;
-            Response.Write("<b/>" + gys_id);
             return gys_id;
         }       
     </script>
@@ -341,9 +340,9 @@
          xmlhttp.send();
      }
 
-     function updateFLfxs(id)
-     {
-
+     function updateFLfxs(ID) {
+        <%-- //蒋，2014年8月25日，添加--%>
+         document.getElementById("txt_ppid").value = ID;
           var xmlhttp;
           if (window.XMLHttpRequest)
           {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -360,7 +359,6 @@
                   var json = array;
                   var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 	
                   for (var i = 0; i < myobj.length; i++) {  //遍历,将ajax返回的数据填充到文本框中				
-
                       document.getElementById('scs').innerHTML = myobj[i].scs;
                       document.getElementById('grade').innerHTML = myobj[i].dj
                       document.getElementById('scope').innerHTML = myobj[i].fw;
@@ -370,7 +368,7 @@
                   }
               }
           }
-          xmlhttp.open("GET", "xzgxs2.aspx?id=" + id, true);
+          xmlhttp.open("GET", "xzgxs2.aspx?id=" + ID, true);
           xmlhttp.send();  
         }    
  </script>
@@ -392,8 +390,10 @@
                         <select id="ppmc" name="" style="width: 200px" onchange="updateFLfxs(this.options[this.options.selectedIndex].value)">
                             <% for (int i=0;i< dt_ppxx.Rows.Count;i++) {%>
                                <option value='<%=dt_ppxx.Rows[i]["pp_id"].ToString() %>'><%=dt_ppxx.Rows[i]["品牌名称"]%></option>
-                           <% }%>
+                           <%}%>
                         </select>
+                        <%--蒋，2014年8月25日，添加--%>
+                        <input type=hidden id=txt_ppid value="" runat="server" />
                     </td>
                 </tr>
                 <tr>

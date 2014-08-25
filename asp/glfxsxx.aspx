@@ -40,7 +40,6 @@
             }
         }
         xmlhttp.open("GET", "glfxsxx4.aspx?id=" + id + "&lx=pp", true);
-        alert("传往gl4的id："+id);
         xmlhttp.send();
     }
     function Update_gys(id)
@@ -63,7 +62,6 @@
 
                 if (myobj.length == 0) 
                 {
-                    alert("判断成功！");
                     document.getElementById('companyname').value = "";       //供应商
                     document.getElementById('address').value = "";        //地址
                     document.getElementById('tel').value = "";                //电话  			 
@@ -100,7 +98,6 @@
             }
         }
         xmlhttp.open("GET", "glfxsxx3.aspx?id=" + id, true);
-        alert("传往gl3的id："+id);
         xmlhttp.send();
 
         if (window.XMLHttpRequest)
