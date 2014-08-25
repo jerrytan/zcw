@@ -34,6 +34,7 @@
     //public string passed_gys = "";
     public string gys_QQ_id = "";//蒋，2014年8月21日(供应商id)
     public string power = "";//用户权限（蒋，22日）
+    //蒋，2014年8月25日注释
     public string s_yh_id = "";
     public string lx="";
     protected void Page_Load(object sender, EventArgs e)
@@ -129,7 +130,7 @@
 
                 //need to set session value
 
-                Session["GYS_YH_ID"] = s_yh_id;
+                Session["GYS_YH_ID"] = gys_QQ_id;
 
                 //(供应商申请)的yh_id 是在认领厂商之后更新的
                 //蒋，2014年8月13日，注释sql以下语句

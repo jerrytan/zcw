@@ -59,9 +59,9 @@
             dt_yh = objConn.GetDataTable(sSQL_yh);
             if (dt_yh != null && dt_yh.Rows.Count > 0)
             {
-                this.companyname.Value = dt_yh.Rows[0]["公司名称"].ToString();
-                this.companyaddress.Value = dt_yh.Rows[0]["公司地址"].ToString();
-                this.companytel.Value = dt_yh.Rows[0]["公司电话"].ToString();
+                //this.companyname.Value = dt_yh.Rows[0]["公司名称"].ToString();
+                //this.companyaddress.Value = dt_yh.Rows[0]["公司地址"].ToString();
+                //this.companytel.Value = dt_yh.Rows[0]["公司电话"].ToString();
                 this.contactorname.Value = dt_yh.Rows[0]["姓名"].ToString();
                 this.contactortel.Value = dt_yh.Rows[0]["手机"].ToString();
                 this.contactorqqid.Value = dt_yh.Rows[0]["QQ号码"].ToString();               
@@ -89,28 +89,32 @@
             this.contactorname.Focus();
             return;
         }
-        if (this.companyname.Value == "")
+        if (this.contactorqqid.Value == "")
         {
-            objConn.MsgBox(this.Page, "公司名称不能为空,请填写!");
-            this.companyname.Focus();
+            objConn.MsgBox(this.Page, "QQ号码不能为空,请填写!");
+            this.contactorqqid.Focus();
             return;
         }
-        if (this.companyaddress.Value == "")
-        {
-            objConn.MsgBox(this.Page, "公司地址不能为空,请填写!");
-            this.companyaddress.Focus();
-            return;
-        }
-        if (this.companytel.Value == "")
-        {
-            objConn.MsgBox(this.Page, "公司电话不能为空,请填写!");
-            this.companytel.Focus();
-            return;
-        }
+        //if (this.companyname.Value == "")
+        //{
+        //    objConn.MsgBox(this.Page, "公司名称不能为空,请填写!");
+        //    this.companyname.Focus();
+        //    return;
+        //}
+        //if (this.companyaddress.Value == "")
+        //{
+        //    objConn.MsgBox(this.Page, "公司地址不能为空,请填写!");
+        //    this.companyaddress.Focus();
+        //    return;
+        //}
+        //if (this.companytel.Value == "")
+        //{
+        //    objConn.MsgBox(this.Page, "公司电话不能为空,请填写!");
+        //    this.companytel.Focus();
+        //    return;
+        //}
         string s_updateUserinfo = " update 用户表   set 手机='" +this.contactortel.Value + "', 姓名='" +this.contactorname.Value +
-                                  "',公司名称='" + this.companyname.Value + "',公司地址='"+this.companyaddress.Value+
-                                  "',公司电话='" + this.companytel.Value + "',QQ号码='"+this.contactorqqid.Value+
-                                  "',是否验证通过='待审核',类型='采购商' where yh_id='" + s_yh_id + "',updatetime=(select getdate()";
+                                  "',QQ号码='"+this.contactorqqid.Value+"',是否验证通过='待审核',类型='采购商' where yh_id='" + s_yh_id + "',updatetime=(select getdate()";
                                   b=objConn.ExecuteSQL(s_updateUserinfo, true);
          if(!b)
         {
@@ -132,14 +136,14 @@
           <%} %>
 		<div class="cggybtr">
 			<dl>
-				<dd>贵公司名称：</dd>  	<dt><input id="companyname" name="companyname" type="text" class="cgggg" runat="server"  /></dt>
+				<%--<dd>贵公司名称：</dd>  	<dt><input id="companyname" name="companyname" type="text" class="cgggg" runat="server"  /></dt>
 				<dd>贵公司地址：</dd>  	<dt><input id="companyaddress" name="companyaddress" type="text" class="cgggg" runat="server" /></dt>
-				<dd>贵公司电话：</dd>  	<dt><input id="companytel" name="companytel" type="text" class="ggg" runat="server" /></dt>
-				<dd>您的姓名：</dd>    		<dt><input  id="contactorname" name="contactorname" type="text" class="cgggg" runat="server"/></dt>
+				<dd>贵公司电话：</dd>  	<dt><input id="companytel" name="companytel" type="text" class="ggg" runat="server" /></dt>--%>
+				<dd>您的姓名：</dd>    		<dt><input  id="contactorname" name="contactorname" type="text" disabled class="cgggg" runat="server"/></dt>
 				<dd>您的电话：</dd>    		<dt><input id="contactortel" name="contactortel" type="text" class="cgggg"  runat="server"/></dt>			
-				<dd>您的QQ号码：</dd>   	<dt><input id="contactorqqid" name="contactorqqid" type="text" class="cgggg" runat="server" /></dt>
-				<dd>贵公司的营业执照： 	</dd><dt><input name="" type="text" class="ggg" /> <a href="#"><img src="images/sc_03.jpg" /></a></dt>
-				<dd>贵公司的资质证书： 	</dd><dt><input name="" type="text" class="ggg" /> <a href="#"><img src="images/sc_03.jpg" /></a></dt>
+				<dd>您的QQ号码：</dd>   	<dt><input id="contactorqqid" name="contactorqqid" type="text" disabled class="cgggg" runat="server" /></dt>
+				<%--<dd>贵公司的营业执照： 	</dd><dt><input name="" type="text" class="ggg" /> <a href="#"><img src="images/sc_03.jpg" /></a></dt>--%>
+				<%--<dd>贵公司的资质证书： 	</dd><dt><input name="" type="text" class="ggg" /> <a href="#"><img src="images/sc_03.jpg" /></a></dt>--%>
 			</dl>
 			<span class="cggybtan"><asp:ImageButton runat="server" ID="updateButtion" ImageUrl="images/aaaa_03.jpg"  OnClick="updateUserInfo"  /></span>
 		</div>

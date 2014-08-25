@@ -36,7 +36,8 @@
     protected DataTable dt_yjfl = new DataTable();  //取一级分类显示名称(材料分类表)
     protected DataTable dt_ejfl = new DataTable();  //取二级分类显示名称(材料分类表)
     public string sSQL = "";
-    public string s_yh_id = "";                     //用户ID
+    //public string s_yh_id = "";                     //用户ID
+    public string gys_QQ_id = "";
     public string gys_id = "";                      //供应商id
     public DataConn objConn = new DataConn();
     public string[] yjflbm;
@@ -44,7 +45,7 @@
     {
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
-            s_yh_id = Session["GYS_YH_ID"].ToString();
+            gys_QQ_id = Session["GYS_YH_ID"].ToString();
         }
         Products_gys_cl();
         
@@ -80,16 +81,16 @@
     {
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
-            s_yh_id = Session["GYS_YH_ID"].ToString();
+            gys_QQ_id = Session["GYS_YH_ID"].ToString();
         }
-        sSQL = "select 等级 from 用户表 where yh_id='" + s_yh_id + "' ";   //141           
+        sSQL = "select 等级 from 用户表 where yh_id='" + gys_QQ_id + "' ";   //141           
         string vip = objConn.DBLook(sSQL);
         if(vip=="VIP用户")
         {
             userIsVIP=true;
         }
         //根据用户id 查询供应商id
-        sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";   //141           
+        sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + gys_QQ_id + "' ";   //141           
         DataTable dt_gys = objConn.GetDataTable(sSQL);
     
         if (dt_gys != null && dt_gys.Rows.Count > 0)
@@ -156,11 +157,11 @@
 
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
-            s_yh_id = Session["GYS_YH_ID"].ToString();
+            gys_QQ_id = Session["GYS_YH_ID"].ToString();
         }
         string gys_id = "";
         //根据用户id 查询供应商id
-        sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";
+        sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + gys_QQ_id + "' ";
         DataTable dt_gys = objConn.GetDataTable(sSQL);
         if (dt_gys != null && dt_gys.Rows.Count > 0)
         {
@@ -228,7 +229,7 @@
        
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
-            s_yh_id = Session["GYS_YH_ID"].ToString();
+            gys_QQ_id = Session["GYS_YH_ID"].ToString();
         }
         string gys_id = "";
         //根据用户id 查询供应商id
@@ -236,7 +237,7 @@
         string clidstr = Request.Form["clid"];
         if (Request.Form["clid"] != "" && Request.Form["clid"] != null)
         {
-            sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";
+            sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + gys_QQ_id + "' ";
             DataTable dt_gys = objConn.GetDataTable(sSQL);
             if (dt_gys != null && dt_gys.Rows.Count > 0)
             {

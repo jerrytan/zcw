@@ -173,7 +173,9 @@
         public string gys_id="";
         public DataConn objConn=new DataConn();
         public string sSQL="";
-        public string s_yh_id="";
+      //蒋，2014年8月25日注释
+        // public string s_yh_id="";
+        public string gys_QQ_id = "";
         public string sp_result="";                 //审批结果
         public DataTable dt_gysxxs = new DataTable();
          public string gys_type = "";                  //单位类型  
@@ -182,9 +184,9 @@
         {
             if(Session["GYS_YH_ID"]!=null)
             {
-                 s_yh_id = Session["GYS_YH_ID"].ToString(); 
+                gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
             }
-			    sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='"+s_yh_id+"' ";  //查询单位类型
+            sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + gys_QQ_id + "' ";  //查询单位类型
 			
                 DataTable dt_type = objConn.GetDataTable(sSQL);
                 if(dt_type!=null&&dt_type.Rows.Count>0)
@@ -196,9 +198,9 @@
                 {
                     //如果是分销商信息 直接根据yh_id 查询供应商信息 
                     //如果是生产商信息，直接根据yh_id查询供应商信息
-                    sSQL = "select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='" + gys_id + "' ";
+                    sSQL = "select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='" + gys_QQ_id + "' ";
                     dt_ppxx = objConn.GetDataTable(sSQL);
-                    sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + s_yh_id + "' ";
+                    sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + gys_QQ_id + "' ";
                     dt_gysxx = objConn.GetDataTable(sSQL);
                     //蒋,注释if判断，在供应商补填信息时已判断出供应商的单位类型
                     //if (dt_gysxx.Rows.Count == 0)
