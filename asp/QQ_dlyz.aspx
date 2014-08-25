@@ -41,7 +41,7 @@
                     <b>您的信息如下:</b></dd>
                 <dt>&nbsp;</dt>
                 <dd>
-                    <font class="xinghao4">*</font>您的QQ号码：
+                    您的QQ号码：
                 </dd>
                 <dt>
                     
@@ -51,29 +51,29 @@
                    <%-- <img src="images/yanzheng.jpg" width="49" height="25" />--%>
                 </dt>
                 <dd>
-                    <font class="xinghao4">*</font>公司名称：
+                    公司名称：
                 </dd>
                 <dt>
                     <input id="gys_name" class="gysggg" type="text" name="gys_name" runat="server"/>
                 </dt>
                 <dd>
-                    <font class="xinghao4">*</font>公司地址：
+                    公司地址：
                 </dd>
                 <dt>
                     <input class="gysggg" id="gys_address" type="text" name="gys_address" runat="server"/></dt>
                 <dd>
-                    <font class="xinghao4">*</font>公司电话：
+                    公司电话：
                 </dd>
                 <dt>
                     <input class="gysggg" id="gys_phone" type="text" name="gys_phone" runat="server"/></dt>
                 <dd>
-                    <font class="xinghao4">*</font>公司主页：
+                    公司主页：
                 </dd>
                 <dt>
                     <input class="gysggg" id="gys_homepage" type="text" name="gys_homepage" runat="server"/>
                 </dt>
                 <dd>
-                    <font class="xinghao4">*</font>公司类型：
+                    公司类型：
                 </dd>
                 <dt>
                     <select id="gslx" style="width: 120px; color: blue" name="scs_type" runat="server">
@@ -83,12 +83,12 @@
                     </select>
                 </dt>
                 <dd>
-                    <font class="xinghao4">*</font>您的姓名：
+                    您的姓名：
                 </dd>
                 <dt>
                     <input class="gysggg" id="user_name" type="text" name="user_name" runat="server"/></dt>
                 <dd>
-                    <font class="xinghao4">*</font>您的手机：
+                    您的手机：
                 </dd>
                 <dt>
                     <input class="gysggg" id="user_phone" type="text" name="user_phone" runat="server"/></dt>

@@ -1,6 +1,6 @@
 ﻿<%@ Register Src="~/asp/include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
 
-<%@ Page Language="C#" AutoEventWireup="true" CodeFile="hyyhgl.aspx.cs" Inherits="asp_hyyhgl" %>
+<%@ Page Language="C#" EnableEventValidation="false" AutoEventWireup="true" CodeFile="hyyhgl.aspx.cs" Inherits="asp_hyyhgl" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -49,9 +49,22 @@
         onloadEvent(showtable);
     </script>
     <script type="text/javascript">
+//        var strSelQQ = "";
+        //获取前台选中行
+//        function getS() {
+//            var rowS = "测试一下";
+            //            alert(rowS);
+//            return rowS;
+//        }
+        //刷新页面
+        function refresh() {
+            this.location = this.location;
+        }
+        //添加
         function addPage() {
             newwin = window.open('hyyhgl_wh.aspx?state=0', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
+        //修改
         function changePage(obj) {
             var tr = obj.parentNode.parentNode;
             var tds = tr.cells;
@@ -62,21 +75,24 @@
 
             newwin = window.open('hyyhgl_wh.aspx?qq=' + qq + '&name=' + name + '&phone=' + phone + '&email=' + email + '&state=1', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
-        //        function Checked(obj) {
-        //            if (!obj.checked) {
-        //                return;
-        //            }
-        //            var tr = obj.parentNode.parentNode;
-        //            var tds = tr.cells;
-        //            var str = "你选中";
-        //            for (var i = 0; i < tds.length; i++) {
-        //                str += tds[i].innerText+"--";
-        //            }
-        //            alert(str);
-        //        }
+                function Checked(obj) {
+                    if (!obj.checked) {
+                        return;
+                    }
+                    var tr = obj.parentNode.parentNode;
+                    var tds = tr.cells;
+//                  var str = "你选中";
+//                    for (var i = 0; i < tds.length; i++) {
+//                        str += tds[i].innerText+",";
+//                    }
+                    //                    alert(str);
+                    //                    strSelQQ += tds[2].innerText + ",";
+                    document.getElementById("txt_Selected").value+= tds[2].innerText + ",";            
+                }
     </script>
 </head>
 <body>
+    <form runat="server">
     <!-- 头部2开始-->
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部2结束-->
@@ -111,14 +127,15 @@
             height: 20px; width: 37px;" />&nbsp;&nbsp;
         <input type="button" id="btnFilter" value="组合查询" onclick="btnFilter_Click()" style="height: 20px;
             width: 64px; border-style: none; font-family: 宋体; font-size: 12px;" />&nbsp;&nbsp;
-        <input type="submit" name="btnDelete" value="删除选中行" onclick="return confirm(&#39;真的彻底删除选中的记录吗？&#39;);"
+        <%--<input type="submit" name="btnDelete" value="删除选中行" onclick="return confirm(&#39;真的彻底删除选中的记录吗？&#39;);"
             id="btnDelete" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
-            font-size: 12px; height: 20px; width: 72px;" />
-        <%--  <asp:Button ID="btnDelete" runat="server" Text="删除选中行" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
-            font-size: 12px; height: 20px; width: 72px;" onclick="btnDelete_Click"/>--%>
+            font-size: 12px; height: 20px; width: 72px;" />--%>
+          <asp:Button ID="btnDelete" runat="server" Text="删除选中行" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
+            font-size: 12px; height: 20px; width: 72px;" onclick="btnDelete_Click"/>
     </div>
     <!-- 检索 结束-->
     <!-- 用户信息 开始 -->
+
     <div class="yhb">
         <table border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" id="table">
             <thead>
@@ -154,7 +171,7 @@
                   { %>
                 <tr>
                     <td align="center">
-                        <input type="checkbox" />
+                        <input type="checkbox" onclick="Checked(this)" />
                     </td>
                     <td align="center">
                         <%=i+1 %>
@@ -316,5 +333,7 @@
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->
+    </form>
+    <input type="hidden" id="txt_Selected" value="" runat="server"/>
 </body>
 </html>

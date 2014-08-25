@@ -63,17 +63,26 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
         power = power.TrimEnd(',');
 
 
-     
 
+        string sqlIsExistQQ = "select * from 用户表 where QQ号码='" + this.txt_QQ.Value + "' "; //查询QQ是否存在
         string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-        string sql_Add = "insert into 用户表 (QQ号码,姓名,手机,邮箱,等级,角色权限,dw_id) values ('" + this.txt_QQ.Value + "'"
-        + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','" + this.txt_Email.Value + "','普通用户','" + power + "',(select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "'))";
+
+        string sql_Add = "insert into 用户表 (QQ号码,姓名,手机,邮箱,等级,角色权限,dw_id,类型,是否验证通过,注册时间,updatetime) values ('" + this.txt_QQ.Value + "'"
+        + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','" + this.txt_Email.Value + "','普通用户','" + power + "',"
+        +"(select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "'),(select 类型 from 用户表 where QQ_id='" + gys_QQ_id + "'),'通过',getdate(),getdate())";
+
         string sql_AddYh_id = "update 用户表 set yh_id=myID where QQ号码='" + this.txt_QQ.Value + "';";
         string sqlAll = sql_Add + sql_AddYh_id;
 
+        if (dc.GetRowCount(sqlIsExistQQ) > 0)
+        {
+            Response.Write("<script>window.alert('该QQ已注册');</script>");
+            return;
+        }
         if (dc.RunSqlTransaction(sqlAll))
         {
-            Response.Write("添加成功");
+            Response.Write("<script>window.alert('添加成功');</script>");
+            Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
         }
         else
         {
@@ -109,7 +118,8 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
 
         if (dc.RunSqlTransaction(sql_Update))
         {
-            Response.Write("修改成功");
+            Response.Write("<script>window.alert('修改成功');</script>");
+            Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
         }
         else
         {

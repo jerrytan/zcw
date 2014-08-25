@@ -23,8 +23,10 @@ public partial class asp_QQ_dlyz : System.Web.UI.Page
         DataConn dc = new DataConn();
 
         string sql_Check_QQ = "select * from 用户表 where QQ号码='" + QQ+"'";
-        string sql_Update_QQ_id = "update 用户表 set QQ_id = '" + gys_qq_id + "' where QQ号码='" + QQ + "'";
+        string sql_Update_QQ_id = "update 用户表 set QQ_id = '" + gys_qq_id + "',验证通过时间=getdate() where QQ号码='" + QQ + "'";
+
         string sql_GetData = "select 公司名称,公司地址,公司电话,公司主页,类型,姓名,手机 from 用户表 where QQ号码='"+QQ+"'";
+
         string sql_Level = "select 等级 from 用户表 where QQ_id='" + gys_qq_id + "'";
 
         if(dc.GetRowCount(sql_Check_QQ)>0)     //判断QQ号是否存在，即是否已经注册

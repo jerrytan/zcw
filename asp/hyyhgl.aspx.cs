@@ -26,7 +26,7 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-        string sql_GetData = "select * from 用户表 where dw_id = (select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "') and 等级='普通用户'";   
+        string sql_GetData = "select * from 用户表 where dw_id = (select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "') and 等级='普通用户' order by updatetime desc";   
 
         dtGys = dc.GetDataTable(sql_GetData);
 
@@ -47,10 +47,37 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     }
 
 
-    //protected void btnDelete_Click(object sender, EventArgs e)
-    //{
-        
-    //}
+    protected void btnDelete_Click(object sender, EventArgs e)
+    {
+        string sqlDelete = "";
+         //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "描述性词语", "getS();", true);
+        string strSelected = this.txt_Selected.Value.ToString();
+        if (string.IsNullOrEmpty(strSelected))
+        {
+            Response.Write("<script>window.alert('请选中要删除的行')</script>");
+        }
+        else
+        {
+            strSelected=strSelected.TrimEnd(',');
+            string[] arrSelected = strSelected.Split(',');
+            for (int i = 0; i < arrSelected.Length; i++)
+            {
+                sqlDelete += "delete from 用户表 where QQ号码 = '" + arrSelected[i] + "'; ";
+            }
+
+            if (dc.RunSqlTransaction(sqlDelete))
+            {
+                Response.Write("<script>window.alert('删除成功')</script>");
+                Response.Write("<script>window.location.href=document.URL;</script>");  //刷新页面
+
+            }
+            else
+            {
+                Response.Write("<script>window.alert('删除失败')</script>");
+            }
+            
+        }
+    }
 
 
 }
