@@ -23,9 +23,9 @@ public partial class asp_QQ_dlyz : System.Web.UI.Page
         DataConn dc = new DataConn();
 
         string sql_Check_QQ = "select * from 用户表 where QQ号码='" + QQ+"'";
-        string sql_Update_QQ_id = "update 用户表 set QQ_id = '" + gys_qq_id + "',验证通过时间=getdate() where QQ号码='" + QQ + "'";
+        string sql_Update_QQ_id = "update 用户表 set QQ_id = '" + gys_qq_id + "',验证通过时间=getdate(),是否验证通过='通过' where QQ号码='" + QQ + "'";
 
-        string sql_GetData = "select 公司名称,公司地址,公司电话,公司主页,类型,姓名,手机 from 用户表 where QQ号码='"+QQ+"'";
+        string sql_GetData = "select 供应商,地址,电话,主页,单位类型,联系人,联系人手机 from 材料供应商信息表 where gys_id=(select dw_id from 用户表 where QQ_id='" + gys_qq_id + "')";
 
         string sql_Level = "select 等级 from 用户表 where QQ_id='" + gys_qq_id + "'";
         string sql_dwid = "select dw_id from 用户表 where QQ_id='" + gys_qq_id + "'";
@@ -41,13 +41,13 @@ public partial class asp_QQ_dlyz : System.Web.UI.Page
                 for (int i = 0; i < dtGys.Rows.Count; i++)
                 {
                     DataRow dr = dtGys.Rows[i];
-                    this.gys_name.Value = dr["公司名称"].ToString();
-                    this.gys_address.Value = dr["公司地址"].ToString();
-                    this.gys_phone.Value = dr["公司电话"].ToString();
-                    this.gys_homepage.Value = dr["公司主页"].ToString();
-                    this.gslx.Value = dr["类型"].ToString();
-                    this.user_name.Value = dr["姓名"].ToString();
-                    this.user_phone.Value = dr["手机"].ToString();
+                    this.gys_name.Value = dr["供应商"].ToString();
+                    this.gys_address.Value = dr["地址"].ToString();
+                    this.gys_phone.Value = dr["电话"].ToString();
+                    this.gys_homepage.Value = dr["主页"].ToString();
+                    this.gslx.Value = dr["单位类型"].ToString();
+                    this.user_name.Value = dr["联系人"].ToString();
+                    this.user_phone.Value = dr["联系人手机"].ToString();
                 }
 
                 if (dc.DBLook(sql_Level) == "企业用户")
@@ -61,7 +61,7 @@ public partial class asp_QQ_dlyz : System.Web.UI.Page
                 }
 
                 Response.Write(@"<script>if(confirm('验证成功，是否现在登录？')==true)
-                {window.location.href='"+strRunPage+"';}else{window.opener=null;window.open('','_self'); window.close();}</script>");
+                {window.location.href='" + strRunPage + "';}else{}</script>");
 
             }
         }
