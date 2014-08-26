@@ -304,7 +304,7 @@
                 <%} %>
             </tbody>
         </table>
-        <table width="100%" align="left" cellpadding="0" cellspacing="0">
+       <%-- <table width="100%" align="left" cellpadding="0" cellspacing="0">
             <tr>
                 <td width="40" align="left" valign="middle">
                     &nbsp;
@@ -324,7 +324,47 @@
                     &nbsp;
                 </td>
             </tr>
-        </table>
+        </table>--%>
+
+
+        <!-- 页码开始-->
+       <div style="text-align:center"> <!--加入div控制分页居中-->
+       <div class="fy2">
+            <div class="fy3">
+                <% if(current_page<=1 && pageCount_page>1) {%> 
+                    <font class="p" style="color:Gray">首页</font>
+                    <a href="hyyhgl.aspx?p=<%=current_page+1 %>" class="p" style="color:Black">下一页</a>
+                    <a href="hyyhgl.aspx?p=<%=pageCount_page %>" class="p" style="color:Black">末页</a>
+                <%} %>
+                <% else if(current_page<=1 && pageCount_page<=1) {%>
+                
+                <% }%>    
+                <% else if(!(current_page<=1)&&!(current_page == pageCount_page)){ %>
+                    <a href="hyyhgl.aspx?p=<%=1 %>"class="p" style="color:Black">首页</a>
+                    <a href="hyyhgl.aspx?p=<%=current_page-1 %>" class="p" style="color:Black">上一页</a>
+                    <a href="hyyhgl.aspx?p=<%=current_page+1 %>" class="p" style="color:Black">下一页</a>
+                    <a href="hyyhgl.aspx?p=<%=pageCount_page %>" class="p" style="color:Black">末页</a>
+                <%}%>
+                <% else if(current_page == pageCount_page){ %>
+                    <a href="hyyhgl.aspx?p=<%=1 %>"class="p" style="color:Black">首页</a>
+                    <a href="hyyhgl.aspx?p=<%=current_page-1 %>" class="p" style="color:Black">上一页</a>
+                    <font class="p" style="color:Gray">末页</font> 
+                <%} %>
+                <font style="color:Black" >直接到第</font>  
+                <select onchange="window.location=this.value" name="" class="p" style="color:Black">
+                <% foreach (var v in this.Items)
+                { %>
+                    <option value="<%=v.Value %>" <%=v.SelectedString %>><%=v.Text %></option>
+                <%} %>
+                </select>
+                <font style="color:Black" >页&nbsp;&nbsp;&nbsp;第 <%=current_page %> 页/共 <%=pageCount_page %> 页</font>
+            </div>
+        </div>
+        </div>
+        <!-- 页码结束-->
+
+
+
     </div>
     <!-- 用户信息 结束 -->
     <!-- 关于我们 广告服务 投诉建议 开始-->
