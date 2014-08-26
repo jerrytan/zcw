@@ -263,12 +263,12 @@
                {%>
             <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?gys_id=<%=gys_id %>">管理生产商信息</a></span>
             <span class="zyy1" style="margin-left:100px;"><a href="glfxsxx.aspx?gys_id=<%=gys_id %>">管理分销商信息</a></span>
-            <span class="zyy1" style="margin-left:100px;"><a href="gysglcl.aspx">管理材料信息</a></span>
+            <span class="zyy1" style="margin-left:100px;"><a href="gysglcl.aspx?gys_id=<%=gys_id %>">管理材料信息</a></span>
             <%}%> 
             <%else
                 {%>
             <span class="zyy1" style="margin-left:180px;"><a href="glfxsxx.aspx?gys_id=<%=gys_id %>">管理分销商信息</a></span>
-            <span class="zyy1" style="margin-left:180px;"><a href="gysglcl.aspx">管理材料信息</a></span>       
+            <span class="zyy1" style="margin-left:180px;"><a href="gysglcl.aspx?gys_id=<%=gys_id %>">管理材料信息</a></span>       
     <%} %>
     </div>	
    

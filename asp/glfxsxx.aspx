@@ -22,8 +22,8 @@
 
 <script type="text/javascript" language="javascript">
 
-    function Update_CS(id)
-    {
+    function Update_CS(id) {
+        alert("当前品牌id："+id);
         if (window.XMLHttpRequest)
         {
             xmlhttp = new XMLHttpRequest();
@@ -32,11 +32,10 @@
         {
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.onreadystatechange = function ()
-        {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-            {
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById("fxsxx").innerHTML = xmlhttp.responseText;
+                alert(document.getElementById("fxsxx").innerHTML);
             }
         }
         xmlhttp.open("GET", "glfxsxx4.aspx?id=" + id + "&lx=pp", true);
@@ -207,6 +206,7 @@
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
         gys_id = Request.QueryString["gys_id"].ToString();
+
         //sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型t 
         sSQL = "select 单位类型 from 材料供应商信息表 where gys_id='"+gys_id+"'";
             DataTable dt_type = objConn.GetDataTable(sSQL);
@@ -241,7 +241,9 @@
             if (s_gys_type.Equals("分销商"))
             {
                 //如果是分销商信息 直接根据yh_id 查询供应商信息 
-                sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + s_yh_id + "' ";
+                //蒋，26日
+                //sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + s_yh_id + "' ";
+                sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围 from 材料供应商信息表 where gys_id='" + gys_id+ "' ";
                 dt_gysxx = objConn.GetDataTable(sSQL);
                 if(dt_gysxx!=null&&dt_gysxx.Rows.Count>0)
                 {

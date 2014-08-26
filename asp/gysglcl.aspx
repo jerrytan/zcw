@@ -82,6 +82,7 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
+        gys_id = Request.QueryString["gys_id"].ToString();
         sSQL = "select 等级 from 用户表 where yh_id='" + s_yh_id + "' ";   //141           
         string vip = objConn.DBLook(sSQL);
         if(vip=="VIP用户")
@@ -89,13 +90,13 @@
             userIsVIP=true;
         }
         //根据用户id 查询供应商id
-        sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";   //141           
-        DataTable dt_gys = objConn.GetDataTable(sSQL);
-    
-        if (dt_gys != null && dt_gys.Rows.Count > 0)
-        {
-            gys_id = dt_gys.Rows[0]["gys_id"].ToString();
-        }
+        //蒋，2014年8月26日
+        //sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";   //141           
+        //DataTable dt_gys = objConn.GetDataTable(sSQL);
+        //if (dt_gys != null && dt_gys.Rows.Count > 0)
+        //{
+        //    gys_id = dt_gys.Rows[0]["gys_id"].ToString();
+        //}
 
         // 取 二级分类编码
          sSQL="select 显示名字,分类编码 from 材料分类表 where 分类编码 in(select 分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1' )";

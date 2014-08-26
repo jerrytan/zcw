@@ -30,6 +30,7 @@
             if (Request["id"]!=null&&Request["id"].ToString()!="")
             {
                 pp_id = Request["id"].ToString();
+                Response.Write(pp_id+"hfjdhfsndjfabs");
             }
             string sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where pp_id='"+pp_id+"'";
             DataTable dt_pp_xx = objConn.GetDataTable(sSQL);

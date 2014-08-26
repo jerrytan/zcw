@@ -178,10 +178,9 @@
                 bool b = xzpp(id);
                 if (b)
                 {
-                    Response.Write("成功进入");
                     //蒋，2014年8月21日，当前品牌信息录入材料供应商信息从表 
-                    string addppxx = "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime)"+
-                        "values('" + pp_id + "','" + this.gys.Value + "',1,'" + gys_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
+                    string addppxx = "insert into 材料供应商信息从表(pp_id,是否启用,gys_id,等级,范围,供应商,updatetime)"+
+                        "values('" + pp_id + "',1,'" + gys_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
                         "'" + this.gys.Value + "',(select getdate()))";
                     objConn.ExecuteSQL(addppxx, true);
                     string update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息表 where 供应商 ='"+this.gys.Value+"')";
@@ -243,7 +242,8 @@
                 //string pp_name = Request["pp_name"];   //品牌名称
                 //蒋，2014年8月21日，
                 //sSQL = "insert into  分销商和品牌对应关系表 (pp_id, 品牌名称, 是否启用,fxs_id,updatetime) values('" + pp_id + "','" + pp_name + "', 1,'" + gys_id + "',(select getdate()) ) ";   
-                sSQL = "insert into  分销商和品牌对应关系表 (pp_id,是否启用,fxs_id,分销商,updatetime) values('" + pp_id + "',1,'" + gys_id + "','" + this.gys.Value + "',(select getdate()) ) ";
+                sSQL = "insert into  分销商和品牌对应关系表 (pp_id,品牌名称,是否启用,fxs_id,分销商,updatetime)"+
+                    " values('" + pp_id + "','"+txt_ppmc.Value+"',1,'" + gys_id + "','" + this.gys.Value + "',(select getdate()) ) ";
                 b = objConn.ExecuteSQL(sSQL, true);
                 
             }
@@ -395,6 +395,7 @@
                         </select>
                         <%--蒋，2014年8月25日，添加--%>
                         <input type=hidden id=txt_ppid value="" runat="server" />
+                        <input type=hidden id=txt_ppmc value="" runat="server" />
                     </td>
                 </tr>
                 <tr>

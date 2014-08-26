@@ -202,7 +202,7 @@
                 {
                     //如果是分销商信息 直接根据yh_id 查询供应商信息 
                     //如果是生产商信息，直接根据yh_id查询供应商信息
-                    sSQL = "select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='" + s_yh_id + "' ";
+                    sSQL = "select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='" + gys_id + "' ";
                     dt_ppxx = objConn.GetDataTable(sSQL);
                     //sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + s_yh_id + "' ";//蒋，26日
                     //dt_gysxx = objConn.GetDataTable(sSQL);
@@ -359,7 +359,6 @@
                 </div>
             <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">删除选中品牌</a></span>
             <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新品牌</a></span>
-            <%Response.Write(gys_id); %>
     <%}
         //蒋，2014年8月13日，用户类型是分销商，没有管理生产商信息的权限，所以应注释分销商的相关信息
       //else if (gys_type == "分销商")
