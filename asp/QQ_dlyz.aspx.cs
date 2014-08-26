@@ -28,6 +28,8 @@ public partial class asp_QQ_dlyz : System.Web.UI.Page
         string sql_GetData = "select 公司名称,公司地址,公司电话,公司主页,类型,姓名,手机 from 用户表 where QQ号码='"+QQ+"'";
 
         string sql_Level = "select 等级 from 用户表 where QQ_id='" + gys_qq_id + "'";
+        string sql_dwid = "select dw_id from 用户表 where QQ_id='" + gys_qq_id + "'";
+
 
         if(dc.GetRowCount(sql_Check_QQ)>0)     //判断QQ号是否存在，即是否已经注册
         {
@@ -54,7 +56,8 @@ public partial class asp_QQ_dlyz : System.Web.UI.Page
                 }
                 else if (dc.DBLook(sql_Level) == "普通用户")
                 {
-                    strRunPage = "gyszym.aspx";
+                    string dwid = dc.DBLook(sql_dwid);
+                    strRunPage = "gyszym.aspx?dw_id="+dwid;
                 }
 
                 Response.Write(@"<script>if(confirm('验证成功，是否现在登录？')==true)
