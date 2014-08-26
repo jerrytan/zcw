@@ -34,9 +34,9 @@
     //public string passed_gys = "";
     public string gys_QQ_id = "";//蒋，2014年8月21日(供应商id)
     public string power = "";//用户权限（蒋，22日）
-    //蒋，2014年8月25日注释
     public string s_yh_id = "";
     public string lx="";
+    public string gys_id = "";//供应商id
     protected void Page_Load(object sender, EventArgs e)
     {
             if (Request.Cookies["GYS_QQ_ID"] != null && Request.Cookies["GYS_QQ_ID"].Value.ToString() != "")
@@ -90,12 +90,12 @@
                        }
                 } 
             }
-            string s_SQL = "select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id='" + gys_QQ_id + "'";      
+            string s_SQL = "select 姓名,yh_id,是否验证通过,类型,等级,dw_id from 用户表 where QQ_id='" + gys_QQ_id + "'";      
              dt_yh = objConn.GetDataTable(s_SQL);
              
             if(dt_yh!=null&&dt_yh.Rows.Count>0)
             {
-
+                gys_id = dt_yh.Rows[0]["dw_id"].ToString();//材料供应商信息表中的供应商id
                 s_yh_id =dt_yh.Rows[0]["yh_id"].ToString();
                 passed = dt_yh.Rows[0]["是否验证通过"].ToString();
                 name = dt_yh.Rows[0]["姓名"].ToString();
@@ -130,7 +130,7 @@
 
                 //need to set session value
 
-                Session["GYS_YH_ID"] = gys_QQ_id;
+                Session["GYS_YH_ID"] = s_yh_id;
 
                 //(供应商申请)的yh_id 是在认领厂商之后更新的
                 //蒋，2014年8月13日，注释sql以下语句
@@ -261,13 +261,13 @@
             <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>--%>
             <% if (power.Contains("管理生产商"))
                {%>
-            <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx">管理生产商信息</a></span>
-            <span class="zyy1" style="margin-left:100px;"><a href="glfxsxx.aspx">管理分销商信息</a></span>
+            <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?gys_id=<%=gys_id %>">管理生产商信息</a></span>
+            <span class="zyy1" style="margin-left:100px;"><a href="glfxsxx.aspx?gys_id=<%=gys_id %>">管理分销商信息</a></span>
             <span class="zyy1" style="margin-left:100px;"><a href="gysglcl.aspx">管理材料信息</a></span>
             <%}%> 
             <%else
                 {%>
-            <span class="zyy1" style="margin-left:180px;"><a href="glfxsxx.aspx">管理分销商信息</a></span>
+            <span class="zyy1" style="margin-left:180px;"><a href="glfxsxx.aspx?gys_id=<%=gys_id %>">管理分销商信息</a></span>
             <span class="zyy1" style="margin-left:180px;"><a href="gysglcl.aspx">管理材料信息</a></span>       
     <%} %>
     </div>	

@@ -35,7 +35,7 @@
              string yh_id="";
                if( Request["gys_id"]!=null&& Request["gys_id"].ToString()!="")
                {
-                 gys_id = Request["gys_id"].ToString(); //获取的供应商id
+                 gys_id = Request["gys_id"].ToString(); //获取的供应商id,306
                }
 			    if(Session["GYS_YH_ID"]!=null&&Session["GYS_YH_ID"].ToString()!="")
                 {
@@ -158,8 +158,8 @@
         }
 </script>
 <body>
-<%string gys_id = Request["gys_id"];                  //获取的供应商id%>
-<a style="color: Red"  onclick=window.location.href="glscsxx.aspx?id=<%=gys_id%>">您更新的信息已提交,等待审核,请返回! </a>
+<%string gys_id =Request["gys_id"].ToString();%><%--//获取的供应商id--%>
+<a style="color: Red"  onclick=window.location.href="glscsxx.aspx?id&gys_id=<%=gys_id%>">您更新的信息已提交,等待审核,请返回! </a>
 </body>
 </html>
 

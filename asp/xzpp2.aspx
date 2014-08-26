@@ -14,6 +14,7 @@
           if( Request["id"]!=null&& Request["id"].ToString()!="")
           {
             yjfl_id = Request["id"].ToString();   //获取大类传过来的分类编码
+            Response.Write(yjfl_id+"一级分类");
           }
 
           string sSQL="select 显示名字,分类编码 from 材料分类表 where left(分类编码,2)='"+yjfl_id+"'and len(分类编码)='4'";

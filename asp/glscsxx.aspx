@@ -165,43 +165,47 @@
 
       }
 
+      function homepage_onclick() {
+
+      }
+
   </script>   
   <script runat="server">
-       // protected DataTable dt_gysxx = new DataTable();  //分销商信息(材料供应商信息表)
-        protected DataTable dt_gysxx = new DataTable();//生产商信息（用户表）蒋
+        protected DataTable dt_gysxx = new DataTable();  //生产商信息(材料供应商信息表)
         public DataTable dt_ppxx = new DataTable();   //分销商信息(材料供应商信息表)
         public string gys_id="";
         public DataConn objConn=new DataConn();
         public string sSQL="";
-      //蒋，2014年8月25日注释
-        // public string s_yh_id="";
-        public string gys_QQ_id = "";
+        public string s_yh_id = "";
         public string sp_result="";                 //审批结果
         public DataTable dt_gysxxs = new DataTable();
-         public string gys_type = "";                  //单位类型  
-        public string id = ""; 
+        public string gys_type = "";                  //单位类型  
+        public string id = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             if(Session["GYS_YH_ID"]!=null)
             {
-                gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+                s_yh_id = Session["GYS_YH_ID"].ToString();
             }
-            sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + gys_QQ_id + "' ";  //查询单位类型
-			
+             //sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型
+            //蒋，26日
+            gys_id = Request.QueryString["gys_id"].ToString();//获取供应商id
+            sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,单位类型 from 材料供应商信息表 where gys_id='" + gys_id + "'  ";
+             dt_gysxx = objConn.GetDataTable(sSQL);
                 DataTable dt_type = objConn.GetDataTable(sSQL);
                 if(dt_type!=null&&dt_type.Rows.Count>0)
                 {
 			            gys_type = dt_type.Rows[0]["单位类型"].ToString();
-			            gys_id = dt_type.Rows[0]["gys_id"].ToString();  //供应商id   141
+                        //gys_id = dt_type.Rows[0]["gys_id"].ToString();  //供应商id   141
                 }
                 if (gys_type.Equals("生产商"))
                 {
                     //如果是分销商信息 直接根据yh_id 查询供应商信息 
                     //如果是生产商信息，直接根据yh_id查询供应商信息
-                    sSQL = "select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='" + gys_QQ_id + "' ";
+                    sSQL = "select 品牌名称,pp_id from 品牌字典 where 是否启用='1' and scs_id='" + s_yh_id + "' ";
                     dt_ppxx = objConn.GetDataTable(sSQL);
-                    sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + gys_QQ_id + "' ";
-                    dt_gysxx = objConn.GetDataTable(sSQL);
+                    //sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + s_yh_id + "' ";//蒋，26日
+                    //dt_gysxx = objConn.GetDataTable(sSQL);
                     //蒋,注释if判断，在供应商补填信息时已判断出供应商的单位类型
                     //if (dt_gysxx.Rows.Count == 0)
                     //    Response.Redirect("gysbtxx.aspx");
@@ -227,7 +231,7 @@
         protected void DWLX(string str_gysid_type, string id, string str_gysid)
         {
             //根据分销商id 从材料供应商信息从表中 获取代理不同品牌的品牌id
-            id = Request.QueryString["id"];//蒋，2014年8月15日，接收从glscsxx2页面传回的gys_id
+            id = Request.QueryString["id"].ToString();//蒋，2014年8月15日，接收从glscsxx2页面传回的gys_id
             if (str_gysid_type.Equals("生产商"))
             {
                 //如果 供应商自己修改待审核表 有记录 查询审批结果
@@ -255,7 +259,7 @@
             //        }                 
             //}
         }
-    public void spjg(string sp_result,string gys_id, string id)
+        public void spjg(string sp_result, string gys_id, string id)
     {
          if (sp_result.Equals("通过"))
             {  
@@ -310,7 +314,7 @@
                 <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" onclick="return companyname_onclick()" /></dt>
                 <dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>"/></dt>
                 <dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>"/></dt>
-                <dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" /></dt>
+                <dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" onclick="return homepage_onclick()" /></dt>
                 <dd>贵公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司传真"] %>"/></dt>
                 <dd>贵公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地区"] %>"/></dt>
                 <dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人姓名"] %>" /></dt>
@@ -333,7 +337,7 @@
              </dl>
            <%} %>				
                 <span class="fxsbc">
-                    <input name="gys_id" type="hidden" id="Hidden1" class="fxsxx3" value=""/>
+                    <input name="gys_id" type="hidden" id="Hidden1" class="fxsxx3" value="<%=gys_id %>"/>
                     <input type="submit" value="更改" />
 
                 </span>
@@ -355,7 +359,7 @@
                 </div>
             <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">删除选中品牌</a></span>
             <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新品牌</a></span>
-
+            <%Response.Write(gys_id); %>
     <%}
         //蒋，2014年8月13日，用户类型是分销商，没有管理生产商信息的权限，所以应注释分销商的相关信息
       //else if (gys_type == "分销商")

@@ -28,7 +28,7 @@
 
 <script runat="server">
 	protected DataTable dt_yh = new DataTable();  //供应商补填信息(用户表)  
-	public string s_yh_id=""; 
+	public string s_yh_id=""; <%--用户id--%>
 	public string sSQL=""; 
 	public DataConn objConn = new DataConn();      
 	protected void Page_Load(object sender, EventArgs e)

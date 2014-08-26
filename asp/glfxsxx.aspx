@@ -192,8 +192,7 @@
     protected DataTable dt_ppxx = new DataTable();  //品牌信息(品牌字典)
     protected DataTable dt_gys_name = new DataTable();  //下拉列表供应商的名字(材料供应商信息表)
     public string gys_id="";
-    //public string s_yh_id="";   //用户id
-    public string gys_QQ_id = "";
+    public string s_yh_id="";   //用户id
     public string sSQL = "";
     public DataConn objConn = new DataConn();
     public string sp_result = "";        //首先声明审批结果变量
@@ -205,15 +204,16 @@
     {
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
-            //s_yh_id = Session["GYS_YH_ID"].ToString();
-            gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+            s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-        sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + gys_QQ_id + "' ";  //查询单位类型
+        gys_id = Request.QueryString["gys_id"].ToString();
+        //sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型t 
+        sSQL = "select 单位类型 from 材料供应商信息表 where gys_id='"+gys_id+"'";
             DataTable dt_type = objConn.GetDataTable(sSQL);
             if (dt_type != null && dt_type.Rows.Count > 0)
             {
                 s_gys_type = dt_type.Rows[0]["单位类型"].ToString();
-               gys_id = dt_type.Rows[0]["gys_id"].ToString();
+               //gys_id = dt_type.Rows[0]["gys_id"].ToString();
             }
             if (s_gys_type == "生产商")
             {
@@ -241,7 +241,7 @@
             if (s_gys_type.Equals("分销商"))
             {
                 //如果是分销商信息 直接根据yh_id 查询供应商信息 
-                sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + gys_QQ_id + "' ";
+                sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + s_yh_id + "' ";
                 dt_gysxx = objConn.GetDataTable(sSQL);
                 if(dt_gysxx!=null&&dt_gysxx.Rows.Count>0)
                 {

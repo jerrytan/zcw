@@ -180,12 +180,13 @@
                 {
                     Response.Write("成功进入");
                     //蒋，2014年8月21日，当前品牌信息录入材料供应商信息从表 
-                    string addppxx = "insert into 材料供应商信息从表(pp_id,是否启用,gys_id,等级,范围,供应商,updatetime)"+
-                        "values('" + pp_id + "',1,'" + gys_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
+                    string addppxx = "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime)"+
+                        "values('" + pp_id + "','" + this.gys.Value + "',1,'" + gys_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
                         "'" + this.gys.Value + "',(select getdate()))";
                     objConn.ExecuteSQL(addppxx, true);
                     string update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息表 where 供应商 ='"+this.gys.Value+"')";
                     objConn.ExecuteSQL(update,true);
+                    Response.Write("<script>alert('添加成功！');</" + "script>");
                     Response.Write("<script>window.location.href='gyszym.aspx';</" + "script>");
                     //string update = "u";
                     //Response.Write("<script>window.alert('添加成功！');</" + "script>");
