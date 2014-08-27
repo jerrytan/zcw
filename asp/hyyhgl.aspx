@@ -1,4 +1,12 @@
-﻿<%@ Register Src="~/asp/include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
+﻿<!--
+        会员用户管理页面
+        文件名：hyyhgl.aspx
+        传入参数：
+                p  列表页数
+        负责人:  苑伟业
+-->
+
+<%@ Register Src="~/asp/include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
 
 <%@ Page Language="C#" EnableEventValidation="false" AutoEventWireup="true" CodeFile="hyyhgl.aspx.cs" Inherits="asp_hyyhgl" %>
 
@@ -49,13 +57,6 @@
         onloadEvent(showtable);
     </script>
     <script type="text/javascript">
-//        var strSelQQ = "";
-        //获取前台选中行
-//        function getS() {
-//            var rowS = "测试一下";
-            //            alert(rowS);
-//            return rowS;
-//        }
         //刷新页面
         function refresh() {
             this.location = this.location;
@@ -99,9 +100,10 @@
     <!-- 检索 开始-->
     <div id="jiansuo">
         <font style="font-size: 9pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检索条件：</font>
-        <select name="lieming" id="lieming" style="width: 128px; border-right: #808080 1px solid;
+        <select runat="server" name="lieming" id="lieming" style="width: 128px; border-right: #808080 1px solid;
             border-top: #808080 1px solid; font-size: 9pt; border-left: #808080 1px solid;
             border-bottom: #808080 1px solid">
+            <option value=""></option>
             <option value="QQ号">QQ号</option>
             <option value="姓名">姓名</option>
             <option value="手机号">手机号</option>
@@ -115,17 +117,21 @@
             <option value=">">大于</option>
             <option value="">=">大于等于</option>
             <option value="&lt;=">小于等于</option>
-        </select><input name="txtKeyWord" type="text" id="txtKeyWord" style="border-right: #808080 1px solid;
+        </select><input runat="server" name="txtKeyWord" type="text" id="txtKeyWord" style="border-right: #808080 1px solid;
             border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
         <input id="chkSearchInResult" type="checkbox" name="chkSearchInResult" checked="checked" /><label
             for="chkSearchInResult">在结果中检索</label>&nbsp;&nbsp;
-        <input type="submit" name="filter" value="检索" id="filter" class="filter" style="color: Black;
-            border-style: None; font-family: 宋体; font-size: 12px; height: 20px; width: 37px;" />
+        <%--<input type="submit" name="filter" value="检索" id="filter" class="filter" style="color: Black;
+            border-style: None; font-family: 宋体; font-size: 12px; height: 20px; width: 37px;" />--%>
+        <asp:Button ID="filter" name="filter" runat="server" Text="检索"  class="filter" 
+            style="color: Black;
+            border-style: None; font-family: 宋体; font-size: 12px; height: 20px; width: 37px;" 
+            onclick="filter_Click"/>
         &nbsp;&nbsp;
         <input type="submit" name="btnDocNew" value="添加" onclick="addPage();" id="btnDocNew"
             class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;
             height: 20px; width: 37px;" />&nbsp;&nbsp;
-        <input type="button" id="btnFilter" value="组合查询" onclick="btnFilter_Click()" style="height: 20px;
+        <input type="button" id="btnFilter" value="组合查询"  style="height: 20px;
             width: 64px; border-style: none; font-family: 宋体; font-size: 12px;" />&nbsp;&nbsp;
         <%--<input type="submit" name="btnDelete" value="删除选中行" onclick="return confirm(&#39;真的彻底删除选中的记录吗？&#39;);"
             id="btnDelete" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;

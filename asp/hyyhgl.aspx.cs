@@ -36,7 +36,6 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     private int i_count = 0;
     public List<OptionItem> Items { get; set; }//用于跳转页面
 
-
     protected void Page_Load(object sender, EventArgs e)
     {
         string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
@@ -99,16 +98,32 @@ public partial class asp_hyyhgl : System.Web.UI.Page
         this.SetNavLink(p, c);
 
         this.listGys = new List<UserGys>();
-        foreach (DataRow dr in dt_content.Rows)
+        if (dt_content.Rows.Count > 0)
         {
-            UserGys ug = new UserGys();
-            ug.QQ = dr["QQ号码"].ToString();
-            ug.Name = dr["姓名"].ToString();
-            ug.Phone = dr["手机"].ToString();
-            ug.Email = dr["邮箱"].ToString();
-            ug.Power = dr["角色权限"].ToString();
-            listGys.Add(ug);
+            foreach (DataRow dr in dt_content.Rows)
+            {
+                UserGys ug = new UserGys();
+                ug.QQ = dr["QQ号码"].ToString();
+                ug.Name = dr["姓名"].ToString();
+                ug.Phone = dr["手机"].ToString();
+                ug.Email = dr["邮箱"].ToString();
+                ug.Power = dr["角色权限"].ToString();
+                listGys.Add(ug);
+            }
         }
+        //else
+        //{
+        //    UserGys ug = new UserGys();
+        //    ug.QQ = "";
+        //    ug.Name = "";
+        //    ug.Phone = "";
+        //    ug.Email = "";
+        //    ug.Power = "";
+        //    listGys.Add(ug);
+        //}
+
+
+        
     }
 
 
@@ -188,7 +203,49 @@ public partial class asp_hyyhgl : System.Web.UI.Page
             Console.WriteLine(e.Message);
         }
         return i_count;
-    } 
+    }
+
+
+
+    //检索
+    protected void filter_Click(object sender, EventArgs e)
+    {
+        string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+        string sql_Search = "select * from 用户表 where 1=1 and dw_id = (select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "') and 等级='普通用户'";
+
+        if (this.lieming.Value == "QQ号")
+        {
+            sql_Search += " and QQ号码='"+this.txtKeyWord.Value.Trim()+"' ";
+        }
+        else if (this.lieming.Value == "姓名")
+        {
+            sql_Search += " and 姓名='" + this.txtKeyWord.Value.Trim() + "' ";
+        }
+        else if (this.lieming.Value == "手机号")
+        {
+            sql_Search += " and 手机='" + this.txtKeyWord.Value.Trim() + "' ";
+        }
+        else
+        {
+            Response.Redirect(Request.Url.ToString());  //页面刷新
+            return;
+        }
+
+        dtGys = dc.GetDataTable(sql_Search);
+        this.listGys = new List<UserGys>();
+        foreach (DataRow dr in dtGys.Rows)
+        {
+            UserGys ug = new UserGys();
+            ug.QQ = dr["QQ号码"].ToString();
+            ug.Name = dr["姓名"].ToString();
+            ug.Phone = dr["手机"].ToString();
+            ug.Email = dr["邮箱"].ToString();
+            ug.Power = dr["角色权限"].ToString();
+            listGys.Add(ug);
+        }
+        
+
+    }
 
 
 
