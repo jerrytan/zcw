@@ -47,31 +47,31 @@
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
         Products_gys_cl();
-        
+       
         if(!IsPostBack)
         {
         //蒋，2014年8月18日
-    //       sSQL = "select 公司名称,公司地址,公司电话,公司主页,类型,手机,类型,QQ号码,姓名,是否验证通过 from 用户表 where  yh_id='"+s_yh_id+"' ";
-    //       DataTable dt_yh=objConn.GetDataTable(sSQL);
-    //       if(dt_yh!=null&&dt_yh.Rows.Count>0)
-    //       {
-    //            string lx="";
-    //            this.companyname.Value = dt_yh.Rows[0]["公司名称"].ToString();
-    //            this.companytel.Value = dt_yh.Rows[0]["公司地址"].ToString();
-    //            this.companyaddress.Value = dt_yh.Rows[0]["公司电话"].ToString();
-    //            this.contactorname.Value = dt_yh.Rows[0]["姓名"].ToString();
-    //            this.contactortel.Value = dt_yh.Rows[0]["手机"].ToString();
-    //            this.QQ_id.Value = dt_yh.Rows[0]["QQ号码"].ToString();
-    //            lx=dt_yh.Rows[0]["类型"].ToString();
-    //            if(lx=="生产商")
-    //            {
-    //                 this.scs.Checked = true;  
-    //            }
-    //            else if(lx=="分销商")
-    //            {
-    //                this.gxs.Checked = true;
-    //            }
-    //       }
+           //sSQL = "select 公司名称,公司地址,公司电话,公司主页,类型,手机,类型,QQ号码,姓名,是否验证通过 from 用户表 where  yh_id='"+s_yh_id+"' ";
+           //DataTable dt_yh=objConn.GetDataTable(sSQL);
+           //if(dt_yh!=null&&dt_yh.Rows.Count>0)
+           //{
+                //string lx="";
+                //this.companyname.Value = dt_yh.Rows[0]["公司名称"].ToString();
+                //this.companytel.Value = dt_yh.Rows[0]["公司地址"].ToString();
+                //this.companyaddress.Value = dt_yh.Rows[0]["公司电话"].ToString();
+                //this.contactorname.Value = dt_yh.Rows[0]["姓名"].ToString();
+                //this.contactortel.Value = dt_yh.Rows[0]["手机"].ToString();
+                //this.QQ_id.Value = dt_yh.Rows[0]["QQ号码"].ToString();
+                //lx=dt_yh.Rows[0]["类型"].ToString();
+                //if(lx=="生产商")
+                //{
+                //     this.scs.Checked = true;  
+                //}
+                //else if(lx=="分销商")
+                //{
+                //    this.gxs.Checked = true;
+                //}
+           //}
         }
             CancelFollowButton.Attributes.Add("onClick", "return confirm('您确定要删除该选中的材料吗？');");      
        
@@ -159,16 +159,17 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-        string gys_id = "";
+        gys_id = Request["gys_id"].ToString();
+        //string gys_id = "";
         //根据用户id 查询供应商id
-        sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";
-        DataTable dt_gys = objConn.GetDataTable(sSQL);
-        if (dt_gys != null && dt_gys.Rows.Count > 0)
-        {
-            gys_id = dt_gys.Rows[0]["gys_id"].ToString();
-        }
+        //sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";
+        //DataTable dt_gys = objConn.GetDataTable(sSQL);
+        //if (dt_gys != null && dt_gys.Rows.Count > 0)
+        //{
+            //gys_id = dt_gys.Rows[0]["gys_id"].ToString();
+        //}
         //根据gys_id 查询材料表相关的数据 以便导出excel 表格
-        sSQL = "select*from 材料表 where gys_id='" + gys_id + "' ";
+        sSQL = "select * from 材料表 where gys_id='" + gys_id + "' ";
 
         DataTable cldt = new DataTable();
         cldt = objConn.GetDataTable(sSQL);
@@ -226,23 +227,25 @@
     }
     public void Delete_cl(object sender, EventArgs e)
     {
-       
-        if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
-        {
-            s_yh_id = Session["GYS_YH_ID"].ToString();
-        }
-        string gys_id = "";
+        //蒋，2014年8月27日，注释用户id取值，添加gys_id取值
+        //if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
+        //{
+        //    s_yh_id = Session["GYS_YH_ID"].ToString();
+        //}
+        
         //根据用户id 查询供应商id
         //获取复选框选中的cl_id
         string clidstr = Request.Form["clid"];
         if (Request.Form["clid"] != "" && Request.Form["clid"] != null)
         {
-            sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";
-            DataTable dt_gys = objConn.GetDataTable(sSQL);
-            if (dt_gys != null && dt_gys.Rows.Count > 0)
-            {
-                gys_id = dt_gys.Rows[0]["gys_id"].ToString();
-            }
+            gys_id = Request.QueryString["gys_id"].ToString();
+        
+            //sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";
+            //DataTable dt_gys = objConn.GetDataTable(sSQL);
+            //if (dt_gys != null && dt_gys.Rows.Count > 0)
+            //{
+                
+            //}
             //通过获取的供应商id和cl_id进行删除
             sSQL = "update 材料表 set 是否启用='0' where gys_id ='" + gys_id + "' and cl_id in (" + clidstr + ")";
             objConn.ExecuteSQL(sSQL, true);

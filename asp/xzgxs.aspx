@@ -82,6 +82,7 @@
             if (Request["gxs_id"]!=null&&Request["gxs_id"].ToString()!="")
             {
                 gxs_id = Request.QueryString["gxs_id"].ToString();
+                Response.Write("供销商："+gxs_id);
             }           
            
                 if (xzlx=="分销商")  //当前用户是生产商
@@ -120,7 +121,6 @@
             //蒋，2014年8月21日 
             //string pp_id =Request["pp_id"];	//品牌id	
             string pp_id = this.txt_ppid.Value;//品牌id	
-            Response.Write("品牌编号：" + pp_id);
             //蒋，2014年8月25日
             qymc = this.s0.Value + this.s1.Value + this.s2.Value + this.s3.Value;
             if (this.gys.Value == "")

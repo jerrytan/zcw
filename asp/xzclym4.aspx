@@ -14,7 +14,7 @@
              DataConn objConn=new DataConn();
            if( Request["gys_id"]!=null&& Request["gys_id"].ToString()!="")
            {
-             gys_id = Request["gys_id"].ToString();        
+             gys_id = Request.QueryString["gys_id"].ToString();        
             }
             //新增材料写入数据库		
                 string cl_name = Request["cl_name"];                //材料名称
@@ -94,13 +94,11 @@
 
     <body>
         <p>
-        </p>             
-        <a href="gysglcl.aspx" style="color: Blue" onclick="clickMe() ">新增材料成功!请返回; </a>
+        </p>    
+        <a href="gyszym.aspx" style="color: Blue" onclick="clickMe() ">新增材料成功!请返回; </a>
         <script>
             function clickMe() {
-                //蒋，2014年8月19日，注释窗口关闭，添加窗口跳转管理材料页面
-                //window.close();
-                window.location.href = "gysglcl.aspx?gys_id='<%=gys_id %>'";
+                 window.close();
                 opener.location.reload();
             }
         </script> 

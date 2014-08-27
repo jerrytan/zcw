@@ -37,8 +37,10 @@
         {
         <%--蒋，2014年8月26日--%>
             <%--s_gys_id= Request["gys_id"].ToString();--%>
-            s_gys_id=Request["gys_id"].ToString();
+            s_gys_id=Request.QueryString["gys_id"].ToString();
+
         }
+        Response.Write(s_gys_id);
         if (Session["GYS_YH_ID"]!=null&&Session["GYS_YH_ID"].ToString()!="")
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();//获取用户id
@@ -146,17 +148,17 @@
                 }
             }
         }
-        Response.Redirect("glfxsxx.aspx?id=" + s_gys_id + "");   ////获取表单提交过来的分销商id 返回到glfxsxx.aspx页
+        Response.Redirect("glfxsxx.aspx?gys_id=" + s_gys_id + "");   ////获取表单提交过来的分销商id 返回到glfxsxx.aspx页
 
     }
 </script>
 <body>
-<!--
+<%--
 <%
 string gys_id = Request["gys_id"];  //获取表单提交过来的分销商id 
-%>   
-<a style="color: Red"  onclick=window.location.href="glfxsxx.aspx?id=<%=gys_id%>">您更新的信息已提交,等待审核,请返回! </a>
--->
+%>   --%>
+<%--<a style="color: Red"  onclick=window.location.href="glfxsxx.aspx?id=<%=gys_id%>">您更新的信息已提交,等待审核,请返回! </a>
+--%>
 </body>
 
 </html>

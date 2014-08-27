@@ -23,7 +23,6 @@
 <script type="text/javascript" language="javascript">
 
     function Update_CS(id) {
-        alert("当前品牌id："+id);
         if (window.XMLHttpRequest)
         {
             xmlhttp = new XMLHttpRequest();
@@ -35,7 +34,6 @@
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById("fxsxx").innerHTML = xmlhttp.responseText;
-                alert(document.getElementById("fxsxx").innerHTML);
             }
         }
         xmlhttp.open("GET", "glfxsxx4.aspx?id=" + id + "&lx=pp", true);
@@ -72,7 +70,7 @@
                     document.getElementById('sh').style.visibility = "hidden";
                     if (id != "0") {
                         if (confirm("该分销商尚未填写详细信息,是否补填？")) {
-                            window.location.href = "grxx.aspx?gxs_id=" + id + "&lx=fxs";
+                            window.location.href = "grxx.aspx?gys_id=" + id + "&lx=fxs";
                         }
                     }
                 }
@@ -206,7 +204,6 @@
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
         gys_id = Request.QueryString["gys_id"].ToString();
-
         //sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型t 
         sSQL = "select 单位类型 from 材料供应商信息表 where gys_id='"+gys_id+"'";
             DataTable dt_type = objConn.GetDataTable(sSQL);
@@ -245,10 +242,10 @@
                 //sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + s_yh_id + "' ";
                 sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围 from 材料供应商信息表 where gys_id='" + gys_id+ "' ";
                 dt_gysxx = objConn.GetDataTable(sSQL);
-                if(dt_gysxx!=null&&dt_gysxx.Rows.Count>0)
-                {
-                    gys_id = Convert.ToString(dt_gysxx.Rows[0]["gys_id"]);
-                }
+                //if(dt_gysxx!=null&&dt_gysxx.Rows.Count>0)
+                //{
+                //    gys_id = Convert.ToString(dt_gysxx.Rows[0]["gys_id"]);
+                //}
                 sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + gys_id + "' order by myID ";
                 dt_ppxx = objConn.GetDataTable(sSQL);
                 if (dt_gysxx.Rows.Count == 0)
@@ -262,9 +259,10 @@
         
              //获取glfxsxx2页面返回的供应商id
             string id = "";
-            if(Request["id"]!=null&& Request["id"].ToString()!="")
+        //蒋，2014年8月27日更改了中括号里的id为gys_id
+            if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
             {
-                id=Request["id"].ToString();
+                id = Request["gys_id"].ToString();
             }   
             #region
             if (id != "")
@@ -293,14 +291,17 @@
             {  //如果 供应商自己修改待审核表 有记录 查询审批结果
                 sSQL = "select 审批结果,gys_id from 供应商自己修改待审核表 where gys_id in "  //139
                 + "(select top 1 fxs_id from 分销商和品牌对应关系表 where pp_id='" + str_ppid + "')";
-                 string gysid ="";
+                 //string gysid ="";
                 DataTable dt_select = objConn.GetDataTable(sSQL);
                 if(dt_select!=null&&dt_select.Rows.Count>0)
                 {
                      sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);   //通过
-                     gysid = Convert.ToString(dt_select.Rows[0]["gys_id"]);    //139
-                }               
-                spjg(gysid, gysid);
+                    //蒋，2014年8月27日
+                     //gysid = Convert.ToString(dt_select.Rows[0]["gys_id"]);    //139
+                }
+                //spjg(gysid, gysid);蒋，2014年8月27日
+                spjg(gys_id, gys_id);
+                
             }
         }
         #endregion
@@ -308,7 +309,7 @@
         else  if (str_gysid_type.Equals("分销商"))
         {
             sSQL = "select count(*) from 供应商自己修改待审核表 where gys_id='" + str_gysid + "' ";
-
+            Response.Write(str_gysid+"str_gysid值");
             Object obj_check_gys_exist = objConn.DBLook(sSQL);
             if (obj_check_gys_exist != null)
             {
@@ -318,8 +319,10 @@
                     sSQL = "select 审批结果,gys_id from 供应商自己修改待审核表 where gys_id='" + str_gysid + "' ";
                     DataTable dt_select = objConn.GetDataTable(sSQL);
                     sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);   //通过
-                    string gysid = Convert.ToString(dt_select.Rows[0]["gys_id"]);    //139
-                    spjg(gysid, gysid);
+                    //string gysid = Convert.ToString(dt_select.Rows[0]["gys_id"]);    //139蒋，2014年8月27日
+                    //spjg(gysid, gysid);蒋，2014年8月27日
+                    spjg(gys_id, gys_id);
+                    
                 }
             }
         }
@@ -378,7 +381,6 @@
                 sSQL = "select 贵公司名称,贵公司地址,贵公司电话,贵公司主页,贵公司传真,贵公司地区,联系人姓名,联系人电话,"
                 + "经营范围,gys_id  from 供应商自己修改待审核表 where  gys_id ='" + id + "' ";
                 dt_gysxx = objConn.GetDataTable(sSQL);
-
                 Response.Write("审核当中!");
             }
         }
@@ -393,7 +395,7 @@
     <!-- 头部结束-->
  <div class="fxsxx">
 
-    <form id="Form1" name="update_fxs" action="glfxsxx2.aspx" method="post" runat="server">
+    <form id="Form1" name="update_fxs" action="glfxsxx2.aspx?gys_id=<%=gys_id %>" method="post" runat="server">
      <%if (s_gys_type.Equals("生产商"))
        {%>
              <div class="zjgxs">

@@ -21,7 +21,6 @@
     <script type="text/javascript" language="javascript">
 
         function updateFL(id) {
-            alert("¼´½«´«Íùxzpp2µÄid£º" + id);
             var xmlhttp;
             if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
