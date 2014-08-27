@@ -169,7 +169,7 @@
         }
     }
 
-    function Update_gysxx()
+    function Update_gysxx() 
     {
         alert("您更新的信息已提交,等待审核,请返回!");
     }
@@ -182,6 +182,7 @@
 
     }
 
+    
 </script>
 	
 <script runat="server">
@@ -309,19 +310,20 @@
         else  if (str_gysid_type.Equals("分销商"))
         {
             sSQL = "select count(*) from 供应商自己修改待审核表 where gys_id='" + str_gysid + "' ";
-            Response.Write(str_gysid+"str_gysid值");
             Object obj_check_gys_exist = objConn.DBLook(sSQL);
             if (obj_check_gys_exist != null)
             {
+                
                 int count = Convert.ToInt32(obj_check_gys_exist);
                 if (count != 0)
                 {  //如果 供应商自己修改待审核表 有记录 查询审批结果
                     sSQL = "select 审批结果,gys_id from 供应商自己修改待审核表 where gys_id='" + str_gysid + "' ";
                     DataTable dt_select = objConn.GetDataTable(sSQL);
                     sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);   //通过
-                    //string gysid = Convert.ToString(dt_select.Rows[0]["gys_id"]);    //139蒋，2014年8月27日
-                    //spjg(gysid, gysid);蒋，2014年8月27日
-                    spjg(gys_id, gys_id);
+                    string gysid = Convert.ToString(dt_select.Rows[0]["gys_id"]);    //139蒋，2014年8月27日
+                    //蒋，2014年8月27日
+                    spjg(gysid, gysid);
+                    //spjg(gys_id, gys_id);
                     
                 }
             }
@@ -362,7 +364,7 @@
                 + "经营范围=(select 经营范围 from 供应商自己修改待审核表 where  gys_id='" + id + "') where gys_id ='" + id + "'";
                 int ret = objConn.ExecuteSQLForCount(sSQL, false);
 
-                sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='" + id + "' ";
+                sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='" + id + "' ";
                 dt_gysxx = objConn.GetDataTable(sSQL);
 
                 Response.Write("恭喜您!您修改的数据已经保存,更新!");
@@ -395,7 +397,7 @@
     <!-- 头部结束-->
  <div class="fxsxx">
 
-    <form id="Form1" name="update_fxs" action="glfxsxx2.aspx?gys_id=<%=gys_id %>" method="post" runat="server">
+    <form id="Form1" name="update_fxs" runat="server">
      <%if (s_gys_type.Equals("生产商"))
        {%>
              <div class="zjgxs">
@@ -405,7 +407,7 @@
                  <% foreach (System.Data.DataRow row_fxs in dt_pp_id.Rows)
                   { %>			
 			         <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
-	            <%Response.Write("品牌编号："+row_fxs["pp_id"]);
+	            <%
                   }%>			
 			    </select> 			
 			</div>
@@ -485,11 +487,11 @@
        else
        { %>
              <span class="fxsxx1">贵公司的详细信息如下:</span>	
-             <div class="fxsxx2">
+             <div class="gysgybtr">
             <% if (sp_result == "待审核")
                 {  %>
 				    <dl>
-                    <span class="fxsxx1">贵公司的信息正在审核中</span>	
+                    <span class="fxsxx1">贵公司的信息正在审核中</span>
 				<dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" /></dt>
 				<dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>" /></dt>
 				<dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>" onclick="return tel_onclick()" /></dt>
@@ -505,7 +507,7 @@
                 { %>
 					<dl>
 					<dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" /></dt>
-					<dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系地址"] %>" /></dt>
+					<dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地址"] %>" /></dt>
 					<dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>" /></dt>
 					<dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["主页"] %>" /></dt>
 					<dd>贵公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["传真"] %>" /></dt>

@@ -235,11 +235,10 @@
         
         //根据用户id 查询供应商id
         //获取复选框选中的cl_id
+        gys_id = Request.QueryString["gys_id"].ToString();
         string clidstr = Request.Form["clid"];
         if (Request.Form["clid"] != "" && Request.Form["clid"] != null)
         {
-            gys_id = Request.QueryString["gys_id"].ToString();
-        
             //sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";
             //DataTable dt_gys = objConn.GetDataTable(sSQL);
             //if (dt_gys != null && dt_gys.Rows.Count > 0)
@@ -317,10 +316,7 @@
     //    }
     //}
     
-protected void  Delete_cl(object sender, ImageClickEventArgs e)
-{
 
-}
 </script>
     <form id="form1" runat="server">
     <div class="dlqqz">
