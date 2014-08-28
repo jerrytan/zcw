@@ -45,7 +45,6 @@
             if (Request["id"] != null && Request["id"].ToString() != "")
             {
                 fxs_id = Request["id"].ToString();
-                Response.Write(fxs_id+"分销商id");
             }
             if (Request["lx"]!=null&&Request["lx"].ToString()!="")
             {
@@ -128,10 +127,8 @@
                 Response.Write(jsonStr);   //向前端glscsxx.aspx输出json字符串
                 Response.End();
           
-            }         
-
-         
-       
+            }
+            Response.Redirect("glfxsxx.aspx?id=" + fxs_id);        
     }
 </script>
 </html>

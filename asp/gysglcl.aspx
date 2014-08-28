@@ -321,7 +321,7 @@
     <form id="form1" runat="server">
     <div class="dlqqz">
         <div class="dlqqz1">
-            <img src="images/sccp.jpg" /></div>
+            <img src="images/sccp2.jpg" /></div>
         <span class="dlqqz4">
             <img src="images/wz_03.jpg" width="530" height="300" /></span>
         <div class="dlqqz2">

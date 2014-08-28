@@ -28,7 +28,7 @@
     public DataTable dt_yh=new  DataTable();
     public DataConn objConn=new DataConn();
     //public string s_QQ_id="";
-    public string passed="";
+    string ppname = "";//蒋，2014年8月28日，品牌名称
     public string name="";
     //蒋，2014年8月13日，注释从供应商申请认领表中取出的审核结果字段
     //public string passed_gys = "";
@@ -60,10 +60,10 @@
                 Response.Redirect("QQ_dlyz.aspx");
             }
 
-
             //蒋，2014年8月21日
             string sql_Power = "select 角色权限 from 用户表 where QQ_id='"+gys_QQ_id+"'";
             power = objConn.DBLook(sql_Power).ToString();//21日
+        
 
         if (gys_QQ_id != "")
         {
@@ -97,10 +97,13 @@
             {
                 gys_id = dt_yh.Rows[0]["dw_id"].ToString();//材料供应商信息表中的供应商id
                 s_yh_id =dt_yh.Rows[0]["yh_id"].ToString();
-                passed = dt_yh.Rows[0]["是否验证通过"].ToString();
                 name = dt_yh.Rows[0]["姓名"].ToString();
                 lx= dt_yh.Rows[0]["类型"].ToString();
 		    }
+
+            //蒋，2014年8月28日
+            string exists = "select 品牌名称 from 品牌字典 where scs_id='" + gys_id + "'";
+            ppname = objConn.DBLook(exists).ToString();
             if (lx == "采购商")
             {
               
@@ -245,10 +248,7 @@
              <%--<span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理生产商信息</a></span>
              <span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理分销商信息</a></span>
              <span class="zyy1"><a href="gyszym.aspx" onclick="window.alert('请先认领厂商')">管理材料信息</a></span>--%>
-             <%-- <span class="zyy1"style="margin-left:100px;"><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理生产商信息</a></span>
-             <span class="zyy1" style="margin-left:100px;"><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理分销商信息</a></span>
-             <span class="zyy1" style="margin-left:100px;"><a href="gyszym.aspx" onclick="window.alert('请完善个人信息')">管理材料信息</a></span>
-        
+             <%--
          </div>--%>
 	  <%--  <%}--%>
           <%--//蒋桂娥，2014年8月13日,注释if语句，新增else-if语句
@@ -260,11 +260,21 @@
         <%--蒋桂娥，2014年8月13日注释认领厂商，并添加了类型的判断（if-else）以及权限的显示
             <span class="zyy1"><a href="rlcs.aspx">认领厂商</a></span>--%>
             <% if (power.Contains("管理生产商"))
-               {%>
-            <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?gys_id=<%=gys_id %>">管理生产商信息</a></span>
-            <span class="zyy1" style="margin-left:100px;"><a href="glfxsxx.aspx?gys_id=<%=gys_id %>">管理分销商信息</a></span>
-            <span class="zyy1" style="margin-left:100px;"><a href="gysglcl.aspx?gys_id=<%=gys_id %>">管理材料信息</a></span>
-            <%}%> 
+               {
+                   //蒋，2014年8月28日，if-else判断
+                   if (ppname == "")
+                   { %>
+                        <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?gys_id=<%=gys_id %>">管理生产商信息</a></span>
+                        <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?gys_id=<%=gys_id %>" onclick="window.alert('为了您的操作方便，请在管理生产商信息中添加品牌信息！')">管理分销商信息</a></span>
+                        <span class="zyy1" style="margin-left:100px;"><a href="gysglcl.aspx?gys_id=<%=gys_id %>">管理材料信息</a></span>
+            <%}
+                   else
+                   {%>
+                        <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?gys_id=<%=gys_id %>">管理生产商信息</a></span>
+                        <span class="zyy1" style="margin-left:100px;"><a href="glfxsxx.aspx?gys_id=<%=gys_id %>">管理分销商信息</a></span>
+                        <span class="zyy1" style="margin-left:100px;"><a href="gysglcl.aspx?gys_id=<%=gys_id %>">管理材料信息</a></span>  
+                  <% }
+               }%> 
             <%else
                 {%>
             <span class="zyy1" style="margin-left:180px;"><a href="glfxsxx.aspx?gys_id=<%=gys_id %>">管理分销商信息</a></span>

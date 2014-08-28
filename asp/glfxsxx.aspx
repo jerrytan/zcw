@@ -280,7 +280,7 @@
         str_gysid = id;
         if (str_gysid_type.Equals("生产商"))
         {
-            sSQL = "select pp_id from 品牌字典 where scs_id='" + str_gysid + "' order by myID "; //查询品牌id		
+            sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id='" + str_gysid + "' order by myID "; //查询品牌id		
             string str_ppid="";
              dt_pp_id = objConn.GetDataTable(sSQL);
             if(dt_pp_id!=null&&dt_pp_id.Rows.Count>0)
@@ -388,7 +388,7 @@
         }
 
     }
-   
+    
 </script>
 
 <body>
@@ -405,8 +405,7 @@
 			    <select name="scs" id="scs" class="fug" style="width:200px" onchange="Update_CS(this.options[this.options.selectedIndex].value)" onclick="return scs_onclick()">
 			        <option value="0">请选择品牌</option>
                  <% foreach (System.Data.DataRow row_fxs in dt_pp_id.Rows)
-                  {
-                      Response.Write(dt_pp_id); %>			
+                  {%>			
 			         <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
 	            <%
                   }%>			
@@ -473,7 +472,7 @@
                <div class="fxsxx2">             
                         <span class="fxsbc" >
                             <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3"/>
-                            <input type="submit"  onclick="Update_gysxx()"  value="更改"/>
+                            <input type="submit"  onclick="Update_gysxx()"  value="更改"/><%--修改分销商信息按钮--%>
                          <%--   <span class="zjgxs1"> <a id="ck_fgxsxx">查看分销商主页</a></span>--%>
                         </span>
                  </div>

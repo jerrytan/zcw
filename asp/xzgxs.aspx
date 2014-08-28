@@ -82,7 +82,6 @@
             if (Request["gxs_id"]!=null&&Request["gxs_id"].ToString()!="")
             {
                 gxs_id = Request.QueryString["gxs_id"].ToString();
-                Response.Write("供销商："+gxs_id);
             }           
            
                 if (xzlx=="分销商")  //当前用户是生产商
