@@ -221,6 +221,7 @@
                 if (dt_pp_id != null && dt_pp_id.Rows.Count > 0)
                 {
                     ppid = dt_pp_id.Rows[0]["pp_id"].ToString(); //获取品牌id
+                    string a = dt_pp_id.Rows[0]["品牌名称"].ToString();
                 }
                 sSQL = "select fxs_id,分销商 from 分销商和品牌对应关系表 where pp_id='" + ppid + "' ";//查询分销商id
                 dt_fxs = objConn.GetDataTable(sSQL);
@@ -263,7 +264,7 @@
         //蒋，2014年8月27日更改了中括号里的id为gys_id
             if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
             {
-                id = Request["gys_id"].ToString();
+                id = Request["gys_id"].ToString();//324
             }   
             #region
             if (id != "")
@@ -276,6 +277,7 @@
     public void DWLX(string str_gysid_type, string id, string str_gysid)
     {
         #region
+        str_gysid = id;
         if (str_gysid_type.Equals("生产商"))
         {
             sSQL = "select pp_id from 品牌字典 where scs_id='" + str_gysid + "' order by myID "; //查询品牌id		
@@ -311,12 +313,10 @@
         {
             sSQL = "select count(*) from 供应商自己修改待审核表 where gys_id='" + str_gysid + "' ";
             Object obj_check_gys_exist = objConn.DBLook(sSQL);
-            if (obj_check_gys_exist != null)
-            {
-                
+           
                 int count = Convert.ToInt32(obj_check_gys_exist);
                 if (count != 0)
-                {  //如果 供应商自己修改待审核表 有记录 查询审批结果
+                {  //如果 供应商自己修改待审核表 有记录 查询审批结果df
                     sSQL = "select 审批结果,gys_id from 供应商自己修改待审核表 where gys_id='" + str_gysid + "' ";
                     DataTable dt_select = objConn.GetDataTable(sSQL);
                     sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);   //通过
@@ -326,7 +326,7 @@
                     //spjg(gys_id, gys_id);
                     
                 }
-            }
+            
         }
         #endregion
         #region
@@ -343,6 +343,7 @@
 
                     DataTable dt_select = objConn.GetDataTable(sSQL);
                     sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);
+                    Response.Write(sp_result+"shen");
                     spjg(gys_id, id);
                 }
             }
@@ -358,13 +359,13 @@
 
                 //如果审批通过 说明修改的供应商信息有效 把 供应商自己修改待审核表 有效数据更新到材料供应商信息表
                 sSQL = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商自己修改待审核表 where  gys_id='" + id + "'),"
-                + "地址=(select 贵公司地址 from 供应商自己修改待审核表 where  gys_id='" + id + "'),电话=(select 贵公司电话 from 供应商自己修改待审核表 where  gys_id='" + id + "'),"
+                + "联系地址=(select 贵公司地址 from 供应商自己修改待审核表 where  gys_id='" + id + "'),电话=(select 贵公司电话 from 供应商自己修改待审核表 where  gys_id='" + id + "'),"
                 + "主页=(select 贵公司主页 from 供应商自己修改待审核表 where gys_id='" + id + "'),传真=(select 贵公司传真 from 供应商自己修改待审核表 where  gys_id='" + id + "'),"
                 + "联系人=(select 联系人姓名 from 供应商自己修改待审核表 where  gys_id='" + id + "'),联系人手机=(select 联系人电话 from 供应商自己修改待审核表 where gys_id='" + id + "'),"
                 + "经营范围=(select 经营范围 from 供应商自己修改待审核表 where  gys_id='" + id + "') where gys_id ='" + id + "'";
                 int ret = objConn.ExecuteSQLForCount(sSQL, false);
 
-                sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='" + id + "' ";
+                sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='" + id + "' ";
                 dt_gysxx = objConn.GetDataTable(sSQL);
 
                 Response.Write("恭喜您!您修改的数据已经保存,更新!");
@@ -379,7 +380,6 @@
             else if (sp_result.Equals("待审核"))
             {
                 //修改提交后 页面上显示的是 供应商自己修改待审核表 的信息
-
                 sSQL = "select 贵公司名称,贵公司地址,贵公司电话,贵公司主页,贵公司传真,贵公司地区,联系人姓名,联系人电话,"
                 + "经营范围,gys_id  from 供应商自己修改待审核表 where  gys_id ='" + id + "' ";
                 dt_gysxx = objConn.GetDataTable(sSQL);
@@ -397,7 +397,7 @@
     <!-- 头部结束-->
  <div class="fxsxx">
 
-    <form id="Form1" name="update_fxs" runat="server">
+    <form id="Form1" name="update_fxs" action="glfxsxx2.aspx?gys_id=<%=gys_id %>" method="post">
      <%if (s_gys_type.Equals("生产商"))
        {%>
              <div class="zjgxs">
@@ -405,7 +405,8 @@
 			    <select name="scs" id="scs" class="fug" style="width:200px" onchange="Update_CS(this.options[this.options.selectedIndex].value)" onclick="return scs_onclick()">
 			        <option value="0">请选择品牌</option>
                  <% foreach (System.Data.DataRow row_fxs in dt_pp_id.Rows)
-                  { %>			
+                  {
+                      Response.Write(dt_pp_id); %>			
 			         <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
 	            <%
                   }%>			
@@ -471,7 +472,7 @@
                </div>
                <div class="fxsxx2">             
                         <span class="fxsbc" >
-                            <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" />
+                            <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3"/>
                             <input type="submit"  onclick="Update_gysxx()"  value="更改"/>
                          <%--   <span class="zjgxs1"> <a id="ck_fgxsxx">查看分销商主页</a></span>--%>
                         </span>
@@ -507,7 +508,7 @@
                 { %>
 					<dl>
 					<dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" /></dt>
-					<dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地址"] %>" /></dt>
+					<dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系地址"] %>" /></dt>
 					<dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>" /></dt>
 					<dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["主页"] %>" /></dt>
 					<dd>贵公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["传真"] %>" /></dt>
@@ -522,7 +523,7 @@
                         <span class="fxsbc">
                             <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" />
                             <input type="submit" value="更改" onclick="Update_gysxx()" />
-                        </span>
+                        </span> 
                     </div>
                  	<span class="fxsxx1"></span>
                     <div class="ggspp">

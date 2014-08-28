@@ -15,8 +15,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <script runat="server"  >
-
-   
     public DataConn objConn = new DataConn();
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -69,7 +67,7 @@
             <%--string str_gys_id = "select 单位类型, gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";//查询供应商id	127--%>		
             string str_gys_id = "select 单位类型 from 材料供应商信息表 where gys_id='" + s_gys_id + "' ";
             DataTable dt_gys_id = objConn.GetDataTable(str_gys_id);
-            string str_gysid = Convert.ToString(dt_gys_id.Rows[0]["gys_id"]);   //获取供应商id  127
+            string str_gysid=s_gys_id;   //获取供应商id  127
             string str_gys_type = Convert.ToString(dt_gys_id.Rows[0]["单位类型"]);
             if (str_gys_type.Equals("分销商"))
             {
