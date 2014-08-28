@@ -19,7 +19,7 @@ public partial class asp_gyszc : System.Web.UI.Page
     {
         DataConn dc = new DataConn();
         string sqlIsExistQQ = "select * from 用户表 where QQ号码='"+this.txt_gsQQ.Value+"' ";
-        string sqlIsExistGs = "select * from 用户表 where 公司名称='" + this.txt_gsmc.Value + "' ";
+        string sqlIsExistGs = "select * from 材料供应商信息表 where 供应商='" + this.txt_gsmc.Value + "' ";
 
         qymc = this.s1.Value + this.s2.Value + this.s3.Value;
 
