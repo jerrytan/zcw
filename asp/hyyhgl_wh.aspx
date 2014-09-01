@@ -1,4 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="hyyhgl_wh.aspx.cs" Inherits="asp_hyyhgl_wh" %>
+﻿<!--
+        会员用户管理_维护页面
+        文件名：hyyhgl.aspx
+        传入参数：
+        qq:QQ号码，name: 姓名，phone：手机号码，
+        email：邮箱，state：状态     
+        负责人:  苑伟业
+-->
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="hyyhgl_wh.aspx.cs" Inherits="asp_hyyhgl_wh" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

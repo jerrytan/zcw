@@ -38,23 +38,19 @@ public partial class asp_hyyhgl : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-        //string sql_GetData = "select * from 用户表 where dw_id = (select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "') and 等级='普通用户' order by updatetime desc";   
+        string sql_dwid;
 
-        //dtGys = dc.GetDataTable(sql_GetData);
-        //this.listGys = new List<UserGys>();
-        //foreach (DataRow dr in dtGys.Rows)
-        //{
-        //    UserGys ug = new UserGys();
-        //    ug.QQ = dr["QQ号码"].ToString();
-        //    ug.Name = dr["姓名"].ToString();
-        //    ug.Phone = dr["手机"].ToString();
-        //    ug.Email = dr["邮箱"].ToString();
-        //    ug.Power = dr["角色权限"].ToString();
-        //    listGys.Add(ug);
-        //}
+        if (Request.Cookies["GYS_QQ_ID"]!=null)
+        {
+            string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+            sql_dwid = "select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "'";
+        }
+        else
+        {
+            string cgs_QQ_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
+            sql_dwid = "select dw_id from 用户表 where QQ_id='" + cgs_QQ_id + "'";
+        }
 
-        string sql_dwid = "select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "'";
         int dwid = Convert.ToInt32(dc.DBLook(sql_dwid));
 
 
@@ -129,8 +125,11 @@ public partial class asp_hyyhgl : System.Web.UI.Page
 
     protected void btnDelete_Click(object sender, EventArgs e)
     {
+
+        //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "描述性词语", "getDelete();", true);
+
+
         string sqlDelete = "";
-         //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "描述性词语", "getS();", true);
         string strSelected = this.txt_Selected.Value.ToString();
         if (string.IsNullOrEmpty(strSelected))
         {
@@ -138,7 +137,7 @@ public partial class asp_hyyhgl : System.Web.UI.Page
         }
         else
         {
-            strSelected=strSelected.TrimEnd(',');
+            strSelected = strSelected.TrimEnd(',');
             string[] arrSelected = strSelected.Split(',');
             for (int i = 0; i < arrSelected.Length; i++)
             {
@@ -155,7 +154,7 @@ public partial class asp_hyyhgl : System.Web.UI.Page
             {
                 Response.Write("<script>window.alert('删除失败')</script>");
             }
-            
+
         }
     }
 

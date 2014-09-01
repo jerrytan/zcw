@@ -13,10 +13,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>供应商用户管理</title>
+    <title>会员用户管理</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all%20of.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
+        function Trim(str) {
+            str = str.replace(/^(\s|\u00A0)+/, '');
+            for (var i = str.length - 1; i >= 0; i--) {
+                if (/\S/.test(str.charAt(i))) {
+                    str = str.substring(0, i + 1);
+                    break;
+                }
+            }
+            return str;
+        } 
         function onloadEvent(func) {
             var one = window.onload
             if (typeof window.onload != 'function') {
@@ -55,8 +65,7 @@
             }
         }
         onloadEvent(showtable);
-    </script>
-    <script type="text/javascript">
+
         //刷新页面
         function refresh() {
             this.location = this.location;
@@ -69,27 +78,36 @@
         function changePage(obj) {
             var tr = obj.parentNode.parentNode;
             var tds = tr.cells;
-            var qq = tds[2].innerText;
-            var name = tds[3].innerText;
-            var phone = tds[4].innerText;
-            var email = tds[5].innerText;
+            var qq = Trim(tds[2].innerHTML);
+            var name = Trim(tds[3].innerHTML);
+            var phone = Trim(tds[4].innerHTML);
+            var email = Trim(tds[5].innerHTML);
+            var scs = tds[6].childNodes[1].checked;
+            var fxs = tds[6].childNodes[3].checked;
+            var cl = tds[6].childNodes[5].checked;
 
-            newwin = window.open('hyyhgl_wh.aspx?qq=' + qq + '&name=' + name + '&phone=' + phone + '&email=' + email + '&state=1', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
+            newwin = window.open('hyyhgl_wh.aspx?qq=' + qq + '&name=' + name + '&phone=' + phone + '&email=' + email+'&scs='+scs+'&fxs='+fxs+'&cl='+cl + '&state=1', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
-                function Checked(obj) {
-                    if (!obj.checked) {
+
+         function Checked(obj) {
+            if (!obj.checked) {
                         return;
-                    }
-                    var tr = obj.parentNode.parentNode;
-                    var tds = tr.cells;
-//                  var str = "你选中";
-//                    for (var i = 0; i < tds.length; i++) {
-//                        str += tds[i].innerText+",";
-//                    }
-                    //                    alert(str);
-                    //                    strSelQQ += tds[2].innerText + ",";
-                    document.getElementById("txt_Selected").value+= tds[2].innerText + ",";            
-                }
+             }
+              var tr = obj.parentNode.parentNode;
+              var tds = tr.cells;
+              document.getElementById("txt_Selected").value += Trim(tds[2].innerHTML) + ",";
+          }
+
+//          function getDelete() {
+//              var trs = document.getElementById("tbody").rows;
+//              for (var i = 0; i < trs.length; i++) {
+//                  var tds = trs[i].cells;
+//                   if (tds[0].childNodes[1].checked) { 
+//                      document.getElementById("txt_Selected").value += Trim(tds[2].innerHTML) + ","; 
+//                  }
+//              }
+//          }
+
     </script>
 </head>
 <body>
@@ -172,7 +190,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody">
                 <%for (int i = 0; i < listGys.Count; i++)
                   { %>
                 <tr>
@@ -198,107 +216,75 @@
                         <%string powerGys = listGys[i].Power.ToString(); %>
                         <%if (powerGys.Contains("管理生产商") && powerGys.Contains("管理分销商") && powerGys.Contains("管理材料信息")) %>
                         <%{%>
-                        <label>
                             <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
-                        </label>
-                        <label>
                             <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
-                            管理分销商</label>
-                        <label>
+                            管理分销商
                             <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
-                            管理材料信息</label>
+                            管理材料信息
                         <% } %>
                         <%else if (powerGys.Contains("管理生产商") && powerGys.Contains("管理分销商")) %>
                         <%{%>
-                        <label>
                             <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
-                        </label>
-                        <label>
                             <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
-                            管理分销商</label>
-                        <label>
+                            管理分销商
                             <input type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
-                            管理材料信息</label>
+                            管理材料信息
                         <% } %>
                         <%else if (powerGys.Contains("管理生产商") && powerGys.Contains("管理材料信息")) %>
                         <%{%>
-                        <label>
                             <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
-                        </label>
-                        <label>
                             <input type="checkbox" value="管理分销商" name="cbx2" runat="server" />
-                            管理分销商</label>
-                        <label>
+                            管理分销商
                             <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
-                            管理材料信息</label>
+                            管理材料信息
                         <% } %>
                         <%else if (powerGys.Contains("管理分销商") && powerGys.Contains("管理材料信息")) %>
                         <%{%>
-                        <label>
                             <input type="checkbox" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
-                        </label>
-                        <label>
                             <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
-                            管理分销商</label>
-                        <label>
+                            管理分销商
                             <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
-                            管理材料信息</label>
+                            管理材料信息
                         <% } %>
                         <%else if (powerGys.Contains("管理生产商")) %>
                         <%{%>
-                        <label>
                             <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
-                        </label>
-                        <label>
                             <input type="checkbox" value="管理分销商" name="cbx2" runat="server" />
-                            管理分销商</label>
-                        <label>
+                            管理分销商
                             <input type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
-                            管理材料信息</label>
+                            管理材料信息
                         <% } %>
                         <%else if (powerGys.Contains("管理分销商"))
                             { %>
-                        <label>
                             <input type="checkbox" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
-                        </label>
-                        <label>
                             <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
-                            管理分销商</label>
-                        <label>
+                            管理分销商
                             <input type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
-                            管理材料信息</label>
+                            管理材料信息
                         <%} %>
                         <%else if (powerGys.Contains("管理材料信息"))
                             { %>
-                        <label>
                             <input type="checkbox" value="管理生产商" name="cbx1" runat="server" />
                             管理生产商
-                        </label>
-                        <label>
                             <input type="checkbox" value="管理分销商" name="cbx2" runat="server" />
-                            管理分销商</label>
-                        <label>
+                            管理分销商
                             <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
-                            管理材料信息</label>
+                            管理材料信息
                         <%} %>
                         <%else
                             { %>
-                        <label>
-                            <input type="checkbox" value="管理生产商" name="cbx1" runat="server" />
-                            管理生产商
-                        </label>
-                        <label>
-                            <input type="checkbox" value="管理分销商" name="cbx2" runat="server" />
-                            管理分销商</label>
-                        <label>
-                            <input type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
-                            管理材料信息</label>
+                        <input id="Checkbox1" type="checkbox" value="管理生产商" name="cbx1" runat="server" />
+                        管理生产商
+                        <input id="Checkbox2" type="checkbox" value="管理分销商" name="cbx2" runat="server" />
+                        管理分销商
+                        <input id="Checkbox3" type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
+                        管理材料信息
                         <%} %>
                     </td>
                     <td align="center">
