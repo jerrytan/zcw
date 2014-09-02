@@ -88,27 +88,7 @@
 				+"分类名称='"+cl_clflname+"',分类编码='"+flname+"',材料编码='"+flname+"'+' "+cl_clbm+"'+'"+cl_clbh+"', "
 				+"材料名称='"+cl_name+"',属性属性值编码='"+sx_codes+"'+'"+cl_number+"',updatetime=(select getdate()) where 分类属性名称='"+cl_flsxmc+"' "
 				+"and flsx_id='"+sx_id+"'and flsxz_id='"+cl_ids+"' ";
-				objConn.ExecuteSQL(sSQL,true);                  
+				objConn.ExecuteSQL(sSQL,true);  
+                Response.Write("<script>window.alert('新增材料成功!请返回！');window.location.href='gysglcl.aspx?gys_id="+gys_id+"';</" + "script>");                
 		
      %>
-
-    <body>
-        <p>
-        </p>    
-        <a href="gyszym.aspx" style="color: Blue" onclick="clickMe() ">新增材料成功!请返回; </a>
-        <script>
-            function clickMe() {
-                 window.close();
-                opener.location.reload();
-            }
-        </script> 
-         <script defer="defer">
-             function doload()
-             {
-                 window.close();
-                 opener.location.reload();
-             }
-             setTimeout("doload()", 1000);
-              </script>     
-
-    </body>

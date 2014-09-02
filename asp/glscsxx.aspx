@@ -76,7 +76,7 @@
                       document.getElementById('sh').style.visibility = "hidden";
                       if (id != "0") {
                           if (confirm("该生产商尚未填写详细信息,是否补填？")) {
-                              window.location.href = "btgysxx.aspx?gxs_id=" + id + "&lx=scs";
+                              window.location.href = "grxx.aspx?gxs_id=" + id + "&lx=scs";
                           }
                       }
                   }
@@ -264,8 +264,7 @@
         public void spjg(string sp_result, string gys_id, string id)
     {
          if (sp_result.Equals("通过"))
-            {  
-				  
+            {
 			//如果审批通过 说明修改的供应商信息有效 把 供应商自己修改待审核表 有效数据更新到材料供应商信息表
             sSQL = "update  材料供应商信息表 set 供应商=(select 贵公司名称 from 供应商自己修改待审核表 where  gys_id='"+id+"'),"
 			+"地址=(select 贵公司地址 from 供应商自己修改待审核表 where  gys_id='"+id+"'),电话=(select 贵公司电话 from 供应商自己修改待审核表 where  gys_id='"+id+"'),"
@@ -340,8 +339,7 @@
            <%} %>				
                 <span class="fxsbc">
                     <input name="gys_id" type="hidden" id="Hidden1" class="fxsxx3" value="<%=gys_id %>"/>
-                    <input type="submit" value="更改" />
-
+                    <input type="submit" class="fxsbc" value="更改" />
                 </span>
           </div>
           </div>
@@ -359,8 +357,10 @@
                     <%} %>
                     
                 </div>
-            <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">删除选中品牌</a></span>
-            <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新品牌</a></span>
+            <%--<span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">删除选中品牌</a></span>--%>
+            <%--<span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新品牌</a></span>--%>
+            <input type="button" class="fxsbc" onclick="DeleteBrand(<%=gys_id %>)" value="删除选中品牌" />
+            <input type="button" class="fxsbc" onclick="AddNewBrand(<%=gys_id %>)" value="增加新品牌"/>
     <%}
         //蒋，2014年8月13日，用户类型是分销商，没有管理生产商信息的权限，所以应注释分销商的相关信息
       //else if (gys_type == "分销商")

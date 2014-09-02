@@ -149,9 +149,14 @@
 /* 生产商信息 */
 
 .fxs1{ width:980px; height:auto; float:left;}
-.fu1{ width:80px;}
-.fu2{ width:80px; margin-left:20px; display:inline;}
-.fu3{ width:80px; margin-left:20px; display:inline;}
+.fu1{ width:57px;
+}
+.fu2{ width:54px; 
+margin-left:20px; display:inline;
+}
+.fu3{ width:54px; 
+margin-left:20px; display:inline;
+}
 .fu4{ width:80px; margin-left:20px; display:inline;}
 .fxs2{ width:300px; height:auto; float:left; margin:20px 10px 0 10px; display:inline;}
 .fxs2 ul{ width:300px; height:auto; float:left;}
@@ -273,7 +278,8 @@
 .fgstp{ width:133px; height:auto; float:left;}
 .fdlpp1{ width:133px; height:auto; float:left;}
 .scyp{ width:132px; height:32px; float:left; margin:20px 20px 20px 0; display:inline;}
-.fxsbc{ width:73px; height:25px; float:left; margin:20px 0 20px 100px;}
+.fxsbc{ width:120px; height:25px; float:left; margin:20px 0 20px 100px;}
+
 
 
 

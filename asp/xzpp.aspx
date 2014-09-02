@@ -18,7 +18,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <script type="text/javascript" language="javascript">
+    <link href="css/css.css" rel="stylesheet" type="text/css" />
+    <link href="css/all of.css" rel="stylesheet" />
+<script type="text/javascript" language="javascript">
 
         function updateFL(id) {
             var xmlhttp;
@@ -41,6 +43,8 @@
 
 
     </script>
+    
+
 </head>
 <body>
 
@@ -69,6 +73,7 @@
 
     </script>
 
+    
 
     <center>
 
@@ -77,7 +82,7 @@
             <table border="0" width="600px">
 
                 <tr>
-                    <td style="width: 120px; color: Blue">一级分类名称：
+                    <td style="width: 120px; color:Black">一级分类名称：
                     </td>
                     <td align="left">
                         <select id="yjflname" name="yjflname" style="width: 200px" onchange="updateFL(this.options[this.options.selectedIndex].value)">
@@ -92,7 +97,7 @@
 
 
                 <tr>
-                    <td style="width: 120px; color: Blue">二级分类名称：
+                    <td style="width: 120px; color:Black">二级分类名称：
                     </td>
                     <td align="left">
                         <select id="ejflname" name="ejflname" style="width: 250px">
@@ -102,15 +107,15 @@
                 </tr>
 
                 <tr>
-                    <td style="color: Blue">品牌名称：
+                    <td style="color:Black">品牌名称：
                     </td>
                     <td align="left">
-                        <input type="text" id="" name="brandname" value="" />
+                        <input type="text" id="" name="brandname" value="" style="margin: 0px 10px 0px 0px; border: 1px solid Black; width: 198px; height: 20px; line-height: 20px; float: left; display: inline;"/>
                     </td>
                 </tr>
 
                 <tr>
-                    <td style="color: Blue">等级：
+                    <td style="color:Black">等级：
                     </td>
                     <td align="left">
                         <select name="grade" id="grade" >
@@ -122,7 +127,7 @@
                 </tr>
 
                 <tr>
-                    <td valign="top" style="color: Blue">范围：
+                    <td valign="top" style="color:Black">范围：
                     </td>
                     <td align="left">
                        

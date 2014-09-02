@@ -74,7 +74,7 @@
 			<%foreach(System.Data.DataRow row in dt_Yh.Rows){%>            
             <span><%=row["姓名"].ToString() %></span>           
             <%}%>
-            先生/女士，您好
+            ，您好
         </div>
     </div>
 

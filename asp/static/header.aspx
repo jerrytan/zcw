@@ -5,9 +5,7 @@
         owner:丁传宇 
 		author：张新颖  修改登录 后显示 与登出问题
 -->
-   <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
-        data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/index.aspx" charset="utf8"></script>
-
+   <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/index.aspx" charset="utf8"></script>
 <div class="box">
     <div class="top"></div>
     <div class="logo">

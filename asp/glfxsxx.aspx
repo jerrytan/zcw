@@ -39,7 +39,7 @@
         xmlhttp.open("GET", "glfxsxx4.aspx?id=" + id + "&lx=pp", true);
         xmlhttp.send();
     }
-    function Update_gys(id)
+    function Update_gys(id) 
     {
         if (window.XMLHttpRequest)
         {
@@ -53,12 +53,10 @@
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var array = new Array();           //声明数组
                 array = xmlhttp.responseText;     //接收替换返回的json字符串
-
                 var json = array;
                 var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 			
 
-                if (myobj.length == 0) 
-                {
+                if (myobj.length == 0) {
                     document.getElementById('companyname').value = "";       //供应商
                     document.getElementById('address').value = "";        //地址
                     document.getElementById('tel').value = "";                //电话  			 
@@ -343,7 +341,6 @@
 
                     DataTable dt_select = objConn.GetDataTable(sSQL);
                     sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);
-                    Response.Write(sp_result+"shen");
                     spjg(gys_id, id);
                 }
             }
@@ -402,14 +399,14 @@
        {%>
              <div class="zjgxs">
              <span>贵公司品牌：</span><br />
-			    <select name="scs" id="scs" class="fug" style="width:200px" onchange="Update_CS(this.options[this.options.selectedIndex].value)" onclick="return scs_onclick()">
+			    <select name="scs" id="scs" class="fug" style="width:200px" onchange="Update_CS(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].text)" onclick="return scs_onclick()">
 			        <option value="0">请选择品牌</option>
                  <% foreach (System.Data.DataRow row_fxs in dt_pp_id.Rows)
                   {%>			
 			         <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
 	            <%
                   }%>			
-			    </select> 			
+			    </select> 	
 			</div>
            <br />
            <br />
@@ -472,14 +469,15 @@
                <div class="fxsxx2">             
                         <span class="fxsbc" >
                             <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3"/>
-                            <input type="submit"  onclick="Update_gysxx()"  value="更改"/><%--修改分销商信息按钮--%>
+                            <%--蒋，2014年8月28日，注释更改按钮，分销商信息不建议生产商修改--%>
+                           <%-- <input type="submit"  onclick="Update_gysxx()"  value="更改"/><%--修改分销商信息按钮--%>
                          <%--   <span class="zjgxs1"> <a id="ck_fgxsxx">查看分销商主页</a></span>--%>
                         </span>
                  </div>
                 <span class="fxsxx1"></span>	
                     <div class="ggspp">
                         <span class="ggspp1">贵公司代理分销品牌如下</span> 
-                        <div id="ppxx">
+                        <div id="ppxx">    
                          </div>      
                     </div>	
      <%}
@@ -538,8 +536,11 @@
                                     </div>
                                  <%} %>     
                     </div>	
-             <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">取消选中的分销品牌</a></span>             
-             <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新分销品牌</a></span>
+                   <%-- 蒋，2014年9月1日，注释该span标签，添加input--%>
+            <%-- <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">取消选中的分销品牌</a></span>             
+             <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新分销品牌</a></span>--%>
+             <input type="button" value="取消选中的分销品牌" class="fxsbc" style="position:relative;margin-left:1000px;" onclick="DeleteBrand(<%=gys_id %>)" />
+             <input type="button" value="增加新分销品牌" class="fxsbc" style="margin-left:400px" onclick="AddNewBrand(<%=gys_id %>)" />
      <%} %>   
       </form>
         </div>

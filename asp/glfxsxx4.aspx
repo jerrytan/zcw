@@ -25,9 +25,8 @@
             {
                 pp_id = Request["id"].ToString();//291
             }
-            //蒋，2014年8月21日，注释if(lx!="scs"),改为if(lx=="scs")
+            //蒋，2014年8月21日，注释if(lx!="scs")
             //if (lx != "scs")//分销商
-            //if(lx=="scs")
             //{
                 sSQL = "select fxs_id,分销商 from 分销商和品牌对应关系表 where pp_id='" + pp_id + "' "; //查询分销商id	
                 DataTable dt_fxs = objConn.GetDataTable(sSQL);
