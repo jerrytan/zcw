@@ -22,7 +22,8 @@
 
 <script type="text/javascript" language="javascript">
 
-    function Update_CS(id) {
+    function Update_CS(id, pp_name) {
+        document.getElementById("pp_name").value = pp_name;
         if (window.XMLHttpRequest)
         {
             xmlhttp = new XMLHttpRequest();
@@ -134,7 +135,7 @@
         {
             url = "xzfxpp.aspx?gys_id=" + id;
         }
-        window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+        window.open(url, "", "height=400,width=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
     }
     function DeleteBrand(id)
     {
@@ -198,6 +199,7 @@
     public DataTable dt_DLPP=null;
     protected void Page_Load(object sender, EventArgs e)
     {
+        this.lblfile.Text = "";
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
@@ -242,21 +244,14 @@
                 //sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + s_yh_id + "' ";
                 sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围 from 材料供应商信息表 where gys_id='" + gys_id+ "' ";
                 dt_gysxx = objConn.GetDataTable(sSQL);
-                //if(dt_gysxx!=null&&dt_gysxx.Rows.Count>0)
-                //{
-                //    gys_id = Convert.ToString(dt_gysxx.Rows[0]["gys_id"]);
-                //}
                 sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where 是否启用='1' and fxs_id='" + gys_id + "' order by myID ";
                 dt_ppxx = objConn.GetDataTable(sSQL);
                 if (dt_gysxx.Rows.Count == 0)
                 {
-                    Response.Redirect("gysbtxx.aspx");
+                    Response.Redirect("grxx.aspx");
                 }
             }
 
-
-
-        
              //获取glfxsxx2页面返回的供应商id
             string id = "";
         //蒋，2014年8月27日更改了中括号里的id为gys_id
@@ -322,7 +317,6 @@
                     //蒋，2014年8月27日
                     spjg(gysid, gysid);
                     //spjg(gys_id, gys_id);
-                    
                 }
             
         }
@@ -364,8 +358,8 @@
 
                 sSQL = "select 供应商,联系地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='" + id + "' ";
                 dt_gysxx = objConn.GetDataTable(sSQL);
-
-                Response.Write("恭喜您!您修改的数据已经保存,更新!");
+                this.lblfile.Text = "恭喜您!您修改的数据已经保存,更新!";
+                //Response.Write("恭喜您!您修改的数据已经保存,更新!");
             }
             else if (sp_result.Equals("不通过"))
             {
@@ -380,7 +374,7 @@
                 sSQL = "select 贵公司名称,贵公司地址,贵公司电话,贵公司主页,贵公司传真,贵公司地区,联系人姓名,联系人电话,"
                 + "经营范围,gys_id  from 供应商自己修改待审核表 where  gys_id ='" + id + "' ";
                 dt_gysxx = objConn.GetDataTable(sSQL);
-                Response.Write("审核当中!");
+                this.lblfile.Text = "审核当中";
             }
         }
 
@@ -407,6 +401,7 @@
 	            <%
                   }%>			
 			    </select> 	
+                <input type="hidden" id="pp_name" value="" runat="server" />
 			</div>
            <br />
            <br />
@@ -414,7 +409,7 @@
             <span>品牌代理商：</span><br />
 			    <select name="fxsxx" id="fxsxx" class="fug" style="width:200px" onchange="Update_gys(this.options[this.options.selectedIndex].value)">			
                 </select> 
-			    <span class="zjgxs1"><a href="xzgxs.aspx?xzlx=fxs&gxs_id=<%=gys_id %>">增加新的分销商</a></span>
+			    <span class="zjgxs1"><a href="xzgxs.aspx?pp_name=<%=pp_name %>&xzlx=fxs&gxs_id=<%=gys_id %>">增加新的分销商</a></span>
 			</div>
              <span class="fxsxx1">该分销商的信息如下:</span>
              <div class="gysgybtr">
@@ -487,7 +482,7 @@
              <span class="fxsxx1">贵公司的详细信息如下:</span>	
              <div class="gysgybtr">
             <% if (sp_result == "待审核")
-                {  %>
+                { %>
 				    <dl>
                     <span class="fxsxx1">贵公司的信息正在审核中</span>
 				<dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" /></dt>
@@ -519,7 +514,8 @@
                     <div class="fxsxx2">             
                         <span class="fxsbc">
                             <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" />
-                            <input type="submit" value="更改" onclick="Update_gysxx()" />
+                            <asp:Label runat="server" ID="lblfile"  ForeColor="red" Width="200px" Text=""></asp:Label>
+                            <input type="submit" class="fxsbc2" value="更改" onclick="Update_gysxx()" style="cursor:pointer;" />
                         </span> 
                     </div>
                  	<span class="fxsxx1"></span>
@@ -539,8 +535,8 @@
                    <%-- 蒋，2014年9月1日，注释该span标签，添加input--%>
             <%-- <span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">取消选中的分销品牌</a></span>             
              <span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新分销品牌</a></span>--%>
-             <input type="button" value="取消选中的分销品牌" class="fxsbc" style="position:relative;margin-left:1000px;" onclick="DeleteBrand(<%=gys_id %>)" />
-             <input type="button" value="增加新分销品牌" class="fxsbc" style="margin-left:400px" onclick="AddNewBrand(<%=gys_id %>)" />
+             <span class="fxsbc1"><a onclick="DeleteBrand(<%=gys_id %>)" style="cursor:pointer;">取消选中品牌</a></span>
+             <span class="fxsbc1"><a onclick="AddNewBrand(<%=gys_id %>)" style="cursor:pointer;">增加新品牌</a></span>
      <%} %>   
       </form>
         </div>

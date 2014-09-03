@@ -557,8 +557,9 @@
 
 
 <table><tr>
-<td style="font-size:15px; width:50px;">供应商：</td><td colspan="4"><input type="text" id="txt_gys" runat="server" /></td>
-<td style="font-size:15px;">地区：</td><td colspan="4" class="style4">
+<td style="width:50px;">供应商：</td><td colspan="4"><input type="text" id="txt_gys" runat="server" /></td>
+<td align="right" style="WIDTH:50px;">地区：</td>
+<td colspan="4" class="style4" style="width:400px;">
     <select id="Select1" class="fu1" runat="server"><option></option></select> 
     <select id="Select2" class="fu1" runat="server"><option></option></select>
                 <select id="Select3" class="fu2" runat="server"><option></option></select> 
@@ -570,7 +571,7 @@
                         document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
                     change(0);
                 </script>
-   </td><td><span class="cggg"><asp:ImageButton runat="server" ID="ImageButton3" ImageUrl="~/asp/images/sousuo.jpg" OnClick="CheckGys" Width="60px" Height="20px"/></span></td>
+   </td><td><span class="cggg"><asp:ImageButton runat="server" ID="ImageButton3" style="color:#fff;" ImageUrl="images/sousuo.jpg" OnClick="CheckGys" Width="60px" Height="20px"/></span></td>
 </tr></table>
 <table>
 <tr>
@@ -586,11 +587,11 @@
 <%} %>
 </tr>
 <tr>
-  <td style="color:Red" >*供应商：</td>
+  <td><span style="COLOR: red">*</span>供应商：</td>
   <td colspan="3"><input type="text" id="gys" runat="server" /></td>
 </tr>
 <tr>
- <td style="color:Red">*组织机构编号</td>
+ <td><span style="COLOR: red">*</span>组织机构编号</td>
         <td><input type="text" id="zzjgbh" runat="server" /></td>
  <td>营业执照注册号：</td>
     <td><input type="text" id="yyzzzch" runat="server" /></td>
@@ -598,7 +599,7 @@
 <tr>
  <td>单位简称：</td>
         <td><input type="text" id="dwjc" runat="server" /></td>
-        <td style="color:Red">*单位类型</td>
+        <td><span style="COLOR: red">*</span>单位类型</td>
         <td>
         <%if (xzlx == "生产商")
           {
@@ -618,7 +619,7 @@
         </td>
 </tr>
 <tr>
-  <td style="color:Red">*地区名称：</td>
+  <td><span style="COLOR: red">*</span>地区名称：</td>
    <td colspan="4">
     <select id="s0" class="fu1" runat="server"><option></option></select> 
     <select id="s1" class="fu1" runat="server"><option></option></select>
@@ -653,7 +654,7 @@
  
 </tr>
 <tr>
- <td style="color:Red">*注册日期</td>
+ <td><span style="COLOR: red">*</span>注册日期</td>
         <td><input type="text" id="zcrq" runat="server" /></td>
      <td>注册级别</td>
         <td>
@@ -687,9 +688,9 @@
         </td>
 </tr>
 <tr>
-<td style="color:Red">*联系人</td>
+<td><span style="COLOR: red">*</span>联系人</td>
         <td><input type="text" id="lxr" runat="server" /></td>
-        <td style="color:Red">*联系人手机</td>
+        <td><span style="COLOR: red">*</span>联系人手机</td>
         <td><input type="text" id="lxrsj" runat="server" /></td>
 </tr>
 <tr>
@@ -705,7 +706,7 @@
         <td><input type="text" id="yb" runat="server" /></td>
 </tr>
 <tr>
-  <td style="color:Red">*联系地址</td>
+  <td><span style="COLOR: red">*</span>联系地址</td>
         <td colspan="3"><input type="text" id="lxdz" runat="server" /></td>
 </tr>
 <tr>
@@ -731,7 +732,7 @@
         <td colspan="3"><input type="text" id="yhzh" runat="server" /></td>
 </tr>
 <tr>
- <td style="color:Red">*经营范围</td>
+ <td><span style="COLOR: red">*</span>经营范围</td>
         <td colspan="3" ><input type="text" id="jyfw" runat="server" /></td>
 </tr>
 <tr> <td> 备注：</td></tr>
@@ -743,11 +744,12 @@
 </table>
 <input  type="hidden" id="gys_id_hid" runat="server"/>
 <input  type="hidden" id="source" runat="server" value="xzym"/>
-      <dd style="width:300px; color:Red">*号的为必填项,不能为空!</dd>  
+
       <%--蒋，2014年9月1日，注释--%>
       <input type="hidden" id="txt_fxs_id" name="fxs_id" runat="server" />
-		<span class="cggg"><asp:ImageButton runat="server" ID="ImageButton1" ImageUrl="~/asp/images/queding.jpg" OnClick="updateUserInfo"  /></span>
-        <span class="cggg"><asp:ImageButton runat="server" ID="ImageButton2" ImageUrl="~/asp/images/quxiao.jpg" OnClick="Clear"  /></span>
+		<span class="cggg" style="margin-left:100px; margin-top:30px"><asp:ImageButton runat="server" ID="ImageButton1" style="color:#fff;" ImageUrl="images/queding.jpg" OnClick="updateUserInfo"  /></span>
+        
+        <span class="cggg" style="margin-left:150px; margin-top:30px"><asp:ImageButton runat="server" ID="ImageButton2" style="color:#fff;" ImageUrl="images/quxiao.jpg" OnClick="Clear"  /></span>
 </form>
 </div>
 <div class="foot">

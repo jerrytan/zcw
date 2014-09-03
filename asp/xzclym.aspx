@@ -287,7 +287,7 @@
     <div class="fxsxx">
         <span class="fxsxx1">请选择您要添加的材料信息</span>
         <%string gys_id = Request["gys_id"];%>
-          <form action = "xzclym4.aspx?gys_id=<%=gys_id %>" method = "post"  >
+          <form name="form1" action = "xzclym4.aspx?gys_id=<%=gys_id %>" method = "post">
 
             <div class="xz1">
                 <div class="xza">

@@ -137,7 +137,7 @@
       function AddNewBrand(id)
       {
           var url = "xzpp.aspx?gys_id=" + id;
-          window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+          window.open(url, "", "height=300,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
       }
       function DeleteBrand(id)
       {
@@ -275,7 +275,7 @@
                      
            
             int ret =objConn.ExecuteSQLForCount(sSQL,true);
-					 
+					
 			sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  gys_id='"+id+"' ";
 
             dt_gysxx = objConn.GetDataTable(sSQL);			 
@@ -339,7 +339,7 @@
            <%} %>				
                 <span class="fxsbc">
                     <input name="gys_id" type="hidden" id="Hidden1" class="fxsxx3" value="<%=gys_id %>"/>
-                    <input type="submit" class="fxsbc" value="更改" />
+                    <input type="submit" class="fxsbc2" value="更改" style="cursor:pointer"/>
                 </span>
           </div>
           </div>
@@ -357,10 +357,10 @@
                     <%} %>
                     
                 </div>
-            <%--<span class="fxsbc"><a style="color: Red" onclick="DeleteBrand(<%=gys_id %>)">删除选中品牌</a></span>--%>
-            <%--<span class="fxsbc"><a style="color: Blue" onclick="AddNewBrand(<%=gys_id %>)">增加新品牌</a></span>--%>
-            <input type="button" class="fxsbc" onclick="DeleteBrand(<%=gys_id %>)" value="删除选中品牌" />
-            <input type="button" class="fxsbc" onclick="AddNewBrand(<%=gys_id %>)" value="增加新品牌"/>
+            <span class="fxsbc1"><a onclick="DeleteBrand(<%=gys_id %>)" style="cursor:pointer;">删除选中品牌</a></span>
+            <span class="fxsbc1"><a onclick="AddNewBrand(<%=gys_id %>)" style="cursor:pointer;">增加新品牌</a></span>
+           <%-- <span class="fxsbc1"><input type="button" onclick="DeleteBrand(<%=gys_id %>)" value="删除选中品牌" /></span>
+            <span class="fxsbc1"><input type="button" onclick="AddNewBrand(<%=gys_id %>)" value="增加新品牌"/></span>--%>
     <%}
         //蒋，2014年8月13日，用户类型是分销商，没有管理生产商信息的权限，所以应注释分销商的相关信息
       //else if (gys_type == "分销商")

@@ -57,6 +57,7 @@
         public string source1="";
         protected void Page_Load(object sender, EventArgs e)
         {
+
             if(Request["gys_id"]!=null&&Request["gys_id"].ToString()!="")
             {
                 gys_id = Request["gys_id"].ToString();
@@ -79,10 +80,13 @@
 
         <form action="xzpp3.aspx" method="post">
             <div id="myDiv"></div>
-            <table border="0" width="600px">
+            <table border="0" width="400px">
+            <tr>
+                  <td height="34" colspan="2" align="center" bgcolor="#cadbff"><strong>增加新品牌</strong></td>
+      </tr>
 
                 <tr>
-                    <td style="width: 120px; color:Black">一级分类名称：
+                    <td style="width: 120px; color:Black;height:34px;">一级分类名称：
                     </td>
                     <td align="left">
                         <select id="yjflname" name="yjflname" style="width: 200px" onchange="updateFL(this.options[this.options.selectedIndex].value)">
@@ -97,17 +101,17 @@
 
 
                 <tr>
-                    <td style="width: 120px; color:Black">二级分类名称：
+                    <td style="width: 120px; color:Black;height:34px;">二级分类名称：
                     </td>
                     <td align="left">
-                        <select id="ejflname" name="ejflname" style="width: 250px">
+                        <select id="ejflname" name="ejflname" style="width: 200px">
                             <option value="">请选择二级分类</option>
                         </select>
                     </td>
                 </tr>
 
                 <tr>
-                    <td style="color:Black">品牌名称：
+                    <td style="color:Black;height:34px;">品牌名称：
                     </td>
                     <td align="left">
                         <input type="text" id="" name="brandname" value="" style="margin: 0px 10px 0px 0px; border: 1px solid Black; width: 198px; height: 20px; line-height: 20px; float: left; display: inline;"/>
@@ -115,7 +119,7 @@
                 </tr>
 
                 <tr>
-                    <td style="color:Black">等级：
+                    <td style="color:Black;height:34px;">等级：
                     </td>
                     <td align="left">
                         <select name="grade" id="grade" >
@@ -127,7 +131,7 @@
                 </tr>
 
                 <tr>
-                    <td valign="top" style="color:Black">范围：
+                    <td valign="top" style="color:Black;height:34px;">范围：
                     </td>
                     <td align="left">
                        
@@ -139,13 +143,11 @@
                 </tr>
 
                 <tr>
-                    <td>
+                    <td></td><td align="left" style="height:34px;">
                     <input  type="hidden" runat="server" id="source"/>
                         <input type="hidden" id="gys_id" name="gys_id" value="<%=gys_id %>" />
-                        <input type="submit" id="send" value="保存" style="width: 100px" />
-                    </td>
-                    <td align="left">
-                        <input type="button" id="close" value="关闭" onclick="window.close();" style="width: 100px" />
+                       <input type="submit" name="filter" value="保存" id="send" class="filter" filter="" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" />&nbsp;&nbsp;&nbsp;&nbsp;
+                         <input type="button" name="filter" value="关闭" id="close" class="filter" filter="" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"onClick="window.close();" /> 
                     </td>
                 </tr>
             </table>

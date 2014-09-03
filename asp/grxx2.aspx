@@ -27,11 +27,11 @@
 <head runat="server">
     <title></title>
 		 <script defer="defer">
-		     function doload()
-		     {
+		     function doload() {
+		         alert("信息已保存成功,请返回");
 		         window.location.href="gyszym.aspx";
 		     }
-		     setTimeout("doload()", 2000);
+		     setTimeout("doload()");
 </script>
 
 </head>
@@ -94,16 +94,18 @@
                     ret = objConn.ExecuteSQLForCount(sqlgys_id, true);
                 }
             }
+                
             else
             {
-                Response.Redirect("gysdl.aspx");
+                //Response.Redirect("gysdl.aspx");
+                Response.Write("<script>window.location.href='gysdl.aspx';</"+"script>");
             }
-            //Response.Write("<script>window.alert('信息已保存成功,请返回！')</" + "script>");
+            Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx';</" + "script>");
             ////Response.Write("请耐心等待,我方工作人员会尽快给您回复!");
             //Response.Redirect("gyszym.aspx");			
         }
     </script>
-    <a style="color: Red"  onclick=window.location.href="gyszym.aspx?">信息已保存成功,等待审核,请返回! </a>
+    <%--<a style="color: Red"  onclick=window.location.href="gyszym.aspx?">信息已保存成功,等待审核,请返回! </a>--%>
    
    
 </body>

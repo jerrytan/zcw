@@ -23,6 +23,7 @@
         public string source1 = "";
         protected void Page_Load(object sender, EventArgs e)
         {
+           
             if( Request["gys_id"]!=null&& Request["gys_id"].ToString()!="")
             {
                  gys_id = Request["gys_id"].ToString();
@@ -104,9 +105,11 @@
         <form action="xzfxpp2.aspx" method="post">
             <div id="myDiv"></div>
             <table border="0" width="600px">
-
+            <tr>
+               <td height="34" colspan="2" align="center" bgcolor="#cadbff"><strong>增加新分销品牌</strong></td>
+                  </tr>
                 <tr>
-                    <td style="width: 120px; color: Blue">品牌名称：
+                    <td style="width: 120px; color:Black">品牌名称：
                     </td>
                     <td align="left">
                         <select id="yjflname" name="yjflname" style="width: 200px" onchange="updateFL(this.options[this.options.selectedIndex].value)">
@@ -120,28 +123,28 @@
 
 
                 <tr>
-                    <td style="width: 120px; color: Blue">生产商：
+                    <td style="width: 120px; color: Black">生产商：
                     </td>
                     <td align="left">
                         <div id="scs"><%=dt_ppxx.Rows[0]["生产商"] %> </div>
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 120px; color: Blue">等级：
+                    <td style="width: 120px; color: Black">等级：
                     </td>
                     <td align="left">
                         <div id="grade"><%=dt_ppxx.Rows[0]["等级"] %> </div>
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 120px; color: Blue">范围：
+                    <td style="width: 120px; color: Black">范围：
                     </td>
                     <td align="left">
                         <div id="scope"><%=dt_ppxx.Rows[0]["范围"] %>  </div>
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 120px; color: Blue">分类：
+                    <td style="width: 120px; color: Black">分类：
                     </td>
                     <td align="left">
                         <div id="fl_name"> <%=dt_ppxx.Rows[0]["分类名称"] %> </div>
@@ -157,10 +160,11 @@
                         <input type="hidden" id="fxs_id" name="fxs_id" value="<%=gys_id %>" />
                         <input type="hidden" id="pp_id" name="pp_id" value="<%=dt_ppxx.Rows[0]["pp_id"] %> " />
                         <input type="hidden" id="pp_name" name="pp_name" value="<%=dt_ppxx.Rows[0]["品牌名称"] %> " />
-                        <input type="submit" id="send" value="保存"style="width: 100px" />
                     </td>
                     <td align="left">
-                        <input type="button" id="close" value="关闭" onclick="window.close();" style="width: 100px" />
+                    <input type="submit" id="send" value="保存"style="width:86px; background-color:#cadbff" />&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="button" id="close" value="关闭" onclick="window.close();" 
+                            style="width: 80px;background-color:#cadbff" />
                     </td>
                 </tr>
             </table>
