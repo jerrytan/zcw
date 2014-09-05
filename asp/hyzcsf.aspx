@@ -30,10 +30,10 @@
                     <a href="gyszc.aspx">供应商注册</a></dd>
             </dl>
             <dl>
-                <dt><a href="#">
+                <dt><a href="cgszc.aspx">
                     <img alt="#" src="images/dengluren.gif" width="87" height="103" /></a></dt>
                 <dd>
-                    <a href="#">采购商注册</a></dd>
+                    <a href="cgszc.aspx">采购商注册</a></dd>
             </dl>
         </div>
     </div>
