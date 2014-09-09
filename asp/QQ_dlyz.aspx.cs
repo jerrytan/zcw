@@ -17,18 +17,39 @@ public partial class asp_QQ_dlyz : System.Web.UI.Page
     }
     protected void btnCheck_Click(object sender, ImageClickEventArgs e)
     {
-        
-        string QQ = Request.Form["user_qq"];
-        string gys_qq_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
         DataConn dc = new DataConn();
+        string QQ = Request.Form["user_qq"];
+        string gys_qq_id;
+        string cgs_qq_id;
+        string sql_Check_QQ;
+        string sql_Update_QQ_id;
+        string sql_GetData;
+        string sql_Level;
+        string sql_dwid;
 
-        string sql_Check_QQ = "select * from 用户表 where QQ号码='" + QQ+"'";
-        string sql_Update_QQ_id = "update 用户表 set QQ_id = '" + gys_qq_id + "',验证通过时间=getdate(),是否验证通过='通过' where QQ号码='" + QQ + "'";
+        if (Request.Cookies["GYS_QQ_ID"]!=null)
+        {
+            gys_qq_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+            sql_Check_QQ = "select * from 用户表 where QQ号码='" + QQ + "'";
+            sql_Update_QQ_id = "update 用户表 set QQ_id = '" + gys_qq_id + "',验证通过时间=getdate(),是否验证通过='通过' where QQ号码='" + QQ + "'";
 
-        string sql_GetData = "select 供应商,地址,电话,主页,单位类型,联系人,联系人手机 from 材料供应商信息表 where gys_id=(select dw_id from 用户表 where QQ_id='" + gys_qq_id + "')";
+            sql_GetData = "select 供应商,地址,电话,主页,单位类型,联系人,联系人手机 from 材料供应商信息表 where gys_id=(select dw_id from 用户表 where QQ_id='" + gys_qq_id + "')";
 
-        string sql_Level = "select 等级 from 用户表 where QQ_id='" + gys_qq_id + "'";
-        string sql_dwid = "select dw_id from 用户表 where QQ_id='" + gys_qq_id + "'";
+            sql_Level = "select 等级 from 用户表 where QQ_id='" + gys_qq_id + "'";
+            sql_dwid = "select dw_id from 用户表 where QQ_id='" + gys_qq_id + "'";
+        }
+        else
+        {
+            cgs_qq_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
+            sql_Check_QQ = "select * from 用户表 where QQ号码='" + QQ + "'";
+            sql_Update_QQ_id = "update 用户表 set QQ_id = '" + cgs_qq_id + "',验证通过时间=getdate(),是否验证通过='通过' where QQ号码='" + QQ + "'";
+
+            sql_GetData = "select 单位名称,地址,电话,主页,单位类型,联系人,联系人手机 from 采购商基本信息 where cgs_id=(select dw_id from 用户表 where QQ_id='" + cgs_qq_id + "')";
+
+            sql_Level = "select 等级 from 用户表 where QQ_id='" + cgs_qq_id + "'";
+            sql_dwid = "select dw_id from 用户表 where QQ_id='" + cgs_qq_id + "'";
+        }
+        
 
 
         if(dc.GetRowCount(sql_Check_QQ)>0)     //判断QQ号是否存在，即是否已经注册
@@ -38,17 +59,35 @@ public partial class asp_QQ_dlyz : System.Web.UI.Page
             {
                 //读取数据
                 dtGys = dc.GetDataTable(sql_GetData);
-                for (int i = 0; i < dtGys.Rows.Count; i++)
+                if (Request.Cookies["GYS_QQ_ID"] != null)
                 {
-                    DataRow dr = dtGys.Rows[i];
-                    this.gys_name.Value = dr["供应商"].ToString();
-                    this.gys_address.Value = dr["地址"].ToString();
-                    this.gys_phone.Value = dr["电话"].ToString();
-                    this.gys_homepage.Value = dr["主页"].ToString();
-                    this.gslx.Value = dr["单位类型"].ToString();
-                    this.user_name.Value = dr["联系人"].ToString();
-                    this.user_phone.Value = dr["联系人手机"].ToString();
+                    for (int i = 0; i < dtGys.Rows.Count; i++)
+                    {
+                        DataRow dr = dtGys.Rows[i];
+                        this.gys_name.Value = dr["供应商"].ToString();
+                        this.gys_address.Value = dr["地址"].ToString();
+                        this.gys_phone.Value = dr["电话"].ToString();
+                        this.gys_homepage.Value = dr["主页"].ToString();
+                        this.gslx.Value = dr["单位类型"].ToString();
+                        this.user_name.Value = dr["联系人"].ToString();
+                        this.user_phone.Value = dr["联系人手机"].ToString();
+                    }
                 }
+                else
+                {
+                    for (int i = 0; i < dtGys.Rows.Count; i++)
+                    {
+                        DataRow dr = dtGys.Rows[i];
+                        this.gys_name.Value = dr["单位名称"].ToString();
+                        this.gys_address.Value = dr["地址"].ToString();
+                        this.gys_phone.Value = dr["电话"].ToString();
+                        this.gys_homepage.Value = dr["主页"].ToString();
+                        this.gslx.Value = dr["单位类型"].ToString();
+                        this.user_name.Value = dr["联系人"].ToString();
+                        this.user_phone.Value = dr["联系人手机"].ToString();
+                    }
+                }
+                
 
                 if (dc.DBLook(sql_Level) == "企业用户")
                 {

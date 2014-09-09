@@ -17,6 +17,9 @@
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all%20of.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
+        function deleteS() {
+            alert("删除成功");
+        }
         function Trim(str) {
             str = str.replace(/^(\s|\u00A0)+/, '');
             for (var i = str.length - 1; i >= 0; i--) {
@@ -143,19 +146,20 @@
             border-style: None; font-family: 宋体; font-size: 12px; height: 20px; width: 37px;" />--%>
         <asp:Button ID="filter" name="filter" runat="server" Text="检索"  class="filter" 
             style="color: Black;
-            border-style: None; font-family: 宋体; font-size: 12px; height: 20px; width: 37px;" 
+            border-style: None; font-family: 宋体; font-size: 12px; height: 20px; width: 37px;cursor:pointer;" 
             onclick="filter_Click"/>
         &nbsp;&nbsp;
         <input type="submit" name="btnDocNew" value="添加" onclick="addPage();" id="btnDocNew"
             class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;
-            height: 20px; width: 37px;" />&nbsp;&nbsp;
+            height: 20px; width: 37px;cursor:pointer;" />&nbsp;&nbsp;
         <input type="button" id="btnFilter" value="组合查询"  style="height: 20px;
             width: 64px; border-style: none; font-family: 宋体; font-size: 12px;" />&nbsp;&nbsp;
         <%--<input type="submit" name="btnDelete" value="删除选中行" onclick="return confirm(&#39;真的彻底删除选中的记录吗？&#39;);"
             id="btnDelete" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
             font-size: 12px; height: 20px; width: 72px;" />--%>
           <asp:Button ID="btnDelete" runat="server" Text="删除选中行" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
-            font-size: 12px; height: 20px; width: 72px;" onclick="btnDelete_Click"/>
+            font-size: 12px; height: 16px; width: 72px;cursor:pointer;" 
+            onclick="btnDelete_Click"/>
     </div>
     <!-- 检索 结束-->
     <!-- 用户信息 开始 -->
@@ -216,81 +220,81 @@
                         <%string powerGys = listGys[i].Power.ToString(); %>
                         <%if (powerGys.Contains("管理生产商") && powerGys.Contains("管理分销商") && powerGys.Contains("管理材料信息")) %>
                         <%{%>
-                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
                             管理生产商
-                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
                             管理分销商
-                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
                             管理材料信息
                         <% } %>
                         <%else if (powerGys.Contains("管理生产商") && powerGys.Contains("管理分销商")) %>
                         <%{%>
-                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
                             管理生产商
-                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
                             管理分销商
-                            <input type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
                             管理材料信息
                         <% } %>
                         <%else if (powerGys.Contains("管理生产商") && powerGys.Contains("管理材料信息")) %>
                         <%{%>
-                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
                             管理生产商
-                            <input type="checkbox" value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
                             管理分销商
-                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
                             管理材料信息
                         <% } %>
                         <%else if (powerGys.Contains("管理分销商") && powerGys.Contains("管理材料信息")) %>
                         <%{%>
-                            <input type="checkbox" value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
                             管理生产商
-                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
                             管理分销商
-                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
                             管理材料信息
                         <% } %>
                         <%else if (powerGys.Contains("管理生产商")) %>
                         <%{%>
-                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
                             管理生产商
-                            <input type="checkbox" value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
                             管理分销商
-                            <input type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
                             管理材料信息
                         <% } %>
                         <%else if (powerGys.Contains("管理分销商"))
                             { %>
-                            <input type="checkbox" value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
                             管理生产商
-                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
                             管理分销商
-                            <input type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
                             管理材料信息
                         <%} %>
                         <%else if (powerGys.Contains("管理材料信息"))
                             { %>
-                            <input type="checkbox" value="管理生产商" name="cbx1" runat="server" />
+                            <input type="checkbox" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
                             管理生产商
-                            <input type="checkbox" value="管理分销商" name="cbx2" runat="server" />
+                            <input type="checkbox" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
                             管理分销商
-                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" runat="server" />
+                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
                             管理材料信息
                         <%} %>
                         <%else
                             { %>
-                        <input id="Checkbox1" type="checkbox" value="管理生产商" name="cbx1" runat="server" />
+                        <input id="Checkbox1" type="checkbox" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
                         管理生产商
-                        <input id="Checkbox2" type="checkbox" value="管理分销商" name="cbx2" runat="server" />
+                        <input id="Checkbox2" type="checkbox" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
                         管理分销商
-                        <input id="Checkbox3" type="checkbox" value="管理材料信息" name="cbx3" runat="server" />
+                        <input id="Checkbox3" type="checkbox" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
                         管理材料信息
                         <%} %>
                     </td>
                     <td align="center">
                         <input type="button" name="filter" value="编辑" id="Submit1" onclick="changePage(this);"
                             class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;
-                            height: 20px; width: 37px;" />
+                            height: 20px; width: 37px;cursor:pointer;" />
                     </td>
                 </tr>
                 <%} %>

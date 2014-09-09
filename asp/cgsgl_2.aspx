@@ -60,6 +60,25 @@
 	           
     protected void Page_Load(object sender, EventArgs e)
     {
+        string cgs_QQ_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
+        //Response.Write(cgs_QQ_id);
+        string sqlExistQQ_id = "select * from 用户表 where QQ_id='" + cgs_QQ_id + "'";
+        string sql_Level = "select 等级 from 用户表 where QQ_id='" + cgs_QQ_id + "'";
+        //Response.Write(objConn.GetRowCount(sqlExistQQ_id));
+        if (objConn.GetRowCount(sqlExistQQ_id) > 0)
+        {
+            //Response.Write(1);
+            Response.Write(objConn.DBLook(sql_Level));
+            if (objConn.DBLook(sql_Level) == "企业用户")
+            {
+                Response.Redirect("hyyhgl.aspx");
+            }
+        }
+        else
+        {
+            //Response.Write(2);
+            Response.Redirect("QQ_dlyz.aspx");
+        }
          if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
         {
             s_QQid = Request.Cookies["CGS_QQ_ID"].Value.ToString();
@@ -70,17 +89,18 @@
            string count = objConn.DBLook(sSQL);
            if (Convert.ToInt32(count)==0)  //qq_id 不存在，需要增加用户表
             {
-                sSQL = "insert into 用户表 (QQ_id) VALUES ('" + s_QQid + "')";
-               if(!objConn.ExecuteSQL(sSQL,false))
-               {
-                  objConn.MsgBox(this.Page,"执行SQL语句失败"+sSQL);
-               }
-                sSQL = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + s_QQid + "'),类型='采购商' where QQ_id = '" + s_QQid + "'";
-                if(!objConn.ExecuteSQL(sSQL,false))
-               {
-                  objConn.MsgBox(this.Page,"执行SQL语句失败"+sSQL);
-                  return;
-               }
+               //2014-09-09 yuan
+               // sSQL = "insert into 用户表 (QQ_id) VALUES ('" + s_QQid + "')";
+               //if(!objConn.ExecuteSQL(sSQL,false))
+               //{
+               //   objConn.MsgBox(this.Page,"执行SQL语句失败"+sSQL);
+               //}
+               // sSQL = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + s_QQid + "'),类型='采购商' where QQ_id = '" + s_QQid + "'";
+               // if(!objConn.ExecuteSQL(sSQL,false))
+               //{
+               //   objConn.MsgBox(this.Page,"执行SQL语句失败"+sSQL);
+               //   return;
+               //}
 
             }
            string lx = "";
@@ -386,7 +406,7 @@
             <img src="images/sccp.jpg" />
         </div>
         
-        <div class="dlqqz2">
+    <%--    <div class="dlqqz2">
             <div id="menu">
                 <% 
  	      firstlevel = 0;
@@ -446,7 +466,7 @@
                     </ul>
                 </span>
             </div>
-        </div>
+        </div>--%>
         <div class="dlqqz3">
             &nbsp;&nbsp;<asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg"
                 runat="server" OnClick="cancelFollows" />
