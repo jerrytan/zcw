@@ -29,7 +29,7 @@
             //if (lx != "scs")//分销商
             //{
                 sSQL = "select fxs_id,分销商 from 分销商和品牌对应关系表 where pp_id='" + pp_id + "' "; //查询分销商id	
-                DataTable dt_fxs = objConn.GetDataTable(sSQL);
+                DataTable dt_fxs = objConn.GetDataTable(sSQL,true);
                 if (dt_fxs != null && dt_fxs.Rows.Count > 0)
                 {
                     Response.Write("<option value = '0'>" + "请选择分销商" + "</option>");

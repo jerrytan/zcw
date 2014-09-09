@@ -348,6 +348,7 @@
                                         <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )">
                                           <a href="javascript:void(0)">+<%=R_ejfl["显示名字"].ToString()%></a></h2>
                                         <ul class="no">
+                                        <li>
                                                <% 
 								                //二级下的分类产品要根据,具体的二级分类编码进行查询				  
 								                string s_flbm = R_ejfl["分类编码"].ToString();
@@ -359,7 +360,7 @@
                                                     <input type="checkbox" name="clid" value="<%=R_cls["cl_id"].ToString()%>" />
                                                     <a href="clbj.aspx?cl_id=<%=R_cls["cl_id"].ToString()%>"><%=R_cls["显示名"].ToString()%></a>
                                               <%} %>
-                                        </ul>
+                                       </li> </ul>
                                        
                              <% 	 secondlevel++;
                                     }      
@@ -388,7 +389,7 @@
         <%}
             //蒋，2014年8月18日，只有采购商有导出的权限
       //else { %>
-        <<%--div class="dlex1">
+        <%--div class="dlex1">
             您可以把你管理的材料数据导出为excel，供下线使用
             <asp:Button runat="server" ID="button2" Text="全部导出为EXCEL" OnClick="dumpFollowCLs" />
         </div>--%>
