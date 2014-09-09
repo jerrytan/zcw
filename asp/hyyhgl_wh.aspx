@@ -14,6 +14,29 @@
     <title>维护用户信息</title>
     <link href="css/all%20of.css" rel="stylesheet" type="text/css" />
     <link href="css/css.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        function isQQ(str) {
+            var reg = /^\d{5,10}$/;
+            if (!reg.test(str.value) && document.getElementById("txt_QQ").value != "") {
+                alert("QQ号格式错误，请重新输入");
+                document.getElementById("txt_QQ").focus();
+            }
+        }
+        function isPhone(str) {
+            var reg = /^0?1[358]\d{9}$/;
+            if (!reg.test(str.value) && document.getElementById("txt_phone").value != "") {
+                alert("手机号格式错误，请重新输入");
+                document.getElementById("txt_phone").focus();
+            }
+        }
+        function yxCheck(str) {
+            var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+            if (!reg.test(str.value) && document.getElementById("txt_Email").value != "") {
+                alert("请输入有效的邮箱地址");
+                document.getElementById("txt_Email").focus();
+            }
+        }
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -27,7 +50,7 @@
                 <dt>
                     <label for="textfield">
                     </label>
-                    <input name="QQ" type="text" class="shuru" id="txt_QQ" runat="server"/>
+                    <input name="QQ" type="text" class="shuru" id="txt_QQ" runat="server" onblur="isQQ(this)"/>
                 </dt>
                 <dd>
                     姓名：</dd>
@@ -41,14 +64,14 @@
                 <dt>
                     <label for="textfield2">
                     </label>
-                    <input type="text" name="txt_phone" class="shuru" id="txt_phone" runat="server"/>
+                    <input type="text" name="txt_phone" class="shuru" id="txt_phone" runat="server" onblur="isPhone(this)"/>
                 </dt>
                 <dd>
                     邮箱：</dd>
                 <dt>
                     <label for="textfield4">
                     </label>
-                    <input type="text" name="txt_Email" class="shuru" id="txt_Email" runat="server"/>
+                    <input type="text" name="txt_Email" class="shuru" id="txt_Email" runat="server" onblur="yxCheck(this)"/>
                 </dt>
                 <dd>
                     角色权限：</dd>
