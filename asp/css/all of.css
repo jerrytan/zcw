@@ -252,7 +252,7 @@ border-bottom:1px solid #ddd;}
 .dlqqr dd{ width:110px; height:24px; float:left; margin-top:10px; line-height:24px; }
 .dlqqr dt{ width:300px; height:24px; float:left; margin-top:10px; line-height:24px;}
 
-.dlqqz{ width:980px; height:auto; float:left;}
+.dlqqz{ width:980px; height:auto; float:left;margin-top:10px;}
 .dlqqz1{width:221px; height:27px;padding:0 0 0 30px;}
 .dlqqz2{width:211px; height:auto;padding:10px 10px 10px 30px;}
 .dlqqz3{width:211px; height:auto;padding:0 0 0 35px;}
@@ -289,8 +289,8 @@ border-bottom:1px solid #ddd;}
 .fxsfxk{ margin:5px 10px 0 30px; display:inline; float:left;}
 .fgsjj{ width:300px; height:100px; float:left ; border:#909090 solid 1px;}
 .fgstp1{ width:820px; height:auto; float:left;}
-.fgstp{ width:133px; height:auto; float:left;}
-.fdlpp1{ width:133px; height:auto; float:left;}
+.fgstp{ width:139px; height:auto; float:left;}
+.fdlpp1{ width:139px; height:auto; float:left;}
 .scyp{ width:132px; height:32px; float:left; margin:20px 20px 20px 0; display:inline;}
 .fxsbc{ width:73px; height:25px; float:left; margin:20px 0 20px 100px;}
 .fxsbc2 {
@@ -325,7 +325,7 @@ border-bottom:1px solid #ddd;}
 
 .hhh1{ width:133px; height:98px; float:left;}
 .hhh{ width:147px; height:37px; float:left; margin:30px 0 0 20px;}
-.ggspp{ width:980px; height:auto; float:left; border-top:#707070 dashed 1px;}
+.ggspp{ width:998px; height:auto; float:left; border:#ddd solid 1px; margin-top:10px; padding-bottom:10px;}
 .ggspp1{ width:920px; height:30px; float:left; margin:20px 0 20px 60px; display:inline; line-height:30px; font-size:14px; color:#0071b3; font-weight:bold;}
 .ggspp2{ width:920px; height:auto; float:left; margin:0 0 20px 60px; display:inline; line-height:22px;}
 
@@ -381,7 +381,11 @@ border-bottom:1px solid #ddd;}
 	background-color:#fff;
 }
 .yhb {
-	width: 1000px; height: auto; margin-top: 10px; float: left;
+	width: 1000px;
+	height: auto;
+	margin-top: 10px;
+	float: left;
+	background-color: #FFF;
 }
 .queding_bk{
 	width:30px;
@@ -391,7 +395,7 @@ border-bottom:1px solid #ddd;}
 	height:60px;
 	float:left;
 	line-height:60px;
-	background-color: #cadbff;
+	background-color: #d9e5fd;
 	margin-top: 10px;
 }
 table.gridtable {
@@ -619,3 +623,4 @@ table.gridtable td {
 	font-size: 18px;
 }
 /*≤πÃÓ–≈œ¢*/
+input.middle { vertical-align:middle;}
