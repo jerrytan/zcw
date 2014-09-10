@@ -196,7 +196,7 @@
             s_yh_id = Session["CGS_YH_ID"].ToString();
         }
          sSQL = "select * from (select distinct a.分类编码,a.显示名字 from 材料分类表 as a ,(select distinct c.分类编码 as flbm " +
-                         " from 采购商关注材料表 as b ,材料表 as c  " +
+                         " from 采购商关注的材料表 as b ,材料表 as c  " +
                          " where b.yh_id='" + s_yh_id + "' and b.cl_id=c.cl_id  ) as  d " +
                         " where a.分类编码=d.flbm or a.分类编码=left(d.flbm,2))#temp where len(分类编码)=2";
 
@@ -204,13 +204,13 @@
          dt_cgsgzcl_dl = objConn.GetDataTable(sSQL);
 
          sSQL = "select * from (select distinct a.分类编码,a.显示名字 from 材料分类表 as a ,(select distinct c.分类编码 as flbm " +
-                        " from 采购商关注材料表 as b ,材料表 as c  " +
+                        " from 采购商关注的材料表 as b ,材料表 as c  " +
                         " where b.yh_id='" + s_yh_id + "' and b.cl_id=c.cl_id  ) as  d " +
                        " where a.分类编码=d.flbm or a.分类编码=left(d.flbm,2))#temp where len(分类编码)=4";
          dt_cgsgzcl_xl = objConn.GetDataTable(sSQL);
       
 
-        sSQL ="select b.cl_id ,分类编码,显示名 from 采购商关注材料表 as a ,材料表 as b  " +
+        sSQL ="select b.cl_id ,分类编码,显示名 from 采购商关注的材料表 as a ,材料表 as b  " +
              "  where a.yh_id='" + s_yh_id + "' and a.cl_id=b.cl_id order by b.cl_id";
 
         dt_clb = objConn.GetDataTable(sSQL);
@@ -226,7 +226,7 @@
     }
    
 /// <summary>
-/// 获得采购商关注材料表
+/// 获得采购商关注的材料表
 /// </summary>
 /// <param name="sender"></param>
 /// <param name="e"></param>
@@ -251,7 +251,7 @@
             {
                 if (dt_yhbt.Rows[0]["是否验证通过"].ToString()=="通过")
                 {
-                    sSQL = "select b.* from 采购商关注材料表 as  a ,材料表 as b  where a.yh_id='" + s_yh_id + "'  and a.cl_id = b.cl_id ";
+                    sSQL = "select b.* from 采购商关注的材料表 as  a ,材料表 as b  where a.yh_id='" + s_yh_id + "'  and a.cl_id = b.cl_id ";
                     dt = null;
                     dt = objConn.GetDataTable(sSQL);
                     outToExcel(dt);
@@ -337,7 +337,7 @@
         }   
         string s_clid = Request.Form["clid"];
 
-        sSQL = "delete 采购商关注材料表 where yh_id ='" + s_yh_id + "' and cl_id in (" + s_clid + ")";
+        sSQL = "delete 采购商关注的材料表 where yh_id ='" + s_yh_id + "' and cl_id in (" + s_clid + ")";
         objConn.ExecuteSQL(sSQL,false);
 
         string s_gys_id = Request.Form["gysid"];
@@ -406,7 +406,7 @@
             <img src="images/sccp.jpg" />
         </div>
         
-    <%--    <div class="dlqqz2">
+  <div class="dlqqz2">
             <div id="menu">
                 <% 
  	      firstlevel = 0;
@@ -480,7 +480,7 @@
             <div class="dlex1">
                 <asp:Button runat="server" ID="button1" Text="选择数据进入自身内部系统" OnClick="dumpFollowCLs" />
             </div>
-        </div>--%>
+        </div>
         <%
 	}else {
         %>
