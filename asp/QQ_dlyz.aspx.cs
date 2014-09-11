@@ -96,7 +96,15 @@ public partial class asp_QQ_dlyz : System.Web.UI.Page
                 else if (dc.DBLook(sql_Level) == "普通用户")
                 {
                     string dwid = dc.DBLook(sql_dwid);
-                    strRunPage = "gyszym.aspx?dw_id="+dwid;
+                    if (Request.Cookies["GYS_QQ_ID"] != null)
+                    {
+                        strRunPage = "gyszym.aspx?dw_id=" + dwid;
+                    }
+                    else
+                    {
+                        strRunPage = "cgsgl_2.aspx?dw_id=" + dwid;
+                    }
+                    
                 }
 
                 Response.Write(@"<script>if(confirm('验证成功，是否现在登录？')==true)

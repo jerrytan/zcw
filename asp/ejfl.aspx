@@ -16,7 +16,10 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+
 <head>
+    <meta content="IE=10.000" http-equiv="X-UA-Compatible"/> 
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
     <title>二级分类详细页面</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
@@ -77,7 +80,7 @@
             dt_ejflpp = dc_obj.GetDataTable(str_sqlppmc);
            		
 			
-            string str_sqlcl = "select top 10 显示名,规格型号,分类编码,cl_id from 材料表 where 分类编码='"+name+"' order by 访问计数 desc";
+            string str_sqlcl = "select top 9 显示名,规格型号,分类编码,cl_id from 材料表 where 分类编码='"+name+"' order by 访问计数 desc";
             dt_ejflcl = dc_obj.GetDataTable(str_sqlcl);
 			
 			string str_sqltop4 = "select top 4 标题,摘要,wz_id from 文章表 where left(分类编码,4)='"+name+"' ";
@@ -356,7 +359,13 @@
      <!--其它属性结束-->
         </div>
 
-        <div class="dlspx">
+      
+        </div>
+         <!-- 筛选 结束 -->
+
+        <!-- 材料显示列表 开始-->
+        <div class="dlspxl" id="dv">
+          <div class="dlspx">
                  <span class="dlspx3">排序：</span>
                 <ul id="sort" >
                     <li val="0" class="dlspx3" >默认方式</li>
@@ -366,11 +375,6 @@
                <span class="dlspx3"><input type="checkbox" value="" id="ckAll" class="fx" />全选</span>
                 <span class="dlspx4"><a id="collect">请收藏，便于查找</a></span>
             </div>
-        </div>
-         <!-- 筛选 结束 -->
-
-        <!-- 材料显示列表 开始-->
-        <div class="dlspxl" id="dv">
           <%if(dt_clxx.Rows.Count>0){ %>
             <% foreach(System.Data.DataRow row in dt_clxx.Rows){
                 String  mc = row["显示名"].ToString();
@@ -392,9 +396,9 @@
                     }
                     Response.Write("<img src="+imgsrc+ " width=150px height=150px />");
 				    %>
-                    
+                    </a>
                     <div class="dlspxt1" >
-                        <span class="dlsl"><%=mc%></span>  </a>
+                        <span class="dlsl"><%=mc%></span> 
                         <span class="dlspx3">
                             <%string parm="";
                               parm=row["材料编码"].ToString()+"|"+row["pp_id"].ToString();
@@ -408,6 +412,14 @@
             <%}else{ %>
               <span style="font-size:30px;font-weight:bolder;color:Red;padding:0 300px;"><%=defaultMsg%></span>
             <%} %>
+
+            <!-- 分页 开始 -->
+            <div class="fy2">
+                <div class="fy3">
+                      <div id="page"><%=pageBar %></div>  
+                </div>
+            </div>
+            <!-- 分页 结束-->
         </div>
         <!-- 材料显示列表 结束-->
 
@@ -429,13 +441,7 @@
         <!-- 最具人气的石材 结束-->
     </div>
 
-    <!-- 分页 开始 -->
-    <div class="fy2">
-        <div class="fy3">
-              <div id="page"><%=pageBar %></div>  
-        </div>
-    </div>
-    <!-- 分页 结束-->
+    
 
     <div>
         <!-- 关于我们 广告服务 投诉建议 开始-->
