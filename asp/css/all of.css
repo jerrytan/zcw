@@ -70,8 +70,11 @@ background-color:#f8f8f8;}
 .xzss{ width:998px; height:auto; float:left; margin:10px 0 10px 0; padding:10px 0 10px 0;background-color:#f8f8f8; border:1px solid #ddd;}
 .ppxz{ width:960px; height:auto; float:left; margin:0 20px 0 20px; display:inline;
 border-bottom:1px solid #ddd;}
-.ppxz1{ width:50px; height:30px; float:left; line-height:30px;}
-.ppxz2 a{ width:45px; float:left; padding:0 10px 0 10px; line-height:30px; color:#0081cc;}
+.ppxz1{ width:50px; height:35px; float:left; line-height:30px;}
+.ppxz3 { width:910px; float:left;
+line-height:30px;
+	}
+.ppxz2 a{ width:auto; float:left; margin:0 20px 0 0px; line-height:30px; color:#0081cc;}
 .ppxz2  a:hover {color:#F00;}
 .ppxz2 a img{ padding:5px 0 0 0;}
 .dlspx{ width:765px; height:30px; float:left; padding-left:30px; display:inline;  margin-top:20px;}
@@ -290,7 +293,7 @@ border-bottom:1px solid #ddd;}
 .fgsjj{ width:300px; height:100px; float:left ; border:#909090 solid 1px;}
 .fgstp1{ width:820px; height:auto; float:left;}
 .fgstp{ width:139px; height:auto; float:left;}
-.fdlpp1{ width:139px; height:auto; float:left;}
+.fdlpp1{ width:139px; height:auto; text-align:center;}
 .scyp{ width:132px; height:32px; float:left; margin:20px 20px 20px 0; display:inline;}
 .fxsbc{ width:73px; height:25px; float:left; margin:20px 0 20px 100px;}
 .fxsbc2 {
@@ -298,7 +301,7 @@ border-bottom:1px solid #ddd;}
 	line-height:25px;
 	WIDTH: 74px;
 	FLOAT: left;
-	MARGIN: 20px 0px 20px 100px;
+	MARGIN: 20px 0px 20px 163px;
 	background-image: url(../images/anniu_red2.jpg);
 	background-repeat: no-repeat;
 	text-align: center;
@@ -497,10 +500,11 @@ table.gridtable td {
 	margin: 0px 10px 0px 0px; border: 1px solid #ddd; width: 280px; height: 24px; line-height: 24px; float: left; display: inline;
 }
 .hyzhc_shrk2 {
-	margin: 0px 10px 0px 0px; border: 1px solid #ddd; width: 778px; height: 72px; line-height: 24px; float: left; display: inline;
+	margin: 0px 10px 0px 0px; border: 1px solid #ddd; width: 793px; 
+height: 72px; line-height: 24px; float: left; display: inline;
 }
 .hyzhc_shrk3 {
-	margin: 0px 10px 0px 0px; border: 1px solid #ddd; width: 778px; height: 48px; line-height: 24px; float: left; display: inline;
+	margin: 0px 10px 0px 0px; border: 1px solid #ddd; width: 782px; height: 48px; line-height: 24px; float: left; display: inline;
 }
 .xinghao {
 	color:#ff0000;
@@ -556,7 +560,7 @@ table.gridtable td {
 /*会员注册*/
 .shenfen{
 	height:150px;
-	margin:80px 0 50px 210px;
+	margin:80px 0 50px 300px;
 }
 .shenfen dl{float:left;width:150px;padding:10px 20px;}
 .shenfen dt{ width:150px; float:left;text-align:center;}
@@ -622,5 +626,7 @@ table.gridtable td {
 	margin-right:10px;
 	font-size: 18px;
 }
-/*补填信息*/
+/*验证页面*/
+
+/* 复选框与文字居中对齐样式*/
 input.middle { vertical-align:middle;}

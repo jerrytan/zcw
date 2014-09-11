@@ -305,38 +305,109 @@
          <div class="fxsxx">
 		   <span class="fxsxx1">
 		    </span>
-            <span class="fxsxx1">贵公司的详细信息如下:</span>
+            <%--<span class="fxsxx1">贵公司的详细信息如下:</span>--%>
              <%--蒋，2014年8月25日，改div原有样式“fxsxx2”改为“gysgybtr”--%>
             <div class="gysgybtr">
+            <table width="1000" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px; margin-top:10px;">
            <%if (sp_result == "待审核")
              { %>
-             <dl>
-             <span class="fxsxx1">贵公司的信息如下正在审核中</span>
-                <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" onclick="return companyname_onclick()" /></dt>
-                <dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>"/></dt>
-                <dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>"/></dt>
-                <dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" onclick="return homepage_onclick()" /></dt>
-                <dd>贵公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司传真"] %>"/></dt>
-                <dd>贵公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地区"] %>"/></dt>
-                <dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人姓名"] %>" /></dt>
-                <dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人电话"] %>" /></dt>
-                <dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></dt>
-             </dl>
+             <tr>
+                  <td height="34" colspan="6" align="left" bgcolor="#f7f7f7" style="font-size:14px; font-weight:bold;">&nbsp;&nbsp;贵公司的详细信息正在审核:</td>
+                </tr>
+                <tr>
+                  <td height="20" colspan="6" align="right"></td>
+                </tr>
+                <tr>
+      <td width="50" height="30">&nbsp;</td>
+      <td width="120">公司名称:</td>
+      <td width="329"><label for="textfield"></label>
+        <input name="companyname" type="text" id="Text1" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" onclick="return companyname_onclick()" /></td>
+      <td width="50" align="right"></td>
+      <td width="120">公司地址：</td>
+      <td width="329"><input name="address" type="text" id="Text2" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>"/></td>
+    </tr>
+     <tr>
+      <td height="30">&nbsp;</td>
+      <td>公司电话：</td>
+      <td><input name="tel" type="text" id="Text3" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>"/></td>
+      <td>&nbsp;</td>
+      <td>公司主页：</td>
+      <td><input name="homepage" type="text" id="Text4" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" onclick="return homepage_onclick()" /></td>
+    </tr>
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td>公司传真：</td>
+      <td><input id="Text5" class="fxsxx3" name="fax" type="text" value='<%=dt_gysxx.Rows[0]["贵公司传真"] %>' /></td>
+      <td>&nbsp;</td>
+      <td>公司地区：</td>
+      <td><input name="area" type="text" id="Text6" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地区"] %>"/></td>
+    </tr>
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td>联系人姓名：</td>
+      <td><input name="name" type="text" id="Text7" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人姓名"] %>" /></td>
+      <td>&nbsp;</td>
+      <td>联系人电话：</td>
+      <td><input name="phone" type="text" id="Text8" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人电话"] %>" /></td>
+    </tr>
+    <tr>
+      <td height="40">&nbsp;</td>
+      <td>经验范围：</td>
+      <td colspan="4" height="90px"><label for="textfield21"></label>
+          <input name="Business_Scope" type="text" id="Text9" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
+    </tr>
+
            <%}
              else
              {%>
-              <dl>
-                <dd>贵公司名称：</dd><dt><input name="companyname" type="text" id="companyname" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" /></dt>
-                <dd>贵公司地址：</dd><dt><input name="address" type="text" id="address" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地址"] %>"/></dt>
-                <dd>贵公司电话：</dd><dt><input name="tel" type="text" id="tel" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>"/></dt>
-                <dd>贵公司主页：</dd><dt><input name="homepage" type="text" id="homepage" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["主页"] %>" /></dt>
-                <dd>贵公司传真：</dd><dt><input name="fax" type="text" id="fax" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["传真"] %>"/></dt>
-                <dd>贵公司地区：</dd><dt><input name="area" type="text" id="area" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地区名称"] %>"/></dt>
-                <dd>联系人姓名：</dd><dt><input name="name" type="text" id="name" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人"] %>" /></dt>
-                <dd>联系人电话：</dd><dt><input name="phone" type="text" id="phone" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人手机"] %>" /></dt>
-                <dd>经营范围  ：</dd><dt><input name="Business_Scope" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></dt>
-             </dl>
-           <%} %>				
+              <tr>
+                  <td height="34" colspan="6" align="left" bgcolor="#f7f7f7" style="font-size:14px; font-weight:bold;">&nbsp;&nbsp;贵公司的详细信息如下：</td>
+                </tr>
+                <tr>
+                  <td height="20" colspan="6" align="right"></td>
+                </tr>
+                <tr>
+      <td width="50" height="30">&nbsp;</td>
+      <td width="120">公司名称:</td>
+      <td width="329"><label for="textfield"></label>
+        <input name="companyname" type="text" id="Text10" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" onclick="return companyname_onclick()" /></td>
+      <td width="50" align="right"></td>
+      <td width="120">公司地址：</td>
+      <td width="329"><input name="address" type="text" id="Text11" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地址"] %>"/></td>
+    </tr>
+     <tr>
+      <td height="30">&nbsp;</td>
+      <td>公司电话：</td>
+      <td><input name="tel" type="text" id="Text12" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>"/></td>
+      <td>&nbsp;</td>
+      <td>公司主页：</td>
+      <td><input name="homepage" type="text" id="Text13" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["主页"] %>" onclick="return homepage_onclick()" /></td>
+    </tr>
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td>公司传真：</td>
+      <td><input id="Text14" class="fxsxx3" name="fax" type="text" value='<%=dt_gysxx.Rows[0]["传真"] %>' /></td>
+      <td>&nbsp;</td>
+      <td>公司地区：</td>
+      <td><input name="area" type="text" id="Text15" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地区名称"] %>"/></td>
+    </tr>
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td>联系人姓名：</td>
+      <td><input name="name" type="text" id="Text16" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人"] %>" /></td>
+      <td>&nbsp;</td>
+      <td>联系人电话：</td>
+      <td><input name="phone" type="text" id="Text17" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人手机"] %>" /></td>
+    </tr>
+    <tr>
+      <td height="40">&nbsp;</td>
+      <td>经验范围：</td>
+      <td colspan="4" height="90px"><label for="textfield21"></label>
+          <input name="Business_Scope" type="text" id="Text18" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
+    </tr>
+
+           <%} %>	
+            </table>			
                 <span class="fxsbc">
                     <input name="gys_id" type="hidden" id="Hidden1" class="fxsxx3" value="<%=gys_id %>"/>
                     <input type="submit" class="fxsbc2" value="更改" style="cursor:pointer"/>
@@ -344,8 +415,19 @@
           </div>
           </div>
          <div class="ggspp">
-
-                    <span class="ggspp1">贵公司品牌如下</span>
+    <div style="font-size:14px; font-weight:bold; line-height:36px; float:left; width:100%; background-color:#f7f7f7;">&nbsp;&nbsp;贵公司品牌如下</div>
+    <% foreach (System.Data.DataRow row in dt_ppxx.Rows)
+       {%>
+        <div class="fgstp">
+    <img src="images/wwwq_03.jpg" />
+      <div class="fdlpp1"> 
+        <input type="checkbox" name="checkbox2" id="checkbox2" value="<%=row["pp_id"].ToString() %>"  class="middle"/><%=row["品牌名称"].ToString()%></div>
+    </div>
+  
+  <%} %>
+  
+  </div>
+                <%--    <span class="ggspp1" style="background-color:#f7f7f7">贵公司品牌如下</span>
                     <% foreach (System.Data.DataRow row in dt_ppxx.Rows){%>
                     <div class="fgstp">
                         <img src="images/wwwq_03.jpg" />
@@ -356,7 +438,7 @@
                     </div>
                     <%} %>
                     
-                </div>
+                </div>--%>
             <span class="fxsbc1"><a onclick="DeleteBrand(<%=gys_id %>)" style="cursor:pointer;">删除选中品牌</a></span>
             <span class="fxsbc1"><a onclick="AddNewBrand(<%=gys_id %>)" style="cursor:pointer;">增加新品牌</a></span>
            <%-- <span class="fxsbc1"><input type="button" onclick="DeleteBrand(<%=gys_id %>)" value="删除选中品牌" /></span>

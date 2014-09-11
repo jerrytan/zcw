@@ -6,22 +6,16 @@ dl,dt,dd,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,img,p,a,div,br,span,input,te
 a{ color:#707070; text-decoration:none;}
 
 
-.box{ width:1000px; height:auto; margin:0 auto; }
+.box{ width:1000px; height:auto; margin:0 auto;}
 .top{ width:100%; height:1px; float:left; margin-top:1px; border-bottom:#FF0000 solid 1px;}
 .logo{ width:235px; height:106px; float:left;}
-.hyzc_an{
+.hydl_an{
 	float:left;
 	width:110px;
 	height:30px;
 	margin-top:21px;
 	}
-.hydl_an{
-	float:right;
-	width:96px;
-	height:30px;
-	margin-top:21px;
-	}
-.sous{ width:524px; height:30px; float:left; margin:21px 0 0 10px; display:inline; background:url(../images/weq03.jpg);}
+.sous{ width:510px; height:30px; float:left; margin:21px 0 0 10px; display:inline; background:url(../images/weq03.jpg);}
 .sous img{ float:right; margin:1px 10px 0 0; display:inline;}
 .sou{ width:385px; height:28px; float:left; line-height:30px; margin:1px 0 0 5px; display:inline;}
 .anniu{ width:77px; height:18px; float:right; margin:8px 32px 0 0; display:inline; font-family: "宋体"; color:#FFFFFF; text-align:center; line-height:18px; background:url(../images/anniu_03.jpg);}
@@ -230,4 +224,5 @@ a{ color:#707070; text-decoration:none;}
 .font_bold{
 	  font-weight:bold;
 }
-/* 更多页样式 */
+/* 更多页样式 */div {
+}
