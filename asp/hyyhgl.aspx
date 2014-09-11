@@ -158,7 +158,7 @@
             id="btnDelete" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
             font-size: 12px; height: 20px; width: 72px;" />--%>
           <asp:Button ID="btnDelete" runat="server" Text="删除选中行" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
-            font-size: 12px; height: 16px; width: 72px;cursor:pointer;" 
+            font-size: 12px; height: 20px; width: 72px;cursor:pointer;" 
             onclick="btnDelete_Click"/>
     </div>
     <!-- 检索 结束-->
