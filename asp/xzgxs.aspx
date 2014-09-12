@@ -1017,10 +1017,10 @@ onloadEvent(showtable);
                     Font-Overline="False" Font-Strikeout="False" Font-Underline="False" Wrap="False">
                 </ItemStyle>
                 <Columns>
-                    <asp:TemplateColumn>
+                    <asp:TemplateColumn HeaderText="操作">
                         <ItemTemplate>
-                            <asp:Button ID="Button1" runat="server" Text="查阅"  OnCommand="CY_Click" 
-                                CommandArgument='<%# Eval("gys_id") %>' />
+                            <asp:Button ID="CY" runat="server" Text="查阅"  OnCommand="CY_Click" 
+                                CommandArgument="<%# Eval('gys_id') %>" />
                         </ItemTemplate>
                     </asp:TemplateColumn>
                 </Columns>

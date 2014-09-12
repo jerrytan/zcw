@@ -140,7 +140,6 @@
           window.open(url, "", "height=300,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
       }
       function DeleteBrand(id) {
-          alert(id);
           var r = confirm("请确认您将删除此品牌!");
           if (r == true)
           {
@@ -154,9 +153,7 @@
 
                       ppid += brands[i].value + ",";
                   }
-
               }
-              alert(ppid+"ppid")
               var url = "scpp.aspx?fxs_id=" + id + "&pp_id=" + ppid + "&lx=1";
               window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
           }

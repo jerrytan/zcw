@@ -213,13 +213,19 @@
            <%-- <%}  %>--%>
 		</span>
 		</span>
-		<span class="zy2">
-            <img src="images/fxsqx.jpg" />
-		</span> 
-		<span class="zy2">
+        <%if (power.Contains("管理生产商"))
+          { %>
+		<span class="zy2" runat="server" id="scsqx">
             <img src="images/scsqx.jpg" />
 		</span>
-			
+        <%} %>
+        <%else
+            { %>
+            <span class="zy2" runat ="server" id="Span1">
+            <img src="images/fxsqx.jpg" />
+		</span> 
+		
+			<%} %>
     </div>	
     <%--/蒋，2014年8月22日--%>
     <%--  <%                   
