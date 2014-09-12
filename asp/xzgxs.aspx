@@ -37,23 +37,11 @@
              text-align:left;
              
         }
-     .style3
-     {
-         height: 16px;
-     }
      .style4
      {
          width: 268435456px;
      }
-     .style12
-     {
-         width: 113px;
-     }
-     .style13
-     {
-         width: 100px;
-     }
-    </style>
+     </style>
 </head>
  <script runat="server">
         protected DataTable dt_yjfl = new DataTable();   //材料分类大类
@@ -68,71 +56,10 @@
         public string fxs_id = "";
         public DataTable dt_fxpp = new DataTable();
         public DataTable dt_gys = new DataTable();//材料供应商信息表
-        public const int Page_Size = 10;
-        public int current_page = 1;//当前默认页为第一页
-        public int pageCount_page; //总页数
-        private int i_count = 0;
+        private int PageSize = 4;
+        DataView objDv = null;
+        DataTable objDt = null;
         protected DataTable dt_content = new DataTable();
-        //public List<UserGys> listGys { get; set; }
-     //public class UserGys
-     //{
-     //    public string gsmc { get; set; }
-     //    public string dq { get; set; }
-     //    public string zy { get; set; }
-     //   public string dh { get; set; }
-     //   public string lxr { get; set; }
-     //   public string lxrdh { get; set; }
-     //   public string dwlx { get; set; }
-     //}
-     
-     public List<OptionItem> Items { get; set; }//用于跳转页面
-    public class OptionItem
-        {
-            public string Text { get; set; }
-            public string SelectedString { get; set; }
-            public string Value { get; set; }
-        }
-
-     //设置导航链接 currentPage:当前页号 pageCount:总页数 
-     private void SetNavLink(int currentPage, int pageCount)
-     {
-         this.Items = new List<OptionItem>();
-         for (int i = 1; i <= pageCount; i++)
-         {
-             OptionItem item = new OptionItem();
-             item.Text = i.ToString();
-             item.SelectedString = i == currentPage ? "selected='selected'" : string.Empty;
-             item.Value = string.Format("xzgxs.aspx?p={0}", i);
-             this.Items.Add(item);
-         }
-
-     }
-     //根据参数,获取数据库中分页存储过程的结果
-     //private DataTable GetProductFormDB(int begin, int end,int gsmc)
-     //{
-     //    SqlParameter[] spt = new SqlParameter[]
-     //       {
-     //           new SqlParameter("@begin",begin),
-     //           new SqlParameter("@end",end),
-     //           new SqlParameter("@gsmc",gsmc)
-     //       };
-     //    return dt_content = objConn.ExecuteProcForTable("xzfxs_page", spt);
-     //}
-
-     //从数据库获取记录的总数量
-     private int GetProductCount()
-     {
-         try
-         {
-             string str_sql = "select * from 材料供应商信息表 where 供应商 like '%" + this.txt_gys.Value + "%' ";
-             i_count = objConn.GetRowCount(str_sql);
-         }
-         catch (Exception e)
-         {
-             Console.WriteLine(e.Message);
-         }
-         return i_count;
-     } 
         protected void Page_Load(object sender, EventArgs e)
         {
                 this.xxpp.Visible = true;
@@ -171,7 +98,6 @@
                         sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典";
                         dt_ppxx = objConn.GetDataTable(sSQL);
                     }
-
                 }
                 //else
                 //{                 
@@ -187,67 +113,358 @@
                 dt_yjfl = objConn.GetDataTable(sSQL);
                 sSQL = "select 分类编码,显示名字 from 材料分类表 where 是否启用=1";
                 dt_clfl = objConn.GetDataTable(sSQL);
-                if (Request["p"]!=null)
+                if (!IsPostBack)
                 {
-                    this.divtable.Visible = true;
-                    this.gxsform.Visible = false;
-                    this.ImageButton1.Visible = false;
-                    this.ImageButton2.Visible = false;
-                    this.xxpp.Visible = false;
-                     sSQL=Convert.ToString(Session["SQL"]) ;
-                     
-                     dt_gys = objConn.GetDataTable(sSQL);
-                     
-                    string strP = Request.QueryString["p"];
-                    if (string.IsNullOrEmpty(strP))//判断传过来的参数是否为空  
-                    {
-                        strP = "1";
-                    }
-                    int p;
-                    bool b1 = int.TryParse(strP, out p);
-                    if (b1 == false)
-                    {
-                        p = 1;
-                    }
-                    current_page = p;
-
-                    //从查询字符串中获取"总页数"参数
-                    string strC = Request.QueryString["c"];
-                    if (string.IsNullOrEmpty(strC))//首次从数据中获取总记录数
-                    {
-                        double recordCount = this.GetProductCount();
-                        double d1 = recordCount / Page_Size;
-                        double d2 = Math.Ceiling(d1);
-                        int pageCount = (int)d2;
-                        strC = pageCount.ToString();
-                    }
-                    int c;
-                    bool b2 = int.TryParse(strC, out c);
-                    if (b2 == false)
-                    {
-                        c = 1;
-                    }
-                    pageCount_page = c;
-                    //计算/查询分页数据
-                    int begin = (p - 1) * Page_Size + 1;
-                    int end = p * Page_Size;
-                    this.SetNavLink(p, c);
-                }
-               
-                //this.listGys = new List<UserGys>();
-                //foreach (DataRow dr in dt_content.Rows)
-                //{
-                //    UserGys ug = new UserGys();
-                //    ug.dh = dr["电话"].ToString();
-                //    ug.dq = dr["地址"].ToString();
-                //    ug.dwlx = dr["单位类型"].ToString();
-                //    ug.gsmc = dr["供应商"].ToString();
-                //    ug.lxr = dr["联系人"].ToString();
-                //    ug.lxrdh = dr["联系人手机"].ToString();
-                //    ug.zy = dr["主页"].ToString();
-                //    listGys.Add(ug);
-                //}
+                     sSQL = "select gys_id,供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,注册日期 "+
+                         " from 材料供应商信息表 where left(单位类型,3) like '%商%' order by gys_id";
+                    string sSearchCondition = "供应商 like '%公司%'";
+                    MyDataBind(true, sSQL, sSearchCondition);
+                    this.divtable.Visible = false;
+                } 
          }
+        public void MyDataBind(bool bpostback, string sSQL, string sCondition)
+        {
+            int TotalPage;          //总页数
+            //DataView objDv = null;
+            //DataTable objDt = null;
+            Session["sSearchSql"] = null;
+            Session["ADDSQL"] = null;
+            Session["ADDSQL"] = sSQL;
+            DataGrid1.PageSize = 100;
+            TotalPage = 0;
+            if (sCondition != "")
+            {
+                sSQL = sSQL.Replace("1=2", "1=1");
+                sSQL = GetAddConditionSQL(sSQL, sCondition);
+                Session["SQLsource"] = sSQL;
+                ////20140529小张添加
+                TotalPage = objConn.GetRowCount(sSQL);
+                if (TotalPage > PageSize)
+                {
+                    this.lblPageCount.Text = (TotalPage / PageSize).ToString();
+                    this.lblCurPage.Text = "1";
+                    this.btnPrev.Enabled = false;
+                }
+                else
+                {
+                    this.lblCurPage.Text = "1";
+                    this.lblPageCount.Text = "1";
+                    this.btnNext.Enabled = false;
+                    this.btnPrev.Enabled = false;
+                }
+            }
+            else
+            {
+                sSQL = GetAddConditionSQL(sSQL, "1=2");
+                string SQLTJ = "";
+                int order = sSQL.ToUpper().IndexOf("ORDER BY");
+                if (order > 0)
+                {
+                    int begin;
+                    string right = sSQL.Substring(order, sSQL.Length - order);
+                    begin = right.IndexOf(",");
+                    string a = "ORDER BY";
+                    if (begin > 0)
+                    {
+                        string left = right.TrimStart().Substring(a.Length, begin - a.Length - 1);
+                        SQLTJ = "select *," + left + " as 编号 from (" + sSQL.Substring(0, order) + ")#t " + right;
+                    }
+                    else
+                    {
+                        SQLTJ = "select *," + right.Substring(a.Length, right.Length - a.Length) + " as 编号 from (" + sSQL.Substring(0, order) + ")#t " + right;
+                    }
+                }
+                else
+                {
+                    DataTable order_dt = objConn.GetDataTable(sSQL);
+                    if (order_dt != null)
+                    {
+                        string name = order_dt.Columns[0].ColumnName.ToString();
+                        SQLTJ = "select *," + name + " as 编号 from(" + sSQL + ")#t";                    
+                    }
+                }
+                Session["dgLieBiaoShuSQL"] = SQLTJ;
+                if (bpostback)
+                {
+                    this.lblPageCount.Text = "0";
+                    this.lblCurPage.Text = "0";
+                    this.btnPrev.Enabled = false;
+                    this.btnNext.Enabled = false;
+                }
+            }
+            if (bpostback)
+            {
+                if (sSQL.ToUpper().Contains("ORDER BY"))
+                {
+                    int a = sSQL.ToUpper().IndexOf("ORDER BY");
+                    sSQL = "select * from(select *,row_number() over(" + sSQL.Substring(a, sSQL.Length - a) + ") as 编号 from (" + sSQL.Substring(0, a) + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
+                }
+                else
+                {
+                    DataTable order_dt = objConn.GetDataTable("select top 1 * from (" + sSQL + ")#t");
+                    if (order_dt != null)
+                    {
+                        string name = order_dt.Columns[0].ColumnName.ToString();
+                        sSQL = "select * from(select *,row_number() over( order by " + name + ") as 编号 from (" + sSQL + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
+                    }
+                }
+            }
+            try
+            {
+                objDt = objConn.GetDataTable(sSQL);
+                Session["sSearchSql"] = sSQL;
+            }
+            catch
+            {
+
+            }
+            try
+            {
+                if (objDt != null)
+                {
+                    objDt = GetAdjustDt(objDt);
+                    objDv = objDt.DefaultView;
+                }
+            }
+            catch (Exception err)
+            {
+                Response.Write("<script>alert('加载数据源失败！')</"+"script>");
+            }
+            DataGrid1.DataSource = objDv;
+            this.DataGrid1.DataBind();
+        }
+        public DataTable GetAdjustDt(DataTable objDataTable)
+        {
+            if (objDataTable != null)
+            {
+                for (int i = 0; i < objDataTable.Rows.Count; i++)
+                {
+                    for (int j = 0; j < objDataTable.Columns.Count; j++)
+                    {
+                        try
+                        {
+                            if (objDataTable.Rows[i][j] != null && objDataTable.Rows[i][j].ToString().Length > 43)
+                                objDataTable.Rows[i][j] = objDataTable.Rows[i][j].ToString().Substring(0, 40) + "...";
+                            if (objDataTable.Columns[j].DataType.Name.ToUpper().Trim() == "DATETIME")
+                            {
+                                //只取日期
+                                DateTime objDtmTemp;
+                                string sDtmTemp;
+                                if (objDataTable.Rows[i][j].ToString().Trim() != "")
+                                {
+                                    objDtmTemp = (DateTime)objDataTable.Rows[i][j];
+                                    sDtmTemp = objDtmTemp.ToShortDateString().ToString().Trim();
+                                    if (objDtmTemp.ToString().Trim() == sDtmTemp)
+                                    {
+                                        objDataTable.Rows[i][j] = sDtmTemp;
+                                    }
+                                    else
+                                    {
+                                        objDataTable.Rows[i][j] = objDtmTemp;
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception err)
+                        {
+                            continue;
+                        }
+                    }
+                }
+            }
+            return objDataTable;
+        }
+        /// <summary>
+        /// 得到带条件的sql语句
+        /// </summary>
+        /// <param name="strSQL"></param>
+        /// <param name="strTimeSpan"></param>
+        /// <returns></returns>
+        public string GetAddConditionSQL(string strSQL, string sExpression)
+        {
+            strSQL = strSQL.Replace(" ", " ");
+            if (sExpression.IndexOf("＋") >= 0)
+            {
+                sExpression = sExpression.Replace("＋", "+");
+            }
+            if (strSQL.ToUpper().IndexOf("JOIN") > 0)
+            {
+                int order = strSQL.ToUpper().IndexOf("ORDER BY");
+                if (order > 0)
+                {
+                    if ((strSQL.Substring(strSQL.LastIndexOf(")"), strSQL.Length - strSQL.LastIndexOf(")"))).ToUpper().IndexOf("ORDER BY") >= 0)
+                    {
+                        string orderby = strSQL.Substring(order);
+
+                        strSQL = "select * from ( " + strSQL.Substring(0, strSQL.Length - orderby.Length) + " )#temp where " + sExpression + orderby;
+                    }
+                }
+                else
+                {
+                    strSQL = "select * from (" + strSQL + ")#temp where " + sExpression;
+                }
+            }
+            else
+            {
+                int intIndexOrderBy = strSQL.ToUpper().IndexOf("ORDER BY");
+                if (strSQL.LastIndexOf(")") >= 0)
+                {
+                    if ((strSQL.Substring(strSQL.LastIndexOf(")"), strSQL.Length - strSQL.LastIndexOf(")"))).ToUpper().IndexOf("ORDER BY") >= 0)
+                    {
+                        string orderby = strSQL.Substring(intIndexOrderBy);
+                        strSQL = "select * from ( " + strSQL.Substring(0, strSQL.Length - orderby.Length) + " )#temp20100704edit " + orderby;
+                        if (strSQL.ToUpper().Contains("WHERE"))
+                        {
+                            strSQL = strSQL.Insert(strSQL.ToUpper().IndexOf("WHERE") + 5, " " + sExpression + " and ");
+                        }
+                        else
+                        {
+                            strSQL = strSQL.Insert(strSQL.ToUpper().IndexOf(")#"), " where " + sExpression + " ");
+                        }
+                    }
+                    else
+                    {
+                        strSQL = "select * from ( " + strSQL + " )#temp20100704edit ";
+                        if (strSQL.ToUpper().Contains("WHERE"))
+                        {
+                            strSQL = strSQL.Insert(strSQL.ToUpper().IndexOf("WHERE") + 5, " " + sExpression + " and ");
+                        }
+                        else
+                        {
+                            strSQL = strSQL.Insert(strSQL.ToUpper().IndexOf(")#"), " where " + sExpression);
+                        }
+                    }
+                }
+                else
+                {
+                    if (intIndexOrderBy >= 0)
+                    {
+                        int intIndexWhere = strSQL.ToUpper().LastIndexOf("WHERE");
+                        if (intIndexWhere >= 0)//有where子句
+                        {
+                            strSQL = strSQL.Insert(intIndexWhere + 5, " " + sExpression + " and ");
+                        }
+                        else
+                        {
+                            strSQL = strSQL.Insert(intIndexOrderBy, " where " + sExpression + " ");
+                        }
+
+                    }
+                    else
+                    {
+                        //strSQL = strSQL.Insert(strSQL.Length, " where " + sExpression);
+                        int intIndexWhere = strSQL.ToUpper().LastIndexOf("WHERE");
+                        if (intIndexWhere >= 0)//有where子句
+                        {
+                            strSQL = strSQL.Insert(intIndexWhere + 5, " " + sExpression + " and ");
+                        }
+                        else
+                        {
+                            strSQL = strSQL.Insert(strSQL.Length, " where " + sExpression);
+                        }
+
+                    }
+                }
+            }
+            return strSQL;
+        }
+        int intPageIndex;//当前页
+        public void PagerButtonClick(Object sender, CommandEventArgs e)
+        {
+            btnNext.Enabled = true;
+            btnPrev.Enabled = true;
+
+            string strArg = e.CommandArgument.ToString();
+            int intPageCount = 0;
+
+            intPageCount = Int32.Parse(lblPageCount.Text.ToString());
+
+            intPageIndex = Int32.Parse(lblCurPage.Text.ToString()) - 1;
+
+            switch (strArg)
+            {
+                case "Next":
+                    if (intPageIndex < intPageCount - 1)
+                        intPageIndex++;
+                    break;
+                case "Prev":
+                    if (intPageIndex > 0)
+                        intPageIndex--;
+                    break;
+            }
+
+            //如果是首页，则上一页和首页按钮不能用
+            if (intPageIndex <= 0)
+            {
+                btnPrev.Enabled = false;
+            }
+
+            //如是末页，则末页和下一页不能用
+            if (intPageIndex == intPageCount - 1)
+            {
+                btnNext.Enabled = false;
+            }
+
+            //判断当前页码是否有效，若无效则返回
+            if (intPageIndex < 0 || intPageIndex > intPageCount)
+            {
+                return;
+            }
+            lblCurPage.Text = Convert.ToString(intPageIndex + 1);
+            if (Session["SQLsource"] != null)
+            {
+
+                int begin = intPageIndex * PageSize;
+                int end = begin + PageSize;
+                string sSQL = "";
+                string sql = Session["SQLsource"].ToString();
+                int order = sql.ToUpper().IndexOf("ORDER BY");
+                if (order > 0)
+                {
+
+                    string left = sql.Substring(0, order);
+                    string right = sql.Substring(order, sql.Length - order);
+                    sSQL = "select * from (select *,row_number() over (" + right + ")as 编号 from (" + left + ")tb) T where T.编号 between " + begin.ToString() + " and " + end.ToString();
+                }
+                else
+                {
+                    DataTable order_dt = objConn.GetDataTable("select top 1 * from (" + sql + ")#t");
+                    if (order_dt != null)
+                    {
+                        string name = order_dt.Columns[0].ColumnName.ToString();
+                        sSQL = "select * from (select *,row_number() over ( order by " + name + ") as 编号 from(" + sql + ")tb)T where T.编号 between " + begin.ToString() + " and " + end.ToString();
+                    }
+                }
+                MyDataBind2(sSQL, "");
+            }
+        }
+
+        protected void MyDataBind2(string sSQL, string sCondition)
+        {
+            //DataTable objDt = null;
+            //DataView objDv = null;
+            if (sCondition != "")
+            {
+                sSQL = GetAddConditionSQL(sSQL, sCondition);
+            }
+            try
+            {
+                objDt = objConn.GetDataTable(sSQL);
+            }
+            catch
+            {
+
+            }
+
+            if (objDt != null)
+            {
+                objDt = GetAdjustDt(objDt);
+                objDv = objDt.DefaultView;
+            }
+            DataGrid1.DataSource = objDv;
+            this.DataGrid1.DataBind();
+            
+        }
         protected void Clear(object sender, EventArgs e)
         {
             this.xxpp.Visible = true;
@@ -280,58 +497,16 @@
                 if (count != 0)
                 {
                     Response.Write("<script>alert('该分销商已存在,请查看')</" + "script>");
-                    string sSQL = "select top 10 gys_id,供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,组织机构编号," +
-                        "地区名称,联系地址,经营范围,注册日期,营业执照注册号 from 材料供应商信息表 where 供应商 like '%" + this.txt_gys.Value + "%'";
+                    sSQL = "select gys_id,供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,注册日期 "+
+                        " from 材料供应商信息表 where 供应商 like '%"+this.gys.Value+"%'  order by gys_id";
                     dt_gys = objConn.GetDataTable(sSQL);
+                    string sSearchCondition = "供应商 like '%" + this.gys.Value + "%'";
+                    MyDataBind(true, sSQL, sSearchCondition);
+                    objDt = GetAdjustDt(objDt);
+                    objDv = objDt.DefaultView;
+                    DataGrid1.DataSource = objDv;
+                    this.DataGrid1.DataBind();
                     Session["SQL"] = sSQL;
-                    string strP = Request.QueryString["p"];
-                    if (string.IsNullOrEmpty(strP))//判断传过来的参数是否为空  
-                    {
-                        strP = "1";
-                    }
-
-                    int p;
-                    bool b1 = int.TryParse(strP, out p);
-                    if (b1 == false)
-                    {
-                        p = 1;
-                    }
-                    current_page = p;
-
-                    //从查询字符串中获取"总页数"参数
-                    string strC = Request.QueryString["c"];
-                    if (string.IsNullOrEmpty(strC))//首次从数据中获取总记录数
-                    {
-                        double recordCount = this.GetProductCount(); 
-                        double d1 = recordCount / Page_Size; 
-                        double d2 = Math.Ceiling(d1); 
-                        int pageCount = (int)d2; 
-                        strC = pageCount.ToString();
-                    }
-                    int c;
-                    bool b2 = int.TryParse(strC, out c);
-                    if (b2 == false)
-                    {
-                        c = 1;
-                    }
-                    pageCount_page = c;
-                    //计算/查询分页数据
-                    int begin = (p - 1) * Page_Size + 1;
-                    int end = p * Page_Size;
-                    this.SetNavLink(p, c);
-                    //this.listGys = new List<UserGys>();
-                    //foreach (DataRow dr in dt_content.Rows)
-                    //{
-                    //    UserGys ug = new UserGys();
-                    //    ug.dh = dr["电话"].ToString();
-                    //    ug.dq = dr["地址"].ToString();
-                    //    ug.dwlx = dr["单位类型"].ToString();
-                    //    ug.gsmc = dr["供应商"].ToString();
-                    //    ug.lxr = dr["联系人"].ToString();
-                    //    ug.lxrdh = dr["联系人手机"].ToString();
-                    //    ug.zy = dr["主页"].ToString();
-                    //    listGys.Add(ug);
-                    //}
                 }
                 else
                 {
@@ -410,20 +585,19 @@
                     string addppxx = "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime)" +
                         "values('" + this.txt_ppid.Value + "','" + this.txt_ppname.Value + "',1,'" + gys_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
                         "'" + this.gys.Value + "',(select getdate()))";
-                    objConn.ExecuteSQL(addppxx, true);
-                    string update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" + this.gys.Value + "') where 供应商='" + this.gys.Value + "'";
-                    if (objConn.ExecuteSQL(update, false))
-                    {
-                        Response.Write("<script>alert('添加成功！');window.location.href='glfxsxx.aspx?gys_id="+gxs_id+"'</" + "script>");
-                    }
-                    else
-                    {
-                        Response.Write("<script>alert('添加失败！')window.location.href='#';</" + "script>");
-                    }
+                        string update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='"+this.gys.Value+"' and 品牌名称='"+this.txt_ppname.Value+"') where 供应商='"+this.gys.Value+"' and 品牌名称='"+this.txt_ppname.Value+"'";
+                        if (objConn.ExecuteSQL(update, true))
+                        {
+                            Response.Write("<script>alert('添加成功！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");   
+                        }
+                        else
+                        {
+                            Response.Write("<script>alert('添加失败！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
+                        }
                 }
                 else
                 {
-                    Response.Write("<script>window.alert('添加失败！');window.location.href='gyszym.aspx';</" + "script>");
+                    Response.Write("<script>window.alert('添加失败！');window.location.href='gyszym.aspx'</" + "script>");
                 }
             //}
         }
@@ -532,13 +706,15 @@
             //return gys_id;
         //} 
 
-        protected void CY_Click(object sender, EventArgs e)
+        protected void CY_Click(object sender, CommandEventArgs e)
         {
+            this.DataGrid1.FindControl("Button1");
+           string dqgys_id= e.CommandArgument.ToString();
             this.xxpp.Visible = true;
             string gsxx = "select gys_id,供应商,地区名称,联系人手机,联系地址,联系人,单位类型,经营范围," +
                  "单位简称,法定代表人,注册资金,注册日期,企业类别,联系人QQ,传真,主页,地址,开户银行,银行账户,备注," +
                  "营业执照注册号,企业员工人数,资产总额,注册级别,资质等级,是否启用,邮编,电子邮箱,电话,账户名称" +
-                 " from 材料供应商信息表 where 供应商 ='" + this.gsmc.Value + "'";
+                 " from 材料供应商信息表 where 供应商 ='" + dqgys_id + "'";
             DataTable dt_gsxx = objConn.GetDataTable(gsxx);
             this.gxsform.Visible = true;
             this.ImageButton1.Visible = true;
@@ -709,6 +885,7 @@ onloadEvent(showtable);
                     <td width="120" height="50" style="font-size:12px" align="right"><strong>品牌名称：</strong></td>
                     <td width="200" style="padding-left:10px;">
                         <select id="ppmc" name="" style="width: 200px" onchange="updateFLfxs(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].text)">
+                        <option  value="0">请选择品牌</option> 
                             <% for (int i=0;i< dt_ppxx.Rows.Count;i++) {%>
                                <option value='<%=dt_ppxx.Rows[i]["pp_id"].ToString() %>'><%=dt_ppxx.Rows[i]["品牌名称"]%></option>
                            <%}%>
@@ -829,77 +1006,40 @@ onloadEvent(showtable);
 </div>
 <%--蒋，2014年9月3日，添加（未完成）--%>
 <div runat="server" id="divtable">
- <table border="0" style="font-size:12px" align="left" cellpadding="0" cellspacing="1" bgcolor="#dddddd" id="table" >
- <thead>
-                <tr>
-                    <th align="center"><strong>公司名称</strong></th>
-                    <th align="center"><strong>地区</strong></th>
-                    <th align="center"><strong>主页</strong></th>
-                    <th align="center"><strong>电话</strong></th>
-                    <th align="center"><strong>联系人</strong></th>
-                    <th align="center"><strong>联系人电话</strong></th>
-                    <th align="center"><strong>单位类型</strong></th>
-                    <th align="center"><strong>操作</strong></th>
-                </tr>
-            </thead>
-            <tbody id="tbody">
-            <%if (dt_gys != null && dt_gys.Rows.Count > 0)
-              { %>
-                <%for (int i = 0; i < dt_gys.Rows.Count; i++)
-                  {%>
-                    <tr>
-                    <td align="left" style="padding-left:10px; font-size:12px"><%=dt_gys.Rows[i]["供应商"]%></td>
-                    <td style="padding-left:10px; font-size:12px"><%=dt_gys.Rows[i]["地区名称"]%></td>
-                    <td style="padding-left:10px; font-size:12px"><%=dt_gys.Rows[i]["主页"]%></td>
-                    <td style="padding-left:10px; font-size:12px"><%=dt_gys.Rows[i]["电话"]%></td>
-                    <td align="center" style="font-size:12px"><%=dt_gys.Rows[i]["联系人"]%></td>
-                    <td align="center" style="font-size:12px"><%=dt_gys.Rows[i]["联系人手机"]%></td>
-                    <td align="center" style="font-size:12px"><%=dt_gys.Rows[i]["单位类型"]%></td>
-                    <td align="center">
-                    <asp:Button ID="CY" runat="server" Text="查阅" OnClientClick="Add(this)"  onclick="CY_Click"/>
-                         </td>
-                    </tr>
-                <%} %>
-            <%} %>
-            </tbody>
-</table>
-<div style="width:1000px">
-            <div style="margin-left:100px">
-                <% if(current_page<=1 && pageCount_page>1) {%> 
-                    <font class="p" style="color:Gray">首页</font>
-                    <a href="xzgxs.aspx?xzlx=fxs&gxs_id=<%=gys_id %>&p=<%=current_page+1 %>" class="p" style="color:Black">下一页</a>
-                    <a href="xzgxs.aspx?xzlx=fxs&gxs_id=<%=gys_id %>&p=<%=pageCount_page %>" class="p" style="color:Black">末页</a>
-                <%} %>
-                <% else if(current_page<=1 && pageCount_page<=1) {%>
-                
-                <% }%>    
-                <% else if(!(current_page<=1)&&!(current_page == pageCount_page)){ %>
-                    <a href="xzgxs.aspx?xzlx=fxs&gxs_id=<%=gys_id %>&p=<%=1 %>class="p" style="color:Black">首页</a>
-                    <a href="xzgxs.aspx?xzlx=fxs&gxs_id=<%=gys_id %>&p=<%=current_page-1 %>" class="p" style="color:Black">上一页</a>
-                    <a href="xzgxs.aspx?xzlx=fxs&gxs_id=<%=gys_id %>&p=<%=current_page+1 %>" class="p" style="color:Black">下一页</a>
-                    <a href="xzgxs.aspx?xzlx=fxs&gxs_id=<%=gys_id %>&p=<%=pageCount_page %>" class="p" style="color:Black">末页</a>
-                <%}%>
-                <% else if(current_page == pageCount_page){ %>
-                    <a href="xzgxs.aspx?xzlx=fxs&gxs_id=<%=gys_id %>&p=<%=1 %>"class="p" style="color:Black">首页</a>
-                    <a href="xzgxs.aspx?xzlx=fxs&gxs_id=<%=gys_id %>&p=<%=current_page-1 %>" class="p" style="color:Black">上一页</a>
-                    <font class="p" style="color:Gray">末页</font> 
-                <%} %>
-                <font style="color:Black" >直接到第</font>  
-                <select onchange="window.location=this.value" name="" class="p" style="color:Black">
-                <% foreach (var v in this.Items)
-                { %>
-                    <option value="<%=v.Value %>" <%=v.SelectedString %>><%=v.Text %></option>
-                <%} %>
-                </select>
-                <font style="color:Black" >页&nbsp;&nbsp;&nbsp;第 <%=current_page %> 页/共 <%=pageCount_page %> 页</font>
-            </div>
-        </div>
 <input type="hidden" value="" id="gsmc" runat="server" />
+ <asp:DataGrid ID="DataGrid1" Style="font-size: 9pt; word-break: keep-all; word-wrap: normal;
+                padding: 0px; white-space: nowrap" runat="server" Width="100%" BorderColor="#CCCCCC"
+                BorderStyle="None" BorderWidth="1px" BackColor="#99CCFF" CellPadding="3" 
+                PageSize="100">
+                <SelectedItemStyle HorizontalAlign="Left" BorderColor="#FFC0C0"></SelectedItemStyle>
+                <AlternatingItemStyle HorizontalAlign="Left" BackColor="#F6F6F6"></AlternatingItemStyle>
+                <ItemStyle HorizontalAlign="Left" BackColor="#E4E4E4" Font-Bold="False" Font-Italic="False"
+                    Font-Overline="False" Font-Strikeout="False" Font-Underline="False" Wrap="False">
+                </ItemStyle>
+                <Columns>
+                    <asp:TemplateColumn>
+                        <ItemTemplate>
+                            <asp:Button ID="Button1" runat="server" Text="查阅"  OnCommand="CY_Click" 
+                                CommandArgument='<%# Eval("gys_id") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateColumn>
+                </Columns>
+                <HeaderStyle Font-Bold="True" HorizontalAlign="Center" Height="16pt" ForeColor="White"
+                    BackColor="#9B9B9B"></HeaderStyle>
+                <PagerStyle Visible="False"></PagerStyle>
+            </asp:DataGrid>
+ <div>
+     <asp:LinkButton ID="btnPrev" runat="server" CommandArgument="Prev" CommandName="Pager"
+                        OnCommand="PagerButtonClick" ForeColor="Black">上页</asp:LinkButton>&nbsp;
+             <asp:LinkButton ID="btnNext" runat="server" CommandArgument="Next" CommandName="Pager"
+                        OnCommand="PagerButtonClick" ForeColor="Black">下页</asp:LinkButton>&nbsp;
+            第<asp:Label ID="lblCurPage" runat="server"  Text="0" ForeColor="Blue">Label</asp:Label>/
+              <asp:Label ID="lblPageCount" runat="server" Text="0" ForeColor="Blue">Label</asp:Label>页
+    </div>
 </div>
-
 <div runat="server" id="gxsform">
 <table>
-<tr>
+
 <%--蒋，2014年8月20日，注释新增类型为生产商的操作--%>
 <%--<%if (xzlx == "生产商")
   { %>

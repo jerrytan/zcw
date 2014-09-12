@@ -96,7 +96,6 @@
 		  
             sort=Request.QueryString["sort"];//≈≈–Ú∑Ω Ω
             pp=Request.QueryString["pp"];//∆∑≈∆
-            Response.Write(pp);
             string result=string.Empty;
             if(sort!=null&&pp!=null)
              {

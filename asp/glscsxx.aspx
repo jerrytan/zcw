@@ -139,8 +139,8 @@
           var url = "xzpp.aspx?gys_id=" + id;
           window.open(url, "", "height=300,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
       }
-      function DeleteBrand(id)
-      {
+      function DeleteBrand(id) {
+          alert(id);
           var r = confirm("请确认您将删除此品牌!");
           if (r == true)
           {
@@ -156,7 +156,7 @@
                   }
 
               }
-
+              alert(ppid+"ppid")
               var url = "scpp.aspx?fxs_id=" + id + "&pp_id=" + ppid + "&lx=1";
               window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
           }
@@ -421,7 +421,7 @@
         <div class="fgstp">
     <img src="images/wwwq_03.jpg" />
       <div class="fdlpp1"> 
-        <input type="checkbox" name="checkbox2" id="checkbox2" value="<%=row["pp_id"].ToString() %>"  class="middle"/><%=row["品牌名称"].ToString()%></div>
+        <input type="checkbox" name="brand" id="checkbox2" value="<%=row["pp_id"].ToString() %>"  class="middle"/><%=row["品牌名称"].ToString()%></div>
     </div>
   
   <%} %>

@@ -52,9 +52,16 @@
 	    {
 			s_yh_id = Session["GYS_YH_ID"].ToString();
 		}
-       sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "' where yh_id='" + s_yh_id + "'";
-       objConn.ExecuteSQLForCount(sSQL, true);
-       Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx';</"+"script>"); 
+        if(this.user_phone.Value!="")
+        {
+           sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "' where yh_id='" + s_yh_id + "'";
+           objConn.ExecuteSQLForCount(sSQL, true);
+           Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx';</"+"script>"); 
+       }
+       else
+       {
+           Response.Write("<script>window.alert('请输入手机号码！');</"+"script>"); 
+       }
      }
 </script>
 

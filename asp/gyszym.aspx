@@ -214,10 +214,10 @@
 		</span>
 		</span>
 		<span class="zy2">
-            <img src="images/aaa_06.jpg" />ͼ1
+            <img src="images/fxsqx.jpg" />
 		</span> 
 		<span class="zy2">
-            <img src="images/aaa_06.jpg" />ͼ2
+            <img src="images/scsqx.jpg" />
 		</span>
 			
     </div>	
