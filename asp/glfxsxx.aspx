@@ -500,9 +500,8 @@ onclick="return scs_onclick()" id="scs" class="fug" style="WIDTH: 200px" name="s
       <td height="40">&nbsp;</td>
       <td class="style9">经验范围：</td>
       <td colspan="4" height="90px"><label for="textfield21"></label>
-        <textarea class="hyzhc_shrk2" id="Business_Scope" 
-              value="<%=dt_gysxx.Rows[0]["经营范围"] %>" name="Business_Scope" rows="6" 
-              style="100%"></textarea></td>
+      <input name="Business_Scope" style="height:70px; width:795px;" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" />
+       </td>
     </tr>
   </table>
 				 <%}
@@ -552,9 +551,7 @@ onclick="return scs_onclick()" id="scs" class="fug" style="WIDTH: 200px" name="s
       <td height="40">&nbsp;</td>
       <td class="style8">经验范围：</td>
       <td colspan="4" height="90px"><label for="textfield21"></label>
-        <textarea class="hyzhc_shrk2" id="Business_Scope" 
-              value="<%=dt_gysxx.Rows[0]["经营范围"] %>" name="Business_Scope" rows="6" 
-              style="100%"></textarea></td>
+        <input name="Business_Scope" style="height:70px; width:795px;" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
     </tr>
   </table>
 				 <%}
@@ -606,7 +603,7 @@ onclick="return scs_onclick()" id="scs" class="fug" style="WIDTH: 200px" name="s
       <td height="40">&nbsp;</td>
       <td class="style6">经验范围：</td>
       <td colspan="4" height="90px"><label for="textfield21"></label>
-        <textarea class="hyzhc_shrk2" id="Business_Scope" name="Business_Scope" rows="6" style="100%"></textarea></td>
+       <input name="Business_Scope" style="height:70px; width:795px;" type="text" id="Business_Scope" class="fxsxx3"/></td>
     </tr>
   </table>
                <%} %>	
@@ -673,9 +670,7 @@ onclick="return scs_onclick()" id="scs" class="fug" style="WIDTH: 200px" name="s
       <td height="40">&nbsp;</td>
       <td class="style11">经验范围：</td>
       <td colspan="4" height="90px"><label for="textfield21"></label>
-        <textarea class="hyzhc_shrk2" id="Business_Scope" 
-              value="<%=dt_gysxx.Rows[0]["经营范围"] %>" name="Business_Scope" rows="6" 
-              style="100%"></textarea></td>
+         <input name="Business_Scope" style="height:70px; width:795px;" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
     </tr>
   </table>
 			<%}
@@ -725,9 +720,7 @@ onclick="return scs_onclick()" id="scs" class="fug" style="WIDTH: 200px" name="s
       <td height="40">&nbsp;</td>
       <td class="style13">经验范围：</td>
       <td colspan="4" height="90px"><label for="textfield21"></label>
-        <textarea class="hyzhc_shrk2" id="Business_Scope" 
-              value="<%=dt_gysxx.Rows[0]["经营范围"] %>" name="Business_Scope" rows="6" 
-              style="100%"></textarea></td>
+        <input name="Business_Scope" style="height:70px; width:795px;" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
     </tr>
   </table>
 			<%}%>

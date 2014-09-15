@@ -351,7 +351,7 @@
       <td height="40">&nbsp;</td>
       <td>经验范围：</td>
       <td colspan="4" height="90px"><label for="textfield21"></label>
-          <input name="Business_Scope" type="text" id="Text9" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
+          <input name="Business_Scope" style="height:70px; width:805px;" type="text" id="Text9" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
     </tr>
 
            <%}
@@ -400,7 +400,7 @@
       <td height="40">&nbsp;</td>
       <td>经验范围：</td>
       <td colspan="4" height="90px"><label for="textfield21"></label>
-          <input name="Business_Scope" type="text" id="Text18" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
+          <input name="Business_Scope" style="height:70px; width:805px;" type="text" id="Text18" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
     </tr>
 
            <%} %>	
