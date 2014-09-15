@@ -75,7 +75,7 @@
         }
         //添加
         function addPage() {
-            newwin = window.open('hyyhgl_wh.aspx?state=0', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
+            newwin = window.open('hyyhgl_wh.aspx?state=0', 'myWindow', 'height=270px,width=390px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
         //修改
         function changePage(obj) {
@@ -93,7 +93,7 @@
            <%} else{%>
                 scs=false;fxs=false;cl=false;
            <%} %>
-            newwin = window.open('hyyhgl_wh.aspx?qq=' + qq + '&name=' + name + '&phone=' + phone + '&email=' + email+'&scs='+scs+'&fxs='+fxs+'&cl='+cl + '&state=1', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
+            newwin = window.open('hyyhgl_wh.aspx?qq=' + qq + '&name=' + name + '&phone=' + phone + '&email=' + email+'&scs='+scs+'&fxs='+fxs+'&cl='+cl + '&state=1', 'myWindow', 'height=270px,width=390px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
 
          function Checked(obj) {
