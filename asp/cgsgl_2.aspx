@@ -61,14 +61,10 @@
     protected void Page_Load(object sender, EventArgs e)
     {
         string cgs_QQ_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
-        //Response.Write(cgs_QQ_id);
         string sqlExistQQ_id = "select * from 用户表 where QQ_id='" + cgs_QQ_id + "'";
         string sql_Level = "select 等级 from 用户表 where QQ_id='" + cgs_QQ_id + "'";
-        //Response.Write(objConn.GetRowCount(sqlExistQQ_id));
         if (objConn.GetRowCount(sqlExistQQ_id) > 0)
         {
-            //Response.Write(1);
-            Response.Write(objConn.DBLook(sql_Level));
             if (objConn.DBLook(sql_Level) == "企业用户")
             {
                 Response.Redirect("hyyhgl.aspx");
@@ -76,7 +72,6 @@
         }
         else
         {
-            //Response.Write(2);
             Response.Redirect("QQ_dlyz.aspx");
         }
          if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")

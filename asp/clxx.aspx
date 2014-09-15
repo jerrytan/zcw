@@ -320,15 +320,15 @@
 				if((GYS_QQ_id == null ) && (GYS_YH_id == null))	//供应商未登录，显示收藏
 				{
             %>    <%-- 蒋，2014年8月25日，添加else判断--%>
-					<span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;"  onclick="sc_login(<%=cl_id %>)">
-						<a href="" onclick="NewWindow('<%=cl_number %>',<%=ppid %>)">请收藏，便于查找</a>
+					<span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;"  >
+						<a href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>)">请收藏，便于查找</a>
 					</span>	
 			<%
 				}
                 else
                 {%>
-                <span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;"  onclick="sc_login(<%=cl_id %>)">
-						<a href="" onclick="NewWindow('<%=cl_number %>',<%=ppid %>)">请收藏，便于查找</a>
+                <span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;"  >
+						<a href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>)">请收藏，便于查找</a>
 					</span>
               <%  }
 			%>

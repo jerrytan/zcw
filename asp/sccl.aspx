@@ -18,7 +18,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
-        data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/sccl2.aspx" charset="utf8"></script>
+        data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/sccl3.aspx" charset="utf8"></script>
 
     <title>收藏材料</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
@@ -46,6 +46,8 @@
             object cgs_yh_id = Session["CGS_YH_ID"];
 			string str_cl = Request["cl_id"];	 
 			string cl_id = "";
+
+            //Response.Write(str_cl);
 			
 			//供应商 
 			HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
@@ -54,7 +56,7 @@
 			//采购商 登陆
 			if ((CGS_QQ_ID == null ) || (cgs_yh_id == null))
 			{
-			 //Response.Write("openid is empty");
+                //Response.Write("openid is empty");
             %>
             <span class="dlzi">尊敬的采购商，您好! </span>
             <span class="dlzi">请点击右边按钮登陆！</span>
@@ -69,7 +71,7 @@
    
            <%
             }
-			else
+			else   //采购商登录的情况
 			{
                 DataConn objConn  = new DataConn();
 				//采购商收藏材料
@@ -189,7 +191,7 @@
 										{
 											string cl_count = "";
 											int i_count;
-											string str_check = "select count(*) from 采购商关注材料表 where yh_id = '" + yh_id + "' and cl_id ='" + cl_id + "'";
+                                            string str_check = "select count(*) from 采购商关注的材料表 where yh_id = '" + yh_id + "' and cl_id ='" + cl_id + "'";
 											cl_count = objConn.DBLook(str_check);
 											i_count = Convert.ToInt32(cl_count);
 											DataTable dt_clname;
@@ -202,7 +204,7 @@
 												{
 													str_clname = dt_clname.Rows[0]["显示名"].ToString();
 												}
-												string str_updatecl = "insert into 采购商关注材料表 (yh_id,cl_id,材料名称,材料编码) values ('" + yh_id + "','" + cl_id + "','" + str_clname + "','" + str_clnumber + "')";
+                                                string str_updatecl = "insert into 采购商关注的材料表 (yh_id,cl_id,材料名称,材料编码) values ('" + yh_id + "','" + cl_id + "','" + str_clname + "','" + str_clnumber + "')";
 												objConn.ExecuteSQL(str_updatecl, true);
 											}
 										}

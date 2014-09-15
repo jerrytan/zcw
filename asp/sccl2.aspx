@@ -1,4 +1,4 @@
-ï»¿<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Web" %>
@@ -10,113 +10,122 @@
 </head>
 <script runat="server"  > 
 		
-    public string s_yh_id = "";
-    public string s_gys_id = "";
-    public string sSQL = "";
-    public DataConn objConn = new DataConn();
+    //public string s_yh_id = "";
+    //public string s_gys_id = "";
+    //public string sSQL = "";
+    //public DataConn objConn = new DataConn();
+   
+    
     protected void Page_Load(object sender, EventArgs e)
     {
-      if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
-        {
-            s_yh_id = Session["GYS_YH_ID"].ToString();
-        }
-        if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
-        {
-            s_gys_id = Request["gys_id"].ToString();
-        }
-        string gys_type="";
-        if (Request["gys_type"] != null && Request["gys_type"].ToString() != "")
-        {
-            gys_type = Request["gys_type"].ToString();       
-            gys_type=System.Web.HttpUtility.UrlDecode(gys_type);
-        }
-        if (s_yh_id != "")
-        {
-            sSQL = "select count(*) from ä¾›åº”å•†è®¤é¢†ç”³è¯·è¡¨ where yh_id = '" + s_yh_id + "'";
-             Object obj_checkexist_gysid = objConn.DBLook(sSQL);
-             if (gys_type == "ç”Ÿäº§å•†")
-             {
-                 int count = Convert.ToInt32(obj_checkexist_gysid);
+        DataConn dc = new DataConn();
+        string cgs_qq_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
+        string sql_dwid = "select dw_id from ÓÃ»§±í where QQ_id='" + cgs_qq_id + "'";
+         string dwid = dc.DBLook(sql_dwid);
+        
+        Response.Redirect("cgsgl_2.aspx?dw_id=" + dwid);
+        //Response.Write(Request.Cookies["CGS_QQ_ID"].Value.ToString());
+      //if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
+      //  {
+      //      s_yh_id = Session["GYS_YH_ID"].ToString();
+      //  }
+      //  if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
+      //  {
+      //      s_gys_id = Request["gys_id"].ToString();
+      //  }
+      //  string gys_type="";
+      //  if (Request["gys_type"] != null && Request["gys_type"].ToString() != "")
+      //  {
+      //      gys_type = Request["gys_type"].ToString();       
+      //      gys_type=System.Web.HttpUtility.UrlDecode(gys_type);
+      //  }
+      //  if (s_yh_id != "")
+      //  {
+      //      sSQL = "select count(*) from ¹©Ó¦ÉÌÈÏÁìÉêÇë±í where yh_id = '" + s_yh_id + "'";
+      //       Object obj_checkexist_gysid = objConn.DBLook(sSQL);
+      //       if (gys_type == "Éú²úÉÌ")
+      //       {
+      //           int count = Convert.ToInt32(obj_checkexist_gysid);
 
-                 if (count == 0)  //è®¤é¢†çš„ä¾›åº”å•†ä¸å­˜åœ¨
-                 {
+      //           if (count == 0)  //ÈÏÁìµÄ¹©Ó¦ÉÌ²»´æÔÚ
+      //           {
 
-                     //ç”¨æˆ·éªŒè¯é€šè¿‡,å¯ä»¥å°†yh_idæ’å…¥ä¾›åº”å•†ç”³è¯·		             
+      //               //ÓÃ»§ÑéÖ¤Í¨¹ı,¿ÉÒÔ½«yh_id²åÈë¹©Ó¦ÉÌÉêÇë		             
 
-                     sSQL = "insert into ä¾›åº”å•†è®¤é¢†ç”³è¯·è¡¨(yh_id) values('" + s_yh_id + "')";
-                     objConn.ExecuteSQL(sSQL, false);
+      //               sSQL = "insert into ¹©Ó¦ÉÌÈÏÁìÉêÇë±í(yh_id) values('" + s_yh_id + "')";
+      //               objConn.ExecuteSQL(sSQL, false);
 
-                     //æ ¹æ®è®¤é¢†çš„ä¾›åº”å•†id æŸ¥è¯¢ä¾›åº”å•†ä¿¡æ¯ æ›´æ–°åˆ°ä¾›åº”å•†ç”³è¯·è¡¨ä¸­
-                     if (s_gys_id != "")
-                     {
-                         sSQL = "select ä¾›åº”å•†,ä¸»é¡µ,åœ°å€,ç”µè¯,ä¼ çœŸ,dq_id,è”ç³»äºº,è”ç³»äººæ‰‹æœº,è”ç³»äººQQ,å•ä½ç±»å‹,ç»„ç»‡æœºæ„ç¼–å·,å•ä½ç®€ç§°, "
-                         + "åœ°åŒºåç§°,æ³•å®šä»£è¡¨äºº,æ³¨å†Œèµ„é‡‘,è”ç³»åœ°å€,é‚®ç¼–,ç”µå­é‚®ç®±,ç»è¥èŒƒå›´,çœå¸‚åœ°åŒºç¼–å·,ä¼ä¸šç±»åˆ« from ææ–™ä¾›åº”å•†ä¿¡æ¯è¡¨ where "
-                         + "gys_id='" + s_gys_id + "' ";
-                         DataTable dt_gysxx = objConn.GetDataTable(sSQL);
-                         string gys_name = Convert.ToString(dt_gysxx.Rows[0]["ä¾›åº”å•†"]);
-                         string homepage = Convert.ToString(dt_gysxx.Rows[0]["ä¸»é¡µ"]);
-                         string tel = Convert.ToString(dt_gysxx.Rows[0]["ç”µè¯"]);
-                         string fax = Convert.ToString(dt_gysxx.Rows[0]["ä¼ çœŸ"]);
-                         string user_name = Convert.ToString(dt_gysxx.Rows[0]["è”ç³»äºº"]);
-                         string user_phone = Convert.ToString(dt_gysxx.Rows[0]["è”ç³»äººæ‰‹æœº"]);
-                         string gys_type1 = Convert.ToString(dt_gysxx.Rows[0]["å•ä½ç±»å‹"]);
-                         string zzjg_number = Convert.ToString(dt_gysxx.Rows[0]["ç»„ç»‡æœºæ„ç¼–å·"]);
-                         string lx_addrass = Convert.ToString(dt_gysxx.Rows[0]["è”ç³»åœ°å€"]);
-                         string scope = Convert.ToString(dt_gysxx.Rows[0]["ç»è¥èŒƒå›´"]);
-                         string area = Convert.ToString(dt_gysxx.Rows[0]["åœ°åŒºåç§°"]);
+      //               //¸ù¾İÈÏÁìµÄ¹©Ó¦ÉÌid ²éÑ¯¹©Ó¦ÉÌĞÅÏ¢ ¸üĞÂµ½¹©Ó¦ÉÌÉêÇë±íÖĞ
+      //               if (s_gys_id != "")
+      //               {
+      //                   sSQL = "select ¹©Ó¦ÉÌ,Ö÷Ò³,µØÖ·,µç»°,´«Õæ,dq_id,ÁªÏµÈË,ÁªÏµÈËÊÖ»ú,ÁªÏµÈËQQ,µ¥Î»ÀàĞÍ,×éÖ¯»ú¹¹±àºÅ,µ¥Î»¼ò³Æ, "
+      //                   + "µØÇøÃû³Æ,·¨¶¨´ú±íÈË,×¢²á×Ê½ğ,ÁªÏµµØÖ·,ÓÊ±à,µç×ÓÓÊÏä,¾­Óª·¶Î§,Ê¡ÊĞµØÇø±àºÅ,ÆóÒµÀà±ğ from ²ÄÁÏ¹©Ó¦ÉÌĞÅÏ¢±í where "
+      //                   + "gys_id='" + s_gys_id + "' ";
+      //                   DataTable dt_gysxx = objConn.GetDataTable(sSQL);
+      //                   string gys_name = Convert.ToString(dt_gysxx.Rows[0]["¹©Ó¦ÉÌ"]);
+      //                   string homepage = Convert.ToString(dt_gysxx.Rows[0]["Ö÷Ò³"]);
+      //                   string tel = Convert.ToString(dt_gysxx.Rows[0]["µç»°"]);
+      //                   string fax = Convert.ToString(dt_gysxx.Rows[0]["´«Õæ"]);
+      //                   string user_name = Convert.ToString(dt_gysxx.Rows[0]["ÁªÏµÈË"]);
+      //                   string user_phone = Convert.ToString(dt_gysxx.Rows[0]["ÁªÏµÈËÊÖ»ú"]);
+      //                   string gys_type1 = Convert.ToString(dt_gysxx.Rows[0]["µ¥Î»ÀàĞÍ"]);
+      //                   string zzjg_number = Convert.ToString(dt_gysxx.Rows[0]["×éÖ¯»ú¹¹±àºÅ"]);
+      //                   string lx_addrass = Convert.ToString(dt_gysxx.Rows[0]["ÁªÏµµØÖ·"]);
+      //                   string scope = Convert.ToString(dt_gysxx.Rows[0]["¾­Óª·¶Î§"]);
+      //                   string area = Convert.ToString(dt_gysxx.Rows[0]["µØÇøÃû³Æ"]);
 
 
-                         //æ›´æ–°ä¾›åº”å•†ç”³è¯·è¡¨
-                         sSQL = "update  ä¾›åº”å•†è®¤é¢†ç”³è¯·è¡¨ set updatetime=(select getdate()),gys_id = '" + s_gys_id + "', "
-                         + "ä¾›åº”å•†='" + gys_name + "',ä¸»é¡µ='" + homepage + "',ç”µè¯='" + tel + "',ä¼ çœŸ='" + fax + "',è”ç³»äºº='" + user_name + "', "
-                         + "è”ç³»äººæ‰‹æœº='" + user_phone + "',å•ä½ç±»å‹='" + gys_type1 + "',ç»„ç»‡æœºæ„ç¼–å·='" + zzjg_number + "',è”ç³»åœ°å€='" + lx_addrass + "',"
-                         + "ç»è¥èŒƒå›´='" + scope + "',åœ°åŒºåç§°='" + area + "',å®¡æ‰¹ç»“æœ='å¾…å®¡æ ¸' where yh_id='" + s_yh_id + "' ";
-                         int ret = objConn.ExecuteSQLForCount(sSQL, true);
-                         Response.Write("è¯¥ä¾›åº”å•†å·²ç»æˆåŠŸè¢«æ‚¨è®¤é¢†,æˆ‘æ–¹å·¥ä½œäººå‘˜æ ¸å®ç›¸å…³ä¿¡æ¯å,åœ¨ä¸‰ä¸ªå·¥ä½œæ—¥å†…ç»™æ‚¨ç­”å¤,è¯·è€å¿ƒç­‰å€™!");
-                     }
-                 }
+      //                   //¸üĞÂ¹©Ó¦ÉÌÉêÇë±í
+      //                   sSQL = "update  ¹©Ó¦ÉÌÈÏÁìÉêÇë±í set updatetime=(select getdate()),gys_id = '" + s_gys_id + "', "
+      //                   + "¹©Ó¦ÉÌ='" + gys_name + "',Ö÷Ò³='" + homepage + "',µç»°='" + tel + "',´«Õæ='" + fax + "',ÁªÏµÈË='" + user_name + "', "
+      //                   + "ÁªÏµÈËÊÖ»ú='" + user_phone + "',µ¥Î»ÀàĞÍ='" + gys_type1 + "',×éÖ¯»ú¹¹±àºÅ='" + zzjg_number + "',ÁªÏµµØÖ·='" + lx_addrass + "',"
+      //                   + "¾­Óª·¶Î§='" + scope + "',µØÇøÃû³Æ='" + area + "',ÉóÅú½á¹û='´ıÉóºË' where yh_id='" + s_yh_id + "' ";
+      //                   int ret = objConn.ExecuteSQLForCount(sSQL, true);
+      //                   Response.Write("¸Ã¹©Ó¦ÉÌÒÑ¾­³É¹¦±»ÄúÈÏÁì,ÎÒ·½¹¤×÷ÈËÔ±ºËÊµÏà¹ØĞÅÏ¢ºó,ÔÚÈı¸ö¹¤×÷ÈÕÄÚ¸øÄú´ğ¸´,ÇëÄÍĞÄµÈºò!");
+      //               }
+      //           }
 
-                 if (count != 0)
-                 {
-                     Response.Write("æ‚¨å·²è®¤é¢†äº†ä¸€å®¶ç”Ÿäº§å‚å•†,ä¸èƒ½å†ç»§ç»­è®¤é¢†!");
-                     return;
-                 }
-             }
-             else
-             {
-                 //æ ¹æ®è®¤é¢†çš„ä¾›åº”å•†id æŸ¥è¯¢ä¾›åº”å•†ä¿¡æ¯ æ›´æ–°åˆ°ä¾›åº”å•†ç”³è¯·è¡¨ä¸­
-                 if (s_gys_id != "")
-                 {
-                     sSQL = "select ä¾›åº”å•†,ä¸»é¡µ,åœ°å€,ç”µè¯,ä¼ çœŸ,dq_id,è”ç³»äºº,è”ç³»äººæ‰‹æœº,è”ç³»äººQQ,å•ä½ç±»å‹,ç»„ç»‡æœºæ„ç¼–å·,å•ä½ç®€ç§°, "
-                     + "åœ°åŒºåç§°,æ³•å®šä»£è¡¨äºº,æ³¨å†Œèµ„é‡‘,è”ç³»åœ°å€,é‚®ç¼–,ç”µå­é‚®ç®±,ç»è¥èŒƒå›´,çœå¸‚åœ°åŒºç¼–å·,ä¼ä¸šç±»åˆ« from ææ–™ä¾›åº”å•†ä¿¡æ¯è¡¨ where "
-                     + "gys_id='" + s_gys_id + "' ";
-                     DataTable dt_gysxx = objConn.GetDataTable(sSQL);
-                     string gys_name = Convert.ToString(dt_gysxx.Rows[0]["ä¾›åº”å•†"]);
-                     string homepage = Convert.ToString(dt_gysxx.Rows[0]["ä¸»é¡µ"]);
-                     string tel = Convert.ToString(dt_gysxx.Rows[0]["ç”µè¯"]);
-                     string fax = Convert.ToString(dt_gysxx.Rows[0]["ä¼ çœŸ"]);
-                     string user_name = Convert.ToString(dt_gysxx.Rows[0]["è”ç³»äºº"]);
-                     string user_phone = Convert.ToString(dt_gysxx.Rows[0]["è”ç³»äººæ‰‹æœº"]);
-                     string gys_type1 = Convert.ToString(dt_gysxx.Rows[0]["å•ä½ç±»å‹"]);
-                     string zzjg_number = Convert.ToString(dt_gysxx.Rows[0]["ç»„ç»‡æœºæ„ç¼–å·"]);
-                     string lx_addrass = Convert.ToString(dt_gysxx.Rows[0]["è”ç³»åœ°å€"]);
-                     string scope = Convert.ToString(dt_gysxx.Rows[0]["ç»è¥èŒƒå›´"]);
-                     string area = Convert.ToString(dt_gysxx.Rows[0]["åœ°åŒºåç§°"]);
+      //           if (count != 0)
+      //           {
+      //               Response.Write("ÄúÒÑÈÏÁìÁËÒ»¼ÒÉú²ú³§ÉÌ,²»ÄÜÔÙ¼ÌĞøÈÏÁì!");
+      //               return;
+      //           }
+      //       }
+      //       else
+      //       {
+      //           //¸ù¾İÈÏÁìµÄ¹©Ó¦ÉÌid ²éÑ¯¹©Ó¦ÉÌĞÅÏ¢ ¸üĞÂµ½¹©Ó¦ÉÌÉêÇë±íÖĞ
+      //           if (s_gys_id != "")
+      //           {
+      //               sSQL = "select ¹©Ó¦ÉÌ,Ö÷Ò³,µØÖ·,µç»°,´«Õæ,dq_id,ÁªÏµÈË,ÁªÏµÈËÊÖ»ú,ÁªÏµÈËQQ,µ¥Î»ÀàĞÍ,×éÖ¯»ú¹¹±àºÅ,µ¥Î»¼ò³Æ, "
+      //               + "µØÇøÃû³Æ,·¨¶¨´ú±íÈË,×¢²á×Ê½ğ,ÁªÏµµØÖ·,ÓÊ±à,µç×ÓÓÊÏä,¾­Óª·¶Î§,Ê¡ÊĞµØÇø±àºÅ,ÆóÒµÀà±ğ from ²ÄÁÏ¹©Ó¦ÉÌĞÅÏ¢±í where "
+      //               + "gys_id='" + s_gys_id + "' ";
+      //               DataTable dt_gysxx = objConn.GetDataTable(sSQL);
+      //               string gys_name = Convert.ToString(dt_gysxx.Rows[0]["¹©Ó¦ÉÌ"]);
+      //               string homepage = Convert.ToString(dt_gysxx.Rows[0]["Ö÷Ò³"]);
+      //               string tel = Convert.ToString(dt_gysxx.Rows[0]["µç»°"]);
+      //               string fax = Convert.ToString(dt_gysxx.Rows[0]["´«Õæ"]);
+      //               string user_name = Convert.ToString(dt_gysxx.Rows[0]["ÁªÏµÈË"]);
+      //               string user_phone = Convert.ToString(dt_gysxx.Rows[0]["ÁªÏµÈËÊÖ»ú"]);
+      //               string gys_type1 = Convert.ToString(dt_gysxx.Rows[0]["µ¥Î»ÀàĞÍ"]);
+      //               string zzjg_number = Convert.ToString(dt_gysxx.Rows[0]["×éÖ¯»ú¹¹±àºÅ"]);
+      //               string lx_addrass = Convert.ToString(dt_gysxx.Rows[0]["ÁªÏµµØÖ·"]);
+      //               string scope = Convert.ToString(dt_gysxx.Rows[0]["¾­Óª·¶Î§"]);
+      //               string area = Convert.ToString(dt_gysxx.Rows[0]["µØÇøÃû³Æ"]);
 
-                     sSQL = "insert into ä¾›åº”å•†è®¤é¢†ç”³è¯·è¡¨(yh_id,updatetime,gys_id,ä¾›åº”å•†,ä¸»é¡µ,ç”µè¯,ä¼ çœŸ,è”ç³»äºº,è”ç³»äººæ‰‹æœº,å•ä½ç±»å‹,ç»„ç»‡æœºæ„ç¼–å·,è”ç³»åœ°å€,ç»è¥èŒƒå›´,åœ°åŒºåç§°,å®¡æ‰¹ç»“æœ)" +
-                     " values('" + s_yh_id + "',select getdate(), '" + s_gys_id + "','" + gys_name + "','" + homepage +
-                      "','" + tel + "','" + fax + "','" + user_name + "','" + user_phone + "','" + gys_type1 + "','" + zzjg_number +
-                       "','" + lx_addrass + "','" + scope + "','" + area + "','å¾…å®¡æ ¸')";
-                     int ret = objConn.ExecuteSQLForCount(sSQL, true);
-                     Response.Write("è¯¥ä¾›åº”å•†å·²ç»æˆåŠŸè¢«æ‚¨è®¤é¢†,æˆ‘æ–¹å·¥ä½œäººå‘˜æ ¸å®ç›¸å…³ä¿¡æ¯å,åœ¨ä¸‰ä¸ªå·¥ä½œæ—¥å†…ç»™æ‚¨ç­”å¤,è¯·è€å¿ƒç­‰å€™!");
-                 }
+      //               sSQL = "insert into ¹©Ó¦ÉÌÈÏÁìÉêÇë±í(yh_id,updatetime,gys_id,¹©Ó¦ÉÌ,Ö÷Ò³,µç»°,´«Õæ,ÁªÏµÈË,ÁªÏµÈËÊÖ»ú,µ¥Î»ÀàĞÍ,×éÖ¯»ú¹¹±àºÅ,ÁªÏµµØÖ·,¾­Óª·¶Î§,µØÇøÃû³Æ,ÉóÅú½á¹û)" +
+      //               " values('" + s_yh_id + "',select getdate(), '" + s_gys_id + "','" + gys_name + "','" + homepage +
+      //                "','" + tel + "','" + fax + "','" + user_name + "','" + user_phone + "','" + gys_type1 + "','" + zzjg_number +
+      //                 "','" + lx_addrass + "','" + scope + "','" + area + "','´ıÉóºË')";
+      //               int ret = objConn.ExecuteSQLForCount(sSQL, true);
+      //               Response.Write("¸Ã¹©Ó¦ÉÌÒÑ¾­³É¹¦±»ÄúÈÏÁì,ÎÒ·½¹¤×÷ÈËÔ±ºËÊµÏà¹ØĞÅÏ¢ºó,ÔÚÈı¸ö¹¤×÷ÈÕÄÚ¸øÄú´ğ¸´,ÇëÄÍĞÄµÈºò!");
+      //           }
 
-             }
-        }
-        else
-        {
-            Response.Write("å½“å‰ç”¨æˆ·idä¸å­˜åœ¨,è¯·é‡æ–°ç™»é™†ï¼");
-        }
+      //       }
+      //  }
+      //  else
+      //  {
+      //      Response.Write("µ±Ç°ÓÃ»§id²»´æÔÚ,ÇëÖØĞÂµÇÂ½£¡");
+      //  }
 
     }
     </script>
