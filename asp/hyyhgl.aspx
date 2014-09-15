@@ -85,10 +85,14 @@
             var name = Trim(tds[3].innerHTML);
             var phone = Trim(tds[4].innerHTML);
             var email = Trim(tds[5].innerHTML);
-            var scs = tds[6].childNodes[1].checked;
-            var fxs = tds[6].childNodes[3].checked;
-            var cl = tds[6].childNodes[5].checked;
-
+            var scs;var fxs;var cl;
+           <%if (Request.Cookies["GYS_QQ_ID"] != null){ %>
+                scs = tds[6].childNodes[1].checked;
+                fxs = tds[6].childNodes[3].checked;
+                cl = tds[6].childNodes[5].checked;
+           <%} else{%>
+                scs=false;fxs=false;cl=false;
+           <%} %>
             newwin = window.open('hyyhgl_wh.aspx?qq=' + qq + '&name=' + name + '&phone=' + phone + '&email=' + email+'&scs='+scs+'&fxs='+fxs+'&cl='+cl + '&state=1', 'myWindow', 'height=350px,width=450px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
 
@@ -186,9 +190,12 @@
                     <th align="center">
                         <strong>邮箱</strong>
                     </th>
+                    <%if (Request.Cookies["GYS_QQ_ID"] != null)
+                      { %>
                     <th align="center">
                         <strong>角色权限</strong>
                     </th>
+                    <%} %>
                     <th align="center">
                         <strong>操作</strong>
                     </th>
@@ -216,6 +223,9 @@
                     <td>
                         <%=listGys[i].Email%>
                     </td>
+
+                    <%if (Request.Cookies["GYS_QQ_ID"] != null)
+                      { %>
                     <td>
                         <%string powerGys = listGys[i].Power.ToString(); %>
                         <%if (powerGys.Contains("管理生产商") && powerGys.Contains("管理分销商") && powerGys.Contains("管理材料信息")) %>
@@ -264,7 +274,7 @@
                             管理材料信息
                         <% } %>
                         <%else if (powerGys.Contains("管理分销商"))
-                            { %>
+                        { %>
                             <input type="checkbox" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
                             管理生产商
                             <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
@@ -273,7 +283,7 @@
                             管理材料信息
                         <%} %>
                         <%else if (powerGys.Contains("管理材料信息"))
-                            { %>
+                        { %>
                             <input type="checkbox" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
                             管理生产商
                             <input type="checkbox" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
@@ -282,7 +292,7 @@
                             管理材料信息
                         <%} %>
                         <%else
-                            { %>
+                        { %>
                         <input id="Checkbox1" type="checkbox" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
                         管理生产商
                         <input id="Checkbox2" type="checkbox" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
@@ -291,6 +301,7 @@
                         管理材料信息
                         <%} %>
                     </td>
+                    <%} %>
                     <td align="center">
                         <input type="button" name="filter" value="编辑" id="Submit1" onclick="changePage(this);"
                             class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;

@@ -73,6 +73,8 @@
                     </label>
                     <input type="text" name="txt_Email" class="shuru" id="txt_Email" runat="server" onblur="yxCheck(this)"/>
                 </dt>
+                <%if (Request.Cookies["GYS_QQ_ID"] != null)
+                  { %>
                 <dd>
                     角色权限：</dd>
                 <dt>
@@ -85,6 +87,7 @@
                     <label>
                         <input type="checkbox" name="CheckboxGroup1" value="管理材料信息" id="cbx3" runat="server"/>
                         管理材料信息</label></dt>
+                        <%} %>
             </dl>
         </div>
         <div id="yhxx_bottom">
