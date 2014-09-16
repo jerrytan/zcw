@@ -407,14 +407,19 @@
 <div>
  <form runat="server" id="form1">
  <div class="fxsxx">
-    <span class="fxsxx1">材料分类如下:</span>
-    <div class="xz1">
-    <div class="xza">
+    <table width="998" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px; margin-top:10px;">
+    <tr>
+      <td height="34" colspan="6" align="left" bgcolor="#f7f7f7" style="font-size:14px; font-weight:bold;">&nbsp;&nbsp;材料分类如下:</td>
+    </tr>
+    <tr>
+      <td width="100" height="70"></td>
+      <td width="180" colspan="2">
+<div class="xza">
 
                     <span class="xz2"><a href="#">大类</a></span>
                     <select id="drop1" name="drop1" onchange="updateFL(this.options[this.options.selectedIndex].value)">
                      <option value="0">请选择大类</option>
-                        <% foreach (System.Data.DataRow v in dt_clfl.Rows)
+                       <% foreach (System.Data.DataRow v in dt_clfl.Rows)
                            {
                                    if (v["分类编码"].ToString() == dt_clxx.Rows[0]["材料编码"].ToString().Substring(0, 2))
                                    {%>
@@ -427,9 +432,11 @@
                          }%>
                     </select>
                 </div>
-    <div class="xza">
+      </td>
+      <td width="180" colspan="2" align="right">
+      <div class="xza">
                     <span class="xz2"><a href="#">小类</a></span>
-                    <select id="ejflname" name="ejflname" class="fux"  onchange="updateCLFL(this.options[this.options.selectedIndex].value)">
+                    <select id="ejflname" name="ejflname" class="fux" onchange="updateCLFL(this.options[this.options.selectedIndex].value)">
                         <%for (int i = 0; i < dt_clflej.Rows.Count; i++)
                           {
                               if (dt_clflej.Rows[i]["分类编码"].ToString()==dt_clxx.Rows[0]["材料编码"].ToString().Substring(0,4))
@@ -440,112 +447,103 @@
                         <option value="0">请选择小类</option>
                     
                     </select>
-                </div>           
-    <div class="xzz">
-<!--
-<span class="xzz0">如果没有适合的小类，请联系网站管理员增加！ 联系方式是xxx@xxx.com.请使用模板。 </span>
--->
-<span class="xzz1"><a href="#">模板下载地址</a></span>
-</div>
-</div>
+                </div>
+      </td>
+      <td width="490">
+      <span class="xzz1"><a href="#">模板下载地址</a></span>
+      </td>
+    </tr>
+  </table> 
     <%--蒋，2014年8月19日，该下面的div样式为“gysgybtr”--%>
-    <div class="gysgybtr">
-<span class="srcl">材料信息如下:</span>
- <dl>
-                    <dd>材料名字：</dd>
-                    <dt>
-                        <input name="cl_name"  id="cl_name" type="text" class="fxsxx3" value="<%=s_clmc%>"  /></dt>
-                    <dd>品    牌：</dd>
-                    <dt>
-                        <select name="brand" id="brand" style="width: 300px" >                            
-                            <option value="0">请选择品牌</option>                
-                            <%foreach (System.Data.DataRow row in dt_pp.Rows)
-                              {%>
-                                   <option value="<%=row["pp_id"] %>"><%=row["品牌名称"] %></option>                
-                             <% } %>           
-                        </select></dt>
-  
 
-         <%--           <dd>属性名称：</dd>
-                    <dt>
-                        <select name="sx_names" id="sx_names" style="width: 300px" >
-						
-                            <%foreach (System.Data.DataRow v in dt_clsx.Rows)
-                              {%>                                          
-                            <option value="0"><%=v["分类属性名称"].ToString()%></option>
-							<%}%>
-						
-                        </select></dt>		
-						
-                    <dd>属性值：</dd>
-                    <dt>
-                        <select name="cl_value" id="cl_value" style="width: 300px"  >
-                            
-                            <%foreach (System.Data.DataRow v in dt_clsx.Rows)
-                              {%>                                          
-                            <option value="0"><%=v["分类属性值"].ToString()%></option>
-							<%}%>
-                           
-                        </select></dt>--%>
-
-
-
-                      <dd>属性名称：</dd>
-                    <dt>
-                        <select name="sx_names" id="sx_names" style="width: 300px" onchange="update_clsx(this.options[this.options.selectedIndex].value)">                                 
-                            <option value="0">请选择属性名称</option>						
-                        </select></dt>
-						
-						<dd>属性编码：</dd>
-                    <dt>
-                        <select name="sx_codes" id="sx_codes" style="width: 300px" >                                                                       
-                            <option value="0">请选择属性编码</option>						
-                        </select></dt>
-						
-						<dd>属性id：</dd>
-                    <dt>
-                        <select runat="server" name="sx_id" id="sx_id" style="width: 300px"  >                                                                       
-                            <option value="0">属性id</option>						
-                        </select></dt>
-						
-						
-                    <dd>属性值：</dd>
-                    <dt>
-                        <select name="cl_value" id="cl_value" style="width: 300px"  >                            
-                            <option value="0">请选择属性值</option>                           
-                        </select></dt>
-						
-					<dd>属性值编号：</dd>
-                    <dt>
-                        <select name="cl_number" id="cl_number" style="width: 300px"  >                            
-                            <option value="0">编号</option>                           
-                        </select></dt>
-						
-					<dd>属性值ID号：</dd>
-                    <dt>
-                        <select name="cl_ids" id="cl_ids" style="width: 300px"  >                            
-                            <option value="0">属性值id</option>                           
-                        </select></dt>
-						
-					<dd>规格型号：</dd>                    
-                    <dt>
-                        <input name="cl_type" type="text" id="cl_type" class="fxsxx3" value="<%=dt_clxx.Rows[0]["规格型号"] %>" /></dt>					
-						
-                    <dd>计量单位：</dd>
-                    <dt>
-                        <input name="cl_bit" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["计量单位"] %>" /></dt>
-                    <dd>单位体积：</dd>
-                    <dt>
-                        <input name="cl_volumetric" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位体积"] %>" /></dt>
-				    <dd>单位重量：</dd>
-                    <dt>
-                        <input name="cl_height" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位重量"] %>" /></dt>
-                    <dd>说明：</dd>
-                    <dt>
-                        <input name="cl_instruction" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["说明"] %>" /></dt>
-					
-                </dl>
-</div>
+<table width="998" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px; margin-top:10px;">
+      <tr>
+      <td height="34" colspan="6" align="left" bgcolor="#f7f7f7" style="font-size:14px; font-weight:bold;">&nbsp;&nbsp;材料信息如下:</td>
+    </tr>
+    <tr>
+      <td height="20" colspan="6"></td>
+    </tr>
+    <tr>
+      <td width="50" height="30">&nbsp;</td>
+      <td width="120">材料名字：</td>
+      <td width="329"><label for="textfield"></label>
+        <input name="cl_name" id="cl_name" type="text" class="fxsxx3" value="<%=s_clmc%>" /></td>
+      <td width="50" align="right"></td>
+      <td width="120">品    牌：</td>
+      <td width="329"><select name="brand" id="brand" style="width: 300px">
+        <option value="0">请选择品牌</option>
+        <%foreach (System.Data.DataRow row in dt_pp.Rows)
+        {%>
+            <option value="<%=row["pp_id"] %>"><%=row["品牌名称"] %></option>                
+        <% } %>
+      </select></td>
+    </tr>
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td>属性名称：</td>
+      <td><select name="sx_names" id="sx_names" style="width: 300px" onchange="update_clsx(this.options[this.options.selectedIndex].value)">
+        <option value="0">请选择属性名称</option>
+      </select></td>
+      <td>&nbsp;</td>
+      <td>属性编码：</td>
+      <td><select name="sx_codes" id="sx_codes" style="width: 300px">
+        <option value="0">请选择属性编码</option>
+      </select></td>
+    </tr>
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td>属性id：</td>
+      <td><select name="sx_id" id="sx_id" style="width: 300px">
+        <option value="0">属性id</option>
+      </select></td>
+      <td>&nbsp;</td>
+      <td>属性值：</td>
+      <td><select name="cl_value" id="cl_value" style="width: 300px">
+        <option value="0">请选择属性值</option>
+      </select></td>
+    </tr>
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td>属性值编号：</td>
+      <td><select name="cl_number" id="cl_number" style="width: 300px">
+        <option value="0">编号</option>
+      </select></td>
+      <td>&nbsp;</td>
+      <td>属性值ID号：</td>
+      <td><select name="cl_ids" id="cl_ids" style="width: 300px">
+        <option value="0">属性值id</option>
+      </select></td>
+    </tr>
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td>规格型号：</td>
+      <td><label for="textfield21">
+        <input name="cl_type" type="text" id="cl_type" class="fxsxx3" value="<%=dt_clxx.Rows[0]["规格型号"] %>" />
+      </label></td>
+      <td>&nbsp;</td>
+      <td>计量单位：</td>
+      <td><input name="cl_bit" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["计量单位"] %>" /></td>
+    </tr>
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td>单位体积：</td>
+      <td><input name="cl_volumetric" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位体积"] %>" /></td>
+      <td>&nbsp;</td>
+      <td>单位重量：</td>
+      <td><input name="cl_height" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位重量"] %>" /></td>
+    </tr>
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td>说明：</td>
+      <td><input name="cl_instruction" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["说明"] %>" /></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+        <tr>
+      <td height="20" colspan="6"></td>
+    </tr>
+</table>
 
     <!--
 <div class="cpdt">
@@ -565,34 +563,29 @@
 -->
 
 <div class="cpdt">
-    <span class="dmt">多媒体信息</span>
+    <span class="dmt">&nbsp;&nbsp;多媒体信息</span>
+    <div class="dmt2">
     <dl>
        <dd>多媒体类型：</dd>
-       <dt>
-           <select  id="mtlx" runat="server">
-                <option value="0">选择媒体类型</option>
-                <option value="视频">视频</option>
-                <option value="图片">图片</option>
-                <option value="文档">文档</option>
-            </select>
+       <dt><select runat="server" id="mtlx">
+	<option value="0">选择媒体类型</option>
+	<option value="视频">视频</option>
+	<option value="图片">图片</option>
+	<option value="文档">文档</option>
+</select>
        </dt>
        <dd>分类：</dd>
        <dt>
-        <input  id="sysm" name="select" type="radio" value="使用说明" runat="server" validationgroup="select" />使用说明  
-		    <input id="cgal"  runat="server" name="select"  type="radio" value="成功案例" validationgroup="select" />成功案例
-            <input id="ys"  runat="server" name="select"  type="radio" value="演示" validationgroup="select" />演示
-            <input id="cptp"  runat="server" name="select"  type="radio" value="产品图片" validationgroup="select" />产品图片
+        <input runat="server" value="使用说明" name="select" type="radio" id="sysm" validationgroup="select"/>使用说明  
+		    <input runat="server" value="成功案例" name="select" type="radio" id="cgal" validationgroup="select"/>成功案例
+            <input runat="server" value="演示" name="select" type="radio" id="ys" validationgroup="select"/>演示
+            <input runat="server" value="产品图片" name="select" type="radio" id="cptp" validationgroup="select"/>产品图片
        </dt>
-       <dd>上传文件</dd>
-               <dt><input name="" id="file1" type="file" class="fxsxx3"  runat="server"/>&nbsp;&nbsp;<asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="ImageButton1" OnClick="UploadFile" /></dt>
-         <%--<dd>产品视频：</dd>
-        <dt><input name="" id="filesp" type="file" class="fxsxx3"  runat="server"/>&nbsp;&nbsp;<asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="UploadSP" OnClick="UploadFile" /></dt>
-         <dd>成功案例：</dd>
-        <dt><input name=""  id="fileAL"  type="file" class="fxsxx3" runat="server"/>&nbsp;&nbsp;<asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="uploadFileAL" OnClick="UploadFileAL" /></dt>
-         <dd>更多资料：</dd>
-        <dt><input name="" id="More"  runat="server" type="file" class="fxsxx3"/>&nbsp;&nbsp;<asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="uploadMore" OnClick="UploadFileMore" /></dt>                       --%>
+       <dd>上传文件：</dd>
+               <dt><input name="file1" runat="server" type="file" id="file1" class="fxsxx3"/>&nbsp;&nbsp;<asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="ImageButton1" OnClick="UploadFile" /></dt>
      </dl>
-     <span class="fxsbc"><a href="#"><img src="images/bbc_03.jpg"  onclick="SaveAll()"/></a></span>  
+     <span class="fxsbc"><a href="#"><img src="images/bbc_03.jpg" onclick="SaveAll()"/></a></span>  
+</div>
 </div>
 
  </form>

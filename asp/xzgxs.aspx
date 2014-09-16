@@ -19,29 +19,7 @@
     <script src="js/SJLD_New.js" type="text/javascript"></script>
     <link href="css/all%20of.css" rel="stylesheet" type="text/css" />
     <link href="css/css.css" rel="stylesheet" type="text/css" />
- <style type="text/css">
-     input{
-          border-color: inherit;
-         border-width: 1px;
-         border-style: solid;
-         }
-    table{
-        text-align:center;
-             padding-top:20px;
-            margin-top:20px;
-           } 
-    tr{
-             border:1px;  
-             border-style:groove; 
-             margin-top:10px;
-             text-align:left;
-             
-        }
-     .style4
-     {
-         width: 268435456px;
-     }
-     </style>
+
 </head>
  <script runat="server">
         protected DataTable dt_yjfl = new DataTable();   //材料分类大类
@@ -59,6 +37,7 @@
         public int PageSize = 10;
         DataView objDv = null;
         DataTable objDt = null;
+        public DataTable dt_gsxx = new DataTable();
         protected DataTable dt_content = new DataTable();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -115,20 +94,13 @@
                 dt_clfl = objConn.GetDataTable(sSQL);
                 if (!IsPostBack)
                 {
-                     sSQL = "select gys_id,供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,注册日期 "+
-                         " from 材料供应商信息表 where left(单位类型,3) like '%商%' and 供应商 like '%"+this.txt_gys.Value+"%' order by gys_id";
-                    string sSearchCondition = "供应商 like '%"+this.txt_gys.Value+"%'";
-                    MyDataBind(true, sSQL, sSearchCondition);
                     this.divtable.Visible = false;
                 } 
          }
         public void MyDataBind(bool bpostback, string sSQL, string sCondition)
         {
             int TotalPage;          //总页数
-            //DataView objDv = null;
-            //DataTable objDt = null;
-            Session["sSearchSql"] = null;
-            Session["ADDSQL"] = null;
+            DataTable objDt = null;
             Session["ADDSQL"] = sSQL;
             TotalPage = 0;
             if (sCondition != "")
@@ -136,16 +108,15 @@
                 sSQL = sSQL.Replace("1=2", "1=1");
                 sSQL = GetAddConditionSQL(sSQL, sCondition);
                 Session["SQLsource"] = sSQL;
-                ////20140529小张添加
                 TotalPage = objConn.GetRowCount(sSQL);
                 if (TotalPage > PageSize)
                 {
-                    int Totalpage=TotalPage / PageSize;
+                    int TotalPage1 = TotalPage / PageSize;
                     if (TotalPage % PageSize != 0)
                     {
-                        Totalpage++;
+                        TotalPage1++;
                     }
-                    this.lblPageCount.Text = Totalpage.ToString();
+                    this.lblPageCount.Text = TotalPage1.ToString();
                     this.lblCurPage.Text = "1";
                     this.btnPrev.Enabled = false;
                 }
@@ -222,23 +193,23 @@
             {
 
             }
-            try
-            {
-                if (objDt != null)
-                {
-                    objDt = GetAdjustDt(objDt);
-                    objDv = objDt.DefaultView;
-                }
-            }
-            catch (Exception err)
-            {
-                Response.Write("<script>alert('加载数据源失败！')</"+"script>");
-            }
-            GridView1.DataSource = objDv;
-            GridView1.Columns[1].Visible = false;
-            GridView1.Columns[10].Visible = false;
-            GridView1.Columns[11].Visible = false;
-            this.GridView1.DataBind();
+            //try
+            //{
+            //    if (objDt != null)
+            //    {
+            //        objDt = GetAdjustDt(objDt);
+            //        objDv = objDt.DefaultView;
+            //    }
+            //}
+            //catch (Exception err)
+            //{
+            //    Response.Write("<script>alert('加载数据源失败！')</" + "script>");
+            //}
+            //GridView1.DataSource = objDv;
+            //GridView1.Columns[1].Visible = false;
+            //GridView1.Columns[10].Visible = false;
+            //GridView1.Columns[11].Visible = false;
+            //this.GridView1.DataBind();
         }
         public DataTable GetAdjustDt(DataTable objDataTable)
         {
@@ -252,6 +223,7 @@
                         {
                             if (objDataTable.Rows[i][j] != null && objDataTable.Rows[i][j].ToString().Length > 43)
                                 objDataTable.Rows[i][j] = objDataTable.Rows[i][j].ToString().Substring(0, 40) + "...";
+                            
                             if (objDataTable.Columns[j].DataType.Name.ToUpper().Trim() == "DATETIME")
                             {
                                 //只取日期
@@ -381,14 +353,10 @@
             this.divtable.Visible=true;
             btnNext.Enabled = true;
             btnPrev.Enabled = true;
-
             string strArg = e.CommandArgument.ToString();
-            int intPageCount = 0;
-
-            intPageCount = Int32.Parse(lblPageCount.Text.ToString());
-
+            int intPageCount = 0;//总页数
+            intPageCount = Int32.Parse(lblPageCount.Text.ToString()); 
             intPageIndex = Int32.Parse(lblCurPage.Text.ToString()) - 1;
-
             switch (strArg)
             {
                 case "Next":
@@ -412,7 +380,6 @@
             {
                 btnNext.Enabled = false;
             }
-
             //判断当前页码是否有效，若无效则返回
             if (intPageIndex < 0 || intPageIndex > intPageCount)
             {
@@ -421,10 +388,8 @@
             lblCurPage.Text = Convert.ToString(intPageIndex + 1);
             if (Session["SQLsource"] != null)
             {
-
                 int begin = intPageIndex * PageSize + 1;
                 int end = begin + PageSize - 1;
-                
                 string sSQL = "";
                 string sql = Session["SQLsource"].ToString();
                 int order = sql.ToUpper().IndexOf("ORDER BY");
@@ -444,14 +409,13 @@
                         sSQL = "select * from (select *,row_number() over ( order by " + name + ") as 编号 from(" + sql + ")tb)T where T.编号 between " + begin.ToString() + " and " + end.ToString();
                     }
                 }
+                
                 MyDataBind2(sSQL, "");
             }
         }
 
         protected void MyDataBind2(string sSQL, string sCondition)
         {
-            //DataTable objDt = null;
-            //DataView objDv = null;
             if (sCondition != "")
             {
                 sSQL = GetAddConditionSQL(sSQL, sCondition);
@@ -459,23 +423,22 @@
             try
             {
                 objDt = objConn.GetDataTable(sSQL);
+                dt_gsxx = objDt;
             }
             catch
             {
 
             }
-
-            if (objDt != null)
-            {
-                objDt = GetAdjustDt(objDt);
-                objDv = objDt.DefaultView;
-            }
-            GridView1.DataSource = objDv;
-            GridView1.Columns[1].Visible = false;
-            GridView1.Columns[10].Visible = false;
-            GridView1.Columns[11].Visible = false;
-            this.GridView1.DataBind();
-            
+            //if (objDt != null)
+            //{
+            //    objDt = GetAdjustDt(objDt);
+            //    objDv = objDt.DefaultView;
+            //}
+            //GridView1.DataSource = objDv;
+            //GridView1.Columns[1].Visible = false;
+            //GridView1.Columns[10].Visible = false;
+            //GridView1.Columns[11].Visible = false;
+            //this.GridView1.DataBind(); 
         }
         protected void Clear(object sender, EventArgs e)
         {
@@ -509,12 +472,29 @@
                 if (count != 0)
                 {
                     Response.Write("<script>alert('该分销商已存在,请查看')</" + "script>");
-                    sSQL = "select gys_id, 供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,注册日期 "+
-                        " from 材料供应商信息表 where left(单位类型,3) like '%商%' order by gys_id";
-                    dt_gys = objConn.GetDataTable(sSQL);
+                    string gsxx = "select gys_id,供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,注册日期 "+
+                        "from 材料供应商信息表 where left(单位类型,3) like '%商%' and 供应商 like '%" + this.txt_gys.Value + "%' order by gys_id";
+                    if (gsxx.ToUpper().Contains("ORDER BY"))
+                    {
+                        int a = gsxx.ToUpper().IndexOf("ORDER BY");
+                        gsxx = "select * from(select *,row_number() over(" + gsxx.Substring(a, gsxx.Length - a) + ") as 编号 from (" + gsxx.Substring(0, a) + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
+                    }
+                    else
+                    {
+                        DataTable order_dt = objConn.GetDataTable("select top 1 * from (" + gsxx + ")#t");
+                        if (order_dt != null)
+                        {
+                            string name = order_dt.Columns[0].ColumnName.ToString();
+                            gsxx = "select * from(select *,row_number() over( order by " + name + ") as 编号 from (" + gsxx + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
+                        }
+                    }
+                    dt_gsxx = objConn.GetDataTable(gsxx);
+                    Session["SQLsource"] = gsxx;
+                    string sSQL = "select gys_id,供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,注册日期 " +
+                                    "from 材料供应商信息表 where left(单位类型,3) like '%商%' order by gys_id";
                     string sSearchCondition = "供应商 like '%" + this.txt_gys.Value + "%'";
                     MyDataBind(true, sSQL, sSearchCondition);
-                    Session["SQL"] = sSQL;
+                    
                 }
                 else
                 {
@@ -579,14 +559,20 @@
            // }
             //else
             //{
-                if (xzlx == "分销商")
+            if (xzlx == "分销商")
+            {
+                if (this.gys.Value == "")
                 {
-                     string dt_fxs_id="select gys_id from 材料供应商信息表 where 供应商='" + this.gys.Value + "'";
-                     DataTable dt_fxs = objConn.GetDataTable(dt_fxs_id);
-                     string fxs_id = dt_fxs.Rows[0]["gys_id"].ToString();
+                    Response.Write("您还没有选定分销公司!");
+                }
+                else
+                {
+                    string dt_fxs_id = "select gys_id from 材料供应商信息表 where 供应商='" + this.gys.Value + "'";
+                    DataTable dt_fxs = objConn.GetDataTable(dt_fxs_id);
+                    string fxs_id = dt_fxs.Rows[0]["gys_id"].ToString();
                     sSQL = "insert into  分销商和品牌对应关系表 (pp_id,品牌名称,是否启用,fxs_id,分销商,updatetime)" +
                    " values('" + this.txt_ppid.Value + "','" + this.txt_ppname.Value + "',1,'" + fxs_id + "','" + this.gys.Value + "',(select getdate()) ) ";
-                     objConn.ExecuteSQL(sSQL, true);
+                    objConn.ExecuteSQL(sSQL, true);
                     //string id = "";
                     //id = save();
                     //bool b = xzpp(id);
@@ -597,21 +583,21 @@
                         "values('" + this.txt_ppid.Value + "','" + this.txt_ppname.Value + "',1,'" + fxs_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
                         "'" + this.gys.Value + "',(select getdate()))";
                     objConn.ExecuteSQL(addppxx, true);
-                        string update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='"+this.gys.Value+"' and 品牌名称='"+this.txt_ppname.Value+"') where 供应商='"+this.gys.Value+"' and 品牌名称='"+this.txt_ppname.Value+"'";
-                        if (objConn.ExecuteSQL(update, true))
-                        {
-                            Response.Write("<script>alert('添加成功！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");   
-                        }
-                        else
-                        {
-                            Response.Write("<script>alert('添加失败！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
-                        }
+                    string update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" + this.gys.Value + "' and 品牌名称='" + this.txt_ppname.Value + "') where 供应商='" + this.gys.Value + "' and 品牌名称='" + this.txt_ppname.Value + "'";
+                    if (objConn.ExecuteSQL(update, true))
+                    {
+                        Response.Write("<script>alert('添加成功！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('添加失败！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
+                    }
                 }
-                else
-                {
-                    Response.Write("<script>window.alert('添加失败！');window.location.href='gyszym.aspx'</" + "script>");
-                }
-            //}
+            }
+            else
+            {
+                Response.Write("<script>window.alert('添加失败！');window.location.href='gyszym.aspx'</" + "script>");
+            }
         }
         //public bool xzpp(string gys_id)
         //{
@@ -716,52 +702,47 @@
             //gys_id = objConn.DBLook(sSQL);
             //this.gys_id_hid.Value = gys_id;
             //return gys_id;
-        //} 
-        protected void GridView1_RowCommand1(object sender, GridViewCommandEventArgs e)
+        //}
+        protected void CY_Click(object sender, EventArgs e)
         {
-            LinkButton myL = (LinkButton)e.CommandSource;
-            int Index = ((GridViewRow)(myL.NamingContainer)).RowIndex;//获得行号 
-            string gys = GridView1.Rows[Index].Cells[2].Text.ToString();//获得id
             this.xxpp.Visible = true;
             this.gxsform.Visible = true;
             this.divtable.Visible = false;
+            this.ImageButton1.Visible = true;
+            this.ImageButton2.Visible = true;
             string gsxx = "select 供应商,地区名称,联系人手机,联系地址,联系人,单位类型,经营范围," +
                  "单位简称,法定代表人,注册资金,注册日期,企业类别,联系人QQ,传真,主页,地址,开户银行,银行账户,备注," +
                  "营业执照注册号,企业员工人数,资产总额,注册级别,资质等级,是否启用,邮编,电子邮箱,电话,账户名称" +
-                 " from 材料供应商信息表 where 供应商 ='" + gys + "'";
-            DataTable dt_gsxx = objConn.GetDataTable(gsxx);
-            this.gxsform.Visible = true;
-            this.ImageButton1.Visible = true;
-            this.ImageButton2.Visible = true;
-            this.divtable.Visible = false;
-            this.gys.Value = dt_gsxx.Rows[0]["供应商"].ToString();
-            this.qymc.Value = dt_gsxx.Rows[0]["地区名称"].ToString();
-            this.lxrsj.Value = dt_gsxx.Rows[0]["联系人手机"].ToString();
-            this.lxdz.Value = dt_gsxx.Rows[0]["联系地址"].ToString();
-            this.lxr.Value = dt_gsxx.Rows[0]["联系人"].ToString();
-            this.lx.Value = dt_gsxx.Rows[0]["单位类型"].ToString();
-            this.jyfw.Value = dt_gsxx.Rows[0]["经营范围"].ToString();
-            this.dwjc.Value = dt_gsxx.Rows[0]["单位简称"].ToString();
-            this.fddbr.Value = dt_gsxx.Rows[0]["法定代表人"].ToString();
-            this.zczj.Value = dt_gsxx.Rows[0]["注册资金"].ToString();
-            this.zcrq.Value = dt_gsxx.Rows[0]["注册日期"].ToString();
-            this.qylb.Value = dt_gsxx.Rows[0]["企业类别"].ToString();
-            this.lxrqq.Value = dt_gsxx.Rows[0]["联系人QQ"].ToString();
-            this.cz.Value = dt_gsxx.Rows[0]["传真"].ToString();
-            this.zy.Value = dt_gsxx.Rows[0]["主页"].ToString();
-            this.dz.Value = dt_gsxx.Rows[0]["地址"].ToString();
-            this.khyh.Value = dt_gsxx.Rows[0]["开户银行"].ToString();
-            this.yhzh.Value = dt_gsxx.Rows[0]["银行账户"].ToString();
-            this.bz.Value = dt_gsxx.Rows[0]["备注"].ToString();
-            this.yyzzzch.Value = dt_gsxx.Rows[0]["营业执照注册号"].ToString();
-            this.qyygrs.Value = dt_gsxx.Rows[0]["企业员工人数"].ToString();
-            this.zcze.Value = dt_gsxx.Rows[0]["资产总额"].ToString();
-            this.zcjb.Value = dt_gsxx.Rows[0]["注册级别"].ToString();
-            this.zzdj.Value = dt_gsxx.Rows[0]["资质等级"].ToString();
-            this.yb.Value = dt_gsxx.Rows[0]["邮编"].ToString();
-            this.dzyx.Value = dt_gsxx.Rows[0]["电子邮箱"].ToString();
-            this.dh.Value = dt_gsxx.Rows[0]["电话"].ToString();
-            this.zhmc.Value = dt_gsxx.Rows[0]["账户名称"].ToString();
+                 " from 材料供应商信息表 where 供应商 ='" + this.gsmc.Value + "'";
+            DataTable dt_gs = objConn.GetDataTable(gsxx);
+            this.gys.Value = dt_gs.Rows[0]["供应商"].ToString();
+            this.qymc.Value = dt_gs.Rows[0]["地区名称"].ToString();
+            this.lxrsj.Value = dt_gs.Rows[0]["联系人手机"].ToString();
+            this.lxdz.Value = dt_gs.Rows[0]["联系地址"].ToString();
+            this.lxr.Value = dt_gs.Rows[0]["联系人"].ToString();
+            this.lx.Value = dt_gs.Rows[0]["单位类型"].ToString();
+            this.jyfw.Value = dt_gs.Rows[0]["经营范围"].ToString();
+            this.dwjc.Value = dt_gs.Rows[0]["单位简称"].ToString();
+            this.fddbr.Value = dt_gs.Rows[0]["法定代表人"].ToString();
+            this.zczj.Value = dt_gs.Rows[0]["注册资金"].ToString();
+            this.zcrq.Value = dt_gs.Rows[0]["注册日期"].ToString();
+            this.qylb.Value = dt_gs.Rows[0]["企业类别"].ToString();
+            this.lxrqq.Value = dt_gs.Rows[0]["联系人QQ"].ToString();
+            this.cz.Value = dt_gs.Rows[0]["传真"].ToString();
+            this.zy.Value = dt_gs.Rows[0]["主页"].ToString();
+            this.dz.Value = dt_gs.Rows[0]["地址"].ToString();
+            this.khyh.Value = dt_gs.Rows[0]["开户银行"].ToString();
+            this.yhzh.Value = dt_gs.Rows[0]["银行账户"].ToString();
+            this.bz.Value = dt_gs.Rows[0]["备注"].ToString();
+            this.yyzzzch.Value = dt_gs.Rows[0]["营业执照注册号"].ToString();
+            this.qyygrs.Value = dt_gs.Rows[0]["企业员工人数"].ToString();
+            this.zcze.Value = dt_gs.Rows[0]["资产总额"].ToString();
+            this.zcjb.Value = dt_gs.Rows[0]["注册级别"].ToString();
+            this.zzdj.Value = dt_gs.Rows[0]["资质等级"].ToString();
+            this.yb.Value = dt_gs.Rows[0]["邮编"].ToString();
+            this.dzyx.Value = dt_gs.Rows[0]["电子邮箱"].ToString();
+            this.dh.Value = dt_gs.Rows[0]["电话"].ToString();
+            this.zhmc.Value = dt_gs.Rows[0]["账户名称"].ToString();
         }
 </script>
    
@@ -838,18 +819,23 @@
         var gsmc = Trim(tds[0].innerHTML);
         document.getElementById("gsmc").value=gsmc;
       }
-      function onloadEvent(func){
-	var one=window.onload
-	if(typeof window.onload!='function'){
-		window.onload=func
-	}
-	else{
-		window.onload=function(){
-			one();
-			func();
-		}
-	}
-}
+
+      function onloadEvent(func)
+      {
+	    var one=window.onload
+	    if(typeof window.onload!='function')
+        {
+		    window.onload=func
+	    }
+	    else
+        {
+		    window.onload=function()
+            {
+			    one();
+			    func();
+		    }
+	    }
+    }
 function showtable(){
 	var tableid='table';		//表格的id
 	var overcolor='#fff0e9';	//鼠标经过颜色
@@ -991,11 +977,11 @@ onloadEvent(showtable);
 
 
 <div id="jiansuo" style="margin-bottom:20px; height:90px;">
-<table style="margin-top:0px">
+<table align="center" style="margin-top:0px;" >
 <tr>
-<td style="WIDTH: 50px;font-size:12px" >供应商：</td>
+<td style="WIDTH: 50px;font-size:12px; text-align:center"  >供应商：</td>
 <td colspan="4"><input class="hyzhc_shrk" type="text" id="txt_gys" runat="server" /></td>
-<TD align="right" style="WIDTH: 50px;font-size:12px">地区：</TD>
+<td align="right" style="WIDTH: 50px;font-size:12px">地区：</td>
 <td colspan="4" class="style4" style="width:400px;">
     <select id="Select1" class="fu1" runat="server"><option></option></select> 
     <select id="Select2" class="fu1" runat="server"><option></option></select>
@@ -1013,46 +999,52 @@ onloadEvent(showtable);
 <tr><td colspan="5"><asp:Label Text="" runat="server" ID="lblhint" ForeColor="Red"></asp:Label></td></tr></table>
 </div>
 <%--蒋，2014年9月3日，添加（未完成）--%>
-<div runat="server" id="divtable" style="width:1000px; font-size:12px;">
-<input type="hidden" value="" id="gsmc" runat="server" />
- <asp:GridView ID="GridView1" Style="word-break: keep-all; width:997px; word-wrap: normal;
-                padding: 0px; white-space: nowrap; font-size:12px" runat="server"  BorderColor="#99CCFF"
-                BorderStyle="None" BorderWidth="1px" BackColor="White" 
-        CellPadding="3" PageSize="100" onrowcommand="GridView1_RowCommand1" 
-        AutoGenerateColumns="False">
-                <Columns>
-                    <asp:TemplateField>
-                        <ItemTemplate>
-                         <asp:LinkButton ID="CY" runat="server" Text="查阅" CommandArgument='<%# Eval("供应商") %>'></asp:LinkButton>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:BoundField HeaderText="gys_id" DataField="gys_id" />
-                    <asp:BoundField HeaderText="供应商" DataField="供应商" />
-                    <asp:BoundField HeaderText="主页" DataField="主页" />
-                    <asp:BoundField HeaderText="地址" DataField="地址" />
-                    <asp:BoundField HeaderText="电话" DataField="电话" />
-                    <asp:BoundField HeaderText="传真" DataField="传真" />
-                    <asp:BoundField HeaderText="联系人" DataField="联系人" />
-                    <asp:BoundField HeaderText="联系人手机" DataField="联系人手机" />
-                    <asp:BoundField HeaderText="单位类型" DataField="单位类型" />
-                    <asp:BoundField HeaderText="注册日期" DataField="注册日期" />
-                    <asp:BoundField HeaderText="编号" DataField="编号" />
-               </Columns>
-                <HeaderStyle Font-Bold="True" HorizontalAlign="Center" Height="16pt" ForeColor="White"
-                    BackColor="#9B9B9B"></HeaderStyle>
-            </asp:GridView>
-
+<div runat="server" id="divtable" style="width:1000px; font-size:12px;" >
+<table id="table"  style="font-size:12px; border:1px;" >
+ <thead>
+ <tr><td colspan="8" style="text-align:center; font-size:16px; background-color:#e3ebfe">新增分销商信息</td></tr>
+                <tr>
+                    <th align="center">公司名称</th>
+                    <th align="center">地址</th>
+                    <th align="center">主页</th>
+                    <th align="center">电话</th>
+                    <th align="center">联系人</th>
+                    <th align="center" class="style12">联系人手机</th>
+                    <th align="center" class="style1">单位类型</th>
+                    <th align="center">操作</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+            <%if (dt_gsxx != null && dt_gsxx.Rows.Count > 0)
+              { %>
+                <%for (int i = 0; i < dt_gsxx.Rows.Count; i++)
+                  { %> 
+                    <tr>
+                    <td align="center"><%=dt_gsxx.Rows[i]["供应商"]%></td>
+                    <td align="center"><%=dt_gsxx.Rows[i]["地址"]%></td>
+                    <td align="center"><%=dt_gsxx.Rows[i]["主页"]%></td>
+                    <td align="center"><%=dt_gsxx.Rows[i]["电话"]%></td>
+                    <td align="center"><%=dt_gsxx.Rows[i]["联系人"]%></td>
+                    <td align="center"><%=dt_gsxx.Rows[i]["联系人手机"]%></td>
+                    <td align="center"><%=dt_gsxx.Rows[i]["单位类型"]%></td>
+                    <td align="center">
+                    <asp:Button ID="CY" runat="server" Text="查阅" OnClientClick="Add(this)"  onclick="CY_Click"/>
+                     <input type="hidden" id="gsmc" runat="server" value="" /></td>
+                    </tr>
+                <%} %>
+            <%}%> 
+            </tbody>
+</table>
  <div style="text-align:center">
-     <asp:LinkButton ID="btnPrev" runat="server" CommandArgument="Prev" CommandName="Pager"
+          <asp:LinkButton ID="btnPrev" runat="server" CommandArgument="Prev" CommandName="Pager"
                         OnCommand="PagerButtonClick" ForeColor="Black">上页</asp:LinkButton>&nbsp;
              <asp:LinkButton ID="btnNext" runat="server" CommandArgument="Next" CommandName="Pager"
                         OnCommand="PagerButtonClick" ForeColor="Black">下页</asp:LinkButton>&nbsp;
-            第<asp:Label ID="lblCurPage" runat="server"  Text="0" ForeColor="Blue">Label</asp:Label>/
-              <asp:Label ID="lblPageCount" runat="server" Text="0" ForeColor="Blue">Label</asp:Label>页
+            第<asp:Label ID="lblCurPage"  runat="server"  Text="0"  ForeColor="Blue">Label</asp:Label>/
+              <asp:Label ID="lblPageCount"  runat="server"  Text="0"  ForeColor="Blue">Label</asp:Label>页
     </div>
 </div>
 <div runat="server" id="gxsform">
-<table>
 
 <%--蒋，2014年8月20日，注释新增类型为生产商的操作--%>
 <%--<%if (xzlx == "生产商")
@@ -1060,12 +1052,13 @@ onloadEvent(showtable);
       <td  colspan="4"  style="text-align:center; padding-bottom:20px; font-size:16px; font-weight:bold; color:Black">新增生产厂商</td>
   <%}
   else--%>
+  <table width="1000" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px;">
   <%if(xzlx=="分销商")
   { %>
-    <td  height="34" colspan="6" align="center" bgcolor="#f7f7f7" style="font-size:14px; font-weight:bold;">新增分销商信息</td>
+<tr><td  height="34" colspan="6" align="center" bgcolor="#f7f7f7" style="font-size:14px; font-weight:bold;">新增分销商信息</td>
 <%} %>
 </tr>
-<tr>
+    <tr>
     <td height="20" colspan="6" align="right"></td>
   </tr>
 <tr>
@@ -1184,7 +1177,7 @@ onloadEvent(showtable);
     <td height="66">&nbsp;</td>
     <td style="font-size:12px">备 注：</td>
     <td colspan="4" height="60px">
-        <textarea class="hyzhc_shrk3" disabled runat="server" cols="40" id="bz" name="bz" rows="6" style="100%"></textarea></td>
+        <textarea class="hyzhc_shrk3" disabled  runat="server" cols="40" id="bz" name="bz" rows="6" style="100%"></textarea></td>
   </tr>
 </table>
 </div>
