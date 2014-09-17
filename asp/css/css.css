@@ -4,10 +4,10 @@ body{ font-family: "ËÎÌå"; font-size:12px; color:#707070; width:100%; margin:0 a
 dl,dt,dd,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,img,p,a,div,br,span,input,textarea,usermap,area,map{margin:0;padding:0;border:0;list-style:none;outline:none;}
 
 a{ color:#707070; text-decoration:none;}
-
+a:hover{color: #0066ff;}
 
 .box{ width:1000px; height:auto; margin:0 auto;}
-.top{ width:100%; height:1px; float:left; margin-top:1px; border-bottom:#FF0000 solid 1px;}
+.top{ width:1000px; height:auto; float:left; }
 .logo{ width:235px; height:106px; float:left;}
 .hydl_an{
 	float:left;
@@ -20,12 +20,12 @@ a{ color:#707070; text-decoration:none;}
 .sou{ width:385px; height:28px; float:left; line-height:30px; margin:1px 0 0 5px; display:inline;}
 .anniu{ width:77px; height:18px; float:right; margin:8px 32px 0 0; display:inline; font-family: "ËÎÌå"; color:#FFFFFF; text-align:center; line-height:18px; background:url(../images/anniu_03.jpg);}
 .anniu a{color:#FFFFFF;}
-.dh{ width:763px; height:40px; float:left; margin-top:8px; background:url(../images/dh_03.jpg);}
+.dh{ width:763px; height:40px; float:left; margin-top:8px; background:url(../images/dh_03.jpg); z-index:9;}
 .dh ul{ width:752px; height:40px; float:left; margin-left:6px; display:inline;}
 .dh li{ width:94px; height:40px; float:left; font-family: "Î¢ÈíÑÅºÚ"; font-size:16px; color:#FFFFFF; text-align:center; line-height:40px;}
 .dh a{color:#FFFFFF;}
 
-.banner{ width:986px; height:124px; float:left; margin-top:3px; margin-left:7px; display:inline;}
+.banner{ width:1000px; height:125px; float:left; margin-top:3px; display:inline;}
 
 .left{ width:222px; height:auto; float:left;}
 .gz{ width:222px; height:370px; float:left; margin:10px 0 0 0; background:url(../images/cail_03.jpg);}

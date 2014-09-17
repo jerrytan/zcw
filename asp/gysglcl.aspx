@@ -319,9 +319,9 @@
 
 </script>
     <form id="form1" runat="server">
-    <div class="dlqqz">
+<div class="dlqqz">
         <div class="dlqqz1">
-            <img src="images/sccp2.jpg" /></div>
+            <img src="images/sccp3.jpg" /></div>
         <span class="dlqqz4">
             <img src="images/wz_03.jpg" width="530" height="300" /></span>
         <div class="dlqqz2">
@@ -333,39 +333,38 @@
                       string[] yj=new string[2];
                       yj=yjfl.Split('|');//yj[0]  一级编码  yj[1] 一级显示名字
                 %>
-                         <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)">
-                             <a href="javascript:void(0)">
-                             <img src="images/biao2.jpg" /><%=yj[1]%> &gt;</a>
-                        </h1>
-                        <span class="no">
-                            <% 
-						        int secondlevel = 0;
-						        foreach (System.Data.DataRow R_ejfl in dt_ejfl.Rows)
-						        {
-                                    if(yj[0]==R_ejfl["分类编码"].ToString().Substring(0,2))
-                                    {
-                            %>
-                                        <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )">
-                                          <a href="javascript:void(0)">+<%=R_ejfl["显示名字"].ToString()%></a></h2>
-                                        <ul class="no">
-                                        <li>
-                                               <% 
-								                //二级下的分类产品要根据,具体的二级分类编码进行查询				  
-								                string s_flbm = R_ejfl["分类编码"].ToString();
-								                sSQL = "select cl_id,显示名,分类编码 from 材料表 where gys_id='" + gys_id + "'and 分类编码='" + s_flbm + "' and 是否启用='1'";
-								                System.Data.DataSet ds_cls = new System.Data.DataSet();                          
-								                System.Data.DataTable dt_cls = objConn.GetDataTable(sSQL);
-								                foreach (System.Data.DataRow R_cls in dt_cls.Rows)
-								                { %>
-                                                    <input type="checkbox" name="clid" value="<%=R_cls["cl_id"].ToString()%>" />
-                                                    <a href="clbj.aspx?cl_id=<%=R_cls["cl_id"].ToString()%>"><%=R_cls["显示名"].ToString()%></a>
-                                              <%} %>
-                                       </li> </ul>
+                        <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)">
+                            <a href="javascript:void(0)">
+                            <img src="images/jiantou.gif"/><%=yj[1]%></a>&nbsp;</h1>
+                    <span class="no">
+                        <% 
+						    int secondlevel = 0;
+						    foreach (System.Data.DataRow R_ejfl in dt_ejfl.Rows)
+						    {
+                                if(yj[0]==R_ejfl["分类编码"].ToString().Substring(0,2))
+                                {
+                        %>
+                                    <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )">
+                                        <a href="javascript:void(0)">+<%=R_ejfl["显示名字"].ToString()%></a></h2>
+                                    <ul class="no">
+                                    <li>
+                                    <% 
+								    //二级下的分类产品要根据,具体的二级分类编码进行查询				  
+								    string s_flbm = R_ejfl["分类编码"].ToString();
+								    sSQL = "select cl_id,显示名,分类编码 from 材料表 where gys_id='" + gys_id + "'and 分类编码='" + s_flbm + "' and 是否启用='1'";
+								    System.Data.DataSet ds_cls = new System.Data.DataSet();                          
+								    System.Data.DataTable dt_cls = objConn.GetDataTable(sSQL);
+								    foreach (System.Data.DataRow R_cls in dt_cls.Rows)
+								    { %>
+                                        <input type="checkbox" name="clid" value="<%=R_cls["cl_id"].ToString()%>" />
+                                        <a href="clbj.aspx?cl_id=<%=R_cls["cl_id"].ToString()%>"><%=R_cls["显示名"].ToString()%></a>
+                                    <%} %>
+                                    </li> </ul>
                                        
-                             <% 	 secondlevel++;
-                                    }      
-						        }
-                            %>
+                            <% 	 secondlevel++;
+                                }      
+						    }
+                        %>
                     </span>
                 <% 
 				    firstlevel++;
@@ -398,7 +397,7 @@
        // %>--%>
     </div>
  
-   <div class="cgdlqq">
+   <div class="cgdlqq"></div>
   <%-- 蒋，2014年8月18日注释该表单，在会员注册时审核过了，不需要再有表单显示信息--%>
 		   <%-- <div class="cgdlex">
 			    <div class="cgdlex2">
@@ -418,8 +417,6 @@
 				    <span class="cggg"><asp:ImageButton ID="updateButtion" ImageUrl="images/12ff_03.jpg"  OnClick="updateUserInfo" runat="server" /></span>
 			    </div>
 		    </div>--%>
-	    </div>
-
     </form>
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
