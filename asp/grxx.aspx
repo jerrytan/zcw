@@ -23,9 +23,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <title>供应商补填信息页</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
-<link href="css/all of.css" rel="stylesheet" type="text/css" />
-   
+<link href="css/all of.css" rel="stylesheet" type="text/css" />  
 </head>
+<script type="text/javascript" language="javascipt">
+    function aa() {
+        alert("adsfh");
+    }
+    function isPhone(str) {
+        var reg = /^0?1[358]\d{9}$/;
+        if (!reg.test(str.value) && document.getElementById("user_phone").value != "") {
+            alert("手机号格式错误，请重新输入");
+            document.getElementById("user_phone").focus();
+        }
+    }
+    function yxCheck(str) {
+        var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+        if (!reg.test(str.value) && document.getElementById("user_email").value != "") {
+            alert("请输入有效的邮箱地址");
+            document.getElementById("user_email").focus();
+        }
+    }
+</script>
 
 <script runat="server">
 	protected DataTable dt_yh = new DataTable();  //供应商补填信息(用户表)  
@@ -40,8 +58,8 @@
 		}
 		if(s_yh_id!="")
 		{
-            sSQL="select 姓名,手机,QQ号码,类型,是否验证通过 from 用户表 where yh_id='"+s_yh_id+"'";
-		    dt_yh = objConn.GetDataTable(sSQL); 	              
+            sSQL="select 姓名,手机,QQ号码,邮箱,类型,是否验证通过 from 用户表 where yh_id='"+s_yh_id+"'";
+		    dt_yh = objConn.GetDataTable(sSQL);              
 		}		         
       
 	}
@@ -54,55 +72,26 @@
 		}
         if(this.user_phone.Value!="")
         {
-           sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "' where yh_id='" + s_yh_id + "'";
-           objConn.ExecuteSQLForCount(sSQL, true);
-           Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx';</"+"script>"); 
-       }
+            if(this.user_email.Value=="")
+            {
+                
+                sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "', 邮箱=''  where yh_id='" + s_yh_id + "'";
+                objConn.ExecuteSQLForCount(sSQL, true);
+                Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx';</"+"script>"); 
+            }
+            else
+            {
+                sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "', 邮箱='"+ this.user_email.Value +"'  where yh_id='" + s_yh_id + "'";
+                objConn.ExecuteSQLForCount(sSQL, true);
+                Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx';</"+"script>"); 
+            }
+        }
        else
        {
            Response.Write("<script>window.alert('请输入手机号码！');</"+"script>"); 
        }
      }
 </script>
-
-<script language="javascript">
-//    var phone = "";
-//    function Form_submit() {
-//        document.getElementById("phone").value = phone;
-//	     if (document.form1.gys_name.value == "") {
-//	         alert("贵公司名称不能为空,请填写!");
-//	         document.form1.gys_name.focus();
-//	         return false;
-//	     }
-//	     else if (document.form1.gys_address.value == "") {
-//	         alert("贵公司地址不能为空,请填写!");
-//	         document.form1.gys_address.focus();
-//	         return false;
-//	     }
-//	     else if (document.form1.gys_phone.value == "") {
-//	         alert("贵公司电话不能为空,请填写!");
-//	         document.form1.gys_phone.focus();
-//	         return false;
-//	     }
-//         //蒋，2014年8月13日，添加单位类型验证，以便后面判断类型（生产商/分销商）
-//	     else if (document.form1.scs_type.value == "") {
-//	         alert("请选择贵公司的单位类型!");
-//	         document.form1.scs_type.focus();
-//	         return false;
-//         }
-//	     else if (document.form1.user_name.value == "") {
-//	         alert("您的姓名不能为空,请填写!");
-//	         document.form1.user_name.focus();
-//	         return false;
-//	     }
-//	     else if (document.form1.user_phone.value == "") {
-//	         alert("你的手机号码不能为空,请填写");
-//	         document.form1.user_phone.focus();
-//	         return false;
-//	     }
-//	 }
-</script>
-
 
 <body>
 <!-- 头部2开始-->
@@ -112,12 +101,11 @@
 
 <div class="gysgytb">
 
-<div class="gysgybtl"><img src="images/www_03.jpg" /></div>
-<div class="gysgybtr">
+<div class="gysgybtr2">
 	<dl>
 
 		<span id="msg" style=" font-size:14px;font-weight: 600; line-height:20px;">
-		<%
+        <%
 		   if(dt_yh.Rows[0]["是否验证通过"].ToString()=="待审核")
             {
                 Response.Write("<font color='red'>请耐心等候,您的资料已提交,正在审核当中···");
@@ -134,7 +122,7 @@
             {
                if(dt_yh.Rows[0]["类型"].ToString()=="生产商")
                {
-                  Response.Write("<font color='green'>恭喜您!审核已通过,可以对生产厂商、分销商以及材料信息进行管理.</font>");				 
+                  Response.Write("<font color='green'>已更新您的最新信息</font>");				 
 			      Response.Write("<br>");								 
 			      Response.Write("<dd>");
 			      Response.Write("您的信息如下:");
@@ -144,7 +132,7 @@
                 }
                 else
                 {
-                   Response.Write("<font color='green'>恭喜您!审核已通过,可以对分销商和材料信息进行管理.</font>");				 
+                   Response.Write("<font color='green'>已更新您的最新信息</font>");				 
 			       Response.Write("<br>");								 
 			       Response.Write("<dd>");
 			       Response.Write("您的信息如下:");
@@ -162,68 +150,28 @@
 			    Response.Write("</dd>");
 			    Response.Write("<dt>");
 			    Response.Write("</dt>");
-            }                   
-					 
+            }                   		 
 		%>
 		</span>
-        <%if(dt_yh!=null&&dt_yh.Rows.Count>0) { %>
-                <%--<dd>贵公司名称：</dd> <dt><input name="gys_name" id="Text1" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司名称"] %>"  /><font color="red"><strong>*</strong></font></dt>
-	            <dd>贵公司地址：</dd>	<dt><input name="gys_address" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司地址"] %>"/><font color="red"><strong>*</strong></font></dt>
-	            <dd>贵公司电话：</dd> <dt><input name="gys_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司电话"] %>"/><font color="red"><strong>*</strong></font></dt>
-	            <dd>&nbsp;贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["公司主页"] %>"/></dt>
+               <%if(dt_yh!=null&&dt_yh.Rows.Count>0)
+                { %>
 
-	            <dd>&nbsp;贵公司是：</dd>    
-								            <dt>
-									            <select name="scs_type" id="Select1" style="width: 120px; color: Blue">
-                                                <%if(dt_yh.Rows[0]["类型"].ToString()=="生产商" ){ %>
-                                               
-										            <option value="生产商" selected="selected">生产商</option>
-										            <option value="分销商">分销商</option>      
-                                               <%  }else if(dt_yh.Rows[0]["类型"].ToString()=="分销商" ){%>   
-                                                    <option value="生产商">生产商</option>
-										            <option value="分销商" selected="selected">分销商</option>
-                                              <%}else{ %>
-                                                <option value="" selected="selected">--请选择单位类型--</option>
-                                                 <option value="生产商">生产商</option>
-										         <option value="分销商">分销商</option>
-                                              <%} %>               
-									            </select>
-								            </dt>
---%>
-	            <dd>您的姓名：</dd>    <dt><input  name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"] %>" disabled/><font color="red"><strong>*</strong></font></dt>
-	            <dd>您的手机：</dd>    <dt><input  name="user_phone" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["手机"] %>"/><font color="red"><strong>*</strong></font></dt>
-	            <dd>&nbsp;您的QQ号码：</dd><dt><input  name="user_qq" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"] %>" disabled/></dt>
+	            <dd>您的姓名：</dd>    <dt><input  name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"] %>" disabled/><font color="red"><strong></strong></font></dt>
+	            <dd>您的手机：</dd>    <dt><input id="user_phone"   name="user_phone" type="text" class="gysggg" onblur="isPhone(this)" value="<%=dt_yh.Rows[0]["手机"] %>"/><font color="red"><strong>*</strong></font></dt>
+                <dd>邮箱：</dd><dt><input id="user_email" name="user_email" class="gysggg" type="text" onblur="yxCheck(this)" value="<%=dt_yh.Rows[0]["邮箱"] %>" /></dt>
+	            <dd>您的QQ号码：</dd><dt><input  name="user_qq" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"] %>" disabled/></dt>
 
-        <%} 
+           <%} 
         else
         {%>
-	     <%--   <dd>贵公司名称：</dd>  <dt><input name="gys_name" id="gys_name" type="text" class="gysggg" value=""  /><font color="red"><strong>*</strong></font></dt>
-	        <dd>贵公司地址：</dd>  <dt><input name="gys_address" type="text" class="gysggg" value=""/><font color="red"><strong>*</strong></font></dt>
-	        <dd>贵公司电话：</dd>  <dt><input name="gys_phone" type="text" class="gysggg" value=""/><font color="red"><strong>*</strong></font></dt>
-	        <dd>&nbsp;贵公司主页：</dd>  <dt><input name="gys_homepage" type="text" class="gysggg" value=""/></dt>
-
-
-	        <dd>&nbsp;贵公司是：</dd>    
-								        <dt>
-									        <select name="scs_type" id="scs_type" style="width: 120px; color: Blue">
-										        <option value="生产商">生产商</option>
-										        <option value="分销商">分销商</option>                        
-									        </select>
-								        </dt>--%>
-	        <dd>您的姓名：</dd>    <dt><input name="user_name" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"]%>" disabled/><font color="red"><strong>*</strong></font></dt>
-	        <dd>您的手机：</dd>    <dt><input runat="server" name="user_phone" id="user_phone" type="text" class="gysggg" value=""/><font color="red"><strong>*</strong></font></dt>
-	        <dd>&nbsp;您的QQ号码：</dd>  <dt><input name="user_qq" type="text" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"] %>" disabled/></dt>
-      <% } %> 
-      
-	<!--
-	<dd>贵公司的营业执照： </dd><dt><input name="gys_license" type="file" class="ggg" /> 
-		<a href=""><img src="images/sc_03.jpg" /></a></dt>
-	-->
-    
-		<input name="gysgys_id" type="hidden" id="gys_id" class="fxsxx3" value=""/>
-		<dd style="width:300px; color:Red">注意：*号的为必填项,不能为空!</dd>
+	            <dd>姓名：</dd>    <dt><input name="user_name" class="gysggg" value="<%=dt_yh.Rows[0]["姓名"]%>" disabled="disabled" type="text"/><font color="red"><strong></strong></font></dt>
+	            <dd>手机：</dd>    <dt><input id="user_phone" runat="server" name="user_phone" class="gysggg" value="" type="text" onblur="isPhone(this)"/><font color="red"/><strong>*</strong></font></dt>
+                <dd>邮箱：</dd><dt><input id="user_email" runat="server" name="user_email" class="gysggg" value="" type="text" onblur="yxCheck(this)"/></dt>
+	            <dd>QQ号码：</dd><dt><input name="user_qq" class="gysggg" value="<%=dt_yh.Rows[0]["QQ号码"] %>" disabled="disabled" type="text"/></dt>
+                <% } %> 
+                <dd style="width:300px; color:Red">注意：*号的为必填项,不能为空!</dd>
 		<dt style="width:80%; text-align:center;">
-        <asp:ImageButton runat="server" ID="ImageButton3" ImageUrl="~/asp/images/aaaa_03.jpg"  Width="60px" Height="20px" onclick="ImageButton3_Click"/></dt>
+        <asp:ImageButton runat="server" ID="ImageButton1" ImageUrl="~/asp/images/aaaa_03.jpg"  Width="60px" Height="20px"  onclick="ImageButton3_Click"/></dt>
 	</dl>
 </div>
 </div>

@@ -240,6 +240,7 @@
     public DataTable dt_pp_id = new DataTable();
     public DataTable dt_fxs;
     public DataTable dt_DLPP=null;
+    public string ppid = "";
     protected void Page_Load(object sender, EventArgs e)
     {
         this.lblfile.Text = "";
@@ -258,7 +259,6 @@
             }
             if (s_gys_type == "生产商")
             {
-                string ppid="";
                 sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id='" + gys_id + "' order by scs_id "; //查询品牌id
                 dt_pp_id = objConn.GetDataTable(sSQL);
                 if (dt_pp_id != null && dt_pp_id.Rows.Count > 0)
@@ -597,7 +597,7 @@ onclick="return scs_onclick()" id="scs" class="fug" style="WIDTH: 200px" name="s
       <td><input name="name" type="text" id="name" class="fxsxx3"  /></td>
       <td>&nbsp;</td>
       <td>联系人电话：</td>
-      <td><input name="phone" type="text" id="phone" class="fxsxx3"  /></td>
+      <td><input name="phone" type="text"id="phone" class="fxsxx3"  /></td>
     </tr>
     <tr>
       <td height="40">&nbsp;</td>

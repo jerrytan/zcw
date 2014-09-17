@@ -322,7 +322,7 @@
   </table> 
             <%--蒋，2014年8月19日，改div原有样式“fxsxx2”改为“gysgybtr”--%>
             <div class="gysgybtr">
-                <span class="srcl">请输入材料信息</span>
+                <span class="fxsxx1">请输入材料信息</span>
                 <table width="998" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px; margin-top:10px;">
       <tr>
       <td height="34" colspan="6" align="left" bgcolor="#f7f7f7" style="font-size:14px; font-weight:bold;">&nbsp;&nbsp;材料信息如下:</td>
@@ -447,8 +447,12 @@
 -->
 
 
-<div class="cpdt">
- <span class="fxsbc"><a href="#"><input type="image" name="Submit" value="Submit" src="images/bbc_03.jpg"></a></span>
+<div class="cpdt" style="border:0px">
+ <span class="fxsbc"><a href="#" style="padding-left:120px">
+ <input type="image" name="Submit" value="Submit" src="images/queding.jpg"/></a></span>
+ <span class="fxsbc"><a href="" style="padding-left:280px" >
+ <input type="image" name="quxiao" value="quxiao" src="images/quxiao.jpg" /></a>
+ </span>
 </div>
 
 </form>

@@ -289,7 +289,7 @@ line-height:30px;
 /* 管理分销厂商信息页面 */
 
 .fxsxx{ width:980px; height:auto; float:left;}
-.fxsxx1{ width:920px; height:30px; float:left; margin:20px 0 0 60px; font-size:14px; color:#0071b3; font-weight:bold;}
+.fxsxx1{ width:920px; height:30px; float:left; padding-left:20px; padding-top:15px; font-size:14px; color:#0071b3; font-weight:bold;}
 .zjgxs{ width:920px; height:30px; float:left; margin:20px 0 0 60px;}
 .fug{ width:100px; float:left; }
 .zjgxs1{ width:126px; height:26px; float:left; margin:0 0 0 30px; background:url(../images/sda_03.jpg); font-size:14px; line-height:26px; display:inline; text-align:center;}

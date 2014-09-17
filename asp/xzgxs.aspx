@@ -77,6 +77,7 @@
                         sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典";
                         dt_ppxx = objConn.GetDataTable(sSQL);
                     }
+                  
                 }
                 //else
                 //{                 
@@ -464,8 +465,8 @@
             {
                 this.divtable.Visible = true;
                 this.gxsform.Visible = false;
-                this.ImageButton1.Visible = false;
-                this.ImageButton2.Visible = false;
+                //this.ImageButton1.Visible = false;
+                //this.ImageButton2.Visible = false;
                 this.xxpp.Visible = true;
                 string sql = " select COUNT(*) from 材料供应商信息表 where 供应商 like '%" + this.txt_gys.Value + "%'";
                 int count = Convert.ToInt32(objConn.DBLook(sql));
@@ -563,7 +564,7 @@
             {
                 if (this.gys.Value == "")
                 {
-                    Response.Write("您还没有选定分销公司!");
+                    Response.Write("<script>alert('您还没有选定分销公司!')window.location.href='#';</" + "script>");
                 }
                 else
                 {
@@ -571,7 +572,7 @@
                     DataTable dt_fxs = objConn.GetDataTable(dt_fxs_id);
                     string fxs_id = dt_fxs.Rows[0]["gys_id"].ToString();
                     sSQL = "insert into  分销商和品牌对应关系表 (pp_id,品牌名称,是否启用,fxs_id,分销商,updatetime)" +
-                   " values('" + this.txt_ppid.Value + "','" + this.txt_ppname.Value + "',1,'" + fxs_id + "','" + this.gys.Value + "',(select getdate()) ) ";
+                    " values('" + this.txt_ppid.Value + "','" + this.txt_ppname.Value + "',1,'" + fxs_id + "','" + this.gys.Value + "',(select getdate()) ) ";
                     objConn.ExecuteSQL(sSQL, true);
                     //string id = "";
                     //id = save();
@@ -586,17 +587,17 @@
                     string update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" + this.gys.Value + "' and 品牌名称='" + this.txt_ppname.Value + "') where 供应商='" + this.gys.Value + "' and 品牌名称='" + this.txt_ppname.Value + "'";
                     if (objConn.ExecuteSQL(update, true))
                     {
-                        Response.Write("<script>alert('添加成功！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
+                        Response.Write("<script>alert('信息录入成功！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
                     }
                     else
                     {
-                        Response.Write("<script>alert('添加失败！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
+                        Response.Write("<script>alert('信息录入失败！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
                     }
                 }
             }
             else
             {
-                Response.Write("<script>window.alert('添加失败！');window.location.href='gyszym.aspx'</" + "script>");
+                Response.Write("<script>window.alert('信息录入失败！');window.location.href='gyszym.aspx'</" + "script>");
             }
         }
         //public bool xzpp(string gys_id)
@@ -708,8 +709,8 @@
             this.xxpp.Visible = true;
             this.gxsform.Visible = true;
             this.divtable.Visible = false;
-            this.ImageButton1.Visible = true;
-            this.ImageButton2.Visible = true;
+            //this.ImageButton1.Visible = true;
+            //this.ImageButton2.Visible = true;
             string gsxx = "select 供应商,地区名称,联系人手机,联系地址,联系人,单位类型,经营范围," +
                  "单位简称,法定代表人,注册资金,注册日期,企业类别,联系人QQ,传真,主页,地址,开户银行,银行账户,备注," +
                  "营业执照注册号,企业员工人数,资产总额,注册级别,资质等级,是否启用,邮编,电子邮箱,电话,账户名称" +
@@ -819,7 +820,6 @@
         var gsmc = Trim(tds[0].innerHTML);
         document.getElementById("gsmc").value=gsmc;
       }
-
       function onloadEvent(func)
       {
 	    var one=window.onload
@@ -879,10 +879,15 @@ onloadEvent(showtable);
                     <td width="120" height="50" style="font-size:12px" align="right"><strong>品牌名称：</strong></td>
                     <td width="200" style="padding-left:10px;">
                         <select id="ppmc" name="" style="width: 200px" onchange="updateFLfxs(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].text)">
-                        <option  value="0">请选择品牌</option> 
-                            <% for (int i=0;i< dt_ppxx.Rows.Count;i++) {%>
+                           <option  value="0">请选择品牌</option> 
+                           <% foreach (System.Data.DataRow row_fxs in dt_ppxx.Rows)
+                              {%>			
+			                     <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
+	                        <%
+                              }%>
+                           <%-- <% for (int i=0;i< dt_ppxx.Rows.Count;i++) {%>
                                <option value='<%=dt_ppxx.Rows[i]["pp_id"].ToString() %>'><%=dt_ppxx.Rows[i]["品牌名称"]%></option>
-                           <%}%>
+                           <%}%>--%>
                         </select>
                         <%--蒋，2014年8月25日，添加--%>
                         <input type="hidden" id="txt_ppid" value="" runat="server" />
@@ -974,19 +979,39 @@ onloadEvent(showtable);
             </table>
 <%} %>
 --%>
-
-
-<div id="jiansuo" style="margin-bottom:20px; height:90px;">
+<table width="1000" border="0" cellpadding="0" cellspacing="0" style="margin:10px 0; 	background-color: #d9e5fd;">
+  <tbody>
+  <tr>
+    <td height="60" style="WIDTH: 50px">&nbsp;</td>
+    <td style="WIDTH: 50px; font-size:12px" >供应商：</td>
+    <td style="width:300px;"><input id="txt_gys" runat="server" name="txt_gys" class="hyzhc_shrk"/></td>
+    <td align="right" style="WIDTH: 50px;font-size:12px"">地区：</td>
+    <td class="style4" style="width:400px;">
+    <select id="s0" class="fu1" runat="server"><option></option></select> 
+        <select id="s1" class="fu1" runat="server"><option></option></select> 
+        <select id="s2" class="fu2" runat="server"><option></option></select> 
+        <select id="s3" class="fu3" runat="server"> <option></option></select>
+      <script language="javascript" type="text/javascript">
+          var s = ["s0", "s1", "s2", "s3"];
+          var opt0 = ["-区域-", "-省(市)-", "-地级市、区-", "-县级市、县、区-"];
+          for (i = 0; i < s.length - 1; i++)
+              document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
+          change(0);
+                </script>
+       </td>
+    <td><asp:ImageButton runat="server" ID="ImageButton3" style="color:#fff;" ImageUrl="images/sousuo.jpg" OnClick="CheckGys" Width="60px" Height="20px"/>
+    </td></tr></tbody></table>
+<%--<div id="jiansuo" style="margin-bottom:20px; height:90px;">
 <table align="center" style="margin-top:0px;" >
 <tr>
-<td style="WIDTH: 50px;font-size:12px; text-align:center"  >供应商：</td>
+<td style="WIDTH: 50px;font-size:12px; text-align:center; ">供应商：</td>
 <td colspan="4"><input class="hyzhc_shrk" type="text" id="txt_gys" runat="server" /></td>
-<td align="right" style="WIDTH: 50px;font-size:12px">地区：</td>
+<td align="right" style="WIDTH: 50px;font-size:12px;">地区：</td>
 <td colspan="4" class="style4" style="width:400px;">
-    <select id="Select1" class="fu1" runat="server"><option></option></select> 
-    <select id="Select2" class="fu1" runat="server"><option></option></select>
-                <select id="Select3" class="fu2" runat="server"><option></option></select> 
-                <select id="Select4" class="fu3" runat="server"><option></option></select>
+               <select id="s0" class="fu1" runat="server" onchange=""  ><option></option></select> 
+               <select id="s1" class="fu1" runat="server"><option></option></select>
+                <select id="s2" class="fu2" runat="server"><option></option></select> 
+                <select id="s3" class="fu3" runat="server"><option></option></select>
                 <script type="text/javascript"  language ="javascript" > 
                     var s = ["s0", "s1", "s2", "s3"];
                     var opt0 = ["-区域-", "-省(市)-", "-地级市、区-", "-县级市、县、区-"];
@@ -996,8 +1021,8 @@ onloadEvent(showtable);
                 </script>
    </td><td><span class="cggg"><asp:ImageButton runat="server" ID="ImageButton3" style="color:#fff;" ImageUrl="images/sousuo.jpg" OnClick="CheckGys" Width="60px" Height="20px"/></span></td>
 </tr>
-<tr><td colspan="5"><asp:Label Text="" runat="server" ID="lblhint" ForeColor="Red"></asp:Label></td></tr></table>
-</div>
+<tr><td colspan="5"></td></tr></table>
+</div>--%><asp:Label Text="" runat="server" ID="lblhint" ForeColor="Red"></asp:Label>
 <%--蒋，2014年9月3日，添加（未完成）--%>
 <div runat="server" id="divtable" style="width:1000px; font-size:12px;" >
 <table id="table"  style="font-size:12px; border:1px;" >
@@ -1179,18 +1204,20 @@ onloadEvent(showtable);
     <td colspan="4" height="60px">
         <textarea class="hyzhc_shrk3" disabled  runat="server" cols="40" id="bz" name="bz" rows="6" style="100%"></textarea></td>
   </tr>
+  <tr>
+  <td height="30">&nbsp;</td>
+  <td height="30">&nbsp;</td>
+  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <asp:ImageButton runat="server" ID="ImageButton4" style="color:#fff;" ImageUrl="images/queding.jpg" OnClick="updateUserInfo"  /></td>
+  <td>&nbsp;</td>
+  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <asp:ImageButton runat="server" ID="ImageButton5" style="color:#fff;" ImageUrl="images/quxiao.jpg" OnClick="Clear"  /></td>
+  </tr>
 </table>
 </div>
 
 <input  type="hidden" id="gys_id_hid" runat="server"/>
 <input  type="hidden" id="source" runat="server" value="xzym"/>
-
-      <%--蒋，2014年9月1日，注释--%>
-      <span class="cggg" style="margin-left:100px; margin-top:30px">
-      <asp:ImageButton runat="server" ID="ImageButton1" style="color:#fff;" ImageUrl="images/queding.jpg" OnClick="updateUserInfo"  />
-      </span>
-     <span class="cggg" style="margin-left:150px; margin-top:30px">
-     <asp:ImageButton runat="server" ID="ImageButton2" style="color:#fff;" ImageUrl="images/quxiao.jpg" OnClick="Clear"  /></span>
 </form>
 </div>
 <div class="foot">
