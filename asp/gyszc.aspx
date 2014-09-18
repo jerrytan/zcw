@@ -181,16 +181,16 @@
             </tr>
             <tr>
                 <td height="40">
-                    &nbsp;
+                    <span class="xinghao">*</span>
                 </td>
                 <td>
-                    注册日期：
+                     公司注册日期：
                 </td>
                 <td>
                     <input name="txt_zcrq" type="text" class="hyzhc_shrk" id="txt_zcrq" runat="server" onblur="dateCheck(this);"/>
                 </td>
                 <td>
-                    &nbsp;
+                    <span class="xinghao">*</span>
                 </td>
                 <td>
                     注册资金（万元）：

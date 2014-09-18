@@ -59,6 +59,18 @@ public partial class asp_cgszc : System.Web.UI.Page
             this.txt_yyzzzch.Focus();
             return;
         }
+        if (string.IsNullOrEmpty(this.txt_zcrq.Value))
+        {
+            Response.Write("<script>window.alert('请输入公司注册日期');</script>");
+            this.txt_zcrq.Focus();
+            return;
+        }
+        if (string.IsNullOrEmpty(this.txt_zczj.Value))
+        {
+            Response.Write("<script>window.alert('请输入注册资金');</script>");
+            this.txt_zczj.Focus();
+            return;
+        }
         if (string.IsNullOrEmpty(this.dwlx.Value))
         {
             Response.Write("<script>window.alert('请选择单位类型');</script>");
