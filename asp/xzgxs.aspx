@@ -463,6 +463,7 @@
             }
             else
             {
+                this.lblhint.Visible = false;
                 this.divtable.Visible = true;
                 this.gxsform.Visible = false;
                 //this.ImageButton1.Visible = false;
@@ -836,7 +837,7 @@
 		    }
 	    }
     }
-function showtable(){
+    function showtable(){
 	var tableid='table';		//表格的id
 	var overcolor='#fff0e9';	//鼠标经过颜色
 	var color1='#f2f6ff';		//第一种颜色
@@ -979,7 +980,7 @@ onloadEvent(showtable);
             </table>
 <%} %>
 --%>
-<table width="1000" border="0" cellpadding="0" cellspacing="0" style="margin:10px 0; 	background-color: #d9e5fd;">
+<table width="1000" border="0" cellpadding="0" cellspacing="0" style="margin:10px 0;background-color: #d9e5fd;">
   <tbody>
   <tr>
     <td height="60" style="WIDTH: 50px">&nbsp;</td>
@@ -987,7 +988,7 @@ onloadEvent(showtable);
     <td style="width:300px;"><input id="txt_gys" runat="server" name="txt_gys" class="hyzhc_shrk"/></td>
     <td align="right" style="WIDTH: 50px;font-size:12px"">地区：</td>
     <td class="style4" style="width:400px;">
-    <select id="s0" class="fu1" runat="server"><option></option></select> 
+    <select id="s0" class="fu1" runat="server" onchange="getso()"><option></option></select> 
         <select id="s1" class="fu1" runat="server"><option></option></select> 
         <select id="s2" class="fu2" runat="server"><option></option></select> 
         <select id="s3" class="fu3" runat="server"> <option></option></select>
@@ -999,7 +1000,7 @@ onloadEvent(showtable);
           change(0);
                 </script>
        </td>
-    <td><asp:ImageButton runat="server" ID="ImageButton3" style="color:#fff;" ImageUrl="images/sousuo.jpg" OnClick="CheckGys" Width="60px" Height="20px"/>
+    <td><asp:ImageButton runat="server" ID="ImageButton3" style="color:#fff;" ImageUrl="images/sousuo.jpg" OnClick="CheckGys" Width="74px" Height="25px"/>
     </td></tr></tbody></table>
 <%--<div id="jiansuo" style="margin-bottom:20px; height:90px;">
 <table align="center" style="margin-top:0px;" >
@@ -1025,17 +1026,16 @@ onloadEvent(showtable);
 </div>--%><asp:Label Text="" runat="server" ID="lblhint" ForeColor="Red"></asp:Label>
 <%--蒋，2014年9月3日，添加（未完成）--%>
 <div runat="server" id="divtable" style="width:1000px; font-size:12px;" >
-<table id="table"  style="font-size:12px; border:1px;" >
+<table id="table" style="font-size:12px; border:1px;">
  <thead>
  <tr><td colspan="8" style="text-align:center; font-size:16px; background-color:#e3ebfe">新增分销商信息</td></tr>
                 <tr>
                     <th align="center">公司名称</th>
                     <th align="center">地址</th>
-                    <th align="center">主页</th>
-                    <th align="center">电话</th>
+                    <th align="center" style="width:80px">电话</th>
                     <th align="center">联系人</th>
                     <th align="center" class="style12">联系人手机</th>
-                    <th align="center" class="style1">单位类型</th>
+                    <th align="center" class="style1" style="width:80px">单位类型</th>
                     <th align="center">操作</th>
                 </tr>
             </thead>
@@ -1045,12 +1045,11 @@ onloadEvent(showtable);
                 <%for (int i = 0; i < dt_gsxx.Rows.Count; i++)
                   { %> 
                     <tr>
-                    <td align="center"><%=dt_gsxx.Rows[i]["供应商"]%></td>
-                    <td align="center"><%=dt_gsxx.Rows[i]["地址"]%></td>
-                    <td align="center"><%=dt_gsxx.Rows[i]["主页"]%></td>
-                    <td align="center"><%=dt_gsxx.Rows[i]["电话"]%></td>
-                    <td align="center"><%=dt_gsxx.Rows[i]["联系人"]%></td>
-                    <td align="center"><%=dt_gsxx.Rows[i]["联系人手机"]%></td>
+                    <td align="left"><%=dt_gsxx.Rows[i]["供应商"]%></td>
+                    <td align="left"><%=dt_gsxx.Rows[i]["地址"]%></td>
+                    <td align="left"><%=dt_gsxx.Rows[i]["电话"]%></td>
+                    <td align="left"><%=dt_gsxx.Rows[i]["联系人"]%></td>
+                    <td align="left"><%=dt_gsxx.Rows[i]["联系人手机"]%></td>
                     <td align="center"><%=dt_gsxx.Rows[i]["单位类型"]%></td>
                     <td align="center">
                     <asp:Button ID="CY" runat="server" Text="查阅" OnClientClick="Add(this)"  onclick="CY_Click"/>
@@ -1061,10 +1060,14 @@ onloadEvent(showtable);
             </tbody>
 </table>
  <div style="text-align:center">
-          <asp:LinkButton ID="btnPrev" runat="server" CommandArgument="Prev" CommandName="Pager"
+             <asp:LinkButton ID="btnhead" runat="server" CommandArgument="Head" CommandName="Pager"
+                        OnCommand="PagerButtonClick" ForeColor="Black">首页</asp:LinkButton>&nbsp;
+             <asp:LinkButton ID="btnPrev" runat="server" CommandArgument="Prev" CommandName="Pager"
                         OnCommand="PagerButtonClick" ForeColor="Black">上页</asp:LinkButton>&nbsp;
              <asp:LinkButton ID="btnNext" runat="server" CommandArgument="Next" CommandName="Pager"
                         OnCommand="PagerButtonClick" ForeColor="Black">下页</asp:LinkButton>&nbsp;
+             <asp:LinkButton ID="btnfoot" runat="server" CommandArgument="Foot" CommandName="Pager"
+                        OnCommand="PagerButtonClick" ForeColor="Black">尾页</asp:LinkButton>&nbsp;
             第<asp:Label ID="lblCurPage"  runat="server"  Text="0"  ForeColor="Blue">Label</asp:Label>/
               <asp:Label ID="lblPageCount"  runat="server"  Text="0"  ForeColor="Blue">Label</asp:Label>页
     </div>

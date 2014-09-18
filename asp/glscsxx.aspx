@@ -300,8 +300,8 @@
     <%if (gys_type == "生产商")
       {%>
          <div class="fxsxx">
-		   <span class="fxsxx1">
-		    </span>
+<%--		   <span class="fxsxx1">
+		    </span>--%>
             <%--<span class="fxsxx1">贵公司的详细信息如下:</span>--%>
              <%--蒋，2014年8月25日，改div原有样式“fxsxx2”改为“gysgybtr”--%>
             <div class="gysgybtr">

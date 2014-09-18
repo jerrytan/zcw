@@ -417,7 +417,7 @@
                 sSQL = "select 贵公司名称,贵公司地址,贵公司电话,贵公司主页,贵公司传真,贵公司地区,联系人姓名,联系人电话,"
                 + "经营范围,gys_id  from 供应商自己修改待审核表 where  gys_id ='" + id + "' ";
                 dt_gysxx = objConn.GetDataTable(sSQL);
-                this.lblfile.Text = "审核当中";
+                //this.lblfile.Text = "审核当中";
             }
         }
 
@@ -608,12 +608,11 @@ onclick="return scs_onclick()" id="scs" class="fug" style="WIDTH: 200px" name="s
   </table>
                <%} %>	
                </div>
-               <div class="fxsxx2">             
+<%--               <div class="fxsxx2">  --%>           
                         <span class="fxsbc" >
                             <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3"/>
                         </span>
-                 </div>
-                <span class="fxsxx1"></span>	
+<%--                 </div>--%>
                     <div class="ggspp">
                         <div style="font-size:14px; font-weight:bold; line-height:36px; float:left; width:100%; background-color:#f7f7f7;">&nbsp;&nbsp;贵公司代理分销品牌如下</div>
                         <div id="ppxx">    
@@ -726,13 +725,12 @@ onclick="return scs_onclick()" id="scs" class="fug" style="WIDTH: 200px" name="s
 			<%}%>
             </div>
                     <div class="fxsxx2">             
-                        <span class="fxsbc">
+
                             <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" />
                             <asp:Label runat="server" ID="lblfile"  ForeColor="red" Width="200px" Text=""></asp:Label>
                             <input type="submit" class="fxsbc2" value="更改" onclick="Update_gysxx()" style="cursor:pointer;" />
-                        </span> 
+
                     </div>
-                 	<span class="fxsxx1"></span>
                     <div class="ggspp">
                         <div style="font-size:14px; font-weight:bold; line-height:36px; float:left; width:100%; background-color:#f7f7f7;">&nbsp;&nbsp;贵公司分销代理的品牌如下</div>
                                 <%foreach (System.Data.DataRow row in dt_ppxx.Rows)

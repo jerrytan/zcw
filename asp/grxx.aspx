@@ -98,12 +98,9 @@
 <uc2:Header2 ID="Header2" runat="server" />
 <!-- 头部2结束-->
 <form name="form1" runat="server">
-
-<div class="gysgytb">
-
+<%--<div class="gysgytb">--%>
 <div class="gysgybtr2">
 	<dl>
-
 		<span id="msg" style=" font-size:14px;font-weight: 600; line-height:20px;">
         <%
 		   if(dt_yh.Rows[0]["是否验证通过"].ToString()=="待审核")
@@ -121,8 +118,7 @@
             else if(dt_yh.Rows[0]["是否验证通过"].ToString()=="通过")
             {
                if(dt_yh.Rows[0]["类型"].ToString()=="生产商")
-               {
-                  Response.Write("<font color='green'>已更新您的最新信息</font>");				 
+               {			 
 			      Response.Write("<br>");								 
 			      Response.Write("<dd>");
 			      Response.Write("您的信息如下:");
@@ -131,8 +127,7 @@
 			      Response.Write("</dt>");
                 }
                 else
-                {
-                   Response.Write("<font color='green'>已更新您的最新信息</font>");				 
+                {			 
 			       Response.Write("<br>");								 
 			       Response.Write("<dd>");
 			       Response.Write("您的信息如下:");
@@ -174,7 +169,7 @@
         <asp:ImageButton runat="server" ID="ImageButton1" ImageUrl="~/asp/images/aaaa_03.jpg"  Width="60px" Height="20px"  onclick="ImageButton3_Click"/></dt>
 	</dl>
 </div>
-</div>
+<%--</div>--%>
 </form>
 
 <div>
