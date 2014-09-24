@@ -24,13 +24,41 @@
     <link href="css/gl.css" rel="stylesheet" type="text/css" />
     <script src="js/gysglcl.js" type="text/javascript"></script>
     <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <style type="text/css">
+        .style1
+        {
+            width: 94px;
+        }
+    </style>
 </head>
+<script type="text/javascript" language="javascript">
+    function Trim(str) {
+        str = str.replace(/^(\s|\u00A0)+/, '');
+        for (var i = str.length - 1; i >= 0; i--) {
+            if (/\S/.test(str.charAt(i))) {
+                str = str.substring(0, i + 1);
+                break;
+            }
+        }
+        return str;
+    } 
+    function Add(obj) {
+        var tr = obj.parentNode.parentNode;
+        var tds = tr.cells;
+        var cl_mc = Trim(tds[1].innerHTML);
+        document.getElementById("cl_mc").value = cl_mc;
+    }
+    function CZ(ejfl) {
+    var g;
+    g = document.getElementById("lblgys_id").value;
+    document.getElementById("frame1").src = "gysglcl_2.aspx?gys_id=" + g + "&ejfl=" + ejfl; 
+    }
+</script>
 <body>
     <!-- 头部开始-->
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部结束-->
     <script runat="server">
-
     public Boolean userIsVIP = false;
     protected DataTable dt_cl = new DataTable();    //根据供应商id查询显示名,分类编码(材料表)
     protected DataTable dt_yjfl = new DataTable();  //取一级分类显示名称(材料分类表)
@@ -40,6 +68,10 @@
     public string gys_id = "";                      //供应商id
     public DataConn objConn = new DataConn();
     public string[] yjflbm;
+    public string ejfl;
+    public int PageSize = 10;
+    DataView objDv = null;
+    DataTable objDt = null;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
@@ -48,34 +80,23 @@
         }
         Products_gys_cl();
        
-        if(!IsPostBack)
+        gys_id = Request.QueryString["gys_id"].ToString();
+        this.lblgys_id.Value = gys_id;
+        ejfl = Request.QueryString["ejfl"].ToString();
+        if(ejfl!="")
         {
-        //蒋，2014年8月18日
-           //sSQL = "select 公司名称,公司地址,公司电话,公司主页,类型,手机,类型,QQ号码,姓名,是否验证通过 from 用户表 where  yh_id='"+s_yh_id+"' ";
-           //DataTable dt_yh=objConn.GetDataTable(sSQL);
-           //if(dt_yh!=null&&dt_yh.Rows.Count>0)
-           //{
-                //string lx="";
-                //this.companyname.Value = dt_yh.Rows[0]["公司名称"].ToString();
-                //this.companytel.Value = dt_yh.Rows[0]["公司地址"].ToString();
-                //this.companyaddress.Value = dt_yh.Rows[0]["公司电话"].ToString();
-                //this.contactorname.Value = dt_yh.Rows[0]["姓名"].ToString();
-                //this.contactortel.Value = dt_yh.Rows[0]["手机"].ToString();
-                //this.QQ_id.Value = dt_yh.Rows[0]["QQ号码"].ToString();
-                //lx=dt_yh.Rows[0]["类型"].ToString();
-                //if(lx=="生产商")
-                //{
-                //     this.scs.Checked = true;  
-                //}
-                //else if(lx=="分销商")
-                //{
-                //    this.gxs.Checked = true;
-                //}
-           //}
+            sSQL = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商 from 材料表 where left(是否启用,1) like '%1%' and 分类名称= '" + ejfl + "' order by cl_id";
+            string sSearchCondition = "显示名='" + ejfl + "'";
+            dt_cl = objConn.GetDataTable(sSQL);
         }
-            CancelFollowButton.Attributes.Add("onClick", "return confirm('您确定要删除该选中的材料吗？');");      
-       
+        else
+        {
+            sSQL = "select top 10 cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商,是否启用 from 材料表 where 是否启用=1 order by updatetime desc";
+            dt_cl = objConn.GetDataTable(sSQL);
+        }
+        //btnDelete.Attributes.Add("onClick", "return confirm('您确定要删除该选中的材料吗？');");
     }
+
     protected void Products_gys_cl()
     {
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
@@ -89,14 +110,6 @@
         {
             userIsVIP=true;
         }
-        //根据用户id 查询供应商id
-        //蒋，2014年8月26日
-        //sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";   //141           
-        //DataTable dt_gys = objConn.GetDataTable(sSQL);
-        //if (dt_gys != null && dt_gys.Rows.Count > 0)
-        //{
-        //    gys_id = dt_gys.Rows[0]["gys_id"].ToString();
-        //}
 
         // 取 二级分类编码
          sSQL="select 显示名字,分类编码 from 材料分类表 where 分类编码 in(select 分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1' )";
@@ -160,15 +173,7 @@
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
         gys_id = Request["gys_id"].ToString();
-        //string gys_id = "";
-        //根据用户id 查询供应商id
-        //sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";
-        //DataTable dt_gys = objConn.GetDataTable(sSQL);
-        //if (dt_gys != null && dt_gys.Rows.Count > 0)
-        //{
-            //gys_id = dt_gys.Rows[0]["gys_id"].ToString();
-        //}
-        //根据gys_id 查询材料表相关的数据 以便导出excel 表格
+        
         sSQL = "select * from 材料表 where gys_id='" + gys_id + "' ";
 
         DataTable cldt = new DataTable();
@@ -234,168 +239,85 @@
         //}
         
         //根据用户id 查询供应商id
-        //获取复选框选中的cl_id
         gys_id = Request.QueryString["gys_id"].ToString();
+        //获取复选框选中的cl_id
         string clidstr = Request.Form["clid"];
-        if (Request.Form["clid"] != "" && Request.Form["clid"] != null)
+        if (clidstr != "" && clidstr != null)
         {
-            //sSQL = "select gys_id from 材料供应商信息表 where yh_id='" + s_yh_id + "' ";
-            //DataTable dt_gys = objConn.GetDataTable(sSQL);
-            //if (dt_gys != null && dt_gys.Rows.Count > 0)
-            //{
-                
-            //}
             //通过获取的供应商id和cl_id进行删除
             sSQL = "update 材料表 set 是否启用='0' where gys_id ='" + gys_id + "' and cl_id in (" + clidstr + ")";
             objConn.ExecuteSQL(sSQL, true);
-
-            Products_gys_cl();
+            if(ejfl=="")
+            {
+                Response.Write(clidstr);
+                sSQL = "select top 10 cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商,是否启用 from 材料表 where 是否启用=1 order by updatetime desc";
+                dt_cl = objConn.GetDataTable(sSQL);
+            }
+            else
+            {
+                sSQL = "select top 10 cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商,是否启用 from 材料表 where 是否启用=1 and 分类名称='" + ejfl + "' order by updatetime desc ";
+                dt_cl=objConn.GetDataTable(sSQL);
+            }
+            //Products_gys_cl();
+            Response.Write("<script>window.alert('删除成功！')</" + "script>");
         }
         else
         {
             Response.Write("<script>window.alert('您没有选中任何材料！')</" + "script>");
         }
     }
-        //蒋，2014年8月18日，注释表单中的字段非空验证
-    //protected void updateUserInfo(object sender, EventArgs e)
-    //{      
-    //    if(Session["CGS_YH_ID"]!=null&&Session["CGS_YH_ID"].ToString()!="") 
-    //    {
-    //      s_yh_id = Session["CGS_YH_ID"].ToString();
-    //    }
-    //    string s_lx="";
-    //    if (this.gxs.Checked)
-    //    {
-    //        s_lx = "分销商";
-    //    }
-    //    else if (this.scs.Checked)
-    //    {
-    //        s_lx = "生产商";
-    //    }
-    //        if (this.contactortel.Value == "")
-    //    {
-    //        objConn.MsgBox(this.Page, "手机不能为空,请填写!");
-    //        this.contactortel.Focus();
-    //        return;
-    //    }
-    //    if (this.contactorname.Value == "")
-    //    {
-    //        objConn.MsgBox(this.Page, "姓名不能为空,请填写!");
-    //        this.contactorname.Focus();
-    //        return;
-    //    }
-    //    if (this.companyname.Value == "")
-    //    {
-    //        objConn.MsgBox(this.Page, "公司名称不能为空,请填写!");
-    //        this.companyname.Focus();
-    //        return;
-    //    }
-    //    if (this.companyaddress.Value == "")
-    //    {
-    //        objConn.MsgBox(this.Page, "公司地址不能为空,请填写!");
-    //        this.companyaddress.Focus();
-    //        return;
-    //    }
-    //    if (this.companytel.Value == "")
-    //    {
-    //        objConn.MsgBox(this.Page, "公司电话不能为空,请填写!");
-    //        this.companytel.Focus();
-    //        return;
-    //    }
-    //    string s_updateUserinfo = " update 用户表   set 手机='" +this.contactortel.Value + "', 姓名='" +this.contactorname.Value +
-    //                              "',公司名称='" + this.companyname.Value + "',公司地址='"+this.companyaddress.Value+
-    //                              "',公司电话='" + this.companytel.Value + "',QQ号码='"+this.QQ_id.Value+
-    //                              "',类型='"+s_lx+"',是否验证通过='待审核' where yh_id='" + s_yh_id + "'";
-    //     if(!objConn.ExecuteSQL(s_updateUserinfo, true))
-    //    {
-    //        objConn.MsgBox(this.Page, "更新失败，请重试！");
-    //    }
-    //    else
-    //    {
-    //        Response.Redirect("gyszym.aspx");
-    //    }
-    //}
-    
 
+   
+    protected void AddCL(object sender, EventArgs e)
+    {
+        Response.Redirect("xzclym.aspx?gys_id=" + gys_id);
+    }
 </script>
     <form id="form1" runat="server">
-<div class="dlqqz">
-        <div class="dlqqz1">
-            <img src="images/sccp3.jpg" /></div>
-        <span class="dlqqz4">
-            <img src="images/wz_03.jpg" width="530" height="300" /></span>
-        <div class="dlqqz2">
-            <div id="menu">
-                <% 
- 	            int firstlevel = 0;
-			    foreach (string yjfl in yjflbm)
-			    {
-                      string[] yj=new string[2];
-                      yj=yjfl.Split('|');//yj[0]  一级编码  yj[1] 一级显示名字
-                %>
-                        <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)">
-                            <a href="javascript:void(0)">
-                            <img src="images/jiantou.gif"/><%=yj[1]%></a>&nbsp;</h1>
-                    <span class="no">
-                        <% 
-						    int secondlevel = 0;
-						    foreach (System.Data.DataRow R_ejfl in dt_ejfl.Rows)
-						    {
-                                if(yj[0]==R_ejfl["分类编码"].ToString().Substring(0,2))
-                                {
-                        %>
-                                    <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )">
-                                        <a href="javascript:void(0)">+<%=R_ejfl["显示名字"].ToString()%></a></h2>
-                                    <ul class="no">
-                                    <li>
-                                    <% 
-								    //二级下的分类产品要根据,具体的二级分类编码进行查询				  
-								    string s_flbm = R_ejfl["分类编码"].ToString();
-								    sSQL = "select cl_id,显示名,分类编码 from 材料表 where gys_id='" + gys_id + "'and 分类编码='" + s_flbm + "' and 是否启用='1'";
-								    System.Data.DataSet ds_cls = new System.Data.DataSet();                          
-								    System.Data.DataTable dt_cls = objConn.GetDataTable(sSQL);
-								    foreach (System.Data.DataRow R_cls in dt_cls.Rows)
-								    { %>
-                                        <input type="checkbox" name="clid" value="<%=R_cls["cl_id"].ToString()%>" />
-                                        <a href="clbj.aspx?cl_id=<%=R_cls["cl_id"].ToString()%>"><%=R_cls["显示名"].ToString()%></a>
-                                    <%} %>
-                                    </li> </ul>
-                                       
-                            <% 	 secondlevel++;
-                                }      
-						    }
-                        %>
-                    </span>
-                <% 
-				    firstlevel++;
-			   } %>
-                <span class="no"></span>
-            </div>
-        </div>
-        <div class="dlqqz3" style="width: 260px;">
-            <a href="xzclym.aspx?gys_id=<%=gys_id %>">
-                <img src="images/xzcl.jpg" border="0" /></a>&nbsp;
-            <asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg" runat="server" OnClick="Delete_cl" />
-        </div>
-    </div>
-    <div class="dlex">
-        <%
-	if (userIsVIP){
+ <div class="dlqqz5"  style="border:1px solid #ddd; padding-top:10px; margin: 10px 0 0 0;">
+    <div class="dlqqz2">
+<div id="menu">
+<div class="dlqqz1">您的产品列表</div>
+ <% 
+ 	int firstlevel = 0;
+    foreach (string yjfl in yjflbm)
+    {
+        string[] yj = new string[2];
+        yj = yjfl.Split('|');//yj[0]  一级编码  yj[1] 一级显示名字
+    %>
+    <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/jiantou.gif" /><%=yj[1]%></a></h1>
+    <span class="no">
+    <input type="hidden" id="lblgys_id" runat="server" />
+    <% 
+	int secondlevel = 0;
+	foreach (System.Data.DataRow R_ejfl in dt_ejfl.Rows)
+	{
+        if(yj[0]==R_ejfl["分类编码"].ToString().Substring(0,2))
+        {
+            string value = R_ejfl["显示名字"].ToString();
+            %>
+    <h2>    
+    <a href="javascript:void(0)" onclick="CZ('<%=value %>')"><%=R_ejfl["显示名字"].ToString() %></a>
+    </h2>  
+            <% 	 secondlevel++;
+                }      
+		    }
         %>
-        <div class="dlex1">
-            <asp:Button runat="server" ID="button1" Text="选择数据进入自身内部系统" OnClick="dumpFollowCLs" />
-        </div>
-        <%}
-            //蒋，2014年8月18日，只有采购商有导出的权限
-      //else { %>
-        <%--div class="dlex1">
-            您可以把你管理的材料数据导出为excel，供下线使用
-            <asp:Button runat="server" ID="button2" Text="全部导出为EXCEL" OnClick="dumpFollowCLs" />
-        </div>--%>
-       <%-- <%
-	}	
-       // %>--%>
-    </div>
+        </span>
+    <% 
+	    firstlevel++;
+    } %>
+    <span class="no"></span>
+</div>
+
+<div id="cgs_lb" style="width:765px; margin-left:212px;">
+<div id="divtable" runat="server">
+<iframe id="frame1" src="gysglcl_2.aspx" frameborder="0" marginheight="0"  style=" width:100%;  height:350px; padding:0px; margin:0px; border:0px; " > 
+    </iframe> 
+</div>
+</div>
+ </div>                
+
  
    <div class="cgdlqq"></div>
   <%-- 蒋，2014年8月18日注释该表单，在会员注册时审核过了，不需要再有表单显示信息--%>

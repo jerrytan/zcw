@@ -26,7 +26,8 @@
                 string brand = Request["brand"];                        //品牌id(获取的是下拉列表中value的值)
                 if(cl_name=="")
                 {
-                  Response.Write("<script>window.alert('材料名称不能为空！');</" + "script>");
+                  Response.Write("<script>window.alert('材料名称不能为空！');window.location.href='#';</" + "script>");
+
                 }
                 else
                 {
@@ -107,11 +108,11 @@
 				    +"and flsx_id='"+sx_id+"'and flsxz_id='"+cl_ids+"' ";
 				    if(objConn.ExecuteSQL(sSQL,false))
                     {  
-                       Response.Write("<script>window.alert('新增材料成功!请返回！');window.location.href='gysglcl.aspx?gys_id="+gys_id+"';</" + "script>");
+                       Response.Write("<script>window.alert('新增材料成功!请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id="+gys_id+"';</" + "script>");
                     } 
                     else
                     {
-                       Response.Write("<script>window.alert('新增材料失败!请返回！');window.location.href='gysglcl.aspx?gys_id="+gys_id+"';</" + "script>");
+                       Response.Write("<script>window.alert('新增材料失败!请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id="+gys_id+"';</" + "script>");
                     } 
                }             
      %>

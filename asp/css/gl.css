@@ -1,7 +1,9 @@
 ﻿
-#menu { width: 300px;  }
+#menu { width: 202px;  }
 
-#menu h1 { font-size: 14px; margin-top: 1px; height:28px; line-height:28px;  }
+#menu h1 { font-size: 14px; margin-top: 1px; height:28px; line-height:28px;
+    width: 92px;
+}
 
 #menu h2 { padding-left: 15px; font-size: 14px; height:28px; line-height:28px; }
 

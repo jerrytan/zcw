@@ -262,19 +262,19 @@
    
          protected void Page_Load(object sender, EventArgs e)
          {
-             string cl_id = Request["cl_id"];   //获取材料id               
+             string cl_mc = Request["cl_mc"].ToString();   //获取材料名称              
                  sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
                  dt_clfl = objConn.GetDataTable(sSQL);
                  sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='4'";
                  dt_clflej = objConn.GetDataTable(sSQL);
-                 sSQL = "select 显示名,分类名称,品牌名称,规格型号,计量单位,单位体积,单位重量,分类编码,说明,pp_id,fl_id,材料编码 from 材料表 where cl_id='" + cl_id + "' ";
+                 sSQL = "select 显示名,分类名称,品牌名称,规格型号,计量单位,单位体积,单位重量,分类编码,说明,pp_id,fl_id,材料编码 from 材料表 where 显示名='" + cl_mc + "' ";
                  dt_clxx = objConn.GetDataTable(sSQL);
                  clbm = Convert.ToString(dt_clxx.Rows[0]["材料编码"]);
                  s_clmc = Convert.ToString(dt_clxx.Rows[0]["显示名"]);
                  sSQL = "select 品牌名称,pp_id from 品牌字典 where left(分类编码,2)='" + clbm.Substring(0, 2) + "'";
 
                  dt_pp = objConn.GetDataTable(sSQL);
-                 sSQL = "select 分类属性名称,分类属性值 from 材料属性表 where cl_id='" + cl_id + "' and 材料编码='" + clbm + "'";
+                 sSQL = "select 分类属性名称,分类属性值 from 材料属性表 where 材料名称='" + cl_mc + "' and 材料编码='" + clbm + "'";
                  dt_clsx = objConn.GetDataTable(sSQL);
              
          }
@@ -467,7 +467,7 @@
       <td width="50" height="30">&nbsp;</td>
       <td width="120">材料名字：</td>
       <td width="329"><label for="textfield"></label>
-        <input name="cl_name" id="cl_name" type="text" class="fxsxx3" value="<%=s_clmc%>" /></td>
+        <input name="cl_name" id="cl_name" type="text" class="fxsxx3" value="<%=s_clmc%>" disabled /></td>
       <td width="50" align="right"></td>
       <td width="120">品    牌：</td>
       <td width="329"><select name="brand" id="brand" style="width: 300px">
@@ -518,24 +518,24 @@
       <td height="30">&nbsp;</td>
       <td>规格型号：</td>
       <td><label for="textfield21">
-        <input name="cl_type" type="text" id="cl_type" class="fxsxx3" value="<%=dt_clxx.Rows[0]["规格型号"] %>" />
+        <input name="cl_type" type="text" id="cl_type" class="fxsxx3" value="<%=dt_clxx.Rows[0]["规格型号"] %>" disabled  />
       </label></td>
       <td>&nbsp;</td>
       <td>计量单位：</td>
-      <td><input name="cl_bit" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["计量单位"] %>" /></td>
+      <td><input name="cl_bit" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["计量单位"] %>"  disabled /></td>
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
       <td>单位体积：</td>
-      <td><input name="cl_volumetric" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位体积"] %>" /></td>
+      <td><input name="cl_volumetric" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位体积"] %>" disabled  /></td>
       <td>&nbsp;</td>
       <td>单位重量：</td>
-      <td><input name="cl_height" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位重量"] %>" /></td>
+      <td><input name="cl_height" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位重量"] %>" disabled /></td>
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
       <td>说明：</td>
-      <td><input name="cl_instruction" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["说明"] %>" /></td>
+      <td><input name="cl_instruction" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["说明"] %>" disabled  /></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
@@ -544,23 +544,6 @@
       <td height="20" colspan="6"></td>
     </tr>
 </table>
-
-    <!--
-<div class="cpdt">
-   <dl>
-     <dd>产品大图1：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
-     <dd>产品大图1：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
-     <dd>产品大图1：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
-     <dd>产品大图1：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
-     <dd>产品大图1：</dd>
-    <dt><input name="" type="text" class="fxsxx3"/><a href="#"><img src="images/qweqwe_03.jpg" /></a></dt>
-  </dl>
-</div>
--->
 
 <div class="cpdt">
     <span class="dmt">&nbsp;&nbsp;多媒体信息</span>

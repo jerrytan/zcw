@@ -59,9 +59,8 @@
     //二级分类发送ajax 更新的是品牌的名称 和材料属性的名称
     //文件名是xzclym3.aspx 和 xzclymSX.aspx
     //小类（二级分类）
-    function updateCLFL(id)
-    {
-
+    function updateCLFL(id) {
+        alert(id);
 //        var xmlhttp;
         var xmlhttp1;
         if (window.XMLHttpRequest)
@@ -230,6 +229,10 @@
     protected string sSQL = "";
     protected DataTable dt_pp = new DataTable();
     protected string lx = "";
+    public string clbm = "";
+    public string s_clmc = "";
+    protected DataTable dt_clxx = new DataTable();//材料表
+    
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Request["gys_id"]!=null&&Request["gys_id"].ToString()!="")
@@ -272,9 +275,9 @@
                 item.GroupsCode = Convert.ToString(dr["分类编码"]);
                 this.Items1.Add(item);   //将大类存入集合
             }
-        }    
-
+        }
     }
+   
 </script>
 
 <body>
@@ -287,7 +290,7 @@
     <div class="fxsxx">
         <span class="fxsxx1">请选择您要添加的材料信息</span>
         <%string gys_id = Request["gys_id"];%>
-          <form name="form1" action = "xzclym4.aspx?gys_id=<%=gys_id %>" method = "post">
+          <form name="form1" action = "xzclym4.aspx?&gys_id=<%=gys_id %>" method = "post">
           <table width="998" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px; margin-top:10px;">
     <tr>
       <td height="34" colspan="6" align="left" bgcolor="#f7f7f7" style="font-size:14px; font-weight:bold;">&nbsp;&nbsp;材料分类如下:</td>
@@ -427,6 +430,7 @@
     </tr>
 </table>
             </div>
+
 
 
             <!--

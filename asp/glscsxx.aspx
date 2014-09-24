@@ -407,7 +407,7 @@
             </table>			
                 <span class="fxsbc">
                     <input name="gys_id" type="hidden" id="Hidden1" class="fxsxx3" value="<%=gys_id %>"/>
-                    <input type="submit" class="fxsbc2" value="更改" style="cursor:pointer"/>
+                    <%--<input type="submit" class="fxsbc2" value="更改" style="cursor:pointer"/>--%>
                 </span>
           </div>
           </div>

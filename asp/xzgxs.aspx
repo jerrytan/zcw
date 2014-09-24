@@ -95,7 +95,11 @@
                 dt_clfl = objConn.GetDataTable(sSQL);
                 if (!IsPostBack)
                 {
-                    this.divtable.Visible = false;
+                    this.divtable.Visible = true;
+                    this.gxsform.Visible = false;
+                    this.divfy.Visible = false;
+                    sSQL = "select top 10 gys_id,供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,注册日期 from 材料供应商信息表 where left(单位类型,3) like '%商%' order by updatetime desc";
+                    dt_gsxx = objConn.GetDataTable(sSQL);
                 } 
          }
         public void MyDataBind(bool bpostback, string sSQL, string sCondition)
@@ -194,23 +198,6 @@
             {
 
             }
-            //try
-            //{
-            //    if (objDt != null)
-            //    {
-            //        objDt = GetAdjustDt(objDt);
-            //        objDv = objDt.DefaultView;
-            //    }
-            //}
-            //catch (Exception err)
-            //{
-            //    Response.Write("<script>alert('加载数据源失败！')</" + "script>");
-            //}
-            //GridView1.DataSource = objDv;
-            //GridView1.Columns[1].Visible = false;
-            //GridView1.Columns[10].Visible = false;
-            //GridView1.Columns[11].Visible = false;
-            //this.GridView1.DataBind();
         }
         public DataTable GetAdjustDt(DataTable objDataTable)
         {
@@ -353,43 +340,69 @@
         {
             this.divtable.Visible=true;
             btnNext.Enabled = true;
-            btnPrev.Enabled = true;
+            btnPrev.Enabled = true; 
+            btnhead.Enabled = true;
+            btnNext.Enabled = true;
             string strArg = e.CommandArgument.ToString();
             int intPageCount = 0;//总页数
             intPageCount = Int32.Parse(lblPageCount.Text.ToString()); 
-            intPageIndex = Int32.Parse(lblCurPage.Text.ToString()) - 1;
+            intPageIndex = Int32.Parse(lblCurPage.Text.ToString());
             switch (strArg)
             {
                 case "Next":
-                    if (intPageIndex < intPageCount - 1)
-                        intPageIndex++;
+                    if (intPageIndex < intPageCount)
+                    {
+                        intPageIndex++;//1,2
+                        lblCurPage.Text = Convert.ToString(intPageIndex);
+                    }
                     break;
                 case "Prev":
                     if (intPageIndex > 0)
+                    {
                         intPageIndex--;
+                        lblCurPage.Text = Convert.ToString(intPageIndex);
+                    }
+                    break;
+                case "Head":
+                    if (intPageIndex <= intPageCount)
+                    {
+                        intPageIndex = 1;
+                        btnPrev.Enabled = false;
+                        btnhead.Enabled = false;
+                        lblCurPage.Text = Convert.ToString(intPageIndex);
+                    }
+                    break;
+                case "Foot":
+                    if (intPageIndex <= intPageCount)
+                    {
+                        intPageIndex = intPageCount;
+                        btnNext.Enabled = false;
+                        btnfoot.Enabled = false;
+                        lblCurPage.Text = Convert.ToString(intPageIndex);
+                    }
                     break;
             }
 
-            //如果是首页，则上一页和首页按钮不能用
-            if (intPageIndex <= 0)
-            {
-                btnPrev.Enabled = false;
-            }
+            ////如果是首页，则上一页和首页按钮不能用
+            //if (intPageIndex <= 0)
+            //{
+            //    btnPrev.Enabled = false;
+            //}
 
-            //如是末页，则末页和下一页不能用
-            if (intPageIndex == intPageCount - 1)
-            {
-                btnNext.Enabled = false;
-            }
+            ////如是末页，则末页和下一页不能用
+            //if (intPageIndex == intPageCount - 1)
+            //{
+            //    btnNext.Enabled = false;
+            //}
             //判断当前页码是否有效，若无效则返回
             if (intPageIndex < 0 || intPageIndex > intPageCount)
             {
                 return;
             }
-            lblCurPage.Text = Convert.ToString(intPageIndex + 1);
+            //lblCurPage.Text = Convert.ToString(intPageIndex + 1);
             if (Session["SQLsource"] != null)
             {
-                int begin = intPageIndex * PageSize + 1;
+                int begin = (intPageIndex-1) * PageSize + 1;
                 int end = begin + PageSize - 1;
                 string sSQL = "";
                 string sql = Session["SQLsource"].ToString();
@@ -457,6 +470,8 @@
         protected void CheckGys(object sender, EventArgs e)
         {
             this.xxpp.Visible = true;
+            btnhead.Enabled = false;
+            btnPrev.Enabled = false;
             if (this.txt_gys.Value == "")
             {
                 this.lblhint.Text = "请输入公司名称！";
@@ -1052,14 +1067,15 @@ onloadEvent(showtable);
                     <td align="left"><%=dt_gsxx.Rows[i]["联系人手机"]%></td>
                     <td align="center"><%=dt_gsxx.Rows[i]["单位类型"]%></td>
                     <td align="center">
-                    <asp:Button ID="CY" runat="server" Text="查阅" OnClientClick="Add(this)"  onclick="CY_Click"/>
+                    <%--<asp:Button ID="CY" runat="server" Text="查阅" OnClientClick="Add(this)"  onclick="CY_Click"/>--%>
+                    <asp:ImageButton ID="CY" runat="server" OnClientClick="Add(this)" OnClick="CY_Click" ImageUrl="~/asp/images/chayue.gif" />
                      <input type="hidden" id="gsmc" runat="server" value="" /></td>
                     </tr>
                 <%} %>
             <%}%> 
             </tbody>
 </table>
- <div style="text-align:center">
+ <div style="text-align:center" runat="server" id="divfy">
              <asp:LinkButton ID="btnhead" runat="server" CommandArgument="Head" CommandName="Pager"
                         OnCommand="PagerButtonClick" ForeColor="Black">首页</asp:LinkButton>&nbsp;
              <asp:LinkButton ID="btnPrev" runat="server" CommandArgument="Prev" CommandName="Pager"

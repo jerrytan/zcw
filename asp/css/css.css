@@ -18,7 +18,7 @@ a:hover{color: #0066ff;}
 .sous{ width:510px; height:30px; float:left; margin:21px 0 0 10px; display:inline; background:url(../images/weq03.jpg);}
 .sous img{ float:right; margin:1px 10px 0 0; display:inline;}
 .sou{ width:385px; height:28px; float:left; line-height:30px; margin:1px 0 0 5px; display:inline;}
-.anniu{ width:77px; height:18px; float:right; margin:8px 32px 0 0; display:inline; font-family: "ËÎÌו"; color:#FFFFFF; text-align:center; line-height:18px; background:url(../images/anniu_03.jpg);}
+.anniu{ width:77px; height:18px; float:right; margin:8px 32px 0 0; display:inline; font-family: "ËÎÌו"; color:#FFFFFF; text-align:center; line-height:18px; background:url(../images/anniu_03.jpg);cursor:pointer;}
 .anniu a{color:#FFFFFF;}
 .dh{ width:763px; height:40px; float:left; margin-top:8px; background:url(../images/dh_03.jpg); z-index:9;}
 .dh ul{ width:752px; height:40px; float:left; margin-left:6px; display:inline;}
