@@ -44,10 +44,12 @@
 			//采购商 
 			HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
             object cgs_yh_id = Session["CGS_YH_ID"];
-			string str_cl = Request["cl_id"];	 
+			string str_cl = Request["cl_id"];	
+            string str_gysid = Request["gys_id"];  //获取页面传过来的供应商id
+            string str_sccs = Request["sccs"];     //获取页面传过来的生产厂商
 			string cl_id = "";
 
-            //Response.Write(str_cl);
+            //Response.Write(str_sccs);
 			
 			//供应商 
 			HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
@@ -107,9 +109,23 @@
                                 yh_id = dt_yh.Rows[0]["myID"].ToString();
                             }
 
+                            //先判断“采购商关注供应商表”是否有该记录，如果没有，则插入
+                            if (!string.IsNullOrEmpty(str_gysid) && !string.IsNullOrEmpty(str_sccs))
+                            {
+                                //Response.Write(str_gysid+"  "); Response.Write(str_sccs+"   "); Response.Write(yh_id);
+                                string sql_gzcount = "select * from 采购商关注供应商表 where yh_id='" + str_gysid + "' and gys_id='" + str_sccs + "'";
+                                int gzcount = objConn.GetRowCount(sql_gzcount);
+                                
+                                if (gzcount==0)
+                                {
+                                    string sql_gsgys = "insert into 采购商关注供应商表 (yh_id,gys_id,供应商名称) values (" + yh_id + "," + str_gysid + ",'" + str_sccs + "')";
+                                    objConn.ExecuteSQL(sql_gsgys,true);
+                                }
+                                
+                            }
 
 
-                            //先判断“采购商关注材料表”是否有该记录，如果没有，则插入
+                            //先判断“采购商关注的材料表”是否有该记录，如果没有，则插入
                             if (!string.IsNullOrEmpty(str_cl))
                             {
 								string str_clnumber = ""; //材料编号

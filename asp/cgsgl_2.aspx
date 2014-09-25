@@ -309,8 +309,9 @@
 //            }
 
 
-            sSQL = "select a.gys_id ,a.供应商 from 材料供应商信息表 as a ,采购商关注供应商表 as b  " +
-                   " where b.yh_id='" + s_yh_id + "' and a.gys_id=b.gys_id order by a.gys_id";
+            //sSQL = "select a.gys_id ,a.供应商 from 材料供应商信息表 as a ,采购商关注供应商表 as b  " +
+            //       " where b.yh_id='" + s_yh_id + "' and a.gys_id=b.gys_id order by a.gys_id";
+            sSQL = "select gys_id,供应商名称 from 采购商关注供应商表 where yh_id=" + s_yh_id;
             dt_clgysxx = objConn.GetDataTable(sSQL);
 
 
@@ -626,11 +627,11 @@
                 <ul class="no">
                     <%
                         foreach (DataRow dr_gys in dt_clgysxx.Rows)
-                        {
+                        {   
                         %>
                     <%-- <input type="checkbox" name="gysid" value='<%=dr_gys["gys_id"].ToString()%>' />--%>
                     <li><a href='gysxx.aspx?gys_id=<%=dr_gys["gys_id"].ToString() %>'>
-                        <%=dr_gys["供应商"].ToString()%></a></li>
+                        <%=dr_gys["供应商名称"].ToString()%></a></li>
                     <% } %>
                 </ul>
                 <%-- </span>--%>
@@ -695,6 +696,13 @@
                                     width: 37px; cursor: pointer;" />
                             </td>
                         </tr>
+                        <%--  <%if (dt_topcl.Rows.Count<10)
+                              { 
+                                  for(int i=0;i<10-dt_topcl.Rows.Count;i++)
+                                  {%>  
+                                        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                                  <%}
+                             }%>--%>
                     </tbody>
                 </table>
                 <table width="100%" align="left" cellpadding="0" cellspacing="0">

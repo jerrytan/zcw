@@ -92,6 +92,8 @@
         protected int PageCount;
 
         private string cl_id;	//材料id
+        public string gys_id;   //供应商id
+        public string sccs;     //生产厂商
         private string cl_number; //材料编号
 		private string ppid;	 //品牌id
         protected DataConn dc_obj = new DataConn();
@@ -104,8 +106,10 @@
             {
 				cl_id = Request["cl_id"];
 
-				string str_sqlclname = "select 显示名,fl_id,材料编码 from 材料表 where cl_id='"+cl_id+"' ";           
+				string str_sqlclname = "select 生产厂商,gys_id,显示名,fl_id,材料编码 from 材料表 where cl_id='"+cl_id+"' ";           
 				dt_clxx = dc_obj.GetDataTable(str_sqlclname);
+                gys_id = dt_clxx.Rows[0]["gys_id"].ToString();
+                sccs = dt_clxx.Rows[0]["生产厂商"].ToString();
 
 				 //材料表访问计数加1
 				string str_updatecounter = "update 材料表 set 访问计数 = (select 访问计数 from 材料表 where cl_id = '"+ cl_id +"')+1 where cl_id = '"+ cl_id +"'";   
@@ -320,15 +324,15 @@
 				if((GYS_QQ_id == null ) && (GYS_YH_id == null))	//供应商未登录，显示收藏
 				{
             %>    <%-- 蒋，2014年8月25日，添加else判断--%>
-					<span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;"  >
-						<a href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>)">请收藏，便于查找</a>
+					<span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;" >
+						<a href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>')">请收藏，便于查找</a>
 					</span>	
 			<%
 				}
                 else
                 {%>
                 <span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;"  >
-						<a href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>)">请收藏，便于查找</a>
+						<a href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>')">请收藏，便于查找</a>
 					</span>
               <%  }
 			%>
@@ -423,8 +427,8 @@
 
 
 <script type="text/javascript">
-    function NewWindow(number,ppid) {
-		var url = "sccl.aspx?cl_id=" + number + "|" + ppid;        
+    function NewWindow(number, ppid, gysid, sccs) {
+        var url = "sccl.aspx?cl_id=" + number + "|" + ppid+"&gys_id="+gysid+"&sccs="+sccs;        //cl_id="0801A01|183"
 		window.open(url,"","height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
     }
     function changeImage(src) {
