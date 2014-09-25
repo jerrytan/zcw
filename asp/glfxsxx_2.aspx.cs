@@ -6,55 +6,55 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
-public partial class asp_gysglcl_2 : System.Web.UI.Page
+public partial class asp_glfxsxx_2 : System.Web.UI.Page
 {
-    protected DataTable dt_cl = new DataTable();
-    public string gys_id = "";//接收传过来的gys_id
-    public string ejfl = "";
-    public string s_yh_id;
     public string sSQL;
     public DataConn objConn = new DataConn();
     DataView objDv = null;
     DataTable objDt = null;
     public int PageSize = 10;
+    public string gys_id = "";//接收传过来的gys_id
+    public string pp_mc = "";
+    public string s_yh_id;
+    public DataTable dt_gxs = new DataTable();//材料供应商信息表
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
-            s_yh_id = Session["GYS_YH_ID"].ToString();            
+            s_yh_id = Session["GYS_YH_ID"].ToString();
         }
         if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
         {
             gys_id = Request["gys_id"].ToString();
-            ejfl = Request["ejfl"].ToString();
+            pp_mc = Request["pp_mc"].ToString();
         }
         sSQL = "select  dw_id from 用户表 where yh_id='" + s_yh_id + "'";
         DataTable dt_yh = objConn.GetDataTable(sSQL);
         string gy = dt_yh.Rows[0]["dw_id"].ToString();
         this.lblgys_id.Value = gy;
-        if (ejfl != "" && gys_id != "")
+        if (pp_mc != "" && gys_id != "")
         {
-            sSQL = "select cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商,是否启用 from 材料表 where 是否启用=1 and 分类名称='" + ejfl + "' and gys_id='" + gys_id + "' order by updatetime desc ";
-            dt_cl = objConn.GetDataTable(sSQL);
+            sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where gys_id in "+
+                "(select fxs_id from 分销商和品牌对应关系表 where 品牌名称='"+ pp_mc +"') order by gys_id desc";
+            dt_gxs = objConn.GetDataTable(sSQL);
             Session["SQLsource"] = sSQL;
-            string sSearchCondition="分类名称='"+ejfl+"'";
-            MyDataBind(true, sSQL, sSearchCondition);
+            string sSearchCondition = "gys_id='" + gys_id + "'";
+            MyDataBind(true, sSQL, sSearchCondition); 
         }
         else
         {
             if (!IsPostBack)
             {
-                sSQL = "select top 10 cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商,是否启用 from 材料表 where 是否启用=1   order by updatetime desc";
-                dt_cl = objConn.GetDataTable(sSQL);
+                sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where 是否启用=1 order by updatetime desc";
+                dt_gxs = objConn.GetDataTable(sSQL);
                 this.dic.Visible = false;
             }
-        } 
+        }
     }
-
     int intPageIndex;//当前页
     public void PagerButtonClick(Object sender, CommandEventArgs e)
     {
-        this.divtable.Visible = true;
+        
         btnNext.Enabled = true;
         btnPrev.Enabled = true;
         btnhead.Enabled = true;
@@ -99,36 +99,36 @@ public partial class asp_gysglcl_2 : System.Web.UI.Page
                 break;
         }
 
-                if (intPageIndex < 0 || intPageIndex > intPageCount)
-                {
-                    return;
-                }
-                //lblCurPage.Text = Convert.ToString(intPageIndex + 1);
-                if (Session["SQLsource"] != null)
-                {
-                    int begin = (intPageIndex - 1) * PageSize + 1;
-                    int end = begin + PageSize - 1;
-                    string sSQL = "";
-                    string sql = Session["SQLsource"].ToString();
-                    int order = sql.ToUpper().IndexOf("ORDER BY");
-                    if (order > 0)
-                    {
+        if (intPageIndex < 0 || intPageIndex > intPageCount)
+        {
+            return;
+        }
+        //lblCurPage.Text = Convert.ToString(intPageIndex + 1);
+        if (Session["SQLsource"] != null)
+        {
+            int begin = (intPageIndex - 1) * PageSize + 1;
+            int end = begin + PageSize - 1;
+            string sSQL = "";
+            string sql = Session["SQLsource"].ToString();
+            int order = sql.ToUpper().IndexOf("ORDER BY");
+            if (order > 0)
+            {
 
-                        string left = sql.Substring(0, order);
-                        string right = sql.Substring(order, sql.Length - order);
-                        sSQL = "select * from (select *,row_number() over (" + right + ")as 编号 from (" + left + ")tb) T where T.编号 between " + begin.ToString() + " and " + end.ToString();
-                    }
-                    else
-                    {
-                        DataTable order_dt = objConn.GetDataTable("select top 1 * from (" + sql + ")#t");
-                        if (order_dt != null)
-                        {
-                            string name = order_dt.Columns[0].ColumnName.ToString();
-                            sSQL = "select * from (select *,row_number() over ( order by " + name + ") as 编号 from(" + sql + ")tb)T where T.编号 between " + begin.ToString() + " and " + end.ToString();
-                        }
-                    }
-                    MyDataBind2(sSQL, "");
-           }
+                string left = sql.Substring(0, order);
+                string right = sql.Substring(order, sql.Length - order);
+                sSQL = "select * from (select *,row_number() over (" + right + ")as 编号 from (" + left + ")tb) T where T.编号 between " + begin.ToString() + " and " + end.ToString();
+            }
+            else
+            {
+                DataTable order_dt = objConn.GetDataTable("select top 1 * from (" + sql + ")#t");
+                if (order_dt != null)
+                {
+                    string name = order_dt.Columns[0].ColumnName.ToString();
+                    sSQL = "select * from (select *,row_number() over ( order by " + name + ") as 编号 from(" + sql + ")tb)T where T.编号 between " + begin.ToString() + " and " + end.ToString();
+                }
+            }
+            MyDataBind2(sSQL, "");
+        }
     }
     /// <summary>
     /// 得到带条件的sql语句
@@ -231,7 +231,7 @@ public partial class asp_gysglcl_2 : System.Web.UI.Page
         try
         {
             objDt = objConn.GetDataTable(sSQL);
-            dt_cl = objDt;
+            dt_gxs = objDt;
         }
         catch
         {
@@ -344,21 +344,21 @@ public partial class asp_gysglcl_2 : System.Web.UI.Page
     {
         if (this.txtKeyWord.Value == "")
         {
-            Response.Write("<script>alert('请输入公司名称')</" + "script>");
+            Response.Write("<script>alert('请输入公司名称')</"+"script>");
         }
         else
         {
-            string sql = "select  COUNT(*)  from 材料表 where 显示名 like '%" + this.txtKeyWord.Value + "%'";
+            string sql = "select COUNT(*) from 材料供应商信息表 where 供应商 like '%" + this.txtKeyWord.Value + "%'";
             int count = Convert.ToInt32(objConn.DBLook(sql));
             if (count == 0)
             {
-                Response.Write("<script>alert('没有您要的材料信息!')</" + "script>");
+                Response.Write("<script>alert('没有您要搜索的公司信息!')</" + "script>");
                 this.txtKeyWord.Value = "";
             }
             else
             {
-                string gsxx = "select cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商 from 材料表 " +
-                    "where left(是否启用,1) like '%1%' and 显示名 like '%" + this.txtKeyWord.Value + "%' and gys_id='" + gys_id + "' order by cl_id";
+                string gsxx = "select gys_id, 供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where left(是否启用,1)" +
+                    " =1 and 供应商 like '%" + this.txtKeyWord.Value + "%' order by updatetime desc ";
                 if (gsxx.ToUpper().Contains("ORDER BY"))
                 {
                     int a = gsxx.ToUpper().IndexOf("ORDER BY");
@@ -372,16 +372,15 @@ public partial class asp_gysglcl_2 : System.Web.UI.Page
                         string name = order_dt.Columns[0].ColumnName.ToString();
                         gsxx = "select * from(select *,row_number() over( order by " + name + ") as 编号 from (" + gsxx + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
                     }
-                }
-                dt_cl = objConn.GetDataTable(gsxx);
+                } 
+                dt_gxs = objConn.GetDataTable(gsxx);
                 Session["SQLsource"] = gsxx;
-                string sSQL = "select cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商 from 材料表" +
-                    " where left(是否启用,1) like '%1%' and 分类名称 like '%" + this.txtKeyWord.Value + "%' order by cl_id";
-                string sSearchCondition = "分类名称 like '%" + this.txtKeyWord.Value + "%'";
+                string sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where left(是否启用,1) " +
+                    " =1 and 供应商 like '%" + this.txtKeyWord.Value + "%' order by updatetime desc";
+                string sSearchCondition = "供应商 like '%" + this.txtKeyWord.Value + "%'";
                 MyDataBind(true, sSQL, sSearchCondition);
                 this.txtKeyWord.Value = "";
             }
         }
     }
-    
 }

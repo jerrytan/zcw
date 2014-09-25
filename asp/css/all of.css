@@ -383,6 +383,11 @@ line-height:36px; float:left; font-size:14px; color:#707070; font-weight:bold; b
 	width:1000px;
 	float:left;
 	}
+	#table2 {
+	width:765px;
+	float:left;
+	}
+	
 #table tr th {
 	height: 28px;
 	text-align: center;

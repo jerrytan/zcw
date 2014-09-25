@@ -481,6 +481,7 @@
                 this.lblhint.Visible = false;
                 this.divtable.Visible = true;
                 this.gxsform.Visible = false;
+                this.divfy.Visible = false;
                 //this.ImageButton1.Visible = false;
                 //this.ImageButton2.Visible = false;
                 this.xxpp.Visible = true;
@@ -1067,7 +1068,6 @@ onloadEvent(showtable);
                     <td align="left"><%=dt_gsxx.Rows[i]["联系人手机"]%></td>
                     <td align="center"><%=dt_gsxx.Rows[i]["单位类型"]%></td>
                     <td align="center">
-                    <%--<asp:Button ID="CY" runat="server" Text="查阅" OnClientClick="Add(this)"  onclick="CY_Click"/>--%>
                     <asp:ImageButton ID="CY" runat="server" OnClientClick="Add(this)" OnClick="CY_Click" ImageUrl="~/asp/images/chayue.gif" />
                      <input type="hidden" id="gsmc" runat="server" value="" /></td>
                     </tr>

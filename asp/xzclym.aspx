@@ -60,17 +60,13 @@
     //文件名是xzclym3.aspx 和 xzclymSX.aspx
     //小类（二级分类）
     function updateCLFL(id) {
-        alert(id);
-//        var xmlhttp;
         var xmlhttp1;
         if (window.XMLHttpRequest)
         {// code for IE7+, Firefox, Chrome, Opera, Safari
-//            xmlhttp = new XMLHttpRequest();
             xmlhttp1 = new XMLHttpRequest();
         }
         else
         {// code for IE6, IE5
-//            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");
         }
 //        xmlhttp.onreadystatechange = function ()

@@ -3,8 +3,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
     <title>供应商管理材料页面2</title>
@@ -13,6 +12,16 @@
     <link href="css/gl.css" rel="stylesheet" type="text/css" />
     <script src="js/gysglcl.js" type="text/javascript"></script>
     <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <style type="text/css">
+        .style1
+        {
+            height: 13px;
+        }
+        .style2
+        {
+            height: 11px;
+        }
+    </style>
 </head>
 <script type="text/javascript" language="javascript">
     function Add(obj) {
@@ -72,6 +81,45 @@
         xmlhttp.open("GET", "gysglcl_2_ajax.aspx?cl_id=" + cl_id, true);
         xmlhttp.send();
     }
+    function onloadEvent(func) {
+        var one = window.onload
+        if (typeof window.onload != 'function') {
+            window.onload = func
+        }
+        else {
+            window.onload = function () {
+                one();
+                func();
+            }
+        }
+    }
+    function showtable() {
+        var tableid = 'table2';
+        //表格的id
+        var overcolor = '#fff0e9'; //鼠标经过颜色
+        var color1 = '#f2f6ff'; 	//第一种颜色
+        var color2 = '#fff'; 	//第二种颜色
+        var tablename = document.getElementById(tableid)
+        var tr = tablename.getElementsByTagName("tr")
+        for (var i = 1; i < tr.length; i++) {
+            tr[i].onmouseover = function () {
+                this.style.backgroundColor = overcolor;
+            }
+            tr[i].onmouseout = function () {
+                if (this.rowIndex % 2 == 0) {
+                    this.style.backgroundColor = color1;
+                } else {
+                    this.style.backgroundColor = color2;
+                }
+            }
+            if (i % 2 == 0) {
+                tr[i].className = "color1";
+            } else {
+                tr[i].className = "color2";
+            }
+        }
+    }
+    onloadEvent(showtable);
 </script>
 
 <body>
@@ -80,28 +128,29 @@
 检索条件：
 <input name="txtKeyWord" runat="server" type="text" id="txtKeyWord" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
 <div class="jiansuo_img">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="table">
   <tr>
     <td width="80" height="30" align="center">
-    <asp:ImageButton ID="ImageButton2" runat="server" ImageUrl="~/asp/images/jiansuo.gif" OnClick="JianSuo"/>
-    <asp:Label Text="" runat="server" ID="lblhint" ForeColor="Red"></asp:Label></td>
+    <asp:ImageButton ID="ImageButton2" runat="server" ImageUrl="~/asp/images/jiansuo.gif" OnClick="JianSuo"/></td>
     <td width="85" align="left">
    <input type="button" class="btnFilter" value="添加材料" onclick="btnFilter_Click()" style=" margin-top:0px; height: 20px;width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" /></td>
-    <td><input type="button" class="btnFilter" value="删除材料" onclick="delete_cl()" style="height: 20px;width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" /></td>
+    <td>
+     <input type="button" class="btnFilter" value="删除材料" onclick="delete_cl()" style=" margin-top:0px; height: 20px;width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" /></td>
   </tr>
 </table>
-</div></div>
-   <div id="divtable" runat="server" style="height:200px"> 
+</div></div>
+
+   <div id="divtable" runat="server" style="height:230px"> 
 <table width="100%"  border="0"  cellpadding="0" cellspacing="1" bgcolor="#dddddd" class="table2" id="table2" style="table-layout：fixed ;word-wrap：break-word;">
       <thead>
         <tr>
-          <th width="42" align="center" style="font-size:12px"><strong>选 择</strong></th>
-          <th width="125" align="center" style="font-size:12px"><strong>材料名称</strong></th>
-          <th align="center" class="style1" style="font-size:12px"><strong>品 牌</strong></th>
-          <th width="85" align="center" style="font-size:12px"><strong>规格\型号</strong></th>
-          <th width="55" align="center" style="font-size:12px"><strong>编 码</strong></th>
-          <th width="255" align="center" style="font-size:12px"><strong>供应商</strong></th>
-          <th width="53" align="center" style="font-size:12px"><strong>操 作</strong></th>
+          <th width="42" align="center" style="font-size:12px" class="style2"><strong>选 择</strong></th>
+          <th width="125" align="center" style="font-size:12px" class="style2"><strong>材料名称</strong></th>
+          <th align="center" class="style2" style="font-size:12px"><strong>品 牌</strong></th>
+          <th width="85" align="center" style="font-size:12px" class="style2"><strong>规格\型号</strong></th>
+          <th width="55" align="center" style="font-size:12px" class="style2"><strong>编 码</strong></th>
+          <th width="255" align="center" style="font-size:12px" class="style2"><strong>供应商</strong></th>
+          <th width="53" align="center" style="font-size:12px" class="style2"><strong>操 作</strong></th>
         </tr>
       </thead>
       <tbody>

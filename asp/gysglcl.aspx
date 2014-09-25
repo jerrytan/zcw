@@ -51,8 +51,8 @@
     function CZ(ejfl) {
     var g;
     g = document.getElementById("lblgys_id").value;
-    document.getElementById("frame1").src = "gysglcl_2.aspx?gys_id=" + g + "&ejfl=" + ejfl; 
-    }
+    document.getElementById("frame1").src = "gysglcl_2.aspx?gys_id=" + g + "&ejfl=" + ejfl;
+}
 </script>
 <body>
     <!-- 头部开始-->
@@ -112,7 +112,7 @@
         }
 
         // 取 二级分类编码
-         sSQL="select 显示名字,分类编码 from 材料分类表 where 分类编码 in(select 分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1' )";
+         sSQL="select 显示名字,分类编码 from 材料分类表 where 分类编码 in(select 分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1')";
           dt_ejfl = objConn.GetDataTable(sSQL);
           if(dt_ejfl!=null&&dt_ejfl.Rows.Count>0)
           {
@@ -285,7 +285,7 @@
         string[] yj = new string[2];
         yj = yjfl.Split('|');//yj[0]  一级编码  yj[1] 一级显示名字
     %>
-    <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/jiantou.gif" /><%=yj[1]%></a></h1>
+    <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /><%=yj[1]%></a></h1>
     <span class="no">
     <input type="hidden" id="lblgys_id" runat="server" />
     <% 
@@ -312,7 +312,7 @@
 
 <div id="cgs_lb" style="width:765px; margin-left:212px;">
 <div id="divtable" runat="server">
-<iframe id="frame1" src="gysglcl_2.aspx" frameborder="0" marginheight="0"  style=" width:100%;  height:350px; padding:0px; margin:0px; border:0px; " > 
+<iframe id="frame1" src="gysglcl_2.aspx" frameborder="0" marginheight="0"  style=" width:100%;  height:400px; padding:0px; margin:0px; border:0px; " > 
     </iframe> 
 </div>
 </div>

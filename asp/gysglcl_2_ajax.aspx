@@ -7,10 +7,6 @@
     string sSQL = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["GYS_YH_ID"] != null)
-        {
-            s_yh_id = Session["GYS_YH_ID"].ToString();
-        }
         cl_id = Request.QueryString["cl_id"];
         cl_id = cl_id.TrimEnd(',');
         sSQL = "update 材料表 set 是否启用=0 where cl_id in ("+cl_id+")";
@@ -22,6 +18,5 @@
         {
             Response.Write(0); 
         }
-        
     }
 </script>
