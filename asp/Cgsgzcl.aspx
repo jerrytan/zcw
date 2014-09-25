@@ -112,12 +112,14 @@
     <div>
                     <div class="jiansuo3">
                         检索条件：
-                        <input name="txtKeyWord" type="text" id="txtKeyWord" style="border-right: #808080 1px solid;
+                        <input  type="text" runat="server" id="txt_search" style="border-right: #808080 1px solid;
                             border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
                         &nbsp;&nbsp;
-                        <input type="submit" name="filter" value="检索" id="Submit2" class="filter" 
+                     <%--   <input type="submit"  value="检索" id="Submit2" class="filter" 
                             style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
-                            width: 37px; cursor: pointer;" />
+                            width: 37px; cursor: pointer;" />--%>
+                        <asp:Button ID="btnSearch" runat="server" Text="检索" class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
+                            width: 37px; cursor: pointer;" onclick="btnSearch_Click"/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="button" id="btnFilter" value="删除材料" onclick="deleteGzcl()" style="height: 20px;
                             width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor: pointer;" />
@@ -195,10 +197,6 @@
                     </table>
                      <table width="100%" align="left" cellpadding="0" cellspacing="0">
                         <tr>
-                            <td width="110" align="left" valign="middle">
-                                <input name="CancelFollowButton" id="Image1" onclick="return confirm('您真的要取消对这些材料或供应商的关注吗？');"
-                                    type="image" src="images/scxzcl.jpg">
-                            </td>
                             <td width="200" height="40" align="left" valign="middle">
                                 共7页/当前第1页
                             </td>

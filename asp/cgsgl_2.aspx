@@ -315,7 +315,7 @@
             dt_clgysxx = objConn.GetDataTable(sSQL);
 
 
-            CancelFollowButton.Attributes.Add("onClick", "return confirm('您真的要取消对这些材料或供应商的关注吗？');");
+            //CancelFollowButton.Attributes.Add("onClick", "return confirm('您真的要取消对这些材料或供应商的关注吗？');");
 
         }
 
@@ -413,29 +413,29 @@
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void cancelFollows(object sender, EventArgs e)
-        {
-            if (Session["CGS_YH_ID"] != null && Session["CGS_YH_ID"].ToString() != "")
-            {
-                s_yh_id = Session["CGS_YH_ID"].ToString();
-            }
-            string s_clid = Request.Form["clid"];
+        //public void cancelFollows(object sender, EventArgs e)
+        //{
+        //    if (Session["CGS_YH_ID"] != null && Session["CGS_YH_ID"].ToString() != "")
+        //    {
+        //        s_yh_id = Session["CGS_YH_ID"].ToString();
+        //    }
+        //    string s_clid = Request.Form["clid"];
 
-            sSQL = "delete 采购商关注的材料表 where yh_id ='" + s_yh_id + "' and cl_id in (" + s_clid + ")";
-            objConn.ExecuteSQL(sSQL, false);
+        //    sSQL = "delete 采购商关注的材料表 where yh_id ='" + s_yh_id + "' and cl_id in (" + s_clid + ")";
+        //    objConn.ExecuteSQL(sSQL, false);
 
-            string s_gys_id = Request.Form["gysid"];
-            sSQL = "delete 采购商关注供应商表 where yh_id ='" + s_yh_id + "' and gys_id in (" + s_gys_id + ")";
-            objConn.ExecuteSQL(sSQL, true);
-            listFollowCLIDs();
-        }
+        //    string s_gys_id = Request.Form["gysid"];
+        //    sSQL = "delete 采购商关注供应商表 where yh_id ='" + s_yh_id + "' and gys_id in (" + s_gys_id + ")";
+        //    objConn.ExecuteSQL(sSQL, true);
+        //    listFollowCLIDs();
+        //}
     </script>
     <form id="form1" runat="server">
     <div class="dlqqz">
-        <div class="dlqqz3">
+      <%--  <div class="dlqqz3">
             &nbsp;&nbsp;<asp:ImageButton ID="CancelFollowButton" ImageUrl="images/scxzcl.jpg"
                 runat="server" OnClick="cancelFollows" />
-        </div>
+        </div>--%>
         <asp:Label ID="label1" runat="server" Text="" />
         <%
             if (userIsVIP)
@@ -707,10 +707,10 @@
                 </table>
                 <table width="100%" align="left" cellpadding="0" cellspacing="0">
                     <tr>
-                        <td width="110" align="left" valign="middle">
+                        <%--<td width="110" align="left" valign="middle">
                             <input name="CancelFollowButton" id="Image2" onclick="return confirm('您真的要取消对这些材料或供应商的关注吗？');"
                                 type="image" src="images/scxzcl.jpg">
-                        </td>
+                        </td>--%>
                         <td width="200" height="40" align="left" valign="middle">
                             共7页/当前第1页
                         </td>
