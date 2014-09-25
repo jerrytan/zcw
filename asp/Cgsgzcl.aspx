@@ -19,7 +19,8 @@
     <script src="js/cgsgzl.js" type="text/javascript"></script>
     <script type="text/javascript">
         function readClxx(obj) {
-            window.parent.location.href = "clxx.aspx?cl_id=" + obj;
+//            window.parent.location.href = "clxx.aspx?cl_id=" + obj;
+            window.open("clxx.aspx?cl_id=" + obj);
         }
         function Trim(str) {
             str = str.replace(/^(\s|\u00A0)+/, '');
