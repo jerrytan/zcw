@@ -59,8 +59,8 @@
  <script type="text/javascript">
 
             function clickMe(url)
-            {               
-                window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+            {
+                window.open(url, "", "height=400,width=400,top=100,left=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
             }
             function fsubmit(obj) {
                 obj.submit();
