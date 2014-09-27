@@ -58,7 +58,6 @@
                     {
                         xzlx = "分销商";
                     }
-
                 }
                 if (Request["gxs_id"] != null && Request["gxs_id"].ToString() != "")
                 {

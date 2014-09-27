@@ -20,8 +20,8 @@
 </head>
 <script type="text/javascript" language="javascript">
     function btnFilter_Click() {
-        var gy = document.getElementById("lblgys_id").value;
-        window.parent.location.href = 'xzgxs.aspx?gxs_id=' + gy + '&xzlx=fxs';
+        var gys = document.getElementById("lblgys_id").value;
+        window.parent.parent.location.href = 'xzgxs.aspx?gxs_id=' + gys + '&xzlx=fxs';
     }
     function Trim(str) {
         str = str.replace(/^(\s|\u00A0)+/, '');

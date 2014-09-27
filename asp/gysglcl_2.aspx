@@ -25,7 +25,6 @@
 </head>
 <script type="text/javascript" language="javascript">
     function Add(obj) {
-    alert(obj)
         var tr = obj.parentNode.parentNode;
         var tds = tr.cells;
         var cl_mc = Trim(tds[1].innerHTML);
@@ -43,7 +42,6 @@
     }
     function btnFilter_Click() {
         var gy = document.getElementById("lblgys_id").value;
-        alert(gy)
         window.parent.location.href = 'xzclym.aspx?gys_id='+gy;
     }
     function BJCL(cl_mc) {
@@ -195,8 +193,6 @@
         <br />
     </div>
 </div>
-
     </form>
-   
 </body>
 </html>
