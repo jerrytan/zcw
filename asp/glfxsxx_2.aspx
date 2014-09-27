@@ -21,44 +21,53 @@
 <script type="text/javascript" language="javascript">
     function btnFilter_Click() {
         var gy = document.getElementById("lblgys_id").value;
-        window.parent.location.href = 'xzgxs.aspx?gxs_id=' + gy +'&xzlx=fxs';
+        window.parent.location.href = 'xzgxs.aspx?gxs_id=' + gy + '&xzlx=fxs';
     }
-
-function Delete_gs() {
-    var table = document.getElementById("table2");
-    var input = table.getElementsByTagName("input");
-    var gs_mc = "";
-    for (var i = 0; i < input.length; i++) {
-        if (input[i].type == "checkbox" && input[i].checked) {
-            gs_mc += input[i].value + ",";
-        } 
-    }
-    var xmlhttp;
-    if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
-    }
-    else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            var text = xmlhttp.responseText;
-            if (text == 1) {
-                alert('删除成功');
-                location.reload();
-            }
-            else {
-                alert('删除失败');
-                location.reload();
+    function Trim(str) {
+        str = str.replace(/^(\s|\u00A0)+/, '');
+        for (var i = str.length - 1; i >= 0; i--) {
+            if (/\S/.test(str.charAt(i))) {
+                str = str.substring(0, i + 1);
+                break;
             }
         }
+        return str;
     }
-    xmlhttp.open("GET", "glfxsxx_2_ajax.aspx?gs_mc=" + gs_mc, true);
-    xmlhttp.send();
-}
+    function Delete_gs() {
+        var table = document.getElementById("table2");
+        var input = table.getElementsByTagName("input");
+        var gs_id = "";
+        for (var i = 0; i < input.length; i++) {
+            if (input[i].type == "checkbox" && input[i].checked) {
+                gs_id += Trim(input[i].value) + ",";
+            }
+        }
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        }
+        else {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var text = xmlhttp.responseText;
+                if (text == 1) {
+                    alert('删除成功');
+                    location.reload();
+                }
+                else {
+                    alert('删除失败');
+                    location.reload();
+                }
+            }
+        }
+        xmlhttp.open("GET", "glfxsxx_2_ajax.aspx?gs_id=" + gs_id, true);
+        xmlhttp.send();
+    }
 
-    function ChaYue(gys_id) {
-        window.parent.location.href = 'glfxsxx3.aspx?gys_id='+gys_id+'xl=scs';
+    function ChaYue(gsmc) {
+        window.parent.location.href = 'glfxsxx_3.aspx?gsmc=' + gsmc + '&lx=fxs';
     }
 
 function onloadEvent(func) {
@@ -137,14 +146,14 @@ onloadEvent(showtable);
           <% foreach (System.Data.DataRow dr in dt_gxs.Rows)
              {%>
             <tr>
-              <td align="center"><input type="checkbox" name="input"  value="<%=dr["供应商"]%>" />
+              <td align="center"><input type="checkbox" name="input"  value="<%=dr["gys_id"]%>" />
                 <label for="checkbox"></label></td>
               <td align="left" style="font-size:12px" class="style1"><%=dr["供应商"]%></td>
               <td style="font-size:12px"><%=dr["地区名称"]%></td>
               <td align="center" style="font-size:12px"><%=dr["注册日期"]%></td>
               <td align="center" style="font-size:12px"><%=dr["注册资金"]%></td>
               <td align="left" style="font-size:12px"><%=dr["电话"]%></td>
-              <td align="center"><input type="submit" name="input" value="查阅" class="filter" onclick="ChaYue('<%=dr["gys_id"] %>')" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/></td>
+              <td align="center"><input type="submit" name="input" value="查阅" class="filter" onclick="ChaYue('<%=dr["供应商"] %>')" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/></td>
               <input type="hidden" id="lblgys_id" runat="server" />
          </tr>
          <%}%>

@@ -3,7 +3,6 @@
 <script runat="server">
     DataConn obCon = new DataConn();
     string cl_id = "";
-    string s_yh_id = "";
     string sSQL = "";
     protected void Page_Load(object sender, EventArgs e)
     {

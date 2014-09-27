@@ -276,6 +276,7 @@
     <form id="form1" runat="server">
  <div class="dlqqz5"  style="border:1px solid #ddd; padding-top:10px; margin: 10px 0 0 0;">
     <div class="dlqqz2">
+    
 <div id="menu">
 <div class="dlqqz1">您的产品列表</div>
  <% 
@@ -285,7 +286,7 @@
         string[] yj = new string[2];
         yj = yjfl.Split('|');//yj[0]  一级编码  yj[1] 一级显示名字
     %>
-    <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/biao2.jpg" /><%=yj[1]%></a></h1>
+    <h2 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/biao2.jpg" />&nbsp;<%=yj[1]%></a></h2>
     <span class="no">
     <input type="hidden" id="lblgys_id" runat="server" />
     <% 
@@ -296,9 +297,9 @@
         {
             string value = R_ejfl["显示名字"].ToString();
             %>
-    <h2>    
-    <a href="javascript:void(0)" onclick="CZ('<%=value %>')"><%=R_ejfl["显示名字"].ToString() %></a>
-    </h2>  
+   <h4>  
+    <a href="javascript:void(0)" onclick="CZ('<%=value %>')"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<%=R_ejfl["显示名字"].ToString() %></a>
+    </h4>  
             <% 	 secondlevel++;
                 }      
 		    }
@@ -317,7 +318,7 @@
 </div>
 </div>
  </div>                
-
+ </div>
  
    <div class="cgdlqq"></div>
   <%-- 蒋，2014年8月18日注释该表单，在会员注册时审核过了，不需要再有表单显示信息--%>

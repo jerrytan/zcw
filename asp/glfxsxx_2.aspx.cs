@@ -10,12 +10,12 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
 {
     public string sSQL;
     public DataConn objConn = new DataConn();
-    DataView objDv = null;
-    DataTable objDt = null;
     public int PageSize = 10;
     public string gys_id = "";//接收传过来的gys_id
     public string pp_mc = "";
     public string s_yh_id;
+    DataTable objDt = null;
+    DataView objVe = null;
     public DataTable dt_gxs = new DataTable();//材料供应商信息表
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -54,7 +54,6 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
     int intPageIndex;//当前页
     public void PagerButtonClick(Object sender, CommandEventArgs e)
     {
-        
         btnNext.Enabled = true;
         btnPrev.Enabled = true;
         btnhead.Enabled = true;
@@ -73,10 +72,17 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
                 }
                 break;
             case "Prev":
-                if (intPageIndex > 0)
+                if (intPageIndex > 1)
                 {
                     intPageIndex--;
                     lblCurPage.Text = Convert.ToString(intPageIndex);
+                }
+                else if (intPageIndex == 1)
+                {
+                    btnPrev.Enabled = false;
+                    btnhead.Enabled = false;
+                    btnNext.Enabled = true;
+                    btnfoot.Enabled = true;
                 }
                 break;
             case "Head":
@@ -230,8 +236,9 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
         }
         try
         {
-            objDt = objConn.GetDataTable(sSQL);
+            objDt =objConn.GetDataTable(sSQL);
             dt_gxs = objDt;
+            Session["sSearchSql"] = sSQL;
         }
         catch
         {
@@ -241,7 +248,6 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
     public void MyDataBind(bool bpostback, string sSQL, string sCondition)
     {
         int TotalPage;          //总页数
-        DataTable objDt = null;
         Session["ADDSQL"] = sSQL;
         TotalPage = 0;
         if (sCondition != "")
@@ -250,7 +256,7 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
             sSQL = GetAddConditionSQL(sSQL, sCondition);
             Session["SQLsource"] = sSQL;
             TotalPage = objConn.GetRowCount(sSQL);
-            if (TotalPage > PageSize)
+            if (TotalPage >= PageSize)
             {
                 int TotalPage1 = TotalPage / PageSize;
                 if (TotalPage % PageSize != 0)
@@ -357,8 +363,9 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
             }
             else
             {
-                string gsxx = "select gys_id, 供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where left(是否启用,1)" +
-                    " =1 and 供应商 like '%" + this.txtKeyWord.Value + "%' order by updatetime desc ";
+                string gsxx = "select gys_id, 供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where left(单位类型,3)" +
+                    " like '%商%' and 供应商 like '%" + this.txtKeyWord.Value + "%' and 是否启用=1 order by updatetime desc";
+                dt_gxs = objConn.GetDataTable(gsxx);
                 if (gsxx.ToUpper().Contains("ORDER BY"))
                 {
                     int a = gsxx.ToUpper().IndexOf("ORDER BY");
@@ -373,13 +380,13 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
                         gsxx = "select * from(select *,row_number() over( order by " + name + ") as 编号 from (" + gsxx + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
                     }
                 } 
-                dt_gxs = objConn.GetDataTable(gsxx);
                 Session["SQLsource"] = gsxx;
-                string sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where left(是否启用,1) " +
-                    " =1 and 供应商 like '%" + this.txtKeyWord.Value + "%' order by updatetime desc";
+                string sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where left(单位类型,3)" +
+                    " like '%商%' and 是否启用=1 order by gys_id desc";
                 string sSearchCondition = "供应商 like '%" + this.txtKeyWord.Value + "%'";
                 MyDataBind(true, sSQL, sSearchCondition);
                 this.txtKeyWord.Value = "";
+                this.dic.Visible = true;
             }
         }
     }

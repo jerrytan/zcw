@@ -35,10 +35,10 @@
         public DataTable dt_fxpp = new DataTable();
         public DataTable dt_gys = new DataTable();//材料供应商信息表
         public int PageSize = 10;
-        DataView objDv = null;
-        DataTable objDt = null;
         public DataTable dt_gsxx = new DataTable();
         protected DataTable dt_content = new DataTable();
+        DataTable objDt = null;
+        DataView objVe = null;
         protected void Page_Load(object sender, EventArgs e)
         {
                 this.xxpp.Visible = true;
@@ -105,7 +105,6 @@
         public void MyDataBind(bool bpostback, string sSQL, string sCondition)
         {
             int TotalPage;          //总页数
-            DataTable objDt = null;
             Session["ADDSQL"] = sSQL;
             TotalPage = 0;
             if (sCondition != "")
@@ -124,6 +123,9 @@
                     this.lblPageCount.Text = TotalPage1.ToString();
                     this.lblCurPage.Text = "1";
                     this.btnPrev.Enabled = false;
+                    this.btnfoot.Enabled = true;
+                    this.btnhead.Enabled = false;
+                    this.btnNext.Enabled = true;
                 }
                 else
                 {
@@ -131,6 +133,8 @@
                     this.lblPageCount.Text = "1";
                     this.btnNext.Enabled = false;
                     this.btnPrev.Enabled = false;
+                    this.btnfoot.Enabled = false;
+                    this.btnhead.Enabled = false;
                 }
             }
             else
@@ -193,6 +197,7 @@
             {
                 objDt = objConn.GetDataTable(sSQL);
                 Session["sSearchSql"] = sSQL;
+                
             }
             catch
             {
@@ -357,10 +362,17 @@
                     }
                     break;
                 case "Prev":
-                    if (intPageIndex > 0)
+                    if (intPageIndex >1)
                     {
                         intPageIndex--;
                         lblCurPage.Text = Convert.ToString(intPageIndex);
+                    }
+                    else if(intPageIndex==1)
+                    {
+                        btnPrev.Enabled = false;
+                        btnhead.Enabled = false;
+                        btnNext.Enabled = true;
+                        btnfoot.Enabled = true; 
                     }
                     break;
                 case "Head":
@@ -436,23 +448,12 @@
             }
             try
             {
-                objDt = objConn.GetDataTable(sSQL);
-                dt_gsxx = objDt;
+                dt_gsxx = objConn.GetDataTable(sSQL);
             }
             catch
             {
 
             }
-            //if (objDt != null)
-            //{
-            //    objDt = GetAdjustDt(objDt);
-            //    objDv = objDt.DefaultView;
-            //}
-            //GridView1.DataSource = objDv;
-            //GridView1.Columns[1].Visible = false;
-            //GridView1.Columns[10].Visible = false;
-            //GridView1.Columns[11].Visible = false;
-            //this.GridView1.DataBind(); 
         }
         protected void Clear(object sender, EventArgs e)
         {
@@ -482,8 +483,6 @@
                 this.divtable.Visible = true;
                 this.gxsform.Visible = false;
                 this.divfy.Visible = false;
-                //this.ImageButton1.Visible = false;
-                //this.ImageButton2.Visible = false;
                 this.xxpp.Visible = true;
                 string sql = " select COUNT(*) from 材料供应商信息表 where 供应商 like '%" + this.txt_gys.Value + "%'";
                 int count = Convert.ToInt32(objConn.DBLook(sql));
@@ -512,7 +511,7 @@
                                     "from 材料供应商信息表 where left(单位类型,3) like '%商%' order by gys_id";
                     string sSearchCondition = "供应商 like '%" + this.txt_gys.Value + "%'";
                     MyDataBind(true, sSQL, sSearchCondition);
-                    
+                    this.divfy.Visible = true;
                 }
                 else
                 {
@@ -524,59 +523,6 @@
         protected void updateUserInfo(object sender, EventArgs e)
         {
             this.xxpp.Visible = true;
-            //蒋，2014年8月21日 ,注释
-            //string pp_id =Request["pp_id"];	//品牌id	
-            //qymc = this.s0.Value + this.s1.Value + this.s2.Value + this.s3.Value;
-           // if (this.gys.Value == "")
-           // {
-           //     Response.Write("<script>alert('供应商不能为空！')</" + "script>");
-           //     this.gys.Focus();
-           //     return;
-           // }
-           //else if (this.zzjgbh.Value == "")
-           // {
-           //     Response.Write("<script>window.alert('组织机构编号不能为空！')</" + "script>");
-           //     this.zzjgbh.Focus();
-           //     return;
-           // }
-           // else if (this.lx.Value == "")
-           // {
-           //     Response.Write("<script>window.alert('单位类型不能为空！')</" + "script>");
-           //     this.lx.Focus();
-           //     return;
-           // }           
-           // else if (this.qymc.v != "")
-           // {
-           //     Response.Write("<script>window.alert('地区名称不能为空！')</" + "script>");
-           //     this.s1.Focus();
-           //     return;
-           // }
-           // else if (this.lxr.Value == "")
-           // {
-           //     Response.Write("<script>window.alert('联系人不能为空！')</" + "script>");
-           //     this.lxr.Focus();
-           //     return;
-           // }
-           // else if (this.lxrsj.Value == "")
-           // {
-           //     Response.Write("<script>window.alert('联系人手机不能为空！')</" + "script>");
-           //     this.lxrsj.Focus();
-           //     return;
-           // }
-           // else if (this.lxdz.Value == "")
-           // {
-           //     Response.Write("<script>window.alert('联系地址不能为空！')</" + "script>");
-           //     this.lxdz.Focus();
-           //     return;
-           // }
-           // else if (this.jyfw.Value == "")
-           // {
-           //     Response.Write("<script>window.alert('经营范围不能为空！')</" + "script>");
-           //     this.jyfw.Focus();
-           //     return;
-           // }
-            //else
-            //{
             if (xzlx == "分销商")
             {
                 if (this.gys.Value == "")
@@ -591,11 +537,6 @@
                     sSQL = "insert into  分销商和品牌对应关系表 (pp_id,品牌名称,是否启用,fxs_id,分销商,updatetime)" +
                     " values('" + this.txt_ppid.Value + "','" + this.txt_ppname.Value + "',1,'" + fxs_id + "','" + this.gys.Value + "',(select getdate()) ) ";
                     objConn.ExecuteSQL(sSQL, true);
-                    //string id = "";
-                    //id = save();
-                    //bool b = xzpp(id);
-                    //if (b)
-                    //{
                     //蒋，2014年8月21日，当前品牌信息录入材料供应商信息从表 
                     string addppxx = "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime)" +
                         "values('" + this.txt_ppid.Value + "','" + this.txt_ppname.Value + "',1,'" + fxs_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
@@ -604,11 +545,11 @@
                     string update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" + this.gys.Value + "' and 品牌名称='" + this.txt_ppname.Value + "') where 供应商='" + this.gys.Value + "' and 品牌名称='" + this.txt_ppname.Value + "'";
                     if (objConn.ExecuteSQL(update, true))
                     {
-                        Response.Write("<script>alert('信息录入成功！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
+                        Response.Write("<script>alert('添加成功！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
                     }
                     else
                     {
-                        Response.Write("<script>alert('信息录入失败！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
+                        Response.Write("<script>alert('添加失败！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
                     }
                 }
             }
@@ -726,8 +667,6 @@
             this.xxpp.Visible = true;
             this.gxsform.Visible = true;
             this.divtable.Visible = false;
-            //this.ImageButton1.Visible = true;
-            //this.ImageButton2.Visible = true;
             string gsxx = "select 供应商,地区名称,联系人手机,联系地址,联系人,单位类型,经营范围," +
                  "单位简称,法定代表人,注册资金,注册日期,企业类别,联系人QQ,传真,主页,地址,开户银行,银行账户,备注," +
                  "营业执照注册号,企业员工人数,资产总额,注册级别,资质等级,是否启用,邮编,电子邮箱,电话,账户名称" +

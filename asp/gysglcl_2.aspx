@@ -43,6 +43,7 @@
     }
     function btnFilter_Click() {
         var gy = document.getElementById("lblgys_id").value;
+        alert(gy)
         window.parent.location.href = 'xzclym.aspx?gys_id='+gy;
     }
     function BJCL(cl_mc) {
@@ -155,7 +156,7 @@
       </thead>
       <tbody>
        <% foreach (System.Data.DataRow R_cl in dt_cl.Rows)
-          { %>
+          {%>
         <tr>
           <td align="center"><input type="checkbox" name="input" id="checkbox" value="<%=R_cl["cl_id"].ToString() %>"/>
             <label for="checkbox"></label></td>
@@ -169,8 +170,14 @@
           <input type="hidden" id="lblgys_id" runat="server" />
           </td>
           </tr>
-          <%}
-          %>
+          <%}%>
+          <%if (dt_cl.Rows.Count < 10)
+            {
+                for (int i = 0; i < 10 - dt_cl.Rows.Count; i++)
+                {%>  
+                    <tr><td></td><td class="style1"></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <%}
+            }%>
       </tbody>
     </table>
   <div style="text-align:center"  runat="server" id="dic">

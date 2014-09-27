@@ -232,7 +232,6 @@
     public string pp_mc="";
     protected void Page_Load(object sender, EventArgs e)
     {
-        
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
@@ -437,7 +436,7 @@
         <div class="dlqqz1">您的品牌列表</div>
         <%foreach (System.Data.DataRow PP_MC in dt_pp_id.Rows)
           {%>
-        <ul><li><a href="javascript:void(0)" onclick="CZ_P('<%=PP_MC["品牌名称"].ToString() %>')"><img src="images/biao2.jpg" />&nbsp;&nbsp;<%=PP_MC["品牌名称"].ToString()%></a></li>
+        <ul><li><h2 id="h2"><a href="javascript:void(0)" onclick="CZ_P('<%=PP_MC["品牌名称"].ToString() %>')"><img src="images/biao2.jpg" />&nbsp;&nbsp;<%=PP_MC["品牌名称"].ToString()%></a></h2></li>
          </ul>
          <input type="hidden" id="lblgys_id" runat="server" />
          <%} %>
@@ -556,7 +555,7 @@
     </tr>
   </table></div>
 			<%}    %>
-            </div>
+
                    <%-- <div class="fxsxx2">             
                     <span class="fxsbc" >
                             <input name="gys_id" type="hidden" id="gys_id" class="fxsxx3" />
