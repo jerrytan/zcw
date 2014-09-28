@@ -416,7 +416,7 @@
                 <select id="s1" class="fu1"><option></option></select> 省（市）
                 <select id="s2" class="fu2"><option></option></select> 地级市
                 <select id="s3" class="fu3"><option></option></select> 市、县级市、县
-                <script type="text/javascript"  language ="javascript" > 
+                <script type="text/javascript"  language ="javascript"> 
                     <!--
                     //** Power by Fason(2004-3-11) 
                     //** Email:fason_pfx@hotmail.com

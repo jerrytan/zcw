@@ -177,7 +177,6 @@ onloadEvent(showtable);
                         OnCommand="PagerButtonClick" ForeColor="Black">Î²Ò³</asp:LinkButton>&nbsp;
             µÚ<asp:Label ID="lblCurPage" runat="server"  Text="0" ForeColor="Blue">Label</asp:Label>/
               <asp:Label ID="lblPageCount" runat="server" Text="0" ForeColor="Blue">Label</asp:Label>Ò³
-     
         <br />
     </div>
       </div>
