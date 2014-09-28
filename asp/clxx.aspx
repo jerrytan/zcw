@@ -429,7 +429,7 @@
 <script type="text/javascript">
     function NewWindow(number, ppid, gysid, sccs) {
         var url = "sccl.aspx?cl_id=" + number + "|" + ppid+"&gys_id="+gysid+"&sccs="+sccs;        //cl_id="0801A01|183"
-		window.open(url,"","height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+        window.open(url, "", "height=400,width=400,top=100,left=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
     }
     function changeImage(src) {
         document.getElementById("bigImage").src = src;

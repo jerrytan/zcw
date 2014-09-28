@@ -112,7 +112,7 @@
            
     <div>
                     <div class="jiansuo3">
-                        检索条件：
+                        材料名称：
                         <input  type="text" runat="server" id="txt_search" style="border-right: #808080 1px solid;
                             border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
                         &nbsp;&nbsp;
