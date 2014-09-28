@@ -5,79 +5,74 @@
         owner:丁传宇
                
     -->
-
 <%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
-
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>材料信息详情页</title>
-<link href="css/css.css" rel="stylesheet" type="text/css" />
-<link href="css/all of.css" rel="stylesheet" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <title>材料信息详情页</title>
+    <link href="css/css.css" rel="stylesheet" type="text/css" />
+    <link href="css/all of.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/lrtk.js"></script>
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="js/SJLD.js"></script>
+    <script type="text/javascript" language="javascript">
+        var $j = jQuery.noConflict();
+        $j(document).ready(function () {
+            var url = "clxx_ajax.aspx";
+            var fxsmsg = $j("#fxsid_msg").val();
+            var fxscount = $j("#fxscount_msg").val();
 
-<script type="text/javascript" src="js/lrtk.js" ></script>
-<script type="text/javascript" src="js/jquery-1.4.2.min.js" ></script>
-<script type="text/javascript" src="js/SJLD.js" ></script>
-<script type="text/javascript" language="javascript">
-    var $j = jQuery.noConflict();
-    $j(document).ready(function () {
-        var url = "clxx_ajax.aspx";
-        var fxsmsg = $j("#fxsid_msg").val();
-        var fxscount = $j("#fxscount_msg").val();
-
-        $j("#s1").change(function () {
-            var item1 = $j("#s1 option:selected").text();
-            var data = { address: item1, cl_id: fxsmsg};
-            $j.post(url, data, function (msg) {
-                var content = msg;
-                if (content.indexOf("@") >= 0) {
-                    var str_fxs = msg.split('@'); //进行分割
-                    var fxs_list = str_fxs[0];  //供应商信息
-                    var fxs_fy = str_fxs[1];    //分页信息
-                    $j("#clfxs_list").html(fxs_list); //替换筛选的内容
-                    $j("#fy_list").html(fxs_fy);      //替换筛选的内容
-                }
-            }, "text");
+            $j("#s1").change(function () {
+                var item1 = $j("#s1 option:selected").text();
+                var data = { address: item1, cl_id: fxsmsg };
+                $j.post(url, data, function (msg) {
+                    var content = msg;
+                    if (content.indexOf("@") >= 0) {
+                        var str_fxs = msg.split('@'); //进行分割
+                        var fxs_list = str_fxs[0];  //供应商信息
+                        var fxs_fy = str_fxs[1];    //分页信息
+                        $j("#clfxs_list").html(fxs_list); //替换筛选的内容
+                        $j("#fy_list").html(fxs_fy);      //替换筛选的内容
+                    }
+                }, "text");
+            });
+            $j("#s2").change(function () {
+                var item2 = $j("#s2 option:selected").text();
+                var data = { address: item2, cl_id: fxsmsg };
+                $j.post(url, data, function (msg) {
+                    var content = msg;
+                    if (content.indexOf("@") >= 0) {
+                        var str_fxs = msg.split('@'); //进行分割
+                        var fxs_list = str_fxs[0];  //供应商信息
+                        var fxs_fy = str_fxs[1];    //分页信息
+                        $j("#clfxs_list").html(fxs_list); //替换筛选的内容
+                        $j("#fy_list").html(fxs_fy);      //替换筛选的内容
+                    }
+                }, "text");
+            });
+            $j("#s3").change(function () {
+                var item3 = $j("#s3 option:selected").text();
+                var data = { address: item3, cl_id: fxsmsg };
+                $j.post(url, data, function (msg) {
+                    var content = msg;
+                    if (content.indexOf("@") >= 0) {
+                        var str_fxs = msg.split('@'); //进行分割
+                        var fxs_list = str_fxs[0];  //供应商信息
+                        var fxs_fy = str_fxs[1];    //分页信息
+                        $j("#clfxs_list").html(fxs_list); //替换筛选的内容
+                        $j("#fy_list").html(fxs_fy);      //替换筛选的内容
+                    }
+                }, "text");
+            });
         });
-        $j("#s2").change(function () {
-            var item2 = $j("#s2 option:selected").text();
-            var data = { address: item2, cl_id: fxsmsg};
-            $j.post(url, data, function (msg) {
-                var content = msg;
-                if (content.indexOf("@") >= 0) {
-                    var str_fxs = msg.split('@'); //进行分割
-                    var fxs_list = str_fxs[0];  //供应商信息
-                    var fxs_fy = str_fxs[1];    //分页信息
-                    $j("#clfxs_list").html(fxs_list); //替换筛选的内容
-                    $j("#fy_list").html(fxs_fy);      //替换筛选的内容
-                }
-            }, "text");
-        });
-        $j("#s3").change(function () {
-            var item3 = $j("#s3 option:selected").text();
-            var data = { address: item3, cl_id: fxsmsg};
-            $j.post(url, data, function (msg) {
-                var content = msg;
-                if (content.indexOf("@") >= 0) {
-                    var str_fxs = msg.split('@'); //进行分割
-                    var fxs_list = str_fxs[0];  //供应商信息
-                    var fxs_fy = str_fxs[1];    //分页信息
-                    $j("#clfxs_list").html(fxs_list); //替换筛选的内容
-                    $j("#fy_list").html(fxs_fy);      //替换筛选的内容
-                }
-            }, "text");
-        });
-    });
     </script>
-<script runat="server"> 
+    <script runat="server"> 
 
         protected DataTable dt_clxx = new DataTable();   //材料名字(材料表)
 		protected DataTable dt_flxx = new DataTable();   //分类名称(材料分类表)
@@ -122,8 +117,9 @@
 				string str_sqlppmc = "select pp_id,品牌名称,规格型号,材料编码 from 材料表 where cl_id='"+cl_id+"' ";            
 				dt_ppxx = dc_obj.GetDataTable(str_sqlppmc);
 				
-				string str_sqlgysxx =  "select 联系人手机,供应商,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') ";
+				string str_sqlgysxx =  "select 供应商,联系人,电话,传真,主页,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') ";
 				dt_scsxx = dc_obj.GetDataTable(str_sqlgysxx);
+                <%--Response.Write(dt_scsxx.Rows[0]["供应商"]);--%>
 				
 				string str_sqltop3 =  "select top 3 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='大'";        
 				dt_image = dc_obj.GetDataTable(str_sqltop3);
@@ -243,197 +239,227 @@
             parms[2].Value = cl_id;
             return  dc_obj.GetDataTable(str_sqlpage,parms);
         }
-</script>
+    </script>
 </head>
 <body>
-<!-- 头部开始-->
-<!-- #include file="static/header.aspx" -->
-<!-- 头部结束-->
-
-<!-- 导航开始-->
-<uc1:Menu1 ID="Menu1" runat="server" />
-<!-- 导航结束-->
-
-<!-- banner开始-->
-<!-- #include file="static/banner.aspx" -->
-<!-- banner 结束-->
-
-<div class="sc">
-    <!-- 导航链接栏 开始 -->
-    <div class="sc1"><a href="index.aspx">首页 ></a>
-    <% foreach(System.Data.DataRow row in dt_flxx.Rows){%>
-        <a href="ejfl.aspx?name=<%=row["分类编码"].ToString() %>"><%=row["显示名字"].ToString() %></a>
-    <%}%>> 
-    <% foreach(System.Data.DataRow row in dt_clxx.Rows){%>
-        <a href="clxx.aspx?cl_id=<%=cl_id %>"><%=row["显示名"].ToString() %></a>
-    <%}%>
-    </div>
-    <!-- 导航链接栏 结束 -->
-    
-	<!-- 图片列表和收藏 开始 -->
-    <div class="xx1">
-        <div class="xx2">
-            <div style="HEIGHT: 300px; OVERFLOW: hidden;" id="idTransformView">
-                <ul id="idSlider" class="slider">
-					<%
+    <!-- 头部开始-->
+    <!-- #include file="static/header.aspx" -->
+    <!-- 头部结束-->
+    <!-- 导航开始-->
+    <uc1:Menu1 ID="Menu1" runat="server" />
+    <!-- 导航结束-->
+    <!-- banner开始-->
+    <!-- #include file="static/banner.aspx" -->
+    <!-- banner 结束-->
+    <div class="sc">
+        <!-- 导航链接栏 开始 -->
+        <div class="sc1">
+            <a href="index.aspx">首页 ></a>
+            <% foreach(System.Data.DataRow row in dt_flxx.Rows){%>
+            <a href="ejfl.aspx?name=<%=row["分类编码"].ToString() %>">
+                <%=row["显示名字"].ToString() %></a>
+            <%}%>>
+            <% foreach(System.Data.DataRow row in dt_clxx.Rows){%>
+            <a href="clxx.aspx?cl_id=<%=cl_id %>">
+                <%=row["显示名"].ToString() %></a>
+            <%}%>
+        </div>
+        <!-- 导航链接栏 结束 -->
+        <!-- 图片列表和收藏 开始 -->
+        <div class="xx1">
+            <div class="xx2">
+                <div style="height: 300px; overflow: hidden;" id="idTransformView">
+                    <ul id="idSlider" class="slider">
+                        <%
 	                foreach(System.Data.DataRow row in dt_images.Rows)
                     {%>
-                    <div style="POSITION: relative">
-                    	<%
+                        <div style="position: relative">
+                            <%
 	                    if(row["存放地址"].ToString()!="")
 	                    {%>
-                            <a ><img  src="<%=row["存放地址"].ToString()%>" width="320" height="300" id="bigImage"></a>
+                            <a>
+                                <img src="<%=row["存放地址"].ToString()%>" width="320" height="300" id="bigImage"></a>
+                            <%}%>
+                        </div>
                         <%}%>
-                    
-                    </div>
-					<%}%>
-                </ul>
-            </div>
-            <div>
-                <ul id="idNum" class="hdnum">
-                <% for (int i=0;i< dt_images.Rows.Count;i++){
+                    </ul>
+                </div>
+                <div>
+                    <ul id="idNum" class="hdnum">
+                        <% for (int i=0;i< dt_images.Rows.Count;i++){
                     System.Data.DataRow row =dt_images.Rows[i];
-                %>   
-                    <li>
-                        <img src='<%=row["存放地址"].ToString()%>' width="61px" height="45px" click="changeImage('<%=row["存放地址"].ToString()%>')">
-                    </li>
-                <%}%>
-                </ul>
+                        %>
+                        <li>
+                            <img src='<%=row["存放地址"].ToString()%>' width="61px" height="45px" click="changeImage('<%=row["存放地址"].ToString()%>')">
+                        </li>
+                        <%}%>
+                    </ul>
+                </div>
             </div>
-        </div>
-    
-        <div class="xx3">
-            <dl>
-                  <% foreach(System.Data.DataRow row in dt_ppxx.Rows){
+            <div class="xx3">
+                <dl>
+                    <% foreach(System.Data.DataRow row in dt_ppxx.Rows){
 					ppid =  row["pp_id"].ToString();
 					cl_number = row["材料编码"].ToString();
-                  %>
-                  <dd>品牌:</dd>
-                  <dt style="height:30px;"><%=row["品牌名称"].ToString() %></dt>
-                  
-				  <dd>型号:</dd>
-                  <dt style="height:30px;"><%=row["规格型号"].ToString() %></dt>
-                  <dd>编码:</dd>
-                  <dt style="height:30px;"><%= cl_number %></dt>
-                  <%}%> 
-            </dl>
-			<%
+                    %>
+                    <dd>
+                        品牌:</dd>
+                    <dt style="height: 30px;">
+                        <%=row["品牌名称"].ToString() %></dt>
+                    <dd>
+                        型号:</dd>
+                    <dt style="height: 30px;">
+                        <%=row["规格型号"].ToString() %></dt>
+                    <dd>
+                        编码:</dd>
+                    <dt style="height: 30px;">
+                        <%= cl_number %></dt>
+                    <%}%>
+                </dl>
+                <%
 				//供应商
 				HttpCookie GYS_QQ_id = Request.Cookies["GYS_QQ_ID"];   
 				Object GYS_YH_id = Session["GYS_YH_ID"];  
 				if((GYS_QQ_id == null ) && (GYS_YH_id == null))	//供应商未登录，显示收藏
 				{
-            %>    <%-- 蒋，2014年8月25日，添加else判断--%>
-					<span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;" >
-						<a href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>')">请收藏，便于查找</a>
-					</span>	
-			<%
+                %>
+                <%-- 蒋，2014年8月25日，添加else判断--%>
+                <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a
+                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>')">
+                    请收藏，便于查找</a> </span>
+                <%
 				}
                 else
                 {%>
-                <span class="xx4" style=" display:block; margin-left:40%; margin-right:auto;"  >
-						<a href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>')">请收藏，便于查找</a>
-					</span>
-              <%  }
-			%>
-               
+                <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a
+                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>')">
+                    请收藏，便于查找</a> </span>
+                <%  }
+                %>
+            </div>
+            <!-- 材料所对应的生产商信息 开始 -->
+            <%--<div class="xx5">
+                <img src="images/sst_03.jpg" />
+                <div class="xx6">
+                    <ul>
+                        <li class="xx7">生产商信息</li>
+                        <% foreach(System.Data.DataRow row in dt_scsxx.Rows){%>
+                        <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
+                            <li>厂名：<%=row["供应商"].ToString()%></li>
+                            <li>地址：<%=row["联系地址"].ToString()%></li>
+                            <li>电话：<%=row["联系人手机"].ToString()%></li>
+                        </a>
+                        <%}%>
+                    </ul>
+                </div>
+            </div>--%>
+            <div class="gycs" style="float: right; border: 1px solid #ddd;">
+                <div style="font-size: 14px; font-weight: bold; width: 290px; height: 26px; padding-left: 10px;
+                    background-color: #f7f7f7;">
+                    生产商信息</div>
+                <ul style="padding: 10px;">
+                    <%foreach(System.Data.DataRow row in dt_scsxx.Rows){ %>
+                    <li>生产商名称：<a href="#" class="fxsa"><%=row["供应商"] %></a></li>
+                    <li>联系人：<%=row["联系人"] %></li>
+                    <li>电话：<%=row["电话"] %></li>
+                    <li>传真：<%=row["传真"] %></li>
+                    <li>主页：<a href="#"><%=row["主页"] %></a></li>
+                    <li>地址：<%=row["联系地址"] %></li>
+                    <%} %>
+                    <%if(dt_scsxx.Rows.Count==0){ %>
+                    <li>生产商名称：<a href="#" class="fxsa">暂无</a></li>
+                    <li>联系人：暂无</li>
+                    <li>电话：&nbsp;&nbsp;&nbsp;&nbsp;暂无</li>
+                    <li>传真：&nbsp;&nbsp;&nbsp;&nbsp;暂无</li>
+                    <li>主页：&nbsp;&nbsp;&nbsp;&nbsp;暂无</li>
+                    <li>地址：&nbsp;&nbsp;&nbsp;&nbsp;暂无</li>
+                    <%} %>
+                </ul>
+            </div>
+            <!-- 材料所对应的生产商信息 结束 -->
         </div>
-    </div>
-    <!-- 图片列表和收藏 结束 -->
-
-    <!-- 材料所对应的生产商信息 开始 -->
-    <div class="xx5">
-        <img src="images/sst_03.jpg" />
-        <div class="xx6">
-            <ul>
-                <li class="xx7">生产商信息</li>
-		        <% foreach(System.Data.DataRow row in dt_scsxx.Rows){%>  
-                <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
-                <li>厂名：<%=row["供应商"].ToString()%></li>
-                <li>地址：<%=row["联系地址"].ToString()%></li>
-                <li>电话：<%=row["联系人手机"].ToString()%></li>
-                </a>
-		        <%}%>  
-            </ul>
-        </div>
-    </div>
-    <!-- 材料所对应的生产商信息 结束 -->
-
-    <!-- 显示 下拉列表对应供应商信息 开始 -->
-    <div class="xx8" >
-        <div class="xx9">
-            <div class="fxs1">
-                <select id="s1" class="fu1"><option></option></select> 省（市）
-                <select id="s2" class="fu2"><option></option></select> 地级市
-                <select id="s3" class="fu3"><option></option></select> 市、县级市、县
-                <script type="text/javascript"  language ="javascript" > 
+        <!-- 图片列表和收藏 结束 -->
+        <!-- 显示 下拉列表对应供应商信息 开始 -->
+        <div class="xx8">
+            <div class="xx9">
+                <div class="fxs1">
+                    <select id="s1" class="fu1">
+                        <option></option>
+                    </select>
+                    省（市）
+                    <select id="s2" class="fu2">
+                        <option></option>
+                    </select>
+                    地级市
+                    <select id="s3" class="fu3">
+                        <option></option>
+                    </select>
+                    市、县级市、县
+                    <script type="text/javascript" language="javascript"> 
                     <!--
-                    //** Power by Fason(2004-3-11) 
-                    //** Email:fason_pfx@hotmail.com
-                    var s = ["s1", "s2", "s3"];
-                    var opt0 = ["-省(市)-", "-地级市、区-", "-县级市、县、区-"];
-                    for (i = 0; i < s.length - 1; i++)
-                    document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
-                    change(0);
+                        //** Power by Fason(2004-3-11) 
+                        //** Email:fason_pfx@hotmail.com
+                        var s = ["s1", "s2", "s3"];
+                        var opt0 = ["-省(市)-", "-地级市、区-", "-县级市、县、区-"];
+                        for (i = 0; i < s.length - 1; i++)
+                            document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
+                        change(0);
                     //--> 
-                </script>
-            </div>
-            <!-- 存放传值数据-->
-                <input type="hidden" id="fxsid_msg" name="fxsid_msg" value="<%=cl_id %>"/>
-            <div id="clfxs_list">
-                <%=content %>
+                    </script>
+                </div>
+                <!-- 存放传值数据-->
+                <input type="hidden" id="fxsid_msg" name="fxsid_msg" value="<%=cl_id %>" />
+                <div id="clfxs_list">
+                    <%=content %>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- 显示 下拉列表对应供应商信息 结束 -->
-    <div id="fy_list" style=" margin-left:34%;margin-top:40px;float:left;height:auto;width:400px;">
-            <%=fy_list %> 
-    </div>
-
-
-    <!-- 显示3张大图片 开始 -->
-    <%foreach(System.Data.DataRow row in dt_image.Rows){%>
-    <div class="xx10">
-        <div class="xx11">
-            <img alt="存放地址" src="<%=row["存放地址"].ToString()%>" />
+        <!-- 显示 下拉列表对应供应商信息 结束 -->
+        <div id="fy_list" style="margin-left: 34%; margin-top: 40px; float: left; height: auto;
+            width: 400px;">
+            <%=fy_list %>
         </div>
+        <!-- 显示3张大图片 开始 -->
+        <%foreach(System.Data.DataRow row in dt_image.Rows){%>
+        <div class="xx10">
+            <div class="xx11">
+                <img alt="存放地址" src="<%=row["存放地址"].ToString()%>" />
+            </div>
+        </div>
+        <%}%>
+        <!-- 显示3张大图片 结束 -->
+        <!-- 显示 视频 开始 -->
+        <% if (cl_id.Equals("74")) { %>
+        <div class="xx10">
+            <div class="xx11">
+                介绍视频</div>
+            <embed src="http://tv.people.com.cn/img/2010tv_flash/outplayer.swf?xml=/pvservice/xml/2011/10/6/12d1c210-dd85-4872-8eb2-33b224fb0743.xml&key=人民电视:/150716/152576/152586/&quote=1&"
+                quality="high" width="480" height="384" align="middle" allowscriptaccess="always"
+                allowfullscreen="true" type="application/x-shockwave-flash"></embed>
+        </div>
+        <% } %>
+        <!-- 显示 视频 结束 -->
     </div>
-    <%}%>
-    <!-- 显示3张大图片 结束 -->
-   
-    <!-- 显示 视频 开始 -->
-    <% if (cl_id.Equals("74")) { %>
-    <div class="xx10">
-        <div class="xx11">介绍视频</div>
-        <embed src="http://tv.people.com.cn/img/2010tv_flash/outplayer.swf?xml=/pvservice/xml/2011/10/6/12d1c210-dd85-4872-8eb2-33b224fb0743.xml&key=人民电视:/150716/152576/152586/&quote=1&" quality="high" width="480" height="384" align="middle" allowScriptAccess="always" allowFullScreen="true" type="application/x-shockwave-flash"></embed>
+    <div>
+        <!-- 关于我们 广告服务 投诉建议 开始-->
+        <!-- #include file="static/aboutus.aspx" -->
+        <!-- 关于我们 广告服务 投诉建议 结束-->
     </div>
-    <% } %>
-    <!-- 显示 视频 结束 -->
-</div>
-
-<div>
-<!-- 关于我们 广告服务 投诉建议 开始-->
-<!-- #include file="static/aboutus.aspx" -->
-<!-- 关于我们 广告服务 投诉建议 结束-->
-</div>
-
-<!--  footer 开始-->
-<!-- #include file="static/footer.aspx" -->
-<!-- footer 结束-->
-<script language="javascript">
-  mytv("idNum","idTransformView","idSlider",300,5,true,2000,5,true,"onmouseover");
-  //按钮容器aa，滚动容器bb，滚动内容cc，滚动宽度dd，滚动数量ee，滚动方向ff，延时gg，滚动速度hh，自动滚动ii，
- </script>
-
-
-<script type="text/javascript">
-    function NewWindow(number, ppid, gysid, sccs) {
-        var url = "sccl.aspx?cl_id=" + number + "|" + ppid+"&gys_id="+gysid+"&sccs="+sccs;        //cl_id="0801A01|183"
-        window.open(url, "", "height=400,width=400,top=100,left=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
-    }
-    function changeImage(src) {
-        document.getElementById("bigImage").src = src;
-    }
-</script>
+    <!--  footer 开始-->
+    <!-- #include file="static/footer.aspx" -->
+    <!-- footer 结束-->
+    <script language="javascript">
+        mytv("idNum", "idTransformView", "idSlider", 300, 5, true, 2000, 5, true, "onmouseover");
+        //按钮容器aa，滚动容器bb，滚动内容cc，滚动宽度dd，滚动数量ee，滚动方向ff，延时gg，滚动速度hh，自动滚动ii，
+    </script>
+    <script type="text/javascript">
+        function NewWindow(number, ppid, gysid, sccs) {
+            var url = "sccl.aspx?cl_id=" + number + "|" + ppid + "&gys_id=" + gysid + "&sccs=" + sccs;        //cl_id="0801A01|183"
+            window.open(url, "", "height=400,width=400,top=100,left=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+        }
+        function changeImage(src) {
+            document.getElementById("bigImage").src = src;
+        }
+    </script>
 </body>
 </html>
