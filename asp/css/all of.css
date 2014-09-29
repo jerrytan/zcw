@@ -276,7 +276,7 @@ line-height:30px;
 .dlqqr dt{ width:300px; height:24px; float:left; margin-top:10px; line-height:24px;}
 
 .dlqqz{ width:1000px; height:auto; float:left;margin-top:10px;}
-.dlqqz1{width:190px; height:30px; margin-bottom:10px;text-align:center; font-size:14px; font-weight:bold; line-height:30px; background-color:#77b9ed; color:#fff; margin:5px 0 10px 5px;}
+.dlqqz1{width:160px; height:30px; margin-bottom:10px;text-align:center; font-size:14px; font-weight:bold; line-height:30px; background-color:#77b9ed; color:#fff; margin:5px 0 10px 5px;}
 .dlqqz2{width:200px; height:auto;margin:0px 10px 10px 10px;}
 .dlqqz3{width:211px; height:auto;padding:0 0 10px 0px;}
 .dlqqz4{ float:right;height:auto;padding:0 30px 0 30px;}
@@ -393,7 +393,7 @@ line-height:36px; float:left; font-size:14px; color:#707070; font-weight:bold; b
 	float:left;
 	}
 #table2 {
-	width:765px;
+	width:795px;
 	float:left;
 	}
 #table3 {
@@ -443,7 +443,7 @@ line-height:36px; float:left; font-size:14px; color:#707070; font-weight:bold; b
 	text-align:center;
 }
 #jiansuo2{
-	width:765px;
+	width:795px;
 	height:40px;
 	float:left;
 	line-height:40px;
@@ -790,7 +790,7 @@ border-top:0px solid #ddd;
 	list-style-type: none;
 }
 #menu {
-	width:200px;
+	width:170px;
 	float:left;
 	margin:auto;
 	border: 1px solid #ddd;

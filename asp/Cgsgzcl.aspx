@@ -109,9 +109,9 @@
 </head>
 <body>
     <form id="form1" runat="server">
-           
+          
     <div>
-                    <div class="jiansuo3">
+                    <div id="jiansuo2" >
                         材料名称：
                         <input  type="text" runat="server" id="txt_search" style="border-right: #808080 1px solid;
                             border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
@@ -125,7 +125,7 @@
                         <input type="button" id="btnFilter" value="删除材料" onclick="deleteGzcl()" style="height: 20px;
                             width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor: pointer;" />
                     </div>
-                    <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd"
+                    <table width="755" border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd"
                         class="table2" id="table2">
                         <thead>
                             <tr>
@@ -136,16 +136,23 @@
                                     <strong>名称</strong>
                                 </th>
                                 <th align="center">
-                                    <strong>供应商</strong>
+                                    <strong>规格\型号</strong>
+                                </th>
+                                 <th align="center">
+                                    <strong>品牌</strong>
                                 </th>
                                 <th align="center">
-                                    <strong>品牌</strong>
+                                    <strong>供应商</strong>
                                 </th>
                                 <th align="center">
                                     <strong>地区</strong>
                                 </th>
+                                
                                 <th align="center">
-                                    <strong>规格\型号</strong>
+                                    <strong>收藏人</strong>
+                                </th>
+                                 <th align="center">
+                                    <strong>QQ</strong>
                                 </th>
                                 <th align="center">
                                     <strong>操作</strong>
@@ -165,11 +172,14 @@
                                 <td align="left">
                                     <%=dr["显示名"]%>
                                 </td>
+                                 <td>
+                                    <%=dr["规格型号"]%>
+                                </td>
+                                 <td>
+                                    <%=dr["品牌名称"]%>
+                                </td>
                                 <td align="left">
                                     <%=dr["生产厂商"]%>
-                                </td>
-                                <td>
-                                    <%=dr["品牌名称"]%>
                                 </td>
                                 <td class="gridtable">
                                     <%=dr["地址"]%>
@@ -177,6 +187,10 @@
                                 <td>
                                     <%=dr["规格型号"]%>
                                 </td>
+                                <td>
+                                    <%=dr["规格型号"]%>
+                                </td>
+                               
                                 <td align="center">
                                    <%-- <a href="clxx.aspx?cl_id=<%=dr["cl_id"] %>">--%>
                                         <input type="button" name="filter" value="查阅" id="btnRead" onclick="readClxx(<%=dr["cl_id"] %>)" class="filter" style="color: Black;
@@ -191,7 +205,7 @@
                               { 
                                   for(int i=0;i<10-dt_topcl.Rows.Count;i++)
                                   {%>  
-                                        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                                        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                                   <%}
                              }%>
                         </tbody>

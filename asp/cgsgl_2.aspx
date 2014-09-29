@@ -512,7 +512,7 @@
 
                     }%>
                 </div>
-                <div id="cgs_lb" style="width: 755px; margin-left: 232px;" > 
+                <div id="cgs_lb"  style="width:795px; margin-left:182px;" > 
                 <iframe id="cgsglcl_frame" width="100%" height="370" src="Cgsgzcl.aspx?s_yh_id=<%=s_yh_id %>" frameborder="0"></iframe>
                   <%--  <div class="jiansuo3">
                         ¼ìË÷Ìõ¼þ£º
