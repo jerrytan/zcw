@@ -166,7 +166,6 @@
                 document.getElementById("cl_type").value = ggxh_value;
             }
         }
-
     }
     function SaveAll()
     {
@@ -175,7 +174,7 @@
         document.getElementById("form1").submit();
     }
 </script>	
-<script type=text/javascript><!--    //--><![CDATA[//><!--
+<script type="text/javascript"><!--    //--><![CDATA[//><!--
     function menuFix()
     {
         var sfEls = document.getElementById("nav").getElementsByTagName("li");
@@ -221,7 +220,7 @@
     demo.onmouseover = function () { clearInterval(MyMar) }
     demo.onmouseout = function () { MyMar = setInterval(Marquee, speed) }
 </script>
-<script type=text/javascript><!--    //--><![CDATA[//><!--
+<script type="text/javascript">
     function menuFix()
     {
         var sfEls = document.getElementById("nav").getElementsByTagName("li");
@@ -247,7 +246,7 @@
         }
     }
     window.onload = menuFix;
-    //--><!]]></script>
+  </script>
 <script runat="server">  
          protected DataTable dt_clfl = new DataTable();  //材料分类大类   
          protected DataTable dt_clflej = new DataTable();  //材料分类大类   
@@ -259,7 +258,8 @@
          public string s_clmc = "";
          public string clbm = "";
          public string fl_id = "";
-   
+         public string cl_id = "";
+         public string FilePath;
          protected void Page_Load(object sender, EventArgs e)
          {
              string cl_mc = Request["cl_mc"].ToString();   //获取材料名称              
@@ -267,10 +267,11 @@
                  dt_clfl = objConn.GetDataTable(sSQL);
                  sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='4'";
                  dt_clflej = objConn.GetDataTable(sSQL);
-                 sSQL = "select 显示名,分类名称,品牌名称,规格型号,计量单位,单位体积,单位重量,分类编码,说明,pp_id,fl_id,材料编码 from 材料表 where 显示名='" + cl_mc + "' ";
+                 sSQL = "select cl_id, 显示名,分类名称,品牌名称,规格型号,计量单位,单位体积,单位重量,分类编码,说明,pp_id,fl_id,材料编码 from 材料表 where 显示名='" + cl_mc + "' ";
                  dt_clxx = objConn.GetDataTable(sSQL);
                  clbm = Convert.ToString(dt_clxx.Rows[0]["材料编码"]);
                  s_clmc = Convert.ToString(dt_clxx.Rows[0]["显示名"]);
+                 cl_id = Convert.ToString(dt_clxx.Rows[0]["cl_id"]);
                  sSQL = "select 品牌名称,pp_id from 品牌字典 where left(分类编码,2)='" + clbm.Substring(0, 2) + "'";
 
                  dt_pp = objConn.GetDataTable(sSQL);
@@ -285,7 +286,7 @@
                  objConn.MsgBox(this.Page, "请先选择上传文件！");
                  return;
              }
-            string FilePath = Server.MapPath("temp\\");
+             FilePath = Server.MapPath("temp\\");
              FilePath = FilePath + "Vedio\\";
              if (!System.IO.Directory.Exists(FilePath))
              {
@@ -351,10 +352,8 @@
                  {
                      s_fl = "产品图片";
                  }
-                 sSQL = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,分类,存放地址) values(" +
-               "'" + Convert.ToString(Request["cl_id"]) + "','" + clbm + "','" + s_clmc + "','1','" +
-               s_mtlx + "','" + s_fl + "','" + FilePath + "')";
-                 Response.Write("<script>window.alert('" + sSQL + "')</" + "script>");
+                 sSQL = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,分类,存放地址,updatetime) values(" +
+               "'" + cl_id + "','" + clbm + "','" + s_clmc + "','1','" + s_mtlx + "','" + s_fl + "','" + FilePath + "',(select getdate()))";
                  bool b = objConn.ExecuteSQL(sSQL, true);
                  if (b)
                  {
@@ -364,7 +363,6 @@
                  {
                      Response.Write("<script>window.alert('保存到数据库中失败，请重新上传！')</" + "script>");
                  }
-                
              }
              else
              {
@@ -405,7 +403,7 @@
  <!-- 头部结束-->
 
 <div>
- <form runat="server" id="form1">
+ <form runat="server" id="form1" action="xzclym4.aspx" method="post">
  <div class="fxsxx">
     <table width="998" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px; margin-top:10px;">
     <tr>
@@ -467,7 +465,7 @@
       <td width="50" height="30">&nbsp;</td>
       <td width="120">材料名字：</td>
       <td width="329"><label for="textfield"></label>
-        <input name="cl_name" id="cl_name" type="text" class="fxsxx3" value="<%=s_clmc%>" disabled /></td>
+        <input name="cl_name" id="cl_name" type="text" class="fxsxx3" value="<%=s_clmc%>"/></td>
       <td width="50" align="right"></td>
       <td width="120">品    牌：</td>
       <td width="329"><select name="brand" id="brand" style="width: 300px">
@@ -518,24 +516,24 @@
       <td height="30">&nbsp;</td>
       <td>规格型号：</td>
       <td><label for="textfield21">
-        <input name="cl_type" type="text" id="cl_type" class="fxsxx3" value="<%=dt_clxx.Rows[0]["规格型号"] %>" disabled  />
+        <input name="cl_type" type="text" id="cl_type" class="fxsxx3" value="<%=dt_clxx.Rows[0]["规格型号"] %>"/>
       </label></td>
       <td>&nbsp;</td>
       <td>计量单位：</td>
-      <td><input name="cl_bit" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["计量单位"] %>"  disabled /></td>
+      <td><input name="cl_bit" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["计量单位"] %>"/></td>
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
       <td>单位体积：</td>
-      <td><input name="cl_volumetric" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位体积"] %>" disabled  /></td>
+      <td><input name="cl_volumetric" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位体积"] %>"/></td>
       <td>&nbsp;</td>
       <td>单位重量：</td>
-      <td><input name="cl_height" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位重量"] %>" disabled /></td>
+      <td><input name="cl_height" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["单位重量"] %>"/></td>
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
       <td>说明：</td>
-      <td><input name="cl_instruction" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["说明"] %>" disabled  /></td>
+      <td><input name="cl_instruction" type="text" class="fxsxx3" value="<%=dt_clxx.Rows[0]["说明"] %>"/></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
@@ -567,10 +565,10 @@
        <dd>上传文件：</dd>
                <dt><input name="file1" runat="server" type="file" id="file1" class="fxsxx3"/>&nbsp;&nbsp;<asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="ImageButton1" OnClick="UploadFile" /></dt>
      </dl>
-     <span class="fxsbc"><a href="#"><img src="images/bbc_03.jpg" onclick="SaveAll()"/></a></span>  
+      
 </div>
-</div>
-
+</div></div>
+<span class="fxsbc"><a href="#"><img src="images/bbc_03.jpg" onclick="SaveAll()"/></a></span> 
  </form>
  </div>
 <div class="foot">

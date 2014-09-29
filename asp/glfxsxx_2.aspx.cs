@@ -236,9 +236,9 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
         }
         try
         {
-            objDt =objConn.GetDataTable(sSQL);
-            dt_gxs = objDt;
-            Session["sSearchSql"] = sSQL;
+            dt_gxs = objConn.GetDataTable(sSQL);
+            //objDt =objConn.GetDataTable(sSQL);
+            //Session["sSearchSql"] = sSQL;
         }
         catch
         {

@@ -21,7 +21,6 @@
     <title>供应商收藏页面</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
-    <link href="css/gl.css" rel="stylesheet" type="text/css" />
     <script src="js/gysglcl.js" type="text/javascript"></script>
     <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
     <style type="text/css">
@@ -286,7 +285,7 @@
         string[] yj = new string[2];
         yj = yjfl.Split('|');//yj[0]  一级编码  yj[1] 一级显示名字
     %>
-    <h2 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/biao2.jpg" />&nbsp;<%=yj[1]%></a></h2>
+    <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/biao2.jpg" />&nbsp;<%=yj[1]%></a></h1>
     <span class="no">
     <input type="hidden" id="lblgys_id" runat="server" />
     <% 
@@ -297,9 +296,9 @@
         {
             string value = R_ejfl["显示名字"].ToString();
             %>
-   <h4>  
-    <a href="javascript:void(0)" onclick="CZ('<%=value %>')"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<%=R_ejfl["显示名字"].ToString() %></a>
-    </h4>  
+   <h2>  
+    <a href="javascript:void(0)" onclick="CZ('<%=value %>')"><%=R_ejfl["显示名字"].ToString() %></a>
+    </h2>  
             <% 	 secondlevel++;
                 }      
 		    }
@@ -311,7 +310,7 @@
     <span class="no"></span>
 </div>
 
-<div id="cgs_lb" style="width:765px; margin-left:212px;">
+<div id="cgs_lb" style="width:795px; margin-left:182px;">
 <div id="divtable" runat="server">
 <iframe id="frame1" src="gysglcl_2.aspx" frameborder="0" marginheight="0"  style=" width:100%;  height:400px; padding:0px; margin:0px; border:0px; " > 
     </iframe> 

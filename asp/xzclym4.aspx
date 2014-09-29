@@ -14,8 +14,8 @@
              DataConn objConn=new DataConn();
            if( Request["gys_id"]!=null&& Request["gys_id"].ToString()!="")
            {
-             gys_id = Request.QueryString["gys_id"].ToString();        
-            }
+               gys_id = Request["gys_id"];        
+           }
             //新增材料写入数据库		
                 string cl_name = Request["cl_name"];                //材料名称
                 string cl_type = Request["cl_type"];                //规格型号              
@@ -72,7 +72,7 @@
 				    string cl_value = Request["cl_value"];    //获取分类属性值
 				    string cl_number = Request["cl_number"];    //获取分类属性值编号
 				    string cl_ids = Request["cl_ids"];          //获取属性值id
-				
+				Response.Write(sx_names+","+sx_codes+","+sx_id+","+cl_value+","+cl_number+","+cl_ids);
 				    sSQL="select 分类属性名称 from 材料属性表 where flsx_id='"+sx_names+"' ";
 				    DataTable dt_flsx = objConn.GetDataTable(sSQL);
                     string cl_flsxmc ="";
@@ -98,6 +98,7 @@
 				    +" '" + cl_number + "','"+cl_ids+"') "; 
 				    //更新材料属性表
 				    objConn.ExecuteSQL(sSQL,true); 
+                    Response.Write(sSQL+"INSERT");
 				    }
 				    //补全材料属性表			
 		            sSQL = "update 材料属性表 set clsx_id=(select max(myid) from 材料属性表 ), "
@@ -108,11 +109,13 @@
 				    +"and flsx_id='"+sx_id+"'and flsxz_id='"+cl_ids+"' ";
 				    if(objConn.ExecuteSQL(sSQL,false))
                     {  
+                    Response.Write(sSQL+"UPDATE");
                        Response.Write("<script>window.alert('新增材料成功!请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id="+gys_id+"';</" + "script>");
                     } 
                     else
                     {
-                       Response.Write("<script>window.alert('新增材料失败!请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id="+gys_id+"';</" + "script>");
+                    Response.Write(sSQL+"||||"+gys_id);
+                      // Response.Write("<script>window.alert('新增材料失败!请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id="+gys_id+"';</" + "script>");
                     } 
                }             
      %>

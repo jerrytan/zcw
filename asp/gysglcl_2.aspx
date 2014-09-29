@@ -123,7 +123,7 @@
 
 <body>
     <form id="form1" runat="server">
-    <div class="jiansuo2">
+    <div id="jiansuo2">
 ¼ìË÷Ìõ¼þ£º
 <input name="txtKeyWord" runat="server" type="text" id="txtKeyWord" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
 <div class="jiansuo_img">

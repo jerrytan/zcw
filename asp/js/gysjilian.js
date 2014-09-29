@@ -6,7 +6,7 @@ function ClearPOptions() {
 function GetProvince(pid,gysid) {
     ClearPOptions(); //先清空所有选项
     var gysid = gysid.toString();
-    var answer;
+    var answer;//当前选择的地区
     var pid = pid.toString();
     var xmlHttp;
     if (window.XMLHttpRequest) {
