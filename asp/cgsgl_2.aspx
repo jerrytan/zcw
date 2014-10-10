@@ -28,48 +28,7 @@
     <script src="js/cgsgl2.js" type="text/javascript"></script>
     <script src="js/cgsgzl.js" type="text/javascript"></script>
     <script type="text/javascript">
-//        function Trim(str) {
-//            str = str.replace(/^(\s|\u00A0)+/, '');
-//            for (var i = str.length - 1; i >= 0; i--) {
-//                if (/\S/.test(str.charAt(i))) {
-//                    str = str.substring(0, i + 1);
-//                    break;
-//                }
-//            }
-//            return str;
-//        } 
-//        function deleteGzcl() {
-//            var tb_gzcl = document.getElementById("table2");
-//            var chks = tb_gzcl.getElementsByTagName("input");
-//            var cl_ids = '';
-//            for (var i = 0; i < chks.length; i++) {
-//                if (chks[i].type == "checkbox" && chks[i].checked) {
-//                cl_ids += Trim(chks[i].parentNode.parentNode.cells[0].innerHTML) + ",";
-//                    
-//                }
-//            }
 
-//            var xmlhttp;
-//            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-//                xmlhttp = new XMLHttpRequest();
-//            }
-//            else {// code for IE6, IE5
-//                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-//            }
-
-//            xmlhttp.onreadystatechange = function () {
-//                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-//                    var array = xmlhttp.responseText;     //接收替换返回的json字符串
-//                    if (array == 1)
-//                        alert("删除成功");
-//                    else
-//                        alert("删除失败");
-//                }
-//            }
-//            xmlhttp.open("GET", "cgsgzcl_ajax.aspx?clids=" + cl_ids, true);
-//            xmlhttp.send();
-
-//        }
             
         function setTab(name, cursel, n) {
             for (i = 1; i <= n; i++) {
@@ -85,45 +44,11 @@
             var flmc = obj;
             document.getElementById("cgsglcl_frame").src = "Cgsgzcl.aspx?s_yh_id=<%=s_yh_id %>&strFlmc=" + flmc;
         }
-//        function onloadEvent(func) {
-//            var one = window.onload
-//            if (typeof window.onload != 'function') {
-//                window.onload = func
-//            }
-//            else {
-//                window.onload = function () {
-//                    one();
-//                    func();
-//                }
-//            }
-//        }
-//        function showtable() {
-//            var tableid = 'table2';
-//            //表格的id
-//            var overcolor = '#fff0e9'; //鼠标经过颜色
-//            var color1 = '#f2f6ff'; 	//第一种颜色
-//            var color2 = '#fff'; 	//第二种颜色
-//            var tablename = document.getElementById(tableid)
-//            var tr = tablename.getElementsByTagName("tr")
-//            for (var i = 1; i < tr.length; i++) {
-//                tr[i].onmouseover = function () {
-//                    this.style.backgroundColor = overcolor;
-//                }
-//                tr[i].onmouseout = function () {
-//                    if (this.rowIndex % 2 == 0) {
-//                        this.style.backgroundColor = color1;
-//                    } else {
-//                        this.style.backgroundColor = color2;
-//                    }
-//                }
-//                if (i % 2 == 0) {
-//                    tr[i].className = "color1";
-//                } else {
-//                    tr[i].className = "color2";
-//                }
-//            }
-//        }
-//        onloadEvent(showtable);
+        function ppgys(obj) {
+            var ppmc = obj;
+            document.getElementById("cgsglgys_iframe").src = "Cgsgzgys.aspx?s_yh_id=<%=s_yh_id %>&strPpmc=" + ppmc;
+        }
+
     </script>
 </head>
 <body>
@@ -144,6 +69,7 @@
         public string sSQL = "";                         //Sql语句
         public DataTable dt = new DataTable();           //查询到的表
         public int firstlevel;                           //一级菜单
+        public int flevel = 0;
         public string xx = "";                           //是否存在信息   
         public string sftg = "";                         //是否验证通过
         //public DataTable dt_content;                     //分页查询的结果
@@ -248,6 +174,7 @@
         public DataTable dt_clb = new DataTable();          //材料表
         public DataTable dt_clgysxx = new DataTable();      //材料供应商信息
         public DataTable dt_topcl = new DataTable();        //材料Table加载前10条数据
+        public DataTable dt_ppxx = new DataTable();         //品牌信息
 
         /// <summary>
         /// 加载关注材料和供应商
@@ -313,6 +240,9 @@
             //       " where b.yh_id='" + s_yh_id + "' and a.gys_id=b.gys_id order by a.gys_id";
             sSQL = "select gys_id,供应商名称 from 采购商关注供应商表 where yh_id=" + s_yh_id;
             dt_clgysxx = objConn.GetDataTable(sSQL);
+
+
+           
 
 
             //CancelFollowButton.Attributes.Add("onClick", "return confirm('您真的要取消对这些材料或供应商的关注吗？');");
@@ -481,7 +411,7 @@
                         <a href="javascript:void(0)">
                             <img src="images/biao2.jpg" /><%=dr_dl["显示名字"]%>&gt;</a></h1>
                     <span class="no">
-                        <% 
+                        <%                          
                             int secondlevel = 0;
                             foreach (DataRow dr_xl in dt_cgsgzcl_xl.Rows)
                             {
@@ -505,228 +435,57 @@
                                                     </ul>
                                                     <%}
                                             } %>
-                                                </span>
+                   </span>
                                                 <% 
                             firstlevel++;
 
-
                     }%>
                 </div>
-                <div id="cgs_lb"  style="width:795px; margin-left:182px;" > 
+                <div id="cgs_lb1" class="cgs_lb"  style="width:795px; margin-left:182px;" > 
                 <iframe id="cgsglcl_frame" width="100%" height="370" src="Cgsgzcl.aspx?s_yh_id=<%=s_yh_id %>" frameborder="0"></iframe>
-                  <%--  <div class="jiansuo3">
-                        检索条件：
-                        <input name="txtKeyWord" type="text" id="txtKeyWord" style="border-right: #808080 1px solid;
-                            border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
-                        &nbsp;&nbsp;
-                        <input type="submit" name="filter" value="检索" id="Submit2" class="filter" 
-                            style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
-                            width: 37px; cursor: pointer;" />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="button" id="btnFilter" value="删除材料" onclick="deleteGzcl()" style="height: 20px;
-                            width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor: pointer;" />
-                    </div>
-                    <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd"
-                        class="table2" id="table2">
-                        <thead>
-                            <tr>
-                                <th align="center">
-                                    <strong>选择</strong>
-                                </th>
-                                <th align="center">
-                                    <strong>名称</strong>
-                                </th>
-                                <th align="center">
-                                    <strong>供应商</strong>
-                                </th>
-                                <th align="center">
-                                    <strong>品牌</strong>
-                                </th>
-                                <th align="center">
-                                    <strong>地区</strong>
-                                </th>
-                                <th align="center">
-                                    <strong>规格\型号</strong>
-                                </th>
-                                <th align="center">
-                                    <strong>操作</strong>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <%foreach (DataRow dr in dt_topcl.Rows)
-                              { %>
-                            <tr>
-                                <td align="center" style="display:none">
-                                    <%=dr["cl_id"] %>
-                                </td>
-                                <td align="center">
-                                    <input type="checkbox" name="checkbox" />
-                                </td>
-                                <td align="left">
-                                    <%=dr["显示名"]%>
-                                </td>
-                                <td align="left">
-                                    <%=dr["生产厂商"]%>
-                                </td>
-                                <td>
-                                    <%=dr["品牌名称"]%>
-                                </td>
-                                <td class="gridtable">
-                                    <%=dr["地址"]%>
-                                </td>
-                                <td>
-                                    <%=dr["规格型号"]%>
-                                </td>
-                                <td align="center">
-                                    <a href="clxx.aspx?cl_id=<%=dr["cl_id"] %>">
-                                        <input type="button" name="filter" value="查阅" id="Submit1" class="filter" style="color: Black;
-                                            border-style: None; font-family: 宋体; font-size: 12px; height: 20px; width: 37px;
-                                            cursor: pointer;" />
-                                    </a>
-                                </td>
-                            </tr>
-                            <%} %>
-                        </tbody>
-                    </table>--%>
-                   <%-- <table width="100%" align="left" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td width="110" align="left" valign="middle">
-                                <input name="CancelFollowButton" id="Image1" onclick="return confirm('您真的要取消对这些材料或供应商的关注吗？');"
-                                    type="image" src="images/scxzcl.jpg">
-                            </td>
-                            <td width="200" height="40" align="left" valign="middle">
-                                共7页/当前第1页
-                            </td>
-                            <td align="right" valign="middle">
-                                <a href="#">首页</a> <a href="#">上一页</a> <a href="#">下一页</a> <a href="#">尾页</a> 转到第
-                                <input name="textfield244" type="text" class="queding_bk" size="3" />
-                                页
-                                <input type="submit" name="btnDocNew" value="确定" onclick="return VerifyMyIMP();"
-                                    class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;
-                                    height: 20px; width: 37px; cursor: pointer;" />
-                            </td>
-                            <td width="40" align="right" valign="middle">
-                                &nbsp;
-                            </td>
-                        </tr>
-                    </table>--%>
+             
                 </div>
             </div>
         </div>
         <div class="dlqqz5" id="con_two_2" style="border: 1px solid #4ea6ee; padding-top: 10px;
             margin-bottom: 10px; display: none;">
-            <div class="menu2 gd_link">
-                <%--<h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)">
-                    <a href="javascript:void(0)">
+            <div id="menu2" >
+                <% 
+                    flevel = 0;
+                        foreach (DataRow dr_gys in dt_clgysxx.Rows)
+                        { %>
+                <h1 onclick="javascript:ShowMenu(this,<%=flevel %>)">
+                  <a href="javascript:void(0)">
                         <img src="images/biao2.jpg" />
-                        供应商列表 &gt;</a></h1>
-                <span class="no">
-                    <h2 onclick="javascript:ShowMenu(this,0)">
-                        <a href="javascript:void(0)">+ 材料供应商</a></h2>--%>
+                        <%=dr_gys["供应商名称"].ToString()%></a></h1>
+                       
+             <span class="no">
+                     <% string gys_Id = dr_gys["gys_id"].ToString();
+                        string sql_ppxx = "select * from 品牌字典 where scs_id='" + gys_Id + "'";
+                        dt_ppxx = objConn.GetDataTable(sql_ppxx);
+                            %>
+                    <%      int secondlevel = 0;
+                            foreach (DataRow drpp in dt_ppxx.Rows)
+                      {%>
+                    <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %>)">
+                        <a href="javascript:void(0)" onclick="ppgys('<%=drpp["品牌名称"].ToString()%>')"><%=drpp["品牌名称"] %></a></h2>
+                        <%} %>
                 <ul class="no">
-                    <%
+                  <%--  <%
                         foreach (DataRow dr_gys in dt_clgysxx.Rows)
                         {   
                         %>
-                    <%-- <input type="checkbox" name="gysid" value='<%=dr_gys["gys_id"].ToString()%>' />--%>
-                    <li><a href='gysxx.aspx?gys_id=<%=dr_gys["gys_id"].ToString() %>'>
+                     <input type="checkbox" name="gysid" value='<%=dr_gys["gys_id"].ToString()%>' />
+                   <li><a href='gysxx.aspx?gys_id=<%=dr_gys["gys_id"].ToString() %>'>
                         <%=dr_gys["供应商名称"].ToString()%></a></li>
-                    <% } %>
+                    <% } %> --%>
+                    <% secondlevel++;%>
                 </ul>
-                <%-- </span>--%>
+                 </span>
+                  <%flevel++; }%>
             </div>
-            <div id="cgs_lb" style="width: 755px; margin-left: 232px;">
-                <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd"
-                    class="table2" id="table3">
-                    <thead>
-                        <tr>
-                            <th align="center">
-                                <strong>选择</strong>
-                            </th>
-                            <th align="center">
-                                <strong>名称</strong>
-                            </th>
-                            <th align="center">
-                                <strong>供应商</strong>
-                            </th>
-                            <th align="center">
-                                <strong>品牌</strong>
-                            </th>
-                            <th align="center">
-                                <strong>地区</strong>
-                            </th>
-                            <th align="center">
-                                <strong>规格\型号</strong>
-                            </th>
-                            <th align="center">
-                                <strong>编码</strong>
-                            </th>
-                            <th align="center">
-                                <strong>操作</strong>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td align="center">
-                                <input type="checkbox" name="checkbox10" id="checkbox10" />
-                            </td>
-                            <td align="left">
-                                新西米黄大理石
-                            </td>
-                            <td align="left">
-                                福建宏发建材有限公司（广州分公司）
-                            </td>
-                            <td>
-                                宏发石材
-                            </td>
-                            <td class="gridtable">
-                                北京市朝阳区
-                            </td>
-                            <td>
-                                欧典米黄
-                            </td>
-                            <td>
-                                0801A47
-                            </td>
-                            <td align="center">
-                                <input type="submit" name="filter" value="查阅" id="filter" class="filter" filter=""
-                                    style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
-                                    width: 37px; cursor: pointer;" />
-                            </td>
-                        </tr>
-                        <%--  <%if (dt_topcl.Rows.Count<10)
-                              { 
-                                  for(int i=0;i<10-dt_topcl.Rows.Count;i++)
-                                  {%>  
-                                        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                                  <%}
-                             }%>--%>
-                    </tbody>
-                </table>
-                <table width="100%" align="left" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <%--<td width="110" align="left" valign="middle">
-                            <input name="CancelFollowButton" id="Image2" onclick="return confirm('您真的要取消对这些材料或供应商的关注吗？');"
-                                type="image" src="images/scxzcl.jpg">
-                        </td>--%>
-                        <td width="200" height="40" align="left" valign="middle">
-                            共7页/当前第1页
-                        </td>
-                        <td align="right" valign="middle">
-                            <a href="#">首页</a> <a href="#">上一页</a> <a href="#">下一页</a> <a href="#">尾页</a> 转到第
-                            <input name="textfield244" type="text" class="queding_bk" size="3" />
-                            页
-                            <input type="submit" name="btnDocNew" value="确定" onclick="return VerifyMyIMP();"
-                                class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;
-                                height: 20px; width: 37px; cursor: pointer;" />
-                        </td>
-                        <td width="40" align="right" valign="middle">
-                            &nbsp;
-                        </td>
-                    </tr>
-                </table>
+            <div id="cgs_lb" class="cgs_lb"  style="width:755px; margin-left:232px;">
+                <iframe id="cgsglgys_iframe" width="100%" height="370" src="Cgsgzgys.aspx?s_yh_id=<%=s_yh_id %>" frameborder="0"></iframe>
             </div>
         </div>
         <!-- 关于我们 广告服务 投诉建议 开始-->
