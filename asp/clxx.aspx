@@ -87,6 +87,8 @@
         protected int PageCount;
 
         private string cl_id;	//材料id
+        public string clmc;     //材料名称
+        public string clbm;     //材料编码
         public string gys_id;   //供应商id
         public string sccs;     //生产厂商
         private string cl_number; //材料编号
@@ -105,6 +107,8 @@
 				dt_clxx = dc_obj.GetDataTable(str_sqlclname);
                 gys_id = dt_clxx.Rows[0]["gys_id"].ToString();
                 sccs = dt_clxx.Rows[0]["生产厂商"].ToString();
+                clmc = dt_clxx.Rows[0]["显示名"].ToString();
+                clbm = dt_clxx.Rows[0]["材料编码"].ToString();
 
 				 //材料表访问计数加1
 				string str_updatecounter = "update 材料表 set 访问计数 = (select 访问计数 from 材料表 where cl_id = '"+ cl_id +"')+1 where cl_id = '"+ cl_id +"'";   
@@ -318,21 +322,64 @@
                 </dl>
                 <%
 				//供应商
-				HttpCookie GYS_QQ_id = Request.Cookies["GYS_QQ_ID"];   
-				Object GYS_YH_id = Session["GYS_YH_ID"];  
+				HttpCookie CGS_QQ_id = Request.Cookies["CGS_QQ_ID"];   
+				Object CGS_YH_id = Session["CGS_YH_ID"];  
+                HttpCookie GYS_QQ_id = Request.Cookies["GYS_QQ_ID"];   
+				Object GYS_YH_id = Session["GYS_YH_ID"]; 
 				if((GYS_QQ_id == null ) && (GYS_YH_id == null))	//供应商未登录，显示收藏
 				{
-                %>
-                <%-- 蒋，2014年8月25日，添加else判断--%>
-                <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a
-                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>')">
+                    if(CGS_QQ_id != null )
+                    {
+                         string s_SQL = "select dw_id from 用户表 where QQ_id='" + CGS_QQ_id.Value.ToString()+ "'"; 
+                         string dwid = dc_obj.DBLook(s_SQL);
+
+                         string sqlCount = @"select * from 采购商关注的材料表 
+                            inner join 材料表 on 材料表.cl_id=采购商关注的材料表.cl_id 
+                            where dw_id='"+dwid+"' and 采购商关注的材料表.cl_id='"+cl_id+"'";
+                        if(dc_obj.GetRowCount(sqlCount)>0)
+                        {
+                            %>
+                                 <span class="xx4_1" style="display: block; margin-left: 40%; margin-right: auto;"><a 
+                    href="#" >
+                    已收藏</a> </span>
+                            <%
+                        }
+                        else
+                        {
+                            %>
+                                 <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a id="A1"
+                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">
+                     请收藏，便于查找</a> </span>
+                            <%
+                        }
+                         %>
+                         
+                         
+                         <%
+                    }
+                    else
+                    {
+                        %>
+                        <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a
+                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">
                     请收藏，便于查找</a> </span>
+                        <%
+                    }
+                   
+                   
+                   
+                %>
+
+               
                 <%
 				}
                 else
-                {%>
+                {
+                    
+                %>
+                 
                 <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a
-                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>')">
+                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">
                     请收藏，便于查找</a> </span>
                 <%  }
                 %>
@@ -453,8 +500,8 @@
         //按钮容器aa，滚动容器bb，滚动内容cc，滚动宽度dd，滚动数量ee，滚动方向ff，延时gg，滚动速度hh，自动滚动ii，
     </script>
     <script type="text/javascript">
-        function NewWindow(number, ppid, gysid, sccs) {
-            var url = "sccl.aspx?cl_id=" + number + "|" + ppid + "&gys_id=" + gysid + "&sccs=" + sccs;        //cl_id="0801A01|183"
+        function NewWindow(number, ppid, gysid, sccs, clid, clmc, clbm) {
+            var url = "sccl.aspx?cl_id=" + number + "|" + ppid + "&gys_id=" + gysid + "&sccs=" + sccs+"&clid="+clid+"&clmc="+clmc+"&clbm="+clbm;        //cl_id="0801A01|183"
             window.open(url, "", "height=400,width=400,top=100,left=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
         }
         function changeImage(src) {
