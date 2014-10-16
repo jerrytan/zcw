@@ -44,9 +44,9 @@
             var flmc = obj;
             document.getElementById("cgsglcl_frame").src = "Cgsgzcl.aspx?s_yh_id=<%=s_yh_id %>&strFlmc=" + flmc;
         }
-        function ppgys(obj) {
+        function ppgys(obj,scr,scrQQ) {
             var ppmc = obj;
-            document.getElementById("cgsglgys_iframe").src = "Cgsgzgys.aspx?s_yh_id=<%=s_yh_id %>&strPpmc=" + ppmc;
+            document.getElementById("cgsglgys_iframe").src = "Cgsgzgys.aspx?s_yh_id=<%=s_yh_id %>&strPpmc=" + ppmc+"&scr="+scr+"&scrQQ="+scrQQ;
         }
 
     </script>
@@ -238,7 +238,7 @@
 
             //sSQL = "select a.gys_id ,a.供应商 from 材料供应商信息表 as a ,采购商关注供应商表 as b  " +
             //       " where b.yh_id='" + s_yh_id + "' and a.gys_id=b.gys_id order by a.gys_id";
-            sSQL = "select gys_id,供应商名称 from 采购商关注供应商表 where yh_id=" + s_yh_id;
+            sSQL = "select gys_id,供应商名称,收藏人,收藏人QQ from 采购商关注供应商表 where yh_id=" + s_yh_id;
             dt_clgysxx = objConn.GetDataTable(sSQL);
 
 
@@ -409,7 +409,7 @@
                         { %>
                     <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)">
                         <a href="javascript:void(0)">
-                            <img src="images/biao2.jpg" /><%=dr_dl["显示名字"]%>&gt;</a></h1>
+                            <img src="images/biao2.jpg" /><%=dr_dl["显示名字"]%></a></h1>
                     <span class="no">
                         <%                          
                             int secondlevel = 0;
@@ -468,7 +468,7 @@
                             foreach (DataRow drpp in dt_ppxx.Rows)
                       {%>
                     <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %>)">
-                        <a href="javascript:void(0)" onclick="ppgys('<%=drpp["品牌名称"].ToString()%>')"><%=drpp["品牌名称"] %></a></h2>
+                        <a href="javascript:void(0)" onclick="ppgys('<%=drpp["品牌名称"].ToString()%>','<%=dr_gys["收藏人"].ToString()%>','<%=dr_gys["收藏人QQ"].ToString()%>')"><%=drpp["品牌名称"] %></a></h2>
                         <%} %>
                 <ul class="no">
                   <%--  <%

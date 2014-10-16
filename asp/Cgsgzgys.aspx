@@ -170,10 +170,10 @@
                         <%=dr["主页"]%>
                     </td>
                     <td class="gridtable">
-                        <%=dr["联系地址"]%>
+                        <%=strScr%>
                     </td>
                     <td>
-                        <%=dr["联系地址"]%>
+                        <%=strScrQQ%>
                     </td>
                     <td align="center">
                         <%-- <a href="clxx.aspx?cl_id=<%=dr["cl_id"] %>">--%>

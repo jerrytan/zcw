@@ -11,14 +11,18 @@ public partial class asp_Cgsgzgys : System.Web.UI.Page
     public DataTable dt_topfxs = new DataTable();        //材料Table加载前10条数据
     public DataConn objConn = new DataConn();           //DataHelper类
     public string sSQL = "";                            //Sql语句
+    public string strScr;
+    public string strScrQQ;
     //public string s_yh_id = "";                         //用户ID
     protected void Page_Load(object sender, EventArgs e)
     {
         //string s_yh_id = Request["s_yh_id"];
         string strPpmc = Request["strPpmc"];
+        strScr = Request["scr"];
+        strScrQQ= Request["scrQQ"];
 
-        //Response.Write(s_yh_id);
-        //Response.Write(strPpmc);
+        //Response.Write(strScr);
+        //Response.Write(strScrQQ);
 
         if (string.IsNullOrEmpty(strPpmc))
         {
