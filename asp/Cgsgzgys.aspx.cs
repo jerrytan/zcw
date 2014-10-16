@@ -26,14 +26,14 @@ public partial class asp_Cgsgzgys : System.Web.UI.Page
 
         if (string.IsNullOrEmpty(strPpmc))
         {
-            string sql = @"select top 10 供应商,主页,联系地址 from 材料供应商信息表  
+            string sql = @"select top 10 gys_id,供应商,主页,联系地址 from 材料供应商信息表  
             left join 分销商和品牌对应关系表 on 材料供应商信息表.gys_id=分销商和品牌对应关系表.fxs_id
             where pp_id='320'";
             dt_topfxs = objConn.GetDataTable(sql);
         }
         else
         {
-            string sql = @"select 供应商,主页,联系地址 from 材料供应商信息表  
+            string sql = @"select gys_id,供应商,主页,联系地址 from 材料供应商信息表  
             left join 分销商和品牌对应关系表 on 材料供应商信息表.gys_id=分销商和品牌对应关系表.fxs_id
             where 品牌名称='"+strPpmc+"'";
             dt_topfxs = objConn.GetDataTable(sql);

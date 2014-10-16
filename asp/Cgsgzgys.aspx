@@ -10,9 +10,9 @@
     <script src="js/cgsgl2.js" type="text/javascript"></script>
     <script src="js/cgsgzl.js" type="text/javascript"></script>
     <script type="text/javascript">
-        function readClxx(obj) {
+        function readGysxx(obj) {
             //            window.parent.location.href = "clxx.aspx?cl_id=" + obj;
-            window.open("clxx.aspx?cl_id=" + obj);
+            window.open("gysxx.aspx?gys_id=" + obj);
         }
         function Trim(str) {
             str = str.replace(/^(\s|\u00A0)+/, '');
@@ -177,7 +177,7 @@
                     </td>
                     <td align="center">
                         <%-- <a href="clxx.aspx?cl_id=<%=dr["cl_id"] %>">--%>
-                        <input type="button" name="filter" value="查阅" id="btnRead" onclick="readClxx()"
+                        <input type="button" name="filter" value="查阅" id="btnRead" onclick="readGysxx(<%=dr["gys_id"] %>)"
                             class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;
                             height: 20px; width: 37px; cursor: pointer;" />
                         <%-- </a>--%>
