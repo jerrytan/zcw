@@ -25,16 +25,14 @@
             return str;
         }
         function deleteGzcl() {
-            var tb_gzcl = document.getElementById("table2");
+            var tb_gzcl = document.getElementById("table3");
             var chks = tb_gzcl.getElementsByTagName("input");
-            var cl_ids = '';
+            var gys_ids = '';
             for (var i = 0; i < chks.length; i++) {
                 if (chks[i].type == "checkbox" && chks[i].checked) {
-                    cl_ids += Trim(chks[i].parentNode.parentNode.cells[0].innerHTML) + ",";
-
+                    gys_ids += Trim(chks[i].parentNode.parentNode.cells[0].innerHTML) + ",";
                 }
             }
-
             var xmlhttp;
             if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
@@ -54,7 +52,7 @@
                         alert("删除失败");
                 }
             }
-            xmlhttp.open("GET", "cgsgzcl_ajax.aspx?clids=" + cl_ids, true);
+            xmlhttp.open("GET", "cgsgzgys_ajax.aspx?gysids=" + gys_ids, true);
             xmlhttp.send();
 
         }
@@ -119,7 +117,7 @@
                 style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
                 width: 37px; cursor: pointer;" />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="submit" name="btnDelete" value="删除分销商" onclick="return confirm(&#39;真的彻底删除选中的记录吗？&#39;);"
+            <input type="submit" name="btnDelete" value="删除分销商" onclick="deleteGzcl()"
                 id="btnDelete" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
                 font-size: 12px; height: 20px; width: 72px; cursor: pointer;" />
         </div>
@@ -154,9 +152,9 @@
                 <%foreach (System.Data.DataRow dr in dt_topfxs.Rows)
                   { %>
                 <tr>
-<%--                    <td align="center" style="display: none">
-                        <%=dr["cl_id"] %>
-                    </td>--%>
+                    <td align="center" style="display: none">
+                        <%=dr["gys_id"] %>
+                    </td>
                     <td align="center">
                         <input type="checkbox" name="checkbox" />
                     </td>
