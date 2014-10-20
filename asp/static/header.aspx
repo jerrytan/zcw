@@ -21,7 +21,7 @@
         <form id="form1" name="form1" method="get" action="ss.aspx">
             <%string keyWord=Request["sou"];%>            
             <input name="sou" type="text" class="sou" value="<%=keyWord%>"/>          
-            <input type="submit" name="btnSubmit" value="" style="background:url('images/sss_03.jpg');width:96px;height:28px;margin-top:1px;" />
+            <input type="submit" name="btnSubmit" value="" style="background:url('images/sss_03.jpg');width:96px;height:28px;margin-top:1px;cursor:pointer;" />
         </form>
     </div>    
     <%

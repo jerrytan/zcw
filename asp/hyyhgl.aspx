@@ -6,7 +6,7 @@
         负责人:  苑伟业
 -->
 
-<%@ Register Src="~/asp/include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
+<%--<%@ Register Src="~/asp/include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>--%>
 
 <%@ Page Language="C#" EnableEventValidation="false" AutoEventWireup="true" CodeFile="hyyhgl.aspx.cs" Inherits="asp_hyyhgl" %>
 
@@ -120,7 +120,57 @@
 <body>
     <form runat="server">
     <!-- 头部2开始-->
-    <uc2:Header2 ID="Header2" runat="server" />
+   <%-- <uc2:Header2 ID="Header2" runat="server" />--%>
+   <%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Web" %>
+
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
+        data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/index.aspx" charset="utf8"></script>
+        <div class="box">
+
+    <div class="topx">
+        <a href="#"><img src="images/topx_02.jpg" /></a>
+    </div>
+
+      <%         
+			HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
+            Object gys_yh_id = Session["GYS_YH_ID"];  
+
+            HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+            Object cgs_yh_id = Session["CGS_YH_ID"];     
+    
+              
+            //采购商登录
+             if(((GYS_QQ_ID == null ) || (gys_yh_id == null ))&&((CGS_QQ_ID != null ) && (cgs_yh_id != null)))
+            {
+    %>
+             <div class="anniu"><a  href="QQ_out.aspx" target="_self">采购商登出</a></div>
+    <%
+            }
+            //供应商登录
+            else if(((CGS_QQ_ID == null ) || (cgs_yh_id == null))&&((GYS_QQ_ID != null ) && (gys_yh_id != null )))
+            {
+    %>
+                 <div class="anniu"><a  href="QQ_out.aspx" target="_self">供应商登出</a></div>
+				 <div class="anniu"><a  href="gyszym.aspx" target="_self">供应商主页面</a></div>
+    <%
+            }
+    %>
+    <div class="gyzy0">
+        <div class="gyzy">
+            尊敬的
+			<%foreach(System.Data.DataRow row in dt_Yh.Rows){%>            
+            <span><%=row["姓名"].ToString() %></span>           
+            <%}%>
+            ，欢迎来到众材网！
+            <div style="float:right"><span style="font-weight:bold;">
+    <a href="gysgly_wh.aspx">[修改完善公司信息]</a></span>&nbsp;&nbsp;&nbsp;&nbsp;[<a href="#">退出登录</a>]
+        </div></div>
+    </div>
+
     <!-- 头部2结束-->
     <!-- 检索 开始-->
     <div id="jiansuo">

@@ -28,7 +28,7 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     public List<UserGys> listGys { get; set; }
     protected DataTable dtGys = new DataTable();
     protected DataConn dc = new DataConn();
-
+    protected DataTable dt_Yh = new DataTable(); //用户名字(用户表) 
     private const int Page_Size = 10; //每页的记录数量
     public int current_page = 1;//当前默认页为第一页
     public int pageCount_page; //总页数
@@ -38,6 +38,20 @@ public partial class asp_hyyhgl : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        HttpCookie QQ_id;
+        if (Request.Cookies["GYS_QQ_ID"] == null)
+        {
+            QQ_id = Request.Cookies["CGS_QQ_ID"];
+        }
+        else
+        {
+            QQ_id = Request.Cookies["GYS_QQ_ID"];
+        }
+        if (QQ_id != null)
+        {
+            string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + QQ_id.Value + "'";
+            dt_Yh = dc.GetDataTable(str_Sql);
+        }   
         string sql_dwid;
 
         if (Request.Cookies["GYS_QQ_ID"]!=null)
