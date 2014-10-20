@@ -41,7 +41,7 @@
 <div class="box">
 
     <div class="topx">
-        <a href="index.aspx"><img src="images/topx_02.jpg" /></a>
+        <a href="#"><img src="images/topx_02.jpg" /></a>
     </div>
 
       <%         
@@ -70,15 +70,14 @@
     %>
     <div class="gyzy0">
         <div class="gyzy">
-            尊敬的
 			<%foreach(System.Data.DataRow row in dt_Yh.Rows){%>            
             <span><%=row["姓名"].ToString() %></span>           
             <%}%>
-            ，您好
+            欢迎来到众材网！
         </div>
     </div>
 
-    
+
 
 
  
