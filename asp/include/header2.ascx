@@ -41,7 +41,7 @@
 <div class="box">
 
     <div class="topx">
-        <a href="#"><img src="images/topx_02.jpg" /></a>
+        <a href="index.aspx"><img src="images/topx_02.jpg" /></a>
     </div>
 
       <%         
