@@ -132,7 +132,7 @@
         <div class="box">
 
     <div class="topx">
-        <a href="#"><img src="images/topx_02.jpg" /></a>
+        <a href="index.aspx"><img src="images/topx_02.jpg" /></a>
     </div>
 
       <%         
@@ -167,7 +167,7 @@
             <%}%>
             ，欢迎来到众材网！
             <div style="float:right"><span style="font-weight:bold;">
-    <a href="gysgly_wh.aspx">[修改完善公司信息]</a></span>&nbsp;&nbsp;&nbsp;&nbsp;[<a href="#">退出登录</a>]
+    <a href="gysgly_wh.aspx">[修改完善公司信息]</a></span>&nbsp;&nbsp;&nbsp;&nbsp;[<a href="index.aspx">退出登录</a>]
         </div></div>
     </div>
 
