@@ -9,6 +9,8 @@
     <script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>
     <script src="js/cgsgl2.js" type="text/javascript"></script>
     <script src="js/cgsgzl.js" type="text/javascript"></script>
+    <script src="js/SJLD.js" type="text/javascript"></script>
+    <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         function readGysxx(obj) {
             //            window.parent.location.href = "clxx.aspx?cl_id=" + obj;
@@ -46,7 +48,7 @@
                     var array = xmlhttp.responseText;     //接收替换返回的json字符串
                     if (array == 1) {
                         alert("删除成功");
-                        location.reload();
+                        location.href = "Cgsgzgys.aspx";
                     }
                     else
                         alert("删除失败");
@@ -105,13 +107,22 @@
             <input name="txtKeyWord2" type="text" id="txtKeyWord2" style="border-right: #808080 1px solid;
                 border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
             &nbsp;&nbsp;地区：
-            <select id="Select1" class="fu1" name="Select1">
-                <option selected="selected" value=""></option>
-            </select>
-            &nbsp;
-            <select id="Select2" class="fu1" name="Select2">
-                <option selected="selected" value=""></option>
-            </select>
+           <span class="fl">
+                        <select id="s1"  class="fu1" runat="server"><option></option></select>
+                        <select id="s2" class="fu2" runat="server"><option></option></select>
+                        
+                        <script type="text/javascript">
+                            var s = ["s1", "s2"];
+                            var opt0 = ["— 省 —", "— 市 —"];
+                            for (i = 0; i < s.length - 1; i++)
+                                document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
+                            change(0);
+                            function btn_sub_onclick() {
+
+                            }
+
+                        </script>
+                    </span>
             &nbsp;
             <input type="submit" name="filter2" value="检索" id="filter2" class="filter" filter=""
                 style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
