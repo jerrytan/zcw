@@ -32,7 +32,7 @@ public partial class asp_gysgly_wh : System.Web.UI.Page
         {
             string gysid = Request.Cookies["GYS_QQ_ID"].Value.ToString();
             string sqlGetInfo = @"select * from 材料供应商信息表 left join 用户表 on 用户表.dw_id = 材料供应商信息表.gys_id 
-            where QQ_id='"+gysid+"'";
+            where QQ_id='" + gysid + "' and 等级='企业用户'";
             dt_info = dc.GetDataTable(sqlGetInfo);
             DataRow dr = dt_info.Rows[0];
             this.txt_gsmc.Value = dr["供应商"].ToString();

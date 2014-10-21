@@ -29,8 +29,9 @@ public partial class asp_cgsgly_wh : System.Web.UI.Page
         }
         if (!IsPostBack)
         {
+            string cgsid = Request.Cookies["CGS_QQ_ID"].Value.ToString();
             string sqlGetInfo = @"select * from 采购商基本信息 left join 用户表 on 用户表.dw_id = 采购商基本信息.cgs_id 
-            where cgs_id=3 and 等级='企业用户'";
+            where cgs_id='"+cgsid+"' and 等级='企业用户'";
             dt_info = dc.GetDataTable(sqlGetInfo);
             DataRow dr = dt_info.Rows[0];
             this.txt_gsmc.Value = dr["单位名称"].ToString();
