@@ -167,7 +167,13 @@
             <%}%>
             ，欢迎来到众材网！
             <div style="float:right"><span style="font-weight:bold;">
-    <a href="gysgly_wh.aspx">[修改完善公司信息]</a></span>&nbsp;&nbsp;&nbsp;&nbsp;[<a href="index.aspx">退出登录</a>]
+            <%if (GYS_QQ_ID != null)
+              { %>
+            <a href="gysgly_wh.aspx">[修改完善公司信息]</a>
+            <%} else{ %>
+            <a href="cgsgly_wh.aspx">[修改完善公司信息]</a>
+            <%} %>
+            </span>&nbsp;&nbsp;&nbsp;&nbsp;[<a href="index.aspx">退出登录</a>]
         </div></div>
     </div>
 
