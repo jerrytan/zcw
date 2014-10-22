@@ -31,7 +31,7 @@ public partial class asp_cgsgly_wh : System.Web.UI.Page
         {
             string cgsid = Request.Cookies["CGS_QQ_ID"].Value.ToString();
             string sqlGetInfo = @"select * from 采购商基本信息 left join 用户表 on 用户表.dw_id = 采购商基本信息.cgs_id 
-            where QQ_id='" + cgsid + "' and 等级='企业用户'";
+            where QQ_id='" + cgsid + "'  and 等级='企业用户'";
             dt_info = dc.GetDataTable(sqlGetInfo);
             DataRow dr = dt_info.Rows[0];
             this.txt_gsmc.Value = dr["单位名称"].ToString();
@@ -82,12 +82,15 @@ public partial class asp_cgsgly_wh : System.Web.UI.Page
 
     protected void Submit1_Click(object sender, ImageClickEventArgs e)
     {
+        string cgs_qqid = Request.Cookies["CGS_QQ_ID"].Value.ToString();
+        string sql_dwqq = "select QQ号码  from 用户表 where QQ_id='" + cgs_qqid + "'";
+        string dwqq = dc.DBLook(sql_dwqq);
         string sqlUpdate = @"update 采购商基本信息 set 单位简称='" + this.txt_gsjc.Value + "',法定代表人='"
       + this.txt_fddbr.Value + "',资产总额='" + this.txt_zcze.Value + "',注册级别='" + this.zcjb.Value + "',资质等级='"
       + this.zzdj.Value + "',企业类别='" + this.qylb.Value + "',开户银行='" + this.txt_khyh.Value + "',账户名称='"
       + this.txt_zhmc.Value + "',银行账户='" + this.txt_yhzh.Value + "',企业员工人数='" + this.txt_qyrs.Value + "',主页='"
       + this.txt_gszy.Value + "',邮编='" + this.txt_gsyb.Value + "',传真='" + this.txt_gscz.Value + "',备注='"
-      + this.txt_bz.Value + "',电子邮箱='" + this.txt_yx.Value + "' where 单位QQ号='1097952230'";
+      + this.txt_bz.Value + "',电子邮箱='" + this.txt_yx.Value + "' where 单位QQ号='" + dwqq + "'";
 
         if (dc.RunSqlTransaction(sqlUpdate))
         {
