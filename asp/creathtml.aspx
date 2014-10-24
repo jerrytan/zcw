@@ -51,11 +51,14 @@
             bw.Write(encoding.GetBytes(all));
             bw.Close();
             fs1.Close();
-            Response.Write("1");
+            Response.Write("<script>alert('提交成功！');window.opener = null;window.open('', '_self'); window.close(); <"+"/script>");
+           // Response.Write("1");
         }
         catch (Exception)
         {
-            Response.Write("");
+            
+            Response.Write("<script>alert('提交失败！');history.go(-1);<"+"/script>");
+           // Response.Write("");
         }
 
     }

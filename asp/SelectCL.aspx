@@ -220,13 +220,11 @@
         var table = document.getElementById("cl");
         var chks = table.getElementsByTagName("input");
         var SQL = "";
-
         for (var i = 0; i < chks.length; i++)
         {
             if (chks[i].type == "checkbox" && chks[i].checked)
             {
                 var tr = chks[i].parentNode.parentNode;
-
                 if (value != "" && value != undefined)
                 {
                     value += tr.cells[1].innerHTML + "◆" + tr.cells[2].innerHTML + "◆" + tr.cells[3].innerHTML + "◆" +
@@ -283,24 +281,33 @@
     }
     function saveReport()
     {
-        // jquery 表单提交
-        $("#form1").ajaxSubmit(function (message)
-        {
-            // 对于表单提交成功后处理，message为提交页面saveReport.htm的返回内容 
-            if (message == "1")
+        $("#form1").ajaxSubmit({
+            type: "post",
+            url: "creathtml.aspx",
+            success: function (result)
             {
-                alert("提交成功");
-                //  $("#cl").empty();
-                //关闭
-                                window.opener = null;
-                                window.open("", "_self");
-                                window.close(); 
-            }
-            else
-            {
-                alert("提交失败");
+                //返回提示信息       
+                alert(result.nickMsg);
             }
         });
+        // jquery 表单提交
+//        $("#form1").ajaxSubmit(function (message)
+//        {
+//            // 对于表单提交成功后处理，message为提交页面saveReport.htm的返回内容 
+//            if (message == "1")
+//            {
+//                alert("提交成功");
+//                //  $("#cl").empty();
+//                //关闭
+////                                window.opener = null;
+////                                window.open("", "_self");
+////                                window.close(); 
+//            }
+//            else
+//            {
+//                alert("提交失败");
+//            }
+//        });
         return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转 
     }    
 </script>
@@ -480,8 +487,8 @@
     }
 </script>
 </HEAD> 
-<BODY> 
-<form runat="server" id="form1"  action="creathtml.aspx" method="post" onsubmit="return saveReport();">
+<BODY> <%--onsubmit="return saveReport();"--%>
+<form runat="server" id="form1"  action="creathtml.aspx" method="post">
 <script runat="server">
 public DataTable dt_sx = new DataTable();
 public DataTable dt_sxz = new DataTable();
