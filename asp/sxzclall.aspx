@@ -22,7 +22,17 @@
         if (dt_sx != null && dt_sx.Rows.Count > 0)
         {
             string html = "";
-          
+            html = "<table width='740' border='0' cellpadding='0' cellspacing='1' bgcolor='#dddddd' style='table-layout：fixed ;word-wrap：break-word'>"
+                + " <thead>"
+                + "   <tr>"
+                + "    <th width='70' height='30' align='center' bgcolor='#E3ECFF'><strong>属性名称</strong></th>"
+                + " <th align='center' bgcolor='#E3ECFF'><strong>规格\\型号</strong></th>"
+                + " <th width='80' align='center' bgcolor='#E3ECFF'><strong>选中项</strong></th>"
+                + " <th  style='display:none;' width='80' align='center' bgcolor='#E3ECFF'><strong>编码</strong></th>"
+                + " </tr>"
+                + " </thead>"
+                + " <tbody id='sx'>";
+
             foreach (DataRow drsx in dt_sx.Rows)
             {
                 string sql_sx = "select 属性名称,属性值,属性编码,编号 from 材料分类属性值表  where 属性名称='" + drsx["属性名称"] + "' and 分类编码=" + flbm;
@@ -55,7 +65,16 @@
                     + " <td style='display:none;'></td>"
                     + "</tr>";
             }
-           
+            html += " </tbody> "
+                    + " <tfoot>"
+                    + "        <tr>"
+                    + "        <td width='120' height='32' align='right' bgcolor='#FFFFFF'>名称及规则：</td>"
+                    + "        <td align='left' bgcolor='#FFFFFF'><input type='text' id='clmcjgg' style=' width: 293px; '/></td>"
+                    + "        <td width='80' align='center' bgcolor='#FFFFFF'>"
+                    + "        <input type='Button' name='btnDocNew' value='确定' onClick='AddValue()'  class='filter' style='color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;' /></td>"
+                    + "      </tr>"
+                    + "       </tfoot>"
+                    + " </table>";
             Response.Write(html);
         }
         else

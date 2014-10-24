@@ -23,21 +23,44 @@
         if (dt != null && dt.Rows.Count > 0)
         {
             string html = "";
+            html = "<table  width='740' border='0' align='left' cellpadding='0' cellspacing='1' bgcolor='#dddddd'  style=' table-layout：fixed ;word-wrap：break-word'>"
+                + "    <thead>"
+                + "      <tr>"
+                + "        <th width='42' height='30' align='center' bgcolor='#E3ECFF'><strong>序 号</strong></th>"
+                + "        <th width='125' height='24' align='center' bgcolor='#E3ECFF'><strong>材料编码</strong></th>"
+                + "        <th width='150' align='center' bgcolor='#E3ECFF'><strong>材料名称</strong></th>"
+                + "        <th width='100' align='center' bgcolor='#E3ECFF'><strong>规格\\型号</strong></th>"
+                + "        <th width='55' align='center' bgcolor='#E3ECFF'><strong>单 位</strong></th>"
+                + "        <th width='80' align='center' bgcolor='#E3ECFF'><strong>品 牌</strong></th>"
+                + "        <th width='50' align='center' bgcolor='#E3ECFF'>选 项</th>"
+                + "      </tr>"
+                + "    </thead>    "
+                + "    <tbody id='scclxq'>     ";
             int i = 0;
             foreach (DataRow dr in dt.Rows)
             {
                 i++;
                 html += "<tr>"
-          + " <td align='center' bgcolor='#FFFFFF'>" + i + "</td>"
-          + " <td height='24' align='center' bgcolor='#FFFFFF'>" + dr["材料编码"] + "</td>"
-          + " <td align='left' bgcolor='#FFFFFF'>" + dr["材料名称"] + "</td>"
-          + " <td bgcolor='#FFFFFF'>" + dr["规格型号"] + "</td>"
-          + " <td align='center' bgcolor='#FFFFFF'>" + dr["单位"] + "</td>"
-          + " <td align='center' bgcolor='#FFFFFF'>" + dr["品牌名称"] + "</td>"
-          + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'  />"
-          + " <label for='checkbox11'></label></td>"
-          + " </tr>";
+                      + " <td align='center' bgcolor='#FFFFFF'>" + i + "</td>"
+                      + " <td height='24' align='center' bgcolor='#FFFFFF'>" + dr["材料编码"] + "</td>"
+                      + " <td align='left' bgcolor='#FFFFFF'>" + dr["材料名称"] + "</td>"
+                      + " <td bgcolor='#FFFFFF'>" + dr["规格型号"] + "</td>"
+                      + " <td align='center' bgcolor='#FFFFFF'>" + dr["单位"] + "</td>"
+                      + " <td align='center' bgcolor='#FFFFFF'>" + dr["品牌名称"] + "</td>"
+                      + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'  />"
+                      + " <label for='checkbox11'></label></td>"
+                      + " </tr>";
             }
+            html += "    </tbody>"
+                + "     <tfoot>"
+                + "     <tr>"
+                + "        <td  height='40' align='right' bgcolor='#FFFFFF' colspan='7' style='padding-right:20px;'>"
+                + "            <input type='button' id='btnFilter2' value='确定' onClick='qd_Click()' style='height: 20px;"
+                + "                width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;' />"
+                + "         </td>"
+                + "      </tr>"
+                + "     </tfoot>"
+                + "</table>";
             Response.Write(html);
         }
         else
