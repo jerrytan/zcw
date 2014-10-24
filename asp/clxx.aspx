@@ -365,24 +365,14 @@
                     请收藏，便于查找</a> </span>
                         <%
                     }
-                   
-                   
-                   
+                                  
+                }   
                 %>
 
                
-                <%
-				}
-                else
-                {
-                    
-                %>
+              
                  
-                <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a
-                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">
-                    请收藏，便于查找</a> </span>
-                <%  }
-                %>
+             
             </div>
             <!-- 材料所对应的生产商信息 开始 -->
             <%--<div class="xx5">
