@@ -7,6 +7,7 @@
     public DataTable dt_sxz = new DataTable();
     protected void Page_Load(object sender, EventArgs e)
     {
+        DataConn Conn = new DataConn();
         //获取属性 属性值 页面
         string flbm = "";
         if (Request["flbm"] != null && Request["flbm"].ToString() != "")
@@ -16,7 +17,7 @@
         if (flbm != "")
         {
             string sql_sx = "select 属性名称,属性编码 from 材料分类属性值表主表 where 分类编码=" + Request["flbm"].ToString();
-            dt_sx = Conn(sql_sx);
+            dt_sx = Conn.GetDataTable(sql_sx);
         }
         if (dt_sx != null && dt_sx.Rows.Count > 0)
         {
@@ -25,7 +26,7 @@
             foreach (DataRow drsx in dt_sx.Rows)
             {
                 string sql_sx = "select 属性名称,属性值,属性编码,编号 from 材料分类属性值表  where 属性名称='" + drsx["属性名称"] + "' and 分类编码=" + flbm;
-                dt_sxz = Conn(sql_sx);
+                dt_sxz = Conn.GetDataTable(sql_sx);
                 string sxmc = Convert.ToString(drsx["属性名称"]);
                 sxmc = sxmc.Replace("\r", " ");
                 sxmc = sxmc.Replace("\n", " ");
@@ -61,20 +62,6 @@
         {
             Response.Write("");
         }
-    }
-    public DataTable Conn(string sql)
-    {
-        DataTable dt = new DataTable();
-        SqlConnection _con = new SqlConnection("server=192.168.1.32; database=mywt_mis_ZhongCaiWang01;uid=mywtadmin; pwd=admin");
-        using (SqlCommand _cmd = new SqlCommand(sql, _con))
-        {
-            _con.Open();
-            SqlDataAdapter sda = new SqlDataAdapter();
-            sda.SelectCommand = _cmd;
-            sda.Fill(dt);
-            _con.Close();
-        }
-        return dt;
-    }
+    }   
 </script>
 

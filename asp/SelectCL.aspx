@@ -400,6 +400,7 @@ public DataTable dt_sx = new DataTable();
 public DataTable dt_sxz = new DataTable();
 public string DWID = "";
 public string DWLX = "";
+public DataConn Conn = new DataConn();
 protected void Page_Load(object sender, EventArgs e)
 { 
         string CompanyID = "";  //营业注册号
@@ -416,7 +417,7 @@ protected void Page_Load(object sender, EventArgs e)
             "' and 审批结果='通过'union select gys_id as id,单位类型 from 材料供应商信息表 where 营业执照注册号='"+CompanyID+"' and  审批结果='通过'";
 
         DataTable dt_yz = new DataTable();
-        dt_yz = Conn(sSQL);
+        dt_yz = Conn.GetDataTable(sSQL);
         if (dt_yz!=null&&dt_yz.Rows.Count>0)
         {
              DWID = dt_yz.Rows[0]["id"].ToString();
@@ -438,22 +439,7 @@ protected void Page_Load(object sender, EventArgs e)
             }
         }
     
-}     
-public DataTable Conn(string sql)
-{
-DataTable dt = new DataTable();
-SqlConnection _con = new SqlConnection("server=192.168.1.32; database=mywt_mis_ZhongCaiWang01;uid=mywtadmin; pwd=admin");
-using (SqlCommand _cmd = new SqlCommand(sql, _con))
-{
-    _con.Open();
-    SqlDataAdapter sda = new SqlDataAdapter();
-    sda.SelectCommand = _cmd;
-    sda.Fill(dt);
-    _con.Close();
-}
-return dt;
-}
-
+}   
 </script>
  <div class="lib_Menubox2">
 <ul>
@@ -471,7 +457,7 @@ return dt;
         <%string sSQL=""; %>
         <% sSQL="select 显示名字,分类编码,单位 from 材料分类表 where LEN(分类编码)=2";%>
         <%DataTable dt1=new DataTable();%>
-        <%dt1=Conn(sSQL); %>
+        <%dt1 = Conn.GetDataTable(sSQL); %>
         <%if(dt1!=null&&dt1.Rows.Count>0) %>
         <%{ %>
         <%int   firstlevel = 0; %>
@@ -480,7 +466,7 @@ return dt;
                         <%sSQL = ""; %>
                             <%sSQL = "select 显示名字,分类编码,单位 from 材料分类表 where LEN(分类编码)=4 and  SUBSTRING(分类编码,1,2)="+dryj["分类编码"]; %>
                             <%DataTable dt2 = new DataTable(); %>
-                            <%dt2 = Conn(sSQL); %>
+                            <%dt2 = Conn.GetDataTable(sSQL); %>
                             <%if (dt2 != null && dt2.Rows.Count > 0) %>
                             <%{ %>
                              <% int secondlevel = 0; %>
@@ -492,7 +478,7 @@ return dt;
                                             <%sSQL = ""; %>
                                             <%sSQL = "select 显示名字,分类编码,单位 from 材料分类表 where LEN(分类编码)=6 and SUBSTRING(分类编码,1,4)="+drej["分类编码"]; %>
                                             <%DataTable dt3 = new DataTable(); %>
-                                            <%dt3 = Conn(sSQL); %>                                                                                                       
+                                            <%dt3 = Conn.GetDataTable(sSQL); %>                                                                                                       
                                                 <%if (dt3 != null && dt3.Rows.Count > 0) %>
                                                 <%{ %>        
                                                  <h2 onClick="javascript:ShowMenu(this,<%=secondlevel %>)"><a href="javascript:void(0)"><%=drej["显示名字"]%></a></h2>
@@ -528,7 +514,7 @@ return dt;
             <% sSQLsc = " select a.分类编码,a.显示名字 from 材料分类表 as a ,(select distinct SUBSTRING(c.分类编码,1,2) as 分类编码 from 采购商关注的材料表 as b ,材料表 as c where  b.cl_id=c.cl_id and b.材料编码=c.材料编码 and b.dw_id='" + DWID + "') as  d where LEN(a.分类编码)=2 and a.分类编码=d.分类编码";%>
       
         <%DataTable dt_sc=new DataTable();%>
-        <%dt_sc = Conn(sSQLsc); %>
+        <%dt_sc = Conn.GetDataTable(sSQLsc); %>
         <%if (dt_sc != null && dt_sc.Rows.Count > 0) %>
         <%{ %>
         <%int firstlevelcl = 0; %>
@@ -537,7 +523,7 @@ return dt;
                         <%sSQLsc = ""; %>
                             <%sSQLsc = "select a.分类编码,a.显示名字 from 材料分类表 as a ,(select distinct SUBSTRING(c.分类编码,1,4) as 分类编码 from 采购商关注的材料表 as b ,材料表 as c where  b.cl_id=c.cl_id and b.材料编码=c.材料编码 and b.dw_id='" + DWID + "') as  d where LEN(a.分类编码)=4 and a.分类编码=d.分类编码 and  SUBSTRING(d.分类编码,1,2)='" + dryj["分类编码"] + "'";%>
                             <%DataTable dt2 = new DataTable(); %>
-                            <%dt2 = Conn(sSQLsc); %>
+                            <%dt2 = Conn.GetDataTable(sSQLsc); %>
                             <%if (dt2 != null && dt2.Rows.Count > 0) %>
                             <%{ %>
                              <% int secondlevelcl = 0; %>
@@ -549,7 +535,7 @@ return dt;
                                             <%sSQLsc = ""; %>
                                             <%sSQLsc = " select a.分类编码,a.显示名字 from 材料分类表 as a ,(select distinct SUBSTRING(c.分类编码,1,6) as 分类编码 from 采购商关注的材料表 as b ,材料表 as c where  b.cl_id=c.cl_id and b.材料编码=c.材料编码 and b.dw_id='" + DWID + "') as  d where LEN(a.分类编码)=6 and a.分类编码=d.分类编码 and  SUBSTRING(d.分类编码,1,4)='" + drej["分类编码"] + "'"; %>
                                             <%DataTable dt3 = new DataTable(); %>
-                                            <%dt3 = Conn(sSQLsc); %>                                                                                                       
+                                            <%dt3 = Conn.GetDataTable(sSQLsc); %>                                                                                                       
                                                 <%if (dt3 != null && dt3.Rows.Count > 0) %>
                                                 <%{ %>      
                                                  <h2 onClick="javascript:ShowMenu(this,<%=secondlevelcl %>)"><a href="javascript:void(0)"><%=drej["显示名字"]%></a></h2>

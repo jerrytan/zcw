@@ -4,6 +4,7 @@
 <script runat="server">
     protected void Page_Load(object sender, EventArgs e)
     {
+        DataConn Conn = new DataConn();
         //获取收藏材料页面
         string flbm = "";
         if (Request["flbm"] != null && Request["flbm"].ToString() != "")
@@ -18,7 +19,7 @@
         string sSQL = " select distinct d.材料编码,d.材料名称,d.规格型号,d.品牌名称,a.单位 from 材料分类表 as a ,(select distinct b.材料编码,b.材料名称,c.品牌名称,c.规格型号 from 采购商关注的材料表 as b ,材料表 as c where  b.cl_id=c.cl_id and b.材料编码=c.材料编码 and b.dw_id='" +
             DW_id + "') as  d where a.分类编码='" +
             flbm + "' and SUBSTRING(d.材料编码,1," + flbm.Length + ")='" + flbm + "' ";
-        DataTable dt = Conn(sSQL);
+        DataTable dt = Conn.GetDataTable(sSQL);
         if (dt != null && dt.Rows.Count > 0)
         {
             string html = "";
@@ -44,18 +45,5 @@
             Response.Write("");
         }
     }
-    public DataTable Conn(string sql)
-    {
-        DataTable dt = new DataTable();
-        SqlConnection _con = new SqlConnection("server=192.168.1.32; database=mywt_mis_ZhongCaiWang01;uid=mywtadmin; pwd=admin");
-        using (SqlCommand _cmd = new SqlCommand(sql, _con))
-        {
-            _con.Open();
-            SqlDataAdapter sda = new SqlDataAdapter();
-            sda.SelectCommand = _cmd;
-            sda.Fill(dt);
-            _con.Close();
-        }
-        return dt;
-    }
+    
     </script>
