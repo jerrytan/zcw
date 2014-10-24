@@ -39,45 +39,46 @@
         protected DataTable dt_content = new DataTable();
         DataTable objDt = null;
         DataView objVe = null;
+        public string pp_mc = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-                this.xxpp.Visible = true;
-                this.divtable.Visible = false;
-                if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
+            this.xxpp.Visible = true;
+            this.divtable.Visible = false;
+            if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
+            {
+                s_yh_id = Session["GYS_YH_ID"].ToString();
+            }
+            if (Request["xzlx"] != null && Request["xzlx"].ToString() != "")
+            {
+                xzlx = Request["xzlx"].ToString();
+                if (xzlx.Trim() == "scs")
                 {
-                    s_yh_id = Session["GYS_YH_ID"].ToString();
+                    xzlx = "生产商";
                 }
-                if (Request["xzlx"] != null && Request["xzlx"].ToString() != "")
+                else if (xzlx.Trim() == "fxs")
                 {
-                    xzlx = Request["xzlx"].ToString();
-                    if (xzlx.Trim() == "scs")
-                    {
-                        xzlx = "生产商";
-                    }
-                    else if (xzlx.Trim() == "fxs")
-                    {
-                        xzlx = "分销商";
-                    }
+                    xzlx = "分销商";
                 }
-                if (Request["gxs_id"] != null && Request["gxs_id"].ToString() != "")
+            }
+            if (Request["gxs_id"] != null && Request["gxs_id"].ToString() != "")
+            {
+                gxs_id = Request.QueryString["gxs_id"].ToString();
+            }
+            pp_mc = Request["pp_mc"];//品牌名称
+            gys_id = gxs_id;
+            if (xzlx == "分销商")  //当前用户是生产商
+            {
+                if (gxs_id != "")
                 {
-                    gxs_id = Request.QueryString["gxs_id"].ToString();
+                    sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "'";
+                    dt_ppxx = objConn.GetDataTable(sSQL);
                 }
-                gys_id = gxs_id;
-                if (xzlx == "分销商")  //当前用户是生产商
+                else
                 {
-                    if (gxs_id != "")
-                    {
-                        sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "'";
-                        dt_ppxx = objConn.GetDataTable(sSQL);
-                    }
-                    else
-                    {
-                        sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典";
-                        dt_ppxx = objConn.GetDataTable(sSQL);
-                    }
-                  
-                }
+                    sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典";
+                    dt_ppxx = objConn.GetDataTable(sSQL);
+                } 
+            }
                 //else
                 //{                 
                 //    sSQL = "select pp_id from 分销商和品牌对应关系表 where fxs_id='" + gxs_id + "'";
@@ -88,18 +89,18 @@
                 //    dt_ppxx = objConn.GetDataTable(sSQL);
 
                 //}
-                sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";//取大类的数据
-                dt_yjfl = objConn.GetDataTable(sSQL);
-                sSQL = "select 分类编码,显示名字 from 材料分类表 where 是否启用=1";
-                dt_clfl = objConn.GetDataTable(sSQL);
-                if (!IsPostBack)
-                {
-                    this.divtable.Visible = true;
-                    this.gxsform.Visible = false;
-                    this.divfy.Visible = false;
-                    sSQL = "select top 10 gys_id,供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,注册日期 from 材料供应商信息表 where left(单位类型,3) like '%商%' order by updatetime desc";
-                    dt_gsxx = objConn.GetDataTable(sSQL);
-                } 
+            sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";//取大类的数据
+            dt_yjfl = objConn.GetDataTable(sSQL);
+            sSQL = "select 分类编码,显示名字 from 材料分类表 where 是否启用=1";
+            dt_clfl = objConn.GetDataTable(sSQL);
+            if (!IsPostBack)
+            {
+                this.divtable.Visible = true;
+                this.gxsform.Visible = false;
+                this.divfy.Visible = false;
+                sSQL = "select top 10 gys_id,供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,注册日期 from 材料供应商信息表 where left(单位类型,3) like '%商%' order by updatetime desc";
+                dt_gsxx = objConn.GetDataTable(sSQL);
+            } 
          }
         public void MyDataBind(bool bpostback, string sSQL, string sCondition)
         {
@@ -745,6 +746,9 @@
 </script>
    
  <script type="text/javascript" language="javascript">
+ function chayue(gs_mc){
+    window.open("ckxfs.aspx?gsmc="+gs_mc);
+ }
  function Trim(str) {
             str = str.replace(/^(\s|\u00A0)+/, '');
             for (var i = str.length - 1; i >= 0; i--) {
@@ -1033,6 +1037,7 @@ onloadEvent(showtable);
                     <td align="left"><%=dt_gsxx.Rows[i]["联系人手机"]%></td>
                     <td align="center"><%=dt_gsxx.Rows[i]["单位类型"]%></td>
                     <td align="center">
+                    <%--<input type="submit" name="input" value="查阅" class="filter" onclick="chayue('<%=dt_gsxx.Rows[i]["供应商"] %>')" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/>--%>
                     <asp:ImageButton ID="CY" runat="server" OnClientClick="Add(this)" OnClick="CY_Click" ImageUrl="~/asp/images/chayue.gif" />
                      <input type="hidden" id="gsmc" runat="server" value="" /></td>
                     </tr>

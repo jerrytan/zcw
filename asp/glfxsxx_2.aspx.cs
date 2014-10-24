@@ -28,6 +28,7 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
             gys_id = Request["gys_id"].ToString();
             pp_mc = Request["pp_mc"].ToString();
         }
+        this.ppmc.Value = pp_mc;
         sSQL = "select  dw_id from 用户表 where yh_id='" + s_yh_id + "'";
         DataTable dt_yh = objConn.GetDataTable(sSQL);
         string gy = dt_yh.Rows[0]["dw_id"].ToString();

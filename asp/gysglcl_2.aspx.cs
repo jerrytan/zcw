@@ -28,13 +28,14 @@ public partial class asp_gysglcl_2 : System.Web.UI.Page
             gys_id = Request["gys_id"].ToString();
             ejfl = Request["ejfl"].ToString();
         }
+        this.ej_cl.Value = ejfl;
         sSQL = "select  dw_id from 用户表 where yh_id='" + s_yh_id + "'";
         DataTable dt_yh = objConn.GetDataTable(sSQL);
         gy = dt_yh.Rows[0]["dw_id"].ToString();
         this.lblgys_id.Value = gy;
         if (ejfl != "" && gys_id != "")
         {
-            sSQL = "select cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商,是否启用 from 材料表 where 是否启用=1 and 分类名称='" + ejfl + "' and gys_id='" + gys_id + "' order by updatetime desc ";
+            sSQL = "select cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商,是否启用 from 材料表 where 是否启用=1 and 分类编码='" + ejfl + "' and gys_id='" + gys_id + "' order by updatetime desc ";
             dt_cl = objConn.GetDataTable(sSQL);
             Session["SQLsource"] = sSQL;
             string sSearchCondition="分类名称='"+ejfl+"'";

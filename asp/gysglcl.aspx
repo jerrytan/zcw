@@ -1,8 +1,11 @@
 <!--
-       供应商管理材料页面 可以删除选中的材料,可也增加新的材料
-	   文件名:  gysglcl.aspx   
+       供应商管理材料页面 可以删除选中的材料文件名:  gysglcl.aspx   
        传入参数：s_yh_id 用户id 
-       author:张新颖
+       author:张新颖,可也增加新的材料
+	   
+
+
+       蒋桂娥使用ifram加入gysglcl_2.aspx页面
 -->
 <%@ Register Src="include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
 <%@ Import Namespace="System.Data" %>
@@ -238,7 +241,7 @@
         //}
         
         //根据用户id 查询供应商id
-        gys_id = Request.QueryString["gys_id"].ToString();
+        gys_id = Request["gys_id"].ToString();
         //获取复选框选中的cl_id
         string clidstr = Request.Form["clid"];
         if (clidstr != "" && clidstr != null)
@@ -248,7 +251,6 @@
             objConn.ExecuteSQL(sSQL, true);
             if(ejfl=="")
             {
-                Response.Write(clidstr);
                 sSQL = "select top 10 cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商,是否启用 from 材料表 where 是否启用=1 order by updatetime desc";
                 dt_cl = objConn.GetDataTable(sSQL);
             }
@@ -294,10 +296,10 @@
 	{
         if(yj[0]==R_ejfl["分类编码"].ToString().Substring(0,2))
         {
-            string value = R_ejfl["显示名字"].ToString();
+            string value = R_ejfl["分类编码"].ToString();
             %>
    <h2>  
-    <a href="javascript:void(0)" onclick="CZ('<%=value %>')"><%=R_ejfl["显示名字"].ToString() %></a>
+    <a href="javascript:void(0)" onclick="CZ('<%=value%>')"><%=R_ejfl["显示名字"].ToString() %></a>
     </h2>  
             <% 	 secondlevel++;
                 }      

@@ -21,7 +21,8 @@
 <script type="text/javascript" language="javascript">
     function btnFilter_Click() {
         var gys = document.getElementById("lblgys_id").value;
-        window.parent.parent.location.href = 'xzgxs.aspx?gxs_id=' + gys + '&xzlx=fxs';
+        var pp= document.getElementById("ppmc").value;
+        window.parent.parent.location.href = 'xzgxs.aspx?pp_mc=' + pp + '&gxs_id=' + gys + '&xzlx=fxs';
     }
     function Trim(str) {
         str = str.replace(/^(\s|\u00A0)+/, '');
@@ -67,7 +68,7 @@
     }
 
     function ChaYue(gsmc) {
-        window.parent.location.href = 'glfxsxx_3.aspx?gsmc=' + gsmc + '&lx=fxs';
+        window.open("glfxsxx_3.aspx?gsmc=" + gsmc + "&lx=fxs");
     }
 
 function onloadEvent(func) {
@@ -115,6 +116,7 @@ onloadEvent(showtable);
     <div id="jiansuo2"> 
 ¹«Ë¾Ãû³Æ£º
 <input name="txtKeyWord" runat="server" type="text" id="txtKeyWord" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
+<input type="hidden" id="ppmc" value="" runat="server" />
 <div class="jiansuo_img">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px">
   <tr>

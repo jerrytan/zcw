@@ -1,4 +1,8 @@
-
+<!-- 
+文件名:  gysglcl_2.aspx   
+       传入参数：gys_id和ejfl
+       author:蒋桂娥
+-->
 <%@ Page Language="C#" EnableEventValidation="false" AutoEventWireup="true" CodeFile="gysglcl_2.aspx.cs" Inherits="asp_gysglcl_2" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -42,11 +46,12 @@
     }
     function btnFilter_Click() {
         var gy = document.getElementById("lblgys_id").value;
-        window.parent.location.href = 'xzclym.aspx?gys_id='+gy;
+        var ej_cl = document.getElementById("ej_cl").value;
+        window.parent.location.href = 'xzclym.aspx?gys_id=' + gy + '&ej=' + ej_cl;
     }
     function BJCL(cl_mc) {
         var gys = document.getElementById("lblgys_id").value;
-        window.parent.location.href = 'clbj.aspx?cl_mc='+cl_mc+'&gys_id='+gys;
+        window.open("clbj.aspx?cl_mc=" + cl_mc + "&gys_id=" + gys);
     }
     function delete_cl() {
         var table = document.getElementById("table2");
@@ -138,7 +143,7 @@
   </tr>
 </table>
 </div></div>
-
+<input type="hidden" value="" id="ej_cl" runat="server" />
    <div id="divtable" runat="server" style="height:230px"> 
 <table width="100%"  border="0"  cellpadding="0" cellspacing="1" bgcolor="#dddddd" class="table2" id="table2" style="table-layout：fixed ;word-wrap：break-word;">
       <thead>

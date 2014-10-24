@@ -26,8 +26,7 @@
 
 <script language="javascript">
     //一级分类发送ajax 更新的是小类的名称 文件名是:xzclym2.aspx
-    function updateFL(id) 
-	{
+    function updateFL(id) {
         var xmlhttp;
         if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
@@ -36,9 +35,7 @@
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
         xmlhttp.onreadystatechange = function () {
-            
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                
                 document.getElementById("ejflname").innerHTML = xmlhttp.responseText;
             }
         }
@@ -49,8 +46,7 @@
 
     //二级分类发送ajax 更新的是品牌的名称 和材料属性的名称
     //文件名是xzclym3.aspx 和 xzclymSX.aspx
-    function updateCLFL(id)
-    {
+    function updateCLFL(id) {
         var xmlhttp;
         if (window.XMLHttpRequest)
         {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -63,10 +59,8 @@
         }
         xmlhttp.onreadystatechange = function ()
         {
-
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
             {
-
                 document.getElementById("brand").innerHTML = xmlhttp.responseText;
             }
         }
@@ -167,86 +161,15 @@
             }
         }
     }
-    function SaveAll()
-    {
-        document.getElementById("form1").action = "xzclym4.aspx?ym=clbj";
+    function SaveAll() {
+        var gys_id = document.getElementById("gys_id").value;
+        var cl = document.getElementById("cl_id").value;
+        document.getElementById("form1").action = "clbj_2.aspx?ym=clbj&gys_id=" + gys_id + "&cl_id=" + cl;
         document.getElementById("form1").method = "post";
         document.getElementById("form1").submit();
     }
 </script>	
-<script type="text/javascript"><!--    //--><![CDATA[//><!--
-    function menuFix()
-    {
-        var sfEls = document.getElementById("nav").getElementsByTagName("li");
-        for (var i = 0; i < sfEls.length; i++)
-        {
-            sfEls[i].onmouseover = function ()
-            {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onMouseDown = function ()
-            {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onMouseUp = function ()
-            {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onmouseout = function ()
-            {
-                this.className = this.className.replace(new RegExp("( ?|^)sfhover\\b"),
-"");
-            }
-        }
-    }
-    window.onload = menuFix;
-    //--><!]]></script>
-<script type="text/javascript">
-    var speed = 9//速度数值越大速度越慢
-    var demo = document.getElementById("demo");
-    var demo2 = document.getElementById("demo2");
-    var demo1 = document.getElementById("demo1");
-    demo2.innerHTML = demo1.innerHTML
-    function Marquee()
-    {
-        if (demo2.offsetWidth - demo.scrollLeft <= 0)
-            demo.scrollLeft -= demo1.offsetWidth
-        else
-        {
-            demo.scrollLeft++
-        }
-    }
-    var MyMar = setInterval(Marquee, speed)
-    demo.onmouseover = function () { clearInterval(MyMar) }
-    demo.onmouseout = function () { MyMar = setInterval(Marquee, speed) }
-</script>
-<script type="text/javascript">
-    function menuFix()
-    {
-        var sfEls = document.getElementById("nav").getElementsByTagName("li");
-        for (var i = 0; i < sfEls.length; i++)
-        {
-            sfEls[i].onmouseover = function ()
-            {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onMouseDown = function ()
-            {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onMouseUp = function ()
-            {
-                this.className += (this.className.length > 0 ? " " : "") + "sfhover";
-            }
-            sfEls[i].onmouseout = function ()
-            {
-                this.className = this.className.replace(new RegExp("( ?|^)sfhover\\b"),
-"");
-            }
-        }
-    }
-    window.onload = menuFix;
-  </script>
+ 
 <script runat="server">  
          protected DataTable dt_clfl = new DataTable();  //材料分类大类   
          protected DataTable dt_clflej = new DataTable();  //材料分类大类   
@@ -262,22 +185,21 @@
          public string FilePath;
          protected void Page_Load(object sender, EventArgs e)
          {
-             string cl_mc = Request["cl_mc"].ToString();   //获取材料名称              
-                 sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
-                 dt_clfl = objConn.GetDataTable(sSQL);
-                 sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='4'";
-                 dt_clflej = objConn.GetDataTable(sSQL);
-                 sSQL = "select cl_id, 显示名,分类名称,品牌名称,规格型号,计量单位,单位体积,单位重量,分类编码,说明,pp_id,fl_id,材料编码 from 材料表 where 显示名='" + cl_mc + "' ";
-                 dt_clxx = objConn.GetDataTable(sSQL);
-                 clbm = Convert.ToString(dt_clxx.Rows[0]["材料编码"]);
-                 s_clmc = Convert.ToString(dt_clxx.Rows[0]["显示名"]);
-                 cl_id = Convert.ToString(dt_clxx.Rows[0]["cl_id"]);
-                 sSQL = "select 品牌名称,pp_id from 品牌字典 where left(分类编码,2)='" + clbm.Substring(0, 2) + "'";
-
-                 dt_pp = objConn.GetDataTable(sSQL);
-                 sSQL = "select 分类属性名称,分类属性值 from 材料属性表 where 材料名称='" + cl_mc + "' and 材料编码='" + clbm + "'";
-                 dt_clsx = objConn.GetDataTable(sSQL);
-             
+             this.gys_id.Value=Request["gys_id"].ToString();
+            string cl_mc = Request["cl_mc"].ToString();   //获取材料名称    
+            sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
+            dt_clfl = objConn.GetDataTable(sSQL);
+            sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='4'";
+            dt_clflej = objConn.GetDataTable(sSQL);
+            sSQL = "select cl_id, 显示名,分类名称,品牌名称,规格型号,计量单位,单位体积,单位重量,分类编码,说明,pp_id,fl_id,材料编码 from 材料表 where 显示名='" + cl_mc + "' ";
+            dt_clxx = objConn.GetDataTable(sSQL);
+            clbm = Convert.ToString(dt_clxx.Rows[0]["材料编码"]);
+            s_clmc = Convert.ToString(dt_clxx.Rows[0]["显示名"]);
+            cl_id = Convert.ToString(dt_clxx.Rows[0]["cl_id"]);
+            sSQL = "select 品牌名称,pp_id from 品牌字典 where left(分类编码,2)='" + clbm.Substring(0, 2) + "'";
+            dt_pp = objConn.GetDataTable(sSQL);
+            sSQL = "select 分类属性名称,分类属性值 from 材料属性表 where 材料名称='" + cl_mc + "' and 材料编码='" + clbm + "'";
+            dt_clsx = objConn.GetDataTable(sSQL);
          }
          protected void UploadFile(object sender, EventArgs e)
          {
@@ -369,7 +291,7 @@
                  Response.Write("<script>window.alert('上传失败！')</" + "script>");
              }           
          }
- 
+
          protected bool CheckFileType(string FileName)
          {
              bool b = false;
@@ -393,8 +315,6 @@
              }
              return b;
         }
-
-        
 </script>
 <body>
 
@@ -403,7 +323,7 @@
  <!-- 头部结束-->
 
 <div>
- <form runat="server" id="form1" action="xzclym4.aspx" method="post">
+ <form runat="server" id="form1">
  <div class="fxsxx">
     <table width="998" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px; margin-top:10px;">
     <tr>
@@ -413,7 +333,7 @@
       <td width="100" height="70"></td>
       <td width="180" colspan="2">
 <div class="xza">
-
+<input type="hidden" value="" runat="server" id="gys_id" />
                     <span class="xz2"><a href="#">大类</a></span>
                     <select id="drop1" name="drop1" onchange="updateFL(this.options[this.options.selectedIndex].value)">
                      <option value="0">请选择大类</option>
@@ -568,7 +488,9 @@
       
 </div>
 </div></div>
-<span class="fxsbc"><a href="#"><img src="images/bbc_03.jpg" onclick="SaveAll()"/></a></span> 
+<span class="fxsbc"><a href="#"><img src="images/bbc_03.jpg" onclick="SaveAll()"/></a>
+<input type="hidden" value="<%=cl_id %>" id="cl_id" />
+</span> 
  </form>
  </div>
 <div class="foot">
