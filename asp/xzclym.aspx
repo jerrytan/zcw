@@ -46,7 +46,6 @@
 
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
             {
-
                 document.getElementById("ejflname").innerHTML = xmlhttp.responseText;
             }
         }
@@ -99,9 +98,6 @@
 
                 var json = array;
                 var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 
-
-
-
                 for (var i = 0; i < myobj.length; i++)
                 {  //遍历			
 
@@ -113,12 +109,8 @@
 
                     var json_id = document.getElementById('sx_id');       //下拉框显示属性id
                     json_id.options.add(new Option(myobj[i].SX_id, myobj[i].SX_id));
-
-
                 }
-
             }
-
         }
     }
 
@@ -162,7 +154,6 @@
 
                 for (var i = 0; i < myobj.length; i++)
                 {  //遍历			
-
                     var json = document.getElementById('cl_value');
                     json.options.add(new Option(myobj[i].SXZ_name, myobj[i].SXZ_name));  //下拉框显示属性值
 
@@ -171,8 +162,6 @@
 
                     var json_id = document.getElementById('cl_ids');       //下拉框显示属性值id
                     json_id.options.add(new Option(myobj[i].SXZ_id, myobj[i].SXZ_id));
-
-
                 }
             }
         }
@@ -181,10 +170,8 @@
         xmlhttp1.send();
         xmlhttp1.onreadystatechange = function ()
         {
-
             if (xmlhttp1.readyState == 4 && xmlhttp1.status == 200)
             {
-
                 var ggxh_value = xmlhttp1.responseText;
 
                 document.getElementById("cl_type").value = ggxh_value;
@@ -205,6 +192,12 @@
             url = "xzfxpp.aspx?gys_id=" + id;
         }
         window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+    }
+    function onload() {
+        var ej_name = document.getElementById("ej_name").value;
+        if (ej_name != "" && ej_name != undefined) {
+            updateCLFL(ej_name);
+        }
     }
 </script>
 
@@ -227,6 +220,8 @@
     protected string lx = "";
     public string clbm = "";
     public string s_clmc = "";
+    public string ejcl = "";
+    public string yicl = "";
     protected DataTable dt_clxx = new DataTable();//材料表
     
     protected void Page_Load(object sender, EventArgs e)
@@ -235,48 +230,65 @@
         {
             gys_id = Request["gys_id"].ToString();
         }
-        
-        if (gys_id!="")
+        if (gys_id != "")
         {
             sSQL = "select 单位类型 from 材料供应商信息表 where gys_id='" + gys_id + "'";
             lx = objConn.DBLook(sSQL);
         }
 
-            if (lx=="生产商")
-            {
-                sSQL = "select 品牌名称,pp_id from 品牌字典 where scs_id='" + gys_id + "'";
-                dt_pp = objConn.GetDataTable(sSQL);
-            }
-            else
-            {
-                sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where fxs_id='"+gys_id+"'";
-                dt_pp = objConn.GetDataTable(sSQL);
-            }
-           
-         sSQL="select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
-      
-        dt_clfl = objConn.GetDataTable(sSQL);     
-      
-
-        this.Items1 = new List<OptionItem>();  //数据表DataTable转集合  
-        
-        for (int x = 0; x < dt_clfl.Rows.Count; x++)
+        if (lx == "生产商")
         {
-            DataRow dr = dt_clfl.Rows[x];
+            sSQL = "select 品牌名称,pp_id from 品牌字典 where scs_id='" + gys_id + "'";
+            dt_pp = objConn.GetDataTable(sSQL);
+        }
+        else
+        {
+            sSQL = "select 品牌名称,pp_id from 分销商和品牌对应关系表 where fxs_id='" + gys_id + "'";
+            dt_pp = objConn.GetDataTable(sSQL);
+        }
+        s_clmc = Request["ej"];
+        if (s_clmc =="")
+        {
+            this.yjfl.Visible = false;
+            this.ejfl.Visible = false;
+            this.xl.Visible = true;
+            this.dl.Visible = true;
+            sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
+            dt_clfl = objConn.GetDataTable(sSQL);
+            this.Items1 = new List<OptionItem>();  //数据表DataTable转集合  
 
-            if (Convert.ToString(dr["分类编码"]).Length == 2)
+            for (int x = 0; x < dt_clfl.Rows.Count; x++)
             {
-                OptionItem item = new OptionItem();
-                item.Name = Convert.ToString(dr["显示名字"]);
-                item.GroupsCode = Convert.ToString(dr["分类编码"]);
-                this.Items1.Add(item);   //将大类存入集合
+                DataRow dr = dt_clfl.Rows[x];
+
+                if (Convert.ToString(dr["分类编码"]).Length == 2)
+                {
+                    OptionItem item = new OptionItem();
+                    item.Name = Convert.ToString(dr["显示名字"]);
+                    item.GroupsCode = Convert.ToString(dr["分类编码"]);
+                    this.Items1.Add(item);   //将大类存入集合
+                }
             }
+        }
+        else
+        {
+            sSQL = "select 显示名字 from 材料分类表 where 分类编码='" + s_clmc + "'";
+            dt_clfl = objConn.GetDataTable(sSQL);
+            ejcl=dt_clfl.Rows[0]["显示名字"].ToString();
+            string yi = s_clmc.Substring(0, 2);
+            sSQL = "select 显示名字 from 材料分类表 where 分类编码='" + yi + "'";
+            dt_clfl = objConn.GetDataTable(sSQL);
+            yicl=dt_clfl.Rows[0]["显示名字"].ToString();
+            this.yjfl.Visible = true;
+            this.ejfl.Visible = true;
+            this.xl.Visible = false;
+            this.dl.Visible = false;
         }
     }
    
 </script>
 
-<body>
+<body onload="onload()">
 
     <!-- 头部开始-->
     <uc2:Header2 ID="Header2" runat="server" />
@@ -286,16 +298,19 @@
     <div class="fxsxx">
         <span class="fxsxx1">请选择您要添加的材料信息</span>
         <%string gys_id = Request["gys_id"];%>
-          <form name="form1" action = "xzclym4.aspx?&gys_id=<%=gys_id %>" method = "post">
-          <table width="998" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px; margin-top:10px;">
+        <input id="ej_name" value="<%=s_clmc %>"  type="hidden" />
+  <form name="form1" action = "xzclym4.aspx?ejcl=<%=s_clmc%>&gys_id=<%=gys_id %>" method = "post">
+  <table width="998" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px; margin-top:10px;">
     <tr>
       <td height="34" colspan="6" align="left" bgcolor="#f7f7f7" style="font-size:14px; font-weight:bold;">&nbsp;&nbsp;材料分类如下:</td>
     </tr>
     <tr>
       <td width="100" height="70"></td>
       <td width="180" colspan="2">
-<div class="xza">
-
+      <div  runat="server" id="yjfl">一级材料：
+      <input disabled value="<%=yicl %>" type="text" id="txtKeyWord" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
+      </div>
+<div class="xza" runat="server" id="dl">
                     <span class="xz2"><a href="#">大类</a></span>
                     <select id="drop1" name="drop1" onchange="updateFL(this.options[this.options.selectedIndex].value)">
                 <% foreach(var v  in Items1)
@@ -306,11 +321,13 @@
                 </div>
       </td>
       <td width="180" colspan="2" align="right">
-      <div class="xza">
+      <div runat="server" id="ejfl">二级材料：
+      <input  readonly="readonly" value="<%=ejcl %>" type="text" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
+      </div>
+      <div class="xza" runat="server" id="xl">
                     <span class="xz2"><a href="#">小类</a></span>
                     <select id="ejflname" name="ejflname" class="fux" onchange="updateCLFL(this.options[this.options.selectedIndex].value)"> 
                         <option value="0">请选择小类</option>
-                    
                     </select>
                 </div>
       </td>
@@ -399,7 +416,7 @@
       <td height="30">&nbsp;</td>
       <td>规格型号：</td>
       <td><label for="textfield21">
-        <input name="cl_type" type="text" id="cl_type" class="fxsxx3" value="<%=Request.Form["cl_type"] %>" />
+        <input name="cl_type" type="text" id="cl_type" class="fxsxx3" value="<%=Request.Form["cl_type"] %>" onclick="return cl_type_onclick()" />
       </label></td>
       <td>&nbsp;</td>
       <td>计量单位：</td>
@@ -426,8 +443,6 @@
     </tr>
 </table>
             </div>
-
-
 
             <!--
 <div class="cpdt">

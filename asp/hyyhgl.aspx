@@ -75,7 +75,7 @@
         }
         //添加
         function addPage() {
-            newwin = window.open('hyyhgl_wh.aspx?state=0', 'myWindow', 'height=270px,width=390px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
+            newwin = window.open('hyyhgl_wh.aspx?state=0', 'myWindow', 'height=300px,width=390px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
         //修改
         function changePage(obj) {

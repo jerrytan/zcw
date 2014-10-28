@@ -68,27 +68,38 @@
             gys_id = gxs_id;
             if (xzlx == "分销商")  //当前用户是生产商
             {
-                if (gxs_id != "")
+                if (gxs_id != ""&&pp_mc=="")
                 {
+                    this.pp.Visible = true;
+                    this.txtKeyWord.Visible = false;
                     sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "'";
                     dt_ppxx = objConn.GetDataTable(sSQL);
                 }
                 else
                 {
-                    sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典";
-                    dt_ppxx = objConn.GetDataTable(sSQL);
+                    this.pp.Visible = false;
+                    this.txtKeyWord.Visible = true;
+                    if (gxs_id == "" || pp_mc == "")
+                    {
+                        sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典";
+                        dt_ppxx = objConn.GetDataTable(sSQL);
+                    }
+                    else 
+                    {
+                        if (pp_mc != "" && pp_mc != null&&gxs_id!="")
+                        {
+                            this.txtKeyWord.Value = pp_mc;
+                            sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "' and 品牌名称='" + pp_mc + "'";
+                            dt_ppxx = objConn.GetDataTable(sSQL);
+                        }
+                        else
+                        {
+                            this.pp.Visible = true;
+                            this.txtKeyWord.Visible = false;
+                        }
+                    }
                 } 
             }
-                //else
-                //{                 
-                //    sSQL = "select pp_id from 分销商和品牌对应关系表 where fxs_id='" + gxs_id + "'";
-                //    dt_fxpp = objConn.GetDataTable(sSQL);
-
-                //    string pp_id = dt_fxpp.Rows[0]["pp_id"].ToString();
-                //    sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where pp_id=" + pp_id;
-                //    dt_ppxx = objConn.GetDataTable(sSQL);
-
-                //}
             sSQL = "select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";//取大类的数据
             dt_yjfl = objConn.GetDataTable(sSQL);
             sSQL = "select 分类编码,显示名字 from 材料分类表 where 是否启用=1";
@@ -576,15 +587,34 @@
                     string dt_fxs_id = "select gys_id from 材料供应商信息表 where 供应商='" + this.gys.Value + "'";
                     DataTable dt_fxs = objConn.GetDataTable(dt_fxs_id);
                     string fxs_id = dt_fxs.Rows[0]["gys_id"].ToString();
-                    sSQL = "insert into  分销商和品牌对应关系表 (pp_id,品牌名称,是否启用,fxs_id,分销商,updatetime)" +
-                    " values('" + this.txt_ppid.Value + "','" + this.txt_ppname.Value + "',1,'" + fxs_id + "','" + this.gys.Value + "',(select getdate()) ) ";
-                    objConn.ExecuteSQL(sSQL, true);
+                    
                     //蒋，2014年8月21日，当前品牌信息录入材料供应商信息从表 
-                    string addppxx = "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime)" +
-                        "values('" + this.txt_ppid.Value + "','" + this.txt_ppname.Value + "',1,'" + fxs_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
-                        "'" + this.gys.Value + "',(select getdate()))";
-                    objConn.ExecuteSQL(addppxx, true);
-                    string update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" + this.gys.Value + "' and 品牌名称='" + this.txt_ppname.Value + "') where 供应商='" + this.gys.Value + "' and 品牌名称='" + this.txt_ppname.Value + "'";
+                    string addppxx = "";
+                    string update = "";
+                    if (this.txtKeyWord.Value == "")
+                    {
+                        sSQL = "insert into  分销商和品牌对应关系表 (pp_id,品牌名称,是否启用,fxs_id,分销商,updatetime)" +
+                    " values('" + this.txt_ppid.Value + "','" + this.txt_ppname.Value + "',1,'" + fxs_id + "','" + this.gys.Value + "',(select getdate()) ) ";
+                        objConn.ExecuteSQL(sSQL, true);
+                        addppxx = "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime)" +
+                            "values('" + this.txt_ppid.Value + "','" + this.txt_ppname.Value + "',1,'" + fxs_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
+                            "'" + this.gys.Value + "',(select getdate()))";
+                        objConn.ExecuteSQL(addppxx, true);
+                        update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" + this.gys.Value + "' and 品牌名称='" + this.txt_ppname.Value + "') where 供应商='" + this.gys.Value + "' and 品牌名称='" + this.txt_ppname.Value + "'";
+                    }
+                    else
+                    {
+                        string p_id = "select pp_id from 品牌字典 where 品牌名称='" + this.txtKeyWord.Value + "'";
+                        DataTable dt_p_id = objConn.GetDataTable(p_id);
+                        sSQL = "insert into  分销商和品牌对应关系表 (pp_id,品牌名称,是否启用,fxs_id,分销商,updatetime)" +
+                    " values('" + dt_p_id.Rows[0]["pp_id"] + "','" + this.txtKeyWord.Value + "',1,'" + fxs_id + "','" + this.gys.Value + "',(select getdate()) ) ";
+                        objConn.ExecuteSQL(sSQL, true);
+                        addppxx = "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime)" +
+                          "values('" + dt_p_id.Rows[0]["pp_id"] + "','" + this.txtKeyWord.Value + "',1,'" + fxs_id + "','" + dt_ppxx.Rows[0]["等级"] + "','" + dt_ppxx.Rows[0]["范围"] + "'," +
+                          "'" + this.gys.Value + "',(select getdate()))";
+                        objConn.ExecuteSQL(addppxx, true);
+                        update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" + this.gys.Value + "' and 品牌名称='" + this.txtKeyWord.Value + "') where 供应商='" + this.gys.Value + "' and 品牌名称='" + this.txtKeyWord.Value + "'";
+                    }
                     if (objConn.ExecuteSQL(update, true))
                     {
                         Response.Write("<script>alert('添加成功！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
@@ -786,19 +816,21 @@
         <%-- //蒋，2014年8月25日，添加--%>
          document.getElementById("txt_ppid").value = ID;
          document.getElementById("txt_ppname").value=pp_name;
+         alert(ID+pp_name);
           var xmlhttp;
           if (window.XMLHttpRequest)
-          {// code for IE7+, Firefox, Chrome, Opera, Safari
+          {
               xmlhttp = new XMLHttpRequest();
           }
           else
-          {// code for IE6, IE5
+          {
               xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
           }
           xmlhttp.onreadystatechange = function () {
               if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                   var array = new Array();           //声明数组
                   array = xmlhttp.responseText;     //接收替换返回的json字符串
+                  alert(array);
                   var json = array;
                   var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 	
                   for (var i = 0; i < myobj.length; i++) {  //遍历,将ajax返回的数据填充到文本框中				
@@ -869,8 +901,18 @@
 	}
 }
 onloadEvent(showtable); 
+function load()
+{
+    var pp_mc=document.getElementById("pp_mc").value;
+    var pp_id=document.getElementById("pp_id1").value;
+    if(pp_mc!=""&&pp_mc!=undefined)
+    {
+        updateFLfxs(pp_id,pp_mc);
+    }
+}
+
  </script>
-<body background="images/ZYM_lb_an1.gif" >
+<body background="images/ZYM_lb_an1.gif"  onload="load()">
     <!-- 头部开始-->
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部结束-->
@@ -881,10 +923,13 @@ onloadEvent(showtable);
     <%if (xzlx == "分销商")
   {%>
 <table width="999" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #ddd; background-color:#f7f7f7; margin-top:10px;">
- 
+ <input type="hidden" id="pp_mc" value="<%=pp_mc %>" />
+ <input value="<%=dt_ppxx.Rows[0]["pp_id"] %>" id="pp_id1" type="hidden" />
                 <tr>
                     <td width="120" height="50" style="font-size:12px" align="right"><strong>品牌名称：</strong></td>
-                    <td width="200" style="padding-left:10px;">
+                    <td width="200" style="padding-left:10px;"><input runat="server" value="" type="text" id="txtKeyWord" 
+                            style="border: 1px solid #808080; width: 193px;" />
+                    <div runat="server" id="pp">
                         <select id="ppmc" name="" style="width: 200px" onchange="updateFLfxs(this.options[this.options.selectedIndex].value,this.options[this.options.selectedIndex].text)">
                            <option  value="0">请选择品牌</option> 
                            <% foreach (System.Data.DataRow row_fxs in dt_ppxx.Rows)
@@ -892,13 +937,10 @@ onloadEvent(showtable);
 			                     <option value='<%=row_fxs["pp_id"].ToString()%>'><%=row_fxs["品牌名称"].ToString()%></option>
 	                        <%
                               }%>
-                           <%-- <% for (int i=0;i< dt_ppxx.Rows.Count;i++) {%>
-                               <option value='<%=dt_ppxx.Rows[i]["pp_id"].ToString() %>'><%=dt_ppxx.Rows[i]["品牌名称"]%></option>
-                           <%}%>--%>
                         </select>
                         <%--蒋，2014年8月25日，添加--%>
                         <input type="hidden" id="txt_ppid" value="" runat="server" />
-                        <input type="hidden" id="txt_ppname" value="" runat="server" /> 
+                        <input type="hidden" id="txt_ppname" value="" runat="server" /></div>
                     </td>
                     <td width="60" align="right" style="font-size:12px"><strong>生产商：</strong></td>
                     <td width="200" style="padding-left:10px;font-size:12px"><div id="scs"><%=dt_ppxx.Rows[0]["生产商"] %></div></td>

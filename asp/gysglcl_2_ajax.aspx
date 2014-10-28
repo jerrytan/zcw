@@ -11,7 +11,7 @@
     {
         cl_id = Request["cl_id"];
         cl_id = cl_id.TrimEnd(',');
-        sSQL = "update 材料表 set 是否启用=0 where cl_id = ("+cl_id+")";
+        sSQL = "update 材料表 set 是否启用=0 where cl_id in ("+cl_id+")";
         if (obCon.ExecuteSQL(sSQL,true))
         {
             Response.Write(1);

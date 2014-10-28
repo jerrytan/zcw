@@ -288,14 +288,18 @@
             <span class="gytu">
                 <img src="images/133123_03.jpg" /></span>
             <div class="gycs">
-                <% foreach(System.Data.DataRow row in dt_gysxx.Rows){
-                       gys_addr = row["联系地址"].ToString();%>
-                <p>厂名：<%=row["供应商"].ToString() %></p>
-                <p>地址：<%=gys_addr%></p>
-                <p>联系人：<%=row["联系人"].ToString() %></p>
-                <p>联系电话：<%=row["联系人手机"].ToString() %></p>
-                <%}%>
-            </div>
+            <% foreach(System.Data.DataRow row in dt_gysxx.Rows){
+            gys_addr = row["联系地址"].ToString();%>
+ <ul>
+   <li>厂名：<a href="#" class="fxsa"><%=row["供应商"].ToString() %></a></li>
+   <li>联系人：<%=row["联系人"].ToString() %></li>
+   <li>电话：<%=row["联系人手机"].ToString() %></li> 
+   <li>传真：0595-86383948</li>
+   <li>主页：wwww.xishijituan.com</li>  
+   <li>地址：<%=gys_addr%></li></ul>
+   <div  style="height:22px; line-height:22px;"><a href="#"><img src="images/shoucang.gif" width="56" height="22" /></a></div>
+  <%} %>
+  </div>
 			 <%
 				//供应商
 				HttpCookie GYS_QQ_id = Request.Cookies["GYS_QQ_ID"];   
@@ -325,20 +329,13 @@
 			<%	
 			if(GYS_QQ_id != null && GYS_YH_id != null)//说明已经供应商已经登录成功
 			{
-				if(pass != "通过")//审核未通过，说明未认领
-				{
-			%>
-					<div class="gyan"><a href="gyszym.aspx" >本店尚未认领，如果您是店主，请认领本店，认领之后可以维护相关信息</a></div>	
-			<%	}%>
-				
+				%>
 		<%	}else{%>
 				<div class="gyan1"><a href="" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
 		<%	}%>
 					
-			
-        </div>		
-		<div class="gydl">
-            <div class="dlpp">地理位置</div>
+		<div class="ditu">
+            <div class="ditu_zi">地理位置</div>
 			<div id="allmap"></div>
             <script type="text/javascript">
                 // 百度地图API功能
@@ -355,12 +352,14 @@
                     }
                 }, "<%=gys_addr %>");
             </script>
-        </div>
+        </div>	
+        </div>		
+		
 		
         <% if (gys_type.Equals("分销商")) {%>
         <!-- 代理品牌 开始-->
-        <div class="gydl">
-            <div class="dlpp">代理品牌</div>
+        <div class="gydl2">
+            <div class="dlpp">公司旗下品牌</div>
             <%foreach(System.Data.DataRow row in dt_ppxx.Rows)
               {%>
                     <a href="ppxx.aspx?pp_id=<%=row["pp_id"] %>">
@@ -395,7 +394,7 @@
             </div>
         <% }else {  //生产商%>
             <!-- 公司旗下品牌 开始-->
-            <div class="gydl">
+            <div class="gydl2">
             <div class="dlpp">公司旗下品牌</div>
             <%foreach(System.Data.DataRow row in dt_ppxx.Rows)
             {   %>
@@ -410,7 +409,7 @@
             <!-- 公司旗下品牌 结束-->
 
             <!-- 分销商页 开始-->
-         <div class="gydl">
+         <div class="gydl2">
             <div class="dlpp">公司旗下分销商</div>
             <div class="fxs1" style="margin-left:20px;">
                 <select id="s1" class="fu1"><option></option></select> 省（市）
@@ -432,14 +431,15 @@
                 <!-- 存放传值数据-->
                 <input type="hidden" id="fxsid_msg" name="fxsid_msg" value="<%=gys_id %>"/>
             
-            <div id="fxsxx_list">
+            <div class="fxsxx_list">
                 <%=content %>
             </div>
                <!-- 动态显示 结束-->
-        </div>
-        <div id="fy_list" style=" margin-left:34%;margin-top:40px;float:left;height:auto;width:400px;">
+        <div id="fy_list" style=" margin-left:34%;margin-top:10px;float:left;height:auto;width:400px;margin-bottom:10px;">
                 <%=fy_list %>
         </div>
+        </div>
+
             <!-- 分销商页 结束-->
         <% }
         %>

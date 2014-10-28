@@ -12,6 +12,7 @@
              string gys_id ="";
              string sSQL="";
              DataConn objConn=new DataConn();
+             string flname="";
            if( Request["gys_id"]!=null&& Request["gys_id"].ToString()!="")
            {
                gys_id = Request["gys_id"];        
@@ -26,20 +27,26 @@
                 string cl_instruction = Request["cl_instruction"];      //说明       
                 string brand = Request["brand"];                        //品牌id(获取的是下拉列表中value的值)
                 
-                sSQL = "insert into  材料表(显示名,分类名称,规格型号,计量单位,单位体积,单位重量,说明,是否启用,pp_id) "
+                sSQL = "insert into  材料表(显示名,材料编码,规格型号,计量单位,单位体积,单位重量,说明,是否启用,pp_id) "
 				+"values('" + cl_name + "','"+ejcl+"','"+cl_type+"','" + cl_bit + "','" + cl_volumetric + "', "
 				+" '" + cl_height + "','"+cl_instruction+"','1','"+brand+"') ";
-                Response.Write(sSQL);  
-                     
                 //更新材料表
 				objConn.ExecuteSQL(sSQL,false);
 				//补全材料表信息
 				string yjflname = Request["yjflname"];              //大级分类名称 (获取的是下拉列表中value的值 分类编码 两位)              
-                string ejflname = Request["ejflname"];              //二级分类名称  (分类编码 4位)
-                string flname = ejflname;
-                if (flname.Equals("0"))  
-				flname = yjflname;
-				sSQL="select 分类名称,属性编码,编号 from 材料分类属性值表 where 分类编码='"+flname+"' ";
+                string ejflname = Request["ejflname"]; //二级分类名称  (分类编码 4位)
+                if(ejflname==null)
+                {
+                     flname=ejcl;
+                    //flname = ejflname;
+                    //if (flname.Equals("0"))  
+				    //flname = yjflname;
+                }
+                else
+                {
+                    flname = ejflname;
+                }
+                sSQL="select 分类名称,属性编码,编号 from 材料分类属性值表 where 分类编码='"+flname+"' ";
 				DataTable dt_cl = objConn.GetDataTable(sSQL);
                 string cl_clbm = "";  //材料编码
 				string cl_clbh = "";      //材料编号
@@ -89,7 +96,6 @@
 				sSQL = "insert into  材料属性表(分类属性名称,分类属性编码,flsx_id,分类属性值,分类属性值编号,flsxz_id) "
 				+"values('" + cl_flsxmc + "','"+sx_codes+"','" + sx_id + "','" + cl_value + "', "
 				+" '" + cl_number + "','"+cl_ids+"') "; 
-                Response.Write(sSQL);
 				//更新材料属性表
 				objConn.ExecuteSQL(sSQL,true); 
 				}

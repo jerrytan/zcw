@@ -83,7 +83,17 @@
             });
         });
     </script>
+<script  type="text/javascript">
+    function setTab(name, cursel, n) {
+        for (i = 1; i <= n; i++) {
+            var menu = document.getElementById(name + i);
+            var con = document.getElementById("con_" + name + "_" + i);
+            menu.className = i == cursel ? "hover" : "";
+            con.style.display = i == cursel ? "block" : "none";
+        }
+    }
 
+</script>
 </head>
 <body>
     <!-- 头部开始-->
@@ -127,7 +137,7 @@
                 string str_updatecounter = "update 品牌字典 set 访问计数 = (select 访问计数 from 品牌字典 where pp_id = '"+ pp_id +"')+1 where pp_id = '"+ pp_id +"'";
                 objdc.ExecuteSQL(str_updatecounter,true);
 
-                string str_sqlscsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in (select scs_id from 品牌字典 where pp_id='"+pp_id+"' )";   
+                string str_sqlscsxx = "select 供应商,联系人,电话,传真,主页,联系地址,gys_id from 材料供应商信息表 where gys_id in (select scs_id from 品牌字典 where pp_id='"+pp_id+"' )";   
                 dt_scsxx = objdc.GetDataTable(str_sqlscsxx);			
 			
                 //获得该品牌的分销信息
@@ -262,17 +272,18 @@
             <div class="gycs">
                 <% foreach(System.Data.DataRow row in dt_scsxx.Rows)
                 {%>
-                <a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>">
-                    <p>厂名：<%=row["供应商"].ToString() %></p>
-                    <p>地址：<%=row["联系地址"].ToString() %></p>
-                    <p>联系人：<%=row["联系人"].ToString() %></p>
-                    <p>电话：<%=row["联系人手机"].ToString() %></p>
-                </a>
+                 <ul><li>生产商名称：<A href="gysxx.aspx?gys_id=<%=row["gys_id"] %>" class="fxsa"><%=row["供应商"].ToString() %></A></li>
+                     <li>联系人：<%=row["联系人"].ToString() %></li>
+                     <li>传真：<%=row["传真"].ToString() %></li>      
+                     <li>主页：<%=row["主页"].ToString() %></li>
+                     <li>地址：<%=row["联系地址"].ToString() %></li>
+                     <li style="margin-top:5px;"><img src="images/shoucang.gif" width="56" height="22" />
+                   </ul> 
                 <%}%>
             </div>
         </div>
          <!-- 首页 品牌信息 结束-->
-        <div class="gydl">
+<%--        <div class="gydl">
             <ul style="padding-left:20px; margin-top:4px;">
                 <li style="float:left; height:28px; line-height:28px; margin-right:2px;">
                     <a href="javascript:void(0)" class="tab1"  style="border:1px solid Gray; font-size:14px;display:block">该品牌下分销商</a>
@@ -281,10 +292,16 @@
                     <a href="javascript:void(0)" class="tab2"  style="border:1px solid Gray; font-size:14px;display:block">该品牌下产品</a>
                 </li>
             </ul>
-        </div>
-        
+        </div>--%>
+        <div class="lib_Menubox">
+       <ul>
+   <li id="two1" onClick="setTab('two',1,2)" class="hover" >该品牌下分销商</li>
+   <li id="two2" onClick="setTab('two',2,2)">该品牌下产品</li>
+      </ul>
+</div>
+
         <!-- 该品牌分销商 开始-->
-        <div class="gydl" id="ppxfxs">
+        <div class="gydl2" id="con_two_1">
             <div class="dlpp">该品牌分销商</div>
             <div class="fxs1" style="margin-left:10px;">
                 <select id="s1" class="fu1"><option></option></select> 省（市）
@@ -309,7 +326,7 @@
                 <input type="hidden" id="ppfid_msg" name="ppfid_msg" value="<%=pp_id %>"/>
 
             <!-- 品牌分销商 显示开始-->
-             <div id="fy_list" style=" margin-left:34%;margin-top:10px;float:left;height:auto;width:400px;">
+             <div id="fy_list" style=" margin-left:34%;margin-top:10px;float:left;height:auto;width:400px; margin-bottom:10px">
                     <%=fy_list %>
              </div>
             <!-- 品牌分销商 显示结束-->
@@ -317,7 +334,7 @@
         <!-- 该品牌分销商 结束-->
 
         <!-- 该品牌下产品 开始-->
-        <div class="gydl" id="ppxcp">
+        <div class="gydl2" id="con_two_2" style="display:none">
             <div class="dlpp">该品牌下产品</div>
             <%foreach(System.Data.DataRow row in dt_clxx.Rows)
             {%>
