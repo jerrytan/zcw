@@ -43,6 +43,7 @@
             }
             if (document.getElementById("txt_gsdh").value == "") {
                 document.getElementById("txt_gsdh").value = "请填写区号+电话号码";
+                document.getElementById("txt_gsdh").style.color = "#999";
             }
         }
         function gsmcCheck(str) {
@@ -51,20 +52,24 @@
                 document.getElementById("txt_gsmc").focus();
             }
             if (document.getElementById("txt_gsmc").value == "") {
-                document.getElementById("txt_gsmc").value = "请填写工商局注册的全称。4-40位字符";
+                document.getElementById("txt_gsmc").value = "请填写工商局注册的全称（4-40位字符）";
+                document.getElementById("txt_gsmc").style.color = "#999";
             }
         }
         function getfocus(obj) {
             obj.value = "";
+            obj.style.color = "#000";
         }
         function losefocus() {
             if (document.getElementById("txt_gsdz").value == "") {
                 document.getElementById("txt_gsdz").value = "请填写公司地址";
+                document.getElementById("txt_gsdz").style.color = "#999";
             }
         }
         function lose() {
             if (document.getElementById("txt_yx").value == "") {
                 document.getElementById("txt_yx").value = "请注意邮箱格式";
+                document.getElementById("txt_yx").style.color = "#999";
             }
         }
         function isQQ(str) {
@@ -146,7 +151,7 @@
                 <td width="329">
                     <label for="textfield">
                     </label>
-                    <input name="txt_gsmc" style="color:#999" type="text" class="hyzhc_shrk" id="txt_gsmc" runat="server" onblur="gsmcCheck(this);" onfocus="getfocus(this)" value="请填写工商局注册的全称。4-40位字符"/>
+                    <input name="txt_gsmc" style="color:#999" type="text" class="hyzhc_shrk" id="txt_gsmc" runat="server" onblur="gsmcCheck(this);" onfocus="getfocus(this)" value="请填写工商局注册的全称（4-40位字符）"/>
                 </td>
                 <td width="50" align="right">
                 </td>

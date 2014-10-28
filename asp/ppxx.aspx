@@ -278,7 +278,7 @@
                      <li>传真：<%=row["传真"].ToString() %></li>      
                      <li>主页：<%=row["主页"].ToString() %></li>
                      <li>地址：<%=row["联系地址"].ToString() %></li>
-                     <li style="margin-top:5px;"><img src="images/shoucang.gif" width="56" height="22" />
+                     <%--<li style="margin-top:5px;"><img src="images/shoucang.gif" width="56" height="22" />--%>
                    </ul> 
                 <%}%>
             </div>

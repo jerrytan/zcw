@@ -297,7 +297,7 @@
    <li>传真：0595-86383948</li>
    <li>主页：wwww.xishijituan.com</li>  
    <li>地址：<%=gys_addr%></li></ul>
-   <div  style="height:22px; line-height:22px;"><a href="#"><img src="images/shoucang.gif" width="56" height="22" /></a></div>
+<%--   <div  style="height:22px; line-height:22px;"><a href="#"><img src="images/shoucang.gif" width="56" height="22" /></a></div>--%>
   <%} %>
   </div>
 			 <%

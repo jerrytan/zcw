@@ -322,7 +322,7 @@
       </td>
       <td width="180" colspan="2" align="right">
       <div runat="server" id="ejfl">二级材料：
-      <input  readonly="readonly" value="<%=ejcl %>" type="text" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
+      <input disabled value="<%=ejcl %>" type="text" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
       </div>
       <div class="xza" runat="server" id="xl">
                     <span class="xz2"><a href="#">小类</a></span>
