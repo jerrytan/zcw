@@ -21,7 +21,7 @@
 <%@ Page Language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+   <meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
     <title>新增材料页面</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />

@@ -581,6 +581,13 @@ table.gridtable td {
 .hyzhc_shrk {
 	margin: 0px 10px 0px 0px; border: 1px solid #ddd; width: 280px; height: 24px; line-height: 24px; float: left; display: inline;
 }
+.hyzhc_shrk_2 {
+	margin: 0px 10px 0px 0px; border: 1px solid #ddd; width: 150px; height: 24px; line-height: 24px; float: left; display: inline;
+}
+.hyzhc_shrk_3 {
+	margin: 0px 10px 0px 0px; border: 1px solid #ddd; width: 200px; height: 24px; line-height: 24px; float: left; display: inline;
+}
+
 .hyzhc_shrk2 {
 	margin: 0px 10px 0px 0px; border: 1px solid #ddd; width: 782px; height: 72px; line-height: 24px; float: left; display: inline;
 }

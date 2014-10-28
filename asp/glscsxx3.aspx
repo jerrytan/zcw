@@ -14,6 +14,7 @@
 <%@ Page Language="C#" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
     <title></title>
 </head>
 

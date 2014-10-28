@@ -5,6 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
+<meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
     <title>会员注册</title>
     <script src="js/SJLD.js" type="text/javascript"></script>
     <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
@@ -40,11 +41,30 @@
                 alert("电话格式错误，请重新输入");
                 document.getElementById("txt_gsdh").focus();
             }
+            if (document.getElementById("txt_gsdh").value == "") {
+                document.getElementById("txt_gsdh").value = "请填写区号+电话号码";
+            }
         }
         function gsmcCheck(str) {
-            if ((str.value.length > 40 || str.value.length < 4) && document.getElementById("txt_gsmc").value!="") {
+            if ((str.value.length > 40 || str.value.length < 4) && document.getElementById("txt_gsmc").value != "") {
                 alert("公司名称长度只能在4-40位字符之间");
                 document.getElementById("txt_gsmc").focus();
+            }
+            if (document.getElementById("txt_gsmc").value == "") {
+                document.getElementById("txt_gsmc").value = "请填写工商局注册的全称。4-40位字符";
+            }
+        }
+        function getfocus(obj) {
+            obj.value = "";
+        }
+        function losefocus() {
+            if (document.getElementById("txt_gsdz").value == "") {
+                document.getElementById("txt_gsdz").value = "请填写公司地址";
+            }
+        }
+        function lose() {
+            if (document.getElementById("txt_yx").value == "") {
+                document.getElementById("txt_yx").value = "请注意邮箱格式";
             }
         }
         function isQQ(str) {
@@ -126,7 +146,7 @@
                 <td width="329">
                     <label for="textfield">
                     </label>
-                    <input name="txt_gsmc" type="text" class="hyzhc_shrk" id="txt_gsmc" runat="server" onblur="gsmcCheck(this);"/>
+                    <input name="txt_gsmc" style="color:#999" type="text" class="hyzhc_shrk" id="txt_gsmc" runat="server" onblur="gsmcCheck(this);" onfocus="getfocus(this)" value="请填写工商局注册的全称。4-40位字符"/>
                 </td>
                 <td width="50" align="right">
                 </td>
@@ -345,7 +365,7 @@
                     公司地址：
                 </td>
                 <td>
-                    <input name="txt_gsdz" type="text" class="hyzhc_shrk" id="txt_gsdz" runat="server"/>
+                    <input name="txt_gsdz" style="color:#999" type="text" class="hyzhc_shrk" id="txt_gsdz" runat="server" onblur="losefocus()" onfocus="getfocus(this)" value="请填写公司地址"/>
                 </td>
                 <td>
                     <span class="xinghao">*</span>
@@ -354,7 +374,7 @@
                     公司电话：
                 </td>
                 <td>
-                      <input name="txt_gsdh" type="text" class="hyzhc_shrk" id="txt_gsdh" runat="server" onblur="isTelePhone(this);"/>
+                      <input name="txt_gsdh" type="text" style="color:#999" class="hyzhc_shrk" id="txt_gsdh" runat="server" onblur="isTelePhone(this);" value="请填写区号+电话号码" onfocus="getfocus(this)"/>
                 </td>
             </tr>
             <tr>
@@ -425,7 +445,7 @@
             </tr>
             <tr>
                 <td height="34" colspan="6" bgcolor="#f7f7f7">
-                    <strong class="left_jianju">联系人信息</strong>
+                    <strong class="left_jianju">管理员信息</strong>
                 </td>
             </tr>
             <tr>
@@ -433,45 +453,21 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    <span class="xinghao">*</span>
-                </td>
-                <td height="40">
-                    姓 名：
-                </td>
-                <td>
-                    <input name="txt_xm" maxlength="20" type="text" class="hyzhc_shrk" id="txt_xm" runat="server"/>
-                </td>
-                <td>
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                    联系地址：
-                </td>
-                <td>
-                     <input name="txt_lxdz" maxlength="20" type="text" class="hyzhc_shrk" id="txt_lxdz" runat="server"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="xinghao">*</span>
-                </td>
-                <td height="40">
-                    手 机：
-                </td>
-                <td>
-                    <input name="txt_sj" type="text" class="hyzhc_shrk" id="txt_sj" runat="server" onblur="isPhone(this)"/>
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    邮 箱：
-                </td>
-                <td>
-                    <input name="txt_yx" type="text" class="hyzhc_shrk" id="txt_yx" runat="server" onblur="yxCheck(this)"/>
-                </td>
-            </tr>
+    <td height="40" colspan="6"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="50"><span class="xinghao">*</span></td>
+        <td width="120" height="40">姓 名：</td>
+        <td align="left"><input name="txt_xm" type="text" class="hyzhc_shrk_2" id="txt_xm" runat="server" /></td>
+        <td width="80"><span class="xinghao">*</span></td>
+        <td width="60" height="40">手 机：</td>
+        <td align="left"><input name="txt_sj" type="text" class="hyzhc_shrk_2" id="txt_sj"  runat="server"/></td>
+        <td width="70">&nbsp;</td>
+        <td width="60">邮 箱：</td>
+        <td align="left"><input name="txt_yx" style="color:#999" type="text" class="hyzhc_shrk_3" id="txt_yx" onblur="lose()" onfocus="getfocus(this)"  runat="server" value="请注意邮箱格式"/></td>
+        <td width="48">&nbsp;</td>
+        </tr>
+    </table></td>
+    </tr>
             <tr>
                 <td>
                     &nbsp;

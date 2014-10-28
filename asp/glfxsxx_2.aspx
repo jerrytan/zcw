@@ -1,10 +1,9 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeFile="glfxsxx_2.aspx.cs" Inherits="asp_glfxsxx_2" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-   <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
     <title>管理分销商页面2</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />

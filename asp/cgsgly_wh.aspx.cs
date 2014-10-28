@@ -58,7 +58,6 @@ public partial class asp_cgsgly_wh : System.Web.UI.Page
             this.jyfw.Value = dr["经营范围"].ToString();
             this.txt_bz.Value = dr["备注"].ToString();
             this.txt_xm.Value = dr["联系人"].ToString();
-            this.txt_lxdz.Value = dr["联系地址"].ToString();
             this.txt_sj.Value = dr["联系人手机"].ToString();
             this.txt_yx.Value = dr["电子邮箱"].ToString();
         }
@@ -74,7 +73,6 @@ public partial class asp_cgsgly_wh : System.Web.UI.Page
         this.txt_gsdh.Disabled = true;
         this.jyfw.Disabled = true;
         this.txt_xm.Disabled = true;
-        this.txt_lxdz.Disabled = true;
         this.txt_sj.Disabled = true;
 
     }
