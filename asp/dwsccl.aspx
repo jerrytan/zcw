@@ -1,6 +1,6 @@
 ﻿<%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient"%>
-<%@ Page Language="C#"%>
+<%@ Page Language="C#" EnableViewStateMac= "false" %>
 <script runat="server">
     protected void Page_Load(object sender, EventArgs e)
     {

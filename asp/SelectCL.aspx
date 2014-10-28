@@ -1,7 +1,7 @@
 ﻿<%@ Import Namespace="System.Xml" %>
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
-<%@ Page Language="C#" %>
+<%@ Page Language="C#" EnableViewStateMac= "false" %>
  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  <HTML xmlns="http://www.w3.org/1999/xhtml">
 <HEAD>
@@ -206,10 +206,13 @@
         {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
             {
-                document.getElementById("allcl").innerHTML = xmlhttp.responseText;
+                if (xmlhttp.responseText != "" && xmlhttp.responseText!=undefined)
+                {
+                    document.getElementById("allcl").innerHTML = xmlhttp.responseText;
+                }               
             }
         }
-        var url = "sxzclall.aspx?flbm=" + flbm;
+        var url = "sxzclall.aspx?flbm=" + flbm + "&flmc=" + mc;
         xmlhttp.open("GET", url, true);
         xmlhttp.send();
     }
@@ -281,33 +284,25 @@
     }
     function saveReport()
     {
-        $("#form1").ajaxSubmit({
-            type: "post",
-            url: "creathtml.aspx",
-            success: function (result)
+         
+        // jquery 表单提交
+        $("#form1").ajaxSubmit(function (message)
+        {
+            // 对于表单提交成功后处理，message为提交页面saveReport.htm的返回内容 
+            if (message == "1")
             {
-                //返回提示信息       
-                alert(result.nickMsg);
+                alert("提交成功");
+                //  $("#cl").empty();
+                //关闭
+                window.opener = null;
+                window.open("", "_self");
+                window.close(); 
+            }
+            else
+            {
+                alert("提交失败");
             }
         });
-        // jquery 表单提交
-//        $("#form1").ajaxSubmit(function (message)
-//        {
-//            // 对于表单提交成功后处理，message为提交页面saveReport.htm的返回内容 
-//            if (message == "1")
-//            {
-//                alert("提交成功");
-//                //  $("#cl").empty();
-//                //关闭
-////                                window.opener = null;
-////                                window.open("", "_self");
-////                                window.close(); 
-//            }
-//            else
-//            {
-//                alert("提交失败");
-//            }
-//        });
         return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转 
     }    
 </script>
@@ -488,7 +483,7 @@
 </script>
 </HEAD> 
 <BODY> <%--onsubmit="return saveReport();"--%>
-<form runat="server" id="form1"  action="creathtml.aspx" method="post">
+<form runat="server" id="form1"  action="creathtml.aspx" method="post" onsubmit="return saveReport();">
 <script runat="server">
 public DataTable dt_sx = new DataTable();
 public DataTable dt_sxz = new DataTable();

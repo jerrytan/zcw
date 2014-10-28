@@ -1,6 +1,6 @@
 ﻿<%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient"%>
-<%@ Page Language="C#"%>
+<%@ Page Language="C#" EnableViewStateMac= "false" %>
 
 <script runat="server">
     public DataTable dt_sx = new DataTable();
@@ -14,9 +14,14 @@
         {
             flbm = Request["flbm"].ToString();
         }
+        string flmc="";
+        if (Request["flmc"] != null && Request["flmc"].ToString() != "")
+        {
+            flmc = Request["flmc"].ToString();
+        }
         if (flbm != "")
         {
-            string sql_sx = "select 属性名称,属性编码 from 材料分类属性值表主表 where 分类编码=" + Request["flbm"].ToString();
+            string sql_sx = "select 属性名称,属性编码 from 材料分类属性值表主表 where 分类编码='" + Request["flbm"].ToString() + "' and 分类名称='" + flmc + "'";
             dt_sx = Conn.GetDataTable(sql_sx);
         }
         if (dt_sx != null && dt_sx.Rows.Count > 0)

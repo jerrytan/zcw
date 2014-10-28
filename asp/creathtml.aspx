@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" %>
+﻿<%@ Page Language="C#" EnableViewStateMac= "false"  %>
 <script runat="server">
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -51,14 +51,14 @@
             bw.Write(encoding.GetBytes(all));
             bw.Close();
             fs1.Close();
-            Response.Write("<script>alert('提交成功！');window.opener = null;window.open('', '_self'); window.close(); <"+"/script>");
-           // Response.Write("1");
+          //  Response.Write("<script>alert('提交成功！');window.opener = null;window.open('', '_self'); window.close(); <"+"/script>");
+             Response.Write("1");
         }
         catch (Exception)
         {
             
-            Response.Write("<script>alert('提交失败！');history.go(-1);<"+"/script>");
-           // Response.Write("");
+          //  Response.Write("<script>alert('提交失败！');history.go(-1);<"+"/script>");
+             Response.Write("");
         }
 
     }
