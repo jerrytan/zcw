@@ -101,36 +101,22 @@
             alert("请重新选择规格");
             return;
         }
-        html = "<table width='740' border='0' align='left' cellpadding='0' cellspacing='1' bgcolor='#dddddd'  style='table-layout：fixed ;word-wrap：break-word'>"
-            + "    <thead>"
-            + "      <tr>"
-            + "        <th width='42' height='30' align='center' bgcolor='#E3ECFF'><strong>序 号</strong></th>"
-            + "        <th width='125' height='24' align='center' bgcolor='#E3ECFF'><strong>材料编码</strong></th>"
-            + "        <th width='150' align='center' bgcolor='#E3ECFF'><strong>材料名称</strong></th>"
-            + "        <th width='100' align='center' bgcolor='#E3ECFF'><strong>规格\型号</strong></th>"
-            + "        <th width='55' align='center' bgcolor='#E3ECFF'><strong>单 位</strong></th>"
-            + "        <th width='80' align='center' bgcolor='#E3ECFF'><strong>品 牌</strong></th>"
-            + "        <th width='50' align='center' bgcolor='#E3ECFF'>选 项</th>"
-            + "      </tr>"
-            + "    </thead>    "
-            + "    <tbody id='cl'>    ";
+
         if (tr.length == 0)
         {
-            html += "<tr>"
+            html = "<tr>"
 		    + " <td align='center' bgcolor='#FFFFFF'>" + bh + "</td>"
 		    + " <td height='24' align='center' bgcolor='#FFFFFF'>" + clbm + "</td>"
 		    + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
 		    + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
 		    + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"
 		    + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"
-		    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox' checked='checked' />"
+		    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked' />"
 		    + " <label for='checkbox11'></label></td>"
             + " </tr>";
-            // table.innerHTML = table.innerHTML + html;
         }
         else
         {
-            html += table.innerHTML;
             var value;
             for (var i = 0; i < tr.length; i++)
             {
@@ -146,35 +132,25 @@
             if (value.indexOf(clbm) >= 0)
             {
                 alert("材料重复！");
+                return;
             }
             else
             {
-
-                html += "<tr>"
+                html = "<tr>"
 		                + " <td align='center' bgcolor='#FFFFFF'>" + bh + "</td>"
 		                + " <td height='24' align='center' bgcolor='#FFFFFF'>" + clbm + "</td>"
 		                + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
 		                + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
 		                + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"
 		                + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"
-		                + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox' checked='checked' />"
+		                + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox' checked='checked'/>"
 		                + " <label for='checkbox11'></label></td>"
                         + " </tr>";
-                // table.innerHTML = table.innerHTML + html;
             }
-
         }
-        html += "    </tbody>"
-            + "     <tfoot>"
-            + "     <tr>"
-            + "        <td  height='40' align='right' bgcolor='#FFFFFF' colspan='7' style='padding-right:20px;'>"
-            + "            <input type='submit' id='btnFilter' value='提交选项' onClick='btnFilter_Click()'  style='height: 20px;"
-            + "               width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;' />"
-            + "         </td>"
-            + "      </tr>"
-            + "     </tfoot>"
-            + "</table>";
-        document.getElementById("AddCL").innerHTML = html;
+        $("#tjTable").append(html);
+
+
     }
 </script>
 <script type="text/javascript">
@@ -206,10 +182,10 @@
         {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
             {
-                if (xmlhttp.responseText != "" && xmlhttp.responseText!=undefined)
+                if (xmlhttp.responseText != "" && xmlhttp.responseText != undefined)
                 {
                     document.getElementById("allcl").innerHTML = xmlhttp.responseText;
-                }               
+                }
             }
         }
         var url = "sxzclall.aspx?flbm=" + flbm + "&flmc=" + mc;
@@ -238,21 +214,6 @@
                     value = tr.cells[1].innerHTML + "◆" + tr.cells[2].innerHTML + "◆" + tr.cells[3].innerHTML + "◆" +
                     tr.cells[4].innerHTML + "◆" + tr.cells[5].innerHTML + "▼";
                 }
-
-                //                if (SQL == "" || SQL == undefined)
-                //                {
-                //                    SQL = "insert into 统计表(材料编码,材料名称,规格型号,单位,品牌id,公司ID,updatetime,品牌ID_材料编码) values('" +
-                //                    tr.cells[1].innerHTML + "','" + tr.cells[2].innerHTML + "','" + tr.cells[3].innerHTML + "','" +
-                //                    tr.cells[4].innerHTML + "','" + tr.cells[5].innerHTML + "','" +
-                //                    document.getElementById("wjj").value+"','getdate()')";
-                //                }
-                //                else
-                //                {
-                //                    SQL += "insert into 统计表(材料编码,材料名称,规格型号,单位,品牌id,公司ID,updatetime,品牌ID_材料编码) values('" +
-                //                    tr.cells[1].innerHTML + "','" + tr.cells[2].innerHTML + "','" + tr.cells[3].innerHTML + "','" +
-                //                    tr.cells[4].innerHTML + "','" + tr.cells[5].innerHTML + "','" +
-                //                    document.getElementById("wjj").value + "','getdate()')";
-                //                }
             }
         }
         if (value == "" || value == undefined)
@@ -260,31 +221,11 @@
             alert("没有需要提交的内容，请重新选择");
             return;
         }
-        //  document.getElementById("SQL").value = SQL;
         document.getElementById("HTML").value = value;
-        //        var tr = table.getElementsByTagName("tr");
-        //        var Value="";
-        //        for (var i = 0; i < tr.length; i++)
-        //        {
-        //            if (tr[i].cells[6])
-        //            {
-
-        //            }
-        //            if (value!=""&&value!=undefined)
-        //            {
-        //                value += tr[i].cells[1].innerHTML + "," + tr[i].cells[2].innerHTML + "," + tr[i].cells[3].innerHTML + "," + tr[i].cells[4].innerHTML + "|";
-        //            }
-        //            else
-        //            {
-        //                value = tr[i].cells[1].innerHTML + "," + tr[i].cells[2].innerHTML + "," + tr[i].cells[3].innerHTML + "," + tr[i].cells[4].innerHTML + "|";
-        //            }
-        //            
-        //        }
-
     }
     function saveReport()
     {
-         
+
         // jquery 表单提交
         $("#form1").ajaxSubmit(function (message)
         {
@@ -296,7 +237,7 @@
                 //关闭
                 window.opener = null;
                 window.open("", "_self");
-                window.close(); 
+                window.close();
             }
             else
             {
@@ -379,19 +320,7 @@
         bh = 0;
         var table = document.getElementById("cl");
         var tr = table.getElementsByTagName("tr");
-        html = "<table width='740' border='0' align='left' cellpadding='0' cellspacing='1' bgcolor='#dddddd'  style='table-layout：fixed ;word-wrap：break-word'>"
-            + "    <thead>"
-            + "      <tr>"
-            + "        <th width='42' height='30' align='center' bgcolor='#E3ECFF'><strong>序 号</strong></th>"
-            + "        <th width='125' height='24' align='center' bgcolor='#E3ECFF'><strong>材料编码</strong></th>"
-            + "        <th width='150' align='center' bgcolor='#E3ECFF'><strong>材料名称</strong></th>"
-            + "        <th width='100' align='center' bgcolor='#E3ECFF'><strong>规格\型号</strong></th>"
-            + "        <th width='55' align='center' bgcolor='#E3ECFF'><strong>单 位</strong></th>"
-            + "        <th width='80' align='center' bgcolor='#E3ECFF'><strong>品 牌</strong></th>"
-            + "        <th width='50' align='center' bgcolor='#E3ECFF'>选 项</th>"
-            + "      </tr>"
-            + "    </thead>    "
-            + "    <tbody id='cl'>    ";
+
         if (tr.length == 0)
         {
             for (var i = 0; i < chks.length; i++)
@@ -410,13 +339,12 @@
 		            + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		            + " <label for='checkbox11'></label></td>"
                     + " </tr>";
-                    //  table.innerHTML = table.innerHTML + html;
                 }
             }
         }
         else
         {
-            html += table.innerHTML;
+
             bh = tr.length;
             var value;
             var pp;
@@ -447,13 +375,14 @@
                     var trck = chks[i].parentNode.parentNode;
                     if (value.indexOf(trck.cells[1].innerHTML) >= 0 && pp.indexOf(trck.cells[5].innerHTML) >= 0)
                     {
-                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！")
+                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！");
+                        return;
                     }
                     else
                     {
                         bh++;
                         var tr = chks[i].parentNode.parentNode;
-                        html += "<tr>"
+                        html = "<tr>"
 		                    + " <td align='center' bgcolor='#FFFFFF'>" + bh + "</td>"
 		                    + " <td height='24' align='center' bgcolor='#FFFFFF'>" + trck.cells[1].innerHTML + "</td>"
 		                    + " <td align='left' bgcolor='#FFFFFF'>" + trck.cells[2].innerHTML + "</td>"
@@ -463,22 +392,12 @@
 		                    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		                    + " <label for='checkbox11'></label></td>"
                             + " </tr>";
-                        //  table.innerHTML = table.innerHTML + html;
                     }
                 }
             }
         }
-        html += "    </tbody>"
-            + "     <tfoot>"
-            + "     <tr>"
-            + "        <td  height='40' align='right' bgcolor='#FFFFFF' colspan='7' style='padding-right:20px;'>"
-            + "            <input type='submit' id='btnFilter' value='提交选项' onClick='btnFilter_Click()'  style='height: 20px;"
-            + "               width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;' />"
-            + "         </td>"
-            + "      </tr>"
-            + "     </tfoot>"
-            + "</table>";
-        document.getElementById("AddCL").innerHTML = html;
+        $("#tjTable").append(html);
+
     }
 </script>
 </HEAD> 
@@ -497,54 +416,35 @@ protected void Page_Load(object sender, EventArgs e)
     if (Request["CompanyID"] != null && Request["CompanyID"].ToString() != "")
     {
         CompanyID = Request["CompanyID"].ToString();
-    }
-    else
-    {
-        CompanyID = "temp";
-    }
-    CompanyID = "156423654";
+    }   
+   // CompanyID = "156423654";
     this.wjj.Value = CompanyID;
     if (Request["HtmlMC"] != null && Request["HtmlMC"].ToString() != "")
     {
         HtmlMC = Request["HtmlMC"].ToString();
-    }
-    else
-    {
-        HtmlMC = "Html";
-    }
+    }    
     this.htmlmc.Value = HtmlMC;
-    if (Request["Delete"]!=null&&Request["Delete"].ToString()=="1")
-    {
-        string url = "";
-        url = "Delete.aspx?CompanyID=" + CompanyID + "&HtmlMC=" + HtmlMC;
-        Response.Redirect(url);
-    }
-    else
-    {
-        //验证 CompanyID
-        bool b = false;
 
-        string sSQL = "select cgs_id as id,单位类型 from 采购商基本信息 where 营业执照注册号='" + CompanyID +
-            "' and 审批结果='通过'union select gys_id as id,单位类型 from 材料供应商信息表 where 营业执照注册号='" + CompanyID + "' and  审批结果='通过'";
+    //验证 CompanyID
+    bool b = false;
 
-        DataTable dt_yz = new DataTable();
-        dt_yz = Conn.GetDataTable(sSQL);
-        if (dt_yz != null && dt_yz.Rows.Count > 0)
-        {
-            DWID = dt_yz.Rows[0]["id"].ToString();
-            DWLX = dt_yz.Rows[0]["单位类型"].ToString();
-            b = true;
-            this.DW_ID.Value = DWID;
-        }
-        if (!b)
-        {
-            //地址为超链接
-            Response.Write("<script" + ">" + "alert('贵公司未在众材网(www.zhcnet.cn)成功注册，此功能禁用！');window.location.href='http://www.zhcnet.cn';" + "</" + "script>");
-        }    
+    string sSQL = "select cgs_id as id,单位类型 from 采购商基本信息 where 营业执照注册号='" + CompanyID +
+        "' and 审批结果='通过'union select gys_id as id,单位类型 from 材料供应商信息表 where 营业执照注册号='" + CompanyID + "' and  审批结果='通过'";
+
+    DataTable dt_yz = new DataTable();
+    dt_yz = Conn.GetDataTable(sSQL);
+    if (dt_yz != null && dt_yz.Rows.Count > 0)
+    {
+        DWID = dt_yz.Rows[0]["id"].ToString();
+        DWLX = dt_yz.Rows[0]["单位类型"].ToString();
+        b = true;
+        this.DW_ID.Value = DWID;
     }
-    
-      
-      
+    if (!b)
+    {
+        //地址为超链接
+        Response.Write("<script" + ">" + "alert('贵公司未在众材网(www.zhcnet.cn)成功注册，此功能禁用！');window.location.href='http://www.zhcnet.cn';" + "</" + "script>");
+    }
 }   
 </script>
  <div class="lib_Menubox2">
@@ -719,7 +619,7 @@ protected void Page_Load(object sender, EventArgs e)
 </table>
 </div> 
 <div id="AddCL">
-<table width="740" border="0" align="left" cellpadding="0" cellspacing="1" bgcolor="#dddddd"  style="table-layout：fixed ;word-wrap：break-word">
+<table  id="tjTable" width="740" border="0" align="left" cellpadding="0" cellspacing="1" bgcolor="#dddddd"  style="table-layout：fixed ;word-wrap：break-word">
     <thead>
       <tr>
         <th width="42" height="30" align="center" bgcolor="#E3ECFF"><strong>序 号</strong></th>
@@ -733,7 +633,14 @@ protected void Page_Load(object sender, EventArgs e)
     </thead>    
     <tbody id="cl">     
     </tbody>
-    
+     <tfoot>
+     <tr>
+        <td  height="40" align="right" bgcolor="#FFFFFF" colspan="7" style="padding-right:20px;">
+            <input type="submit" id="btnFilter1" value="提交选项" onClick="btnFilter_Click()" style="height: 20px;
+                width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" />
+         </td>
+      </tr>
+     </tfoot>
 </table>
 </div>
 </div>

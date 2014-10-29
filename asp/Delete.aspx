@@ -6,24 +6,46 @@
          string FilePath = Server.MapPath("temp");
          string CompanyID = "";  //营业注册号
          string htmlmc = "";    //要删除的文件名称
-         if (Request["CompanyID"] != null && Request["CompanyID"].ToString() != "")
+         //if (Request["CompanyID"] != null && Request["CompanyID"].ToString() != "")
+         //{
+         //    CompanyID = Request["CompanyID"].ToString();
+         //}
+         //else
+         //{
+         //    CompanyID = "temp";
+         //}
+         //if (Request["HtmlMC"] != null && Request["HtmlMC"].ToString() != "")
+         //{
+         //    htmlmc = Request["HtmlMC"].ToString();
+         //}
+         //else
+         //{
+         //    htmlmc = "Html";
+         //}
+         string path = "";
+         if (Request["Path"]!=null&&Request["Path"].ToString()!="")
          {
-             CompanyID = Request["CompanyID"].ToString();
+             path = Request["Path"].ToString();
+             path = path.Replace("/", "\\");
          }
          else
          {
-             CompanyID = "temp";
+             if (Request["CompanyID"] != null && Request["CompanyID"].ToString() != "")
+             {
+                 CompanyID = Request["CompanyID"].ToString();
+             }
+             else
+             {
+                 CompanyID = "temp";
+             }
+             if (Request["HtmlMC"] != null && Request["HtmlMC"].ToString() != "")
+             {
+                 htmlmc = Request["HtmlMC"].ToString();
+             }
+             path = CompanyID + "\\" + htmlmc + ".htm";
          }
-         if (Request["HtmlMC"] != null && Request["HtmlMC"].ToString() != "")
-         {
-             htmlmc = Request["HtmlMC"].ToString();
-         }
-         else
-         {
-             htmlmc = "Html";
-         }
-         
-         FilePath = FilePath + "\\" + CompanyID + "\\" + htmlmc + ".htm";
+
+         FilePath = FilePath + "\\" + path;
          try
          {
              if (System.IO.File.Exists(FilePath))
