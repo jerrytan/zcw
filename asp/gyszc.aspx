@@ -114,6 +114,14 @@
                 document.getElementById("txt_zcze").focus();
             }
         }
+        function getup() {
+            var x = document.getElementById("s0").value;
+            var sj = document.getElementById("s1").value;
+            var xsj = document.getElementById("s2").value;
+            document.getElementById("x").value=x;
+            document.getElementById("sj").value = sj;
+            document.getElementById("xsj").value = xsj;
+        }
     </script>
     <!--前台数据输入验证 结束-->
 </head>
@@ -122,6 +130,7 @@
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部2结束-->
     <form id="form1" runat="server">
+     <input type="hidden" runat="server" id="x" /><input type="hidden" runat="server" id="sj" /><input type="hidden" runat="server" id="xsj" />
     <div class="yhb">
         <div class="hyzhc_title">
             <ul>
@@ -336,19 +345,15 @@
                 </td>
                 <td>
                     <span class="fl">
-                        <select id="s1"  class="fu1" runat="server"><option></option></select>
-                        <select id="s2" class="fu2" runat="server"><option></option></select>
-                        <select id="s3" class="fu3" runat="server"><option></option></select>
+                    <select id="s0" class="fu1" runat="server" value="<%=this.options[this.options.selectedIndex].text %>"><option></option></select> 
+                        <select id="s1"  class="fu1" runat="server" value="<%=this.options[this.options.selectedIndex].text %>"><option></option></select>
+                        <select id="s2" class="fu2" runat="server" value="<%=this.options[this.options.selectedIndex].text %>"><option></option></select>
                         <script type="text/javascript">
-                            var s = ["s1", "s2", "s3"];
-                            var opt0 = ["-省(市)-", "-地级市、区-", "-县级市、县、区-"];
+                            var s = ["s0","s1", "s2"];
+                            var opt0 = ["-区域-", "-省(市)-", "-地级市、区-"];
                             for (i = 0; i < s.length - 1; i++)
                                 document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
                             change(0);
-                            function btn_sub_onclick() {
-
-                            }
-
                         </script>
                     </span>
                 </td>
@@ -458,7 +463,8 @@
                 </td>
             </tr>
             <tr>
-    <td height="40" colspan="6"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <td height="40" colspan="6">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="50"><span class="xinghao">*</span></td>
         <td width="120" height="40">姓 名：</td>
@@ -471,7 +477,8 @@
         <td align="left"><input name="txt_yx" style="color:#999" type="text" class="hyzhc_shrk_3" id="txt_yx" onblur="lose()" onfocus="getfocus(this)"  runat="server" value="请注意邮箱格式"/></td>
         <td width="48">&nbsp;</td>
         </tr>
-    </table></td>
+    </table>
+    </td>
     </tr>
             <tr>
                 <td>
@@ -483,7 +490,7 @@
                 <td>
                     <!-- <img src="images/lijizhuce.gif" alt="" width="94" height="36" /> -->
                     <!--<input id="btn_sub"  type="submit" value="" style="width:94px;height:36px;background:url(images/lijizhuce.gif) no-repeat;" onclick="return btn_sub_onclick()" />-->
-                    <asp:ImageButton id="Submit1"  runat="server" ImageUrl="images/lijizhuce.gif" onclick="Submit1_Click" />
+                    <asp:ImageButton id="Submit1"  runat="server" ImageUrl="images/lijizhuce.gif" OnClientClick="getup()" OnClick="Submit1_Click" />
                 </td>
                 <td>
                     &nbsp;

@@ -29,14 +29,11 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
             pp_mc = Request["pp_mc"].ToString();
         }
         this.ppmc.Value = pp_mc;
-        sSQL = "select  dw_id from 用户表 where yh_id='" + s_yh_id + "'";
-        DataTable dt_yh = objConn.GetDataTable(sSQL);
-        string gy = dt_yh.Rows[0]["dw_id"].ToString();
-        this.lblgys_id.Value = gy;
+        this.lblgys_id.Value = gys_id;
         if (pp_mc != "" && gys_id != "")
         {
             sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where gys_id in "+
-                "(select fxs_id from 分销商和品牌对应关系表 where 品牌名称='"+ pp_mc +"') order by gys_id desc";
+                "(select fxs_id from 分销商和品牌对应关系表 where 品牌名称='" + pp_mc + "') and 是否启用=1 order by gys_id desc";
             dt_gxs = objConn.GetDataTable(sSQL);
             Session["SQLsource"] = sSQL;
             string sSearchCondition = "gys_id='" + gys_id + "'";

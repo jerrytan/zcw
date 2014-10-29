@@ -614,14 +614,17 @@
                           "'" + this.gys.Value + "',(select getdate()))";
                         objConn.ExecuteSQL(addppxx, true);
                         update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" + this.gys.Value + "' and 品牌名称='" + this.txtKeyWord.Value + "') where 供应商='" + this.gys.Value + "' and 品牌名称='" + this.txtKeyWord.Value + "'";
+                        Response.Write(update);
                     }
-                    if (objConn.ExecuteSQL(update, true))
+                    if (objConn.ExecuteSQL(update, false))
                     {
                         Response.Write("<script>alert('添加成功！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
+                        sSQL = "update 材料供应商信息表 set 是否启用=1 where 供应商='" + this.gys.Value + "'";
+                        objConn.ExecuteSQL(sSQL, true);
                     }
                     else
                     {
-                        Response.Write("<script>alert('添加失败！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
+                        Response.Write("<script>alert('添加失败或重复添加！');window.location.href='glfxsxx.aspx?gys_id=" + gxs_id + "'</" + "script>");
                     }
                 }
             }
@@ -816,7 +819,6 @@
         <%-- //蒋，2014年8月25日，添加--%>
          document.getElementById("txt_ppid").value = ID;
          document.getElementById("txt_ppname").value=pp_name;
-         alert(ID+pp_name);
           var xmlhttp;
           if (window.XMLHttpRequest)
           {
@@ -830,7 +832,6 @@
               if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                   var array = new Array();           //声明数组
                   array = xmlhttp.responseText;     //接收替换返回的json字符串
-                  alert(array);
                   var json = array;
                   var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 	
                   for (var i = 0; i < myobj.length; i++) {  //遍历,将ajax返回的数据填充到文本框中				
@@ -1040,7 +1041,7 @@ function load()
         <select id="s1" class="fu1" runat="server" value="<%=this.options[this.options.selectedIndex].text %>"><option></option></select> 
         <select id="s2" class="fu2" runat="server" value="<%=this.options[this.options.selectedIndex].text %>"><option></option></select> 
       <script language="javascript" type="text/javascript">
-          var s = ["s0", "s1", "s2", "s3"];
+          var s = ["s0", "s1", "s2"];
           var opt0 = ["-区域-", "-省(市)-", "-地级市、区-"];
               for (i = 0; i < s.length - 1; i++)
                   document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");

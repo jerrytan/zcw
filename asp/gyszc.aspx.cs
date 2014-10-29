@@ -8,22 +8,16 @@ using System.Web.UI.WebControls;
 public partial class asp_gyszc : System.Web.UI.Page
 {
     public string qymc = "";
+    public string sqlAddGys = "";
     protected void Page_Load(object sender, EventArgs e)
     {
 
     }
-
-
-
     protected void Submit1_Click(object sender, ImageClickEventArgs e)
     {
         DataConn dc = new DataConn();
         string sqlIsExistQQ = "select * from 用户表 where QQ号码='"+this.txt_gsQQ.Value+"' ";
         string sqlIsExistGs = "select * from 材料供应商信息表 where 供应商='" + this.txt_gsmc.Value + "' ";
-
-        qymc = this.s1.Value + this.s2.Value + this.s3.Value;
-
-
         if (string.IsNullOrEmpty(this.txt_gsmc.Value))
         {
             Response.Write("<script>window.alert('请输入公司名称！');</script>");
@@ -108,19 +102,15 @@ public partial class asp_gyszc : System.Web.UI.Page
             return;
         }
 
-        //string sqlAddUser = "insert into 用户表 (QQ号码,手机,类型,updatetime,注册时间,等级,姓名,公司名称,公司地址,"
-        //+ "公司主页,公司电话) values ('" + this.txt_gsQQ.Value + "','" + this.txt_sj.Value + "','" + this.dwlx.Value + "',"
-        //+ "GETDATE(),GETDATE(),'" + this.zzdj.Value + "','" + this.txt_xm.Value + "','" + this.txt_gsmc.Value + "',"
-        //+ "'" + this.txt_gsdz.Value + "','" + this.txt_gszy.Value + "','" + this.txt_gsdh.Value + "');";
+      
 
-        //string sqlAddYh_id = "update 用户表 set yh_id=myID where QQ号码='" + this.txt_gsQQ.Value + "';";
-
-
-        string sqlAddGys = "insert into 材料供应商信息表 (供应商,主页,地址,电话,传真,联系人,联系人手机,是否启用,单位类型,"
+        qymc=this.x.Value+this.sj.Value+this.xsj.Value;
+        Response.Write(qymc);
+        sqlAddGys = "insert into 材料供应商信息表 (供应商,主页,地址,电话,传真,联系人,联系人手机,是否启用,单位类型,"
         + "单位简称,地区名称,法定代表人,注册资金,邮编,电子邮箱,开户银行,银行账户,账户名称,资质等级,经营范围,"
         + "备注,注册日期,企业员工人数,资产总额,注册级别,企业类别,营业执照注册号,updatetime,单位QQ号)"
         + " values ('" + this.txt_gsmc.Value + "','" + this.txt_gszy.Value + "','" + this.txt_gsdz.Value + "','" + this.txt_gsdh.Value + "','" + this.txt_gscz.Value + "',"
-        + "'" + this.txt_xm.Value + "','" + this.txt_sj.Value + "',1,'" + this.dwlx.Value + "','" + this.txt_gsjc.Value + "','"+qymc+"',"
+        + "'" + this.txt_xm.Value + "','" + this.txt_sj.Value + "',1,'" + this.dwlx.Value + "','" + this.txt_gsjc.Value + "','" + qymc + "',"
         + "'" + this.txt_fddbr.Value + "','" + this.txt_zczj.Value + "','" + this.txt_gsyb.Value + "','" + this.txt_yx.Value + "',"
         + "'" + this.txt_khyh.Value + "','" + this.txt_yhzh.Value + "','" + this.txt_zhmc.Value + "','" + this.zzdj.Value + "','" + this.jyfw.Value + "','" + this.txt_bz.Value + "',"
         + "GETDATE(),'" + this.txt_qyrs.Value + "','" + this.txt_zcze.Value + "',"
@@ -143,10 +133,4 @@ public partial class asp_gyszc : System.Web.UI.Page
             return;
         }
     }
-
-
-
-
-
-
 }

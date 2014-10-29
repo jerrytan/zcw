@@ -21,6 +21,10 @@
                 alert("QQ号格式错误，请重新输入");
                 document.getElementById("txt_QQ").focus();
             }
+            if (document.getElementById("txt_QQ").value == "") {
+                alert("请输入有效的QQ号码");
+                document.getElementById("txt_QQ").focus();
+            }
         }
         function isPhone(str) {
             var reg = /^0?1[358]\d{9}$/;
@@ -36,6 +40,18 @@
                 document.getElementById("txt_Email").focus();
             }
         }
+        function getchecked() {
+            var dt = document.getElementById("dt");
+            var input = dt.getElementsByTagName("CheckboxGroup1");
+            if (input.type == "checkbox") {
+                if (!(input.checked)) {
+                    alert("请选择角色权限");
+                }
+                else {
+                    alert("fg");
+                }
+            }
+         }
     </script>
 </head>
 <body>
@@ -51,6 +67,7 @@
                     <label for="textfield">
                     </label>
                     <input name="QQ" type="text" class="shuru" id="txt_QQ" runat="server" onblur="isQQ(this)"/>
+                    <span class="xinghao">*</span>
                 </dt>
                 <dd>
                     姓名：</dd>
@@ -77,7 +94,7 @@
                   { %>
                 <dd>
                     角色权限：</dd>
-                <dt>
+                <dt id="dt">
                     <label>
                         <input type="checkbox" name="CheckboxGroup1" value="管理生产商" id="cbx1" runat="server"/>
                         管理生产商</label>
@@ -86,13 +103,13 @@
                         管理分销商</label>
                     <label>
                         <input type="checkbox" name="CheckboxGroup1" value="管理材料信息" id="cbx3" runat="server"/>
-                        管理材料信息</label></dt>
+                        管理材料信息</label><span class="xinghao">*</span></dt>
                         <%} %>
             </dl>
         </div>
         <div id="yhxx_bottom">
             <asp:Button ID="btnSubmit" runat="server" Text="提交" class="filter" style="color: Black; border-style: None; font-family: 宋体;
-                font-size: 12px; height: 20px; width: 37px;" onclick="btnSubmit_Click"/>
+                font-size: 12px; height: 20px; width: 37px;" onclick="btnSubmit_Click" OnClientClick="getchecked()"/>
             <%--<input type="submit" name="btnDocNew" value="提交" 
                 id="btnDocNew" class="filter" style="color: Black; border-style: None; font-family: 宋体;
                 font-size: 12px; height: 20px; width: 37px;" />--%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

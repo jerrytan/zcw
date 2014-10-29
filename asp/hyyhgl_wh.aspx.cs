@@ -39,7 +39,6 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
             Update();
         }
     }
-
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         Response.Write("<script>window.close();</script>");

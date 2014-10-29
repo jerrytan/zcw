@@ -112,6 +112,7 @@ onloadEvent(showtable);
 </script>
 <body>
     <form id="form1" runat="server"> 
+    <input type="hidden" id="lblgys_id" runat="server" />
     <div id="jiansuo2"> 
 公司名称：
 <input name="txtKeyWord" runat="server" type="text" id="txtKeyWord" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
@@ -155,7 +156,6 @@ onloadEvent(showtable);
               <td align="center" style="font-size:12px"><%=dr["注册资金"]%></td>
               <td align="left" style="font-size:12px"><%=dr["电话"]%></td>
               <td align="center"><input type="submit" name="input" value="查阅" class="filter" onclick="ChaYue('<%=dr["供应商"] %>')" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/></td>
-              <input type="hidden" id="lblgys_id" runat="server" />
          </tr>
          <%}%>
          <%if (dt_gxs.Rows.Count < 10)

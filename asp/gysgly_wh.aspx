@@ -469,53 +469,29 @@
             </tr>
             <tr>
                 <td height="34" colspan="6" bgcolor="#f7f7f7">
-                    <strong class="left_jianju">联系人信息</strong>
+                    <strong class="left_jianju">管理员信息</strong>
                 </td>
             </tr>
             <tr>
                 <td height="20" colspan="6" align="right">
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <span class="xinghao">*</span>
-                </td>
-                <td height="40">
-                    姓 名：
-                </td>
-                <td>
-                    <input name="txt_xm" maxlength="20" type="text" class="hyzhc_shrk" id="txt_xm" runat="server"/>
-                </td>
-                <td>
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                    联系地址：
-                </td>
-                <td>
-                     <input name="txt_lxdz" maxlength="20" type="text" class="hyzhc_shrk" id="txt_lxdz" runat="server"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="xinghao">*</span>
-                </td>
-                <td height="40">
-                    手 机：
-                </td>
-                <td>
-                    <input name="txt_sj" type="text" class="hyzhc_shrk" id="txt_sj" runat="server" onblur="isPhone(this)"/>
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    邮 箱：
-                </td>
-                <td>
-                    <input name="txt_yx" type="text" class="hyzhc_shrk" id="txt_yx" runat="server" onblur="yxCheck(this)"/>
-                </td>
-            </tr>
+             <tr>
+    <td height="40" colspan="6"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="50"><span class="xinghao">*</span></td>
+        <td width="120" height="40">姓 名：</td>
+        <td align="left"><input name="txt_xm" type="text" class="hyzhc_shrk_2" id="txt_xm" runat="server" /></td>
+        <td width="80"><span class="xinghao">*</span></td>
+        <td width="60" height="40">手 机：</td>
+        <td align="left"><input name="txt_sj" type="text" class="hyzhc_shrk_2" id="txt_sj"  runat="server"/></td>
+        <td width="70">&nbsp;</td>
+        <td width="60">邮 箱：</td>
+        <td align="left"><input name="txt_yx" style="color:#999" type="text" class="hyzhc_shrk_3" id="txt_yx" onblur="lose()" onfocus="getfocus(this)"  runat="server" value="请注意邮箱格式"/></td>
+        <td width="48">&nbsp;</td>
+        </tr>
+    </table></td>
+    </tr>
             <tr>
                 <td>
                     &nbsp;

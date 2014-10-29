@@ -139,10 +139,7 @@ public partial class asp_hyyhgl : System.Web.UI.Page
 
     protected void btnDelete_Click(object sender, EventArgs e)
     {
-
         //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "描述性词语", "getDelete();", true);
-
-
         string sqlDelete = "";
         string strSelected = this.txt_Selected.Value.ToString();
         if (string.IsNullOrEmpty(strSelected))
