@@ -697,7 +697,11 @@ table.gridtable td {
 }
 /*—È÷§“≥√Ê*/
 .gysgybtr {
-	HEIGHT: auto; WIDTH: 430px; FLOAT: left
+	width: 430px;
+	height: auto;
+	float: left;
+	clear: both;
+	margin-top:10px;
 }
 .gysgybtr DL {
 	WIDTH: 100%; FLOAT: left; MARGIN-TOP: 10px
