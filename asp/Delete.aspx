@@ -10,10 +10,19 @@
          {
              CompanyID = Request["CompanyID"].ToString();
          }
+         else
+         {
+             CompanyID = "temp";
+         }
          if (Request["HtmlMC"] != null && Request["HtmlMC"].ToString() != "")
          {
              htmlmc = Request["HtmlMC"].ToString();
          }
+         else
+         {
+             htmlmc = "Html";
+         }
+         
          FilePath = FilePath + "\\" + CompanyID + "\\" + htmlmc + ".htm";
          try
          {
