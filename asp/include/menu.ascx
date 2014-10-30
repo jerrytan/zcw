@@ -144,14 +144,14 @@
 <div class="dh">
     <ul>
         <% foreach (var v in this.Items1){%>
-       <li><a href="yjfl.aspx?name=<%=v.Sid.ToString() %>"><%=v.Name%></a>
-            <ul style="left: -39px; width: 152px;">  
+       <li style="height:40px; line-height:40px;"><a href="yjfl.aspx?name=<%=v.Sid.ToString() %>"><%=v.Name.Length>7 ? v.Name.Substring(0,7):v.Name%></a>
+            <ul style="left: -60px; width: 152px;">  
                <%int count=0;%>         
                 <%  foreach (var vr in this.Items2){				
                 %>               
                 <%if (vr.Sid.ToString().Substring(0, 2) == v.Sid.ToString()) {%>
                 <%count=count+1; %>
-                <%if(count<=5){ %>
+                <%if(count<=10){ %>
                   <li><a href="ejfl.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
                 <%} %>
                <% else{
@@ -161,7 +161,7 @@
         </li>
 
         <% } %>
-        <li><a href="gdfl.aspx">更多</a>
+        <li style="height:40px; line-height:40px; width:60px"><a href="gdfl.aspx">更多</a>
             <%--<ul style="left: -677px;">
                 <li></li>
                 <li></li>

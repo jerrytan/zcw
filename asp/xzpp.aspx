@@ -18,6 +18,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" />
 <script type="text/javascript" language="javascript">

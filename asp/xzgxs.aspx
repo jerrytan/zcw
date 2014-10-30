@@ -71,6 +71,7 @@
             {
                 if (gxs_id != ""&&pp_mc=="")
                 {
+                    Response.Write("c");
                     this.pp.Visible = true;
                     this.txtKeyWord.Visible = false;
                     sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "'";
@@ -82,6 +83,9 @@
                     this.txtKeyWord.Visible = true;
                     if (gxs_id == "" || pp_mc == "")
                     {
+                        this.pp.Visible = true;
+                        this.txtKeyWord.Visible = false;
+                        Response.Write("bb");
                         sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典";
                         dt_ppxx = objConn.GetDataTable(sSQL);
                     }
@@ -89,14 +93,10 @@
                     {
                         if (pp_mc != "" && pp_mc != null&&gxs_id!="")
                         {
+                            Response.Write("a");
                             this.txtKeyWord.Value = pp_mc;
                             sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "' and 品牌名称='" + pp_mc + "'";
                             dt_ppxx = objConn.GetDataTable(sSQL);
-                        }
-                        else
-                        {
-                            this.pp.Visible = true;
-                            this.txtKeyWord.Visible = false;
                         }
                     }
                 } 
@@ -615,7 +615,6 @@
                           "'" + this.gys.Value + "',(select getdate()))";
                         objConn.ExecuteSQL(addppxx, true);
                         update = "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" + this.gys.Value + "' and 品牌名称='" + this.txtKeyWord.Value + "') where 供应商='" + this.gys.Value + "' and 品牌名称='" + this.txtKeyWord.Value + "'";
-                        Response.Write(update);
                     }
                     if (objConn.ExecuteSQL(update, false))
                     {
@@ -818,8 +817,11 @@
 
      function updateFLfxs(ID,pp_name) {
         <%-- //蒋，2014年8月25日，添加--%>
+        if(document.getElementById("txt_ppid").value!="")
+        {
          document.getElementById("txt_ppid").value = ID;
          document.getElementById("txt_ppname").value=pp_name;
+         }
           var xmlhttp;
           if (window.XMLHttpRequest)
           {

@@ -40,18 +40,6 @@
                 document.getElementById("txt_Email").focus();
             }
         }
-        function getchecked() {
-            var dt = document.getElementById("dt");
-            var input = dt.getElementsByTagName("CheckboxGroup1");
-            if (input.type == "checkbox") {
-                if (!(input.checked)) {
-                    alert("请选择角色权限");
-                }
-                else {
-                    alert("fg");
-                }
-            }
-         }
     </script>
 </head>
 <body>
@@ -109,7 +97,7 @@
         </div>
         <div id="yhxx_bottom">
             <asp:Button ID="btnSubmit" runat="server" Text="提交" class="filter" style="color: Black; border-style: None; font-family: 宋体;
-                font-size: 12px; height: 20px; width: 37px;" onclick="btnSubmit_Click" OnClientClick="getchecked()"/>
+                font-size: 12px; height: 20px; width: 37px;" onclick="btnSubmit_Click" />
             <%--<input type="submit" name="btnDocNew" value="提交" 
                 id="btnDocNew" class="filter" style="color: Black; border-style: None; font-family: 宋体;
                 font-size: 12px; height: 20px; width: 37px;" />--%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
