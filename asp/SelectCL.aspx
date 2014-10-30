@@ -150,7 +150,6 @@
         }
         $("#tjTable").append(html);
 
-
     }
 </script>
 <script type="text/javascript">
@@ -329,7 +328,9 @@
                 {
                     bh++;
                     var trck = chks[i].parentNode.parentNode;
-                    html += "<tr>"
+                    if (Html == "" || Html == undefined)
+                    {
+                        Html = "<tr>"
 		            + " <td align='center' bgcolor='#FFFFFF'>" + bh + "</td>"
 		            + " <td height='24' align='center' bgcolor='#FFFFFF'>" + trck.cells[1].innerHTML + "</td>"
 		            + " <td align='left' bgcolor='#FFFFFF'>" + trck.cells[2].innerHTML + "</td>"
@@ -339,6 +340,20 @@
 		            + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		            + " <label for='checkbox11'></label></td>"
                     + " </tr>";
+                    }
+                    else
+                    {
+                        Html += "<tr>"
+		            + " <td align='center' bgcolor='#FFFFFF'>" + bh + "</td>"
+		            + " <td height='24' align='center' bgcolor='#FFFFFF'>" + trck.cells[1].innerHTML + "</td>"
+		            + " <td align='left' bgcolor='#FFFFFF'>" + trck.cells[2].innerHTML + "</td>"
+		            + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
+		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
+		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
+		            + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
+		            + " <label for='checkbox11'></label></td>"
+                    + " </tr>";
+                    }
                 }
             }
         }
@@ -375,14 +390,15 @@
                     var trck = chks[i].parentNode.parentNode;
                     if (value.indexOf(trck.cells[1].innerHTML) >= 0 && pp.indexOf(trck.cells[5].innerHTML) >= 0)
                     {
-                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！");
-                        return;
+                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！");                        
                     }
                     else
                     {
                         bh++;
                         var tr = chks[i].parentNode.parentNode;
-                        html = "<tr>"
+                        if (Html == "" || Html == undefined)
+                        {
+                            Html = "<tr>"
 		                    + " <td align='center' bgcolor='#FFFFFF'>" + bh + "</td>"
 		                    + " <td height='24' align='center' bgcolor='#FFFFFF'>" + trck.cells[1].innerHTML + "</td>"
 		                    + " <td align='left' bgcolor='#FFFFFF'>" + trck.cells[2].innerHTML + "</td>"
@@ -392,12 +408,29 @@
 		                    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		                    + " <label for='checkbox11'></label></td>"
                             + " </tr>";
+                        }
+                        else
+                        {
+                            Html += "<tr>"
+		                    + " <td align='center' bgcolor='#FFFFFF'>" + bh + "</td>"
+		                    + " <td height='24' align='center' bgcolor='#FFFFFF'>" + trck.cells[1].innerHTML + "</td>"
+		                    + " <td align='left' bgcolor='#FFFFFF'>" + trck.cells[2].innerHTML + "</td>"
+		                    + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
+		                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
+		                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
+		                    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
+		                    + " <label for='checkbox11'></label></td>"
+                            + " </tr>";
+                        }
                     }
                 }
             }
         }
-        $("#tjTable").append(html);
-
+        if (Html!=""&&Html!=undefined)
+        {
+            $("#tjTable").append(Html);
+        }
+       
     }
 </script>
 </HEAD> 
@@ -417,7 +450,7 @@ protected void Page_Load(object sender, EventArgs e)
     {
         CompanyID = Request["CompanyID"].ToString();
     }   
-   // CompanyID = "156423654";
+    CompanyID = "156423654";
     this.wjj.Value = CompanyID;
     if (Request["HtmlMC"] != null && Request["HtmlMC"].ToString() != "")
     {
