@@ -948,3 +948,5 @@ input.middle { vertical-align:middle;}
 .table2 tr.color2 {
 	background-color:#fff;
 }
+/*分销商管理材料 20141030新增*/
+.dlqqz1_2{width:190px; height:30px; margin-bottom:10px;text-align:center; font-size:14px; font-weight:bold; line-height:30px; background-color:#77b9ed; color:#fff; margin:5px 0 10px 5px;}

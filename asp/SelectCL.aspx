@@ -109,8 +109,9 @@
 		    + " <td height='24' align='center' bgcolor='#FFFFFF'>" + clbm + "</td>"
 		    + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
 		    + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
+		    + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"   //品牌
 		    + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"
-		    + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"
+            + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked' />"
 		    + " <label for='checkbox11'></label></td>"
             + " </tr>";
@@ -141,8 +142,9 @@
 		                + " <td height='24' align='center' bgcolor='#FFFFFF'>" + clbm + "</td>"
 		                + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
 		                + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
-		                + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"
-		                + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"
+                        + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"   //品牌
+		                + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"		              
+                        + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		                + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox' checked='checked'/>"
 		                + " <label for='checkbox11'></label></td>"
                         + " </tr>";
@@ -336,7 +338,8 @@
 		            + " <td align='left' bgcolor='#FFFFFF'>" + trck.cells[2].innerHTML + "</td>"
 		            + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
 		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
-		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
+		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"     
+                    + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		            + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		            + " <label for='checkbox11'></label></td>"
                     + " </tr>";
@@ -350,6 +353,7 @@
 		            + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
 		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
 		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
+                    + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		            + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		            + " <label for='checkbox11'></label></td>"
                     + " </tr>";
@@ -405,6 +409,7 @@
 		                    + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
 		                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
 		                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
+                            + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		                    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		                    + " <label for='checkbox11'></label></td>"
                             + " </tr>";
@@ -418,6 +423,7 @@
 		                    + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
 		                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
 		                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
+                            + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		                    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		                    + " <label for='checkbox11'></label></td>"
                             + " </tr>";
@@ -629,13 +635,14 @@ protected void Page_Load(object sender, EventArgs e)
 <div id="sccl" style="display:none; ">
 <table  width="740" border="0" align="left" cellpadding="0" cellspacing="1" bgcolor="#dddddd"  style=" table-layout：fixed ;word-wrap：break-word">
     <thead>
-      <tr>
-        <th width="42" height="30" align="center" bgcolor="#E3ECFF"><strong>序 号</strong></th>
-        <th width="125" height="24" align="center" bgcolor="#E3ECFF"><strong>材料编码</strong></th>
-        <th width="150" align="center" bgcolor="#E3ECFF"><strong>材料名称</strong></th>
-        <th width="100" align="center" bgcolor="#E3ECFF"><strong>规格\型号</strong></th>
-        <th width="55" align="center" bgcolor="#E3ECFF"><strong>单 位</strong></th>
-        <th width="80" align="center" bgcolor="#E3ECFF"><strong>品 牌</strong></th>
+     <tr>
+       <th width="42" height="30" align="center" bgcolor="#E3ECFF"><strong>序 号</strong></th>
+        <th width="115" height="24" align="center" bgcolor="#E3ECFF"><strong>材料编码</strong></th>
+        <th width="70" align="center" bgcolor="#E3ECFF"><strong>材料名称</strong></th>
+        <th width="120" align="center" bgcolor="#E3ECFF"><strong>规格\型号</strong></th>
+        <th width="90" align="center" bgcolor="#E3ECFF"><strong>品 牌</strong></th>
+        <th width="50" align="center" bgcolor="#E3ECFF"><strong>单 位</strong></th>
+        <th width="70" align="center" bgcolor="#E3ECFF">价 格</th>
         <th width="50" align="center" bgcolor="#E3ECFF">选 项</th>
       </tr>
     </thead>    
@@ -643,7 +650,7 @@ protected void Page_Load(object sender, EventArgs e)
     </tbody>
      <tfoot>
      <tr>
-        <td  height="40" align="right" bgcolor="#FFFFFF" colspan="7" style="padding-right:20px;">
+        <td  height="40" align="right" bgcolor="#FFFFFF" colspan="8" style="padding-right:20px;">
             <input type="button" id="btnFilter2" value="确定" onClick="qd_Click()" style="height: 20px;
                 width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" />
          </td>
@@ -656,11 +663,12 @@ protected void Page_Load(object sender, EventArgs e)
     <thead>
       <tr>
         <th width="42" height="30" align="center" bgcolor="#E3ECFF"><strong>序 号</strong></th>
-        <th width="125" height="24" align="center" bgcolor="#E3ECFF"><strong>材料编码</strong></th>
-        <th width="150" align="center" bgcolor="#E3ECFF"><strong>材料名称</strong></th>
-        <th width="100" align="center" bgcolor="#E3ECFF"><strong>规格\型号</strong></th>
-        <th width="55" align="center" bgcolor="#E3ECFF"><strong>单 位</strong></th>
-        <th width="80" align="center" bgcolor="#E3ECFF"><strong>品 牌</strong></th>
+        <th width="115" height="24" align="center" bgcolor="#E3ECFF"><strong>材料编码</strong></th>
+        <th width="70" align="center" bgcolor="#E3ECFF"><strong>材料名称</strong></th>
+        <th width="120" align="center" bgcolor="#E3ECFF"><strong>规格\型号</strong></th>
+        <th width="90" align="center" bgcolor="#E3ECFF"><strong>品 牌</strong></th>
+        <th width="50" align="center" bgcolor="#E3ECFF"><strong>单 位</strong></th>
+        <th width="70" align="center" bgcolor="#E3ECFF">价 格</th>
         <th width="50" align="center" bgcolor="#E3ECFF">选 项</th>
       </tr>
     </thead>    
@@ -668,7 +676,7 @@ protected void Page_Load(object sender, EventArgs e)
     </tbody>
      <tfoot>
      <tr>
-        <td  height="40" align="right" bgcolor="#FFFFFF" colspan="7" style="padding-right:20px;">
+        <td  height="40" align="right" bgcolor="#FFFFFF" colspan="8" style="padding-right:20px;">
             <input type="submit" id="btnFilter1" value="提交选项" onClick="btnFilter_Click()" style="height: 20px;
                 width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" />
          </td>

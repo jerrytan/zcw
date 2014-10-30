@@ -284,7 +284,7 @@
             <%else
                 {%>
             <span class="zyy1" style="margin-left:180px;"><a href="glfxsxx.aspx?ppmc=&gys_id=<%=gys_id %>">管理分销商信息</a></span>
-            <span class="zyy1" style="margin-left:180px;"><a href="gysglcl.aspx?ejfl=&gys_id=<%=gys_id %>">管理材料信息</a></span>       
+            <span class="zyy1" style="margin-left:180px;"><a href="fxsglcl.aspx?gys_id=<%=gys_id %>">管理材料信息</a></span>       
     <%} %>
     </div>	
    
