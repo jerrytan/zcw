@@ -21,7 +21,9 @@
         }
         if (flbm != "")
         {
-            string sql_sx = "select 属性名称,属性编码 from 材料分类属性值表主表 where 分类编码='" + Request["flbm"].ToString() + "' and 分类名称='" + flmc + "'";
+           // string sql_sx = "select 属性名称,属性编码 from 材料分类属性表 where 分类编码='" + Request["flbm"].ToString() + "' and 分类名称='" + flmc + "' order by 分类编码";
+
+            string sql_sx = "select 显示 as 属性名称,属性编码 from 材料分类属性表 where 分类编码='" + Request["flbm"].ToString() + "' and 分类名称='" + flmc + "' order by 分类编码,属性编码";
             dt_sx = Conn.GetDataTable(sql_sx);
         }
         if (dt_sx != null && dt_sx.Rows.Count > 0)
