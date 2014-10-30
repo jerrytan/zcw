@@ -426,7 +426,7 @@
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部结束-->
     <form id="Form1" runat="server" name="update_fxs" action="glfxsxx2.aspx?gys_id=<%=gys_id %>" method="post">
-
+    <input type="hidden" id="lblgys_id" runat="server" />
      <%if (s_gys_type.Equals("生产商"))
        {%>
         <div class="dlqqz5"  style="border:1px solid #ddd; padding-top:10px; margin: 10px 0 0 0;">
@@ -437,7 +437,6 @@
           {%>
         <ul><li><h2 id="h2"><a href="javascript:void(0)" onclick="CZ_P('<%=PP_MC["品牌名称"].ToString() %>')"><img src="images/biao2.jpg" />&nbsp;&nbsp;<%=PP_MC["品牌名称"].ToString()%></a></h2></li>
          </ul>
-         <input type="hidden" id="lblgys_id" runat="server" />
          <%} %>
       </div>
  <div id="cgs_lb" style="width:795px; margin-left:182px;">

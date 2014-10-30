@@ -63,7 +63,7 @@
             }
             if (Request["gxs_id"] != null && Request["gxs_id"].ToString() != "")
             {
-                gxs_id = Request.QueryString["gxs_id"].ToString();
+                gxs_id = Request["gxs_id"];
             }
             pp_mc = Request["pp_mc"];//品牌名称
             gys_id = gxs_id;
@@ -71,7 +71,6 @@
             {
                 if (gxs_id != ""&&pp_mc=="")
                 {
-                    Response.Write("c");
                     this.pp.Visible = true;
                     this.txtKeyWord.Visible = false;
                     sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "'";
@@ -85,7 +84,6 @@
                     {
                         this.pp.Visible = true;
                         this.txtKeyWord.Visible = false;
-                        Response.Write("bb");
                         sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典";
                         dt_ppxx = objConn.GetDataTable(sSQL);
                     }
@@ -93,7 +91,6 @@
                     {
                         if (pp_mc != "" && pp_mc != null&&gxs_id!="")
                         {
-                            Response.Write("a");
                             this.txtKeyWord.Value = pp_mc;
                             sSQL = "select pp_id,品牌名称,等级,范围,分类名称,分类编码,fl_id,生产商,scs_id from 品牌字典 where scs_id='" + gxs_id + "' and 品牌名称='" + pp_mc + "'";
                             dt_ppxx = objConn.GetDataTable(sSQL);
