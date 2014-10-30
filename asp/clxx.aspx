@@ -274,6 +274,17 @@
         <div class="xx1">
             <div class="xx2">
                 <div style="height: 300px; overflow: hidden;" id="idTransformView">
+                <%if(dt_images.Rows.Count==1) {%>
+                <div style="position: relative">
+                            <%
+	                    if(dt_images.Rows[0]["存放地址"].ToString()!="")
+	                    {%>
+                            <a>
+                                <img src="<%=dt_images.Rows[0]["存放地址"].ToString()%>" width="320" height="300" id="Img1"></a>
+                            <%}%>
+                        </div>
+                <%} %>
+                <%else{ %>
                     <ul id="idSlider" class="slider">
                         <%
 	                foreach(System.Data.DataRow row in dt_images.Rows)
@@ -288,6 +299,7 @@
                         </div>
                         <%}%>
                     </ul>
+                    <%} %>
                 </div>
                 <div>
                     <ul id="idNum" class="hdnum">
@@ -486,7 +498,7 @@
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->
-    <script language="javascript">
+    <script language="javascript"> 
         mytv("idNum", "idTransformView", "idSlider", 300, 5, true, 2000, 5, true, "onmouseover");
         //按钮容器aa，滚动容器bb，滚动内容cc，滚动宽度dd，滚动数量ee，滚动方向ff，延时gg，滚动速度hh，自动滚动ii，
     </script>

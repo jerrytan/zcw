@@ -207,27 +207,30 @@
                  objConn.MsgBox(this.Page, "请先选择上传文件！");
                  return;
              }
-             FilePath = Server.MapPath("temp\\");
-             FilePath = FilePath + "Vedio\\";
+             FilePath =  Server.MapPath("temp");
+            
+             FilePath = FilePath + "\\Vedio";
              if (!System.IO.Directory.Exists(FilePath))
              {
                  System.IO.Directory.CreateDirectory(FilePath);
              }
              string name = "";
              name = System.IO.Path.GetFileName(this.file1.PostedFile.FileName.Trim());
-             if (System.IO.File.Exists(FilePath+name))
+             if (System.IO.File.Exists(FilePath+"\\"+name))
              {
                  try
                  {
-                     System.IO.File.Delete(FilePath + name);
+                     System.IO.File.Delete(FilePath +"\\"+ name);
                  }
                  catch (Exception)
                  {
                  }
                 
              }
-             file1.PostedFile.SaveAs(FilePath+name);
-             if (System.IO.File.Exists(FilePath + name))
+             
+             file1.PostedFile.SaveAs(FilePath+"\\"+name);
+           
+             if (System.IO.File.Exists(FilePath+"\\"+name))
              {
                  string ip = "";
                  ip = Page.Request.Url.ToString().Trim();
@@ -242,17 +245,13 @@
                 
                  string strVD = Request.ApplicationPath.ToString().Trim().Substring(1);
                  int intPos;
-                 intPos = FilePath.LastIndexOf("\\");
-                 if (intPos < 0)
-                     intPos = FilePath.LastIndexOf("/");
-                 FilePath = FilePath.Substring(intPos + 1);
+                 intPos = FilePath.LastIndexOf("temp");                 
+                 FilePath = FilePath.Substring(intPos);
+                 FilePath=FilePath.Replace("\\","/");
+                 FilePath="asp/"+FilePath;
                  FilePath = strVD + "/" + FilePath + "/" + name;
                  FilePath = "http://" + ip + "/" + FilePath;
-                 
-                 
-                 
-                 
-                 
+                  
                  
                  string s_mtlx = "";   //媒体类型
                  string s_fl = "";
@@ -278,7 +277,7 @@
                  bool b = objConn.ExecuteSQL(sSQL, true);
                  if (b)
                  {
-                     Response.Write("<script>window.alert('上传成功！')</" + "script>");
+                    Response.Write("<script>window.alert('上传成功！')</" + "script>");
                  }
                  else
                  {
