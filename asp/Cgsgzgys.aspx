@@ -221,7 +221,7 @@
         <table width="100%" align="left" cellpadding="0" cellspacing="0">
             <tr>
                 <td width="200" height="40" align="left" valign="middle">
-                    共7页/当前第1页
+                    共页/当前第页
                 </td>
                 <td align="right" valign="middle">
                     <a href="#">首页</a> <a href="#">上一页</a> <a href="#">下一页</a> <a href="#">尾页</a> 转到第

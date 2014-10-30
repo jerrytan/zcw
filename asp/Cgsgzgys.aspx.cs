@@ -16,28 +16,37 @@ public partial class asp_Cgsgzgys : System.Web.UI.Page
     //public string s_yh_id = "";                         //用户ID
     protected void Page_Load(object sender, EventArgs e)
     {
-        //string s_yh_id = Request["s_yh_id"];
-        string strPpmc = Request["strPpmc"];
+        string s_yh_id = Request["s_yh_id"];
+        string sql_dwid = "select dw_id from 采购商关注的材料表 where yh_id='" + s_yh_id + "'";
+        string dwid = objConn.DBLook(sql_dwid);
+        string ppid = "";
         strScr = Request["scr"];
         strScrQQ= Request["scrQQ"];
-
+        if (Request["ppid"]!=null&&Request["ppid"].ToString()!="")
+        {
+            ppid = Request["ppid"].ToString();
+        }
         //Response.Write(strScr);
         //Response.Write(strScrQQ);
-
-        if (string.IsNullOrEmpty(strPpmc))
+        string sSQL = "";
+        if (string.IsNullOrEmpty(ppid))
         {
-            string sql = @"select top 10 gys_id,供应商,主页,联系地址 from 材料供应商信息表  
-            left join 分销商和品牌对应关系表 on 材料供应商信息表.gys_id=分销商和品牌对应关系表.fxs_id
-            where pp_id='320'";
-            dt_topfxs = objConn.GetDataTable(sql);
+            sSQL = "select top 10 gys_id,供应商,主页,联系地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where yh_id='"+s_yh_id+"')";
+            dt_topfxs = objConn.GetDataTable(sSQL);
+//            string sql = @"select top 10 gys_id,供应商,主页,联系地址 from 材料供应商信息表  
+//            left join 分销商和品牌对应关系表 on 材料供应商信息表.gys_id=分销商和品牌对应关系表.fxs_id
+//            where pp_id='320'";
+//            dt_topfxs = objConn.GetDataTable(sql);
         }
         else
         {
-            string sql = @"select gys_id,供应商,主页,联系地址 from 材料供应商信息表  
-            left join 分销商和品牌对应关系表 on 材料供应商信息表.gys_id=分销商和品牌对应关系表.fxs_id
-            where 品牌名称='"+strPpmc+"'";
-            dt_topfxs = objConn.GetDataTable(sql);
+            sSQL = "select gys_id,供应商,主页,联系地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id='" + ppid + "')";
+            dt_topfxs = objConn.GetDataTable(sSQL);
+//            string sql = @"select gys_id,供应商,主页,联系地址 from 材料供应商信息表  
+//            left join 分销商和品牌对应关系表 on 材料供应商信息表.gys_id=分销商和品牌对应关系表.fxs_id
+//            where 品牌名称='" + strPpmc + "'";
+//            dt_topfxs = objConn.GetDataTable(sql);
         }
-
+        //Response.Write(sSQL);
     }
 }

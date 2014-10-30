@@ -18,14 +18,17 @@ public partial class asp_static_Cgsgzcl : System.Web.UI.Page
             string s_yh_id = Request["s_yh_id"];            
             string sql_dwid = "select dw_id from 采购商关注的材料表 where yh_id='"+s_yh_id+"'";
             string dwid = objConn.DBLook(sql_dwid);
-            string strFlmc = Request["strFlmc"];
-        
-        if (string.IsNullOrEmpty(strFlmc))
+            string clbm = "";
+            if (Request["clbm"]!=null&&Request["clbm"].ToString()!="")
+            {
+                clbm = Request["clbm"].ToString();
+            }
+            if (string.IsNullOrEmpty(clbm))
             {
                 sSQL = @"select top 10 收藏人QQ,收藏人,材料表.cl_id,显示名,生产厂商,品牌名称,地址,规格型号 from 采购商关注的材料表   
                     left join 材料表 on 采购商关注的材料表.cl_id=材料表.cl_id  
                     left join 材料供应商信息表 on 材料供应商信息表.gys_id=材料表.gys_id 
-                    where 采购商关注的材料表.dw_id='" + dwid + "' ";          //加载材料前10条信息
+                    where 采购商关注的材料表.dw_id='" + dwid + "'";          //加载材料前10条信息
                 dt_topcl = objConn.GetDataTable(sSQL);
                 
             }
@@ -34,12 +37,10 @@ public partial class asp_static_Cgsgzcl : System.Web.UI.Page
                 sSQL = @"select  收藏人QQ,收藏人,材料表.cl_id,显示名,生产厂商,品牌名称,地址,规格型号 from 采购商关注的材料表   
                     left join 材料表 on 采购商关注的材料表.cl_id=材料表.cl_id  
                     left join 材料供应商信息表 on 材料供应商信息表.gys_id=材料表.gys_id 
-                    where 采购商关注的材料表.dw_id='" + dwid + "' and 分类名称='" + strFlmc + "' ";          //加载材料前10条信息
+                    where 采购商关注的材料表.dw_id='" + dwid + "' and SUBSTRING(材料表.材料编码,1," + clbm.Length + ")= " + clbm;        //加载材料前10条信息
                 dt_topcl = objConn.GetDataTable(sSQL);
                  
             }
-
-
     }
     protected void btnSearch_Click(object sender, EventArgs e)
     {

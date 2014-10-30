@@ -39,12 +39,12 @@
 
 
         function xscl(obj) {
-            var flmc = obj;
-            document.getElementById("cgsglcl_frame").src = "Cgsgzcl.aspx?s_yh_id=<%=s_yh_id %>&strFlmc=" + flmc;
+            var flbm = obj;
+            document.getElementById("cgsglcl_frame").src = "Cgsgzcl.aspx?s_yh_id=<%=s_yh_id %>&clbm=" + flbm;
         }
-        function ppgys(obj,scr,scrQQ) {
-            var ppmc = obj;
-            document.getElementById("cgsglgys_iframe").src = "Cgsgzgys.aspx?s_yh_id=<%=s_yh_id %>&strPpmc=" + ppmc+"&scr="+scr+"&scrQQ="+scrQQ;
+        function ppgys(obj) {
+            var ppid = obj;
+            document.getElementById("cgsglgys_iframe").src = "Cgsgzgys.aspx?s_yh_id=<%=s_yh_id %>&ppid=" +ppid;
         }
 
     </script>
@@ -195,11 +195,13 @@
             {
                 s_yh_id = Session["CGS_YH_ID"].ToString();
             }
-
+            //20141030 小张修改  取单位收藏
+            string sql_dwid = "select dw_id from 采购商关注的材料表 where yh_id='" + s_yh_id + "'";
+            string dwid = objConn.DBLook(sql_dwid);
             //根据用户ID查出分类编码和显示名字
             sSQL = "select * from (select distinct a.分类编码,a.显示名字 from 材料分类表 as a ,(select distinct c.分类编码 as flbm " +
                             " from 采购商关注的材料表 as b ,材料表 as c  " +
-                            " where b.yh_id='" + s_yh_id + "' and b.cl_id=c.cl_id  ) as  d " +
+                            " where b.yh_id in(select yh_id from 用户表 where dw_id='" + dwid + "') and b.cl_id=c.cl_id  ) as  d " +
                            " where a.分类编码=d.flbm or a.分类编码=left(d.flbm,2))#temp where len(分类编码)=2";
 
 
@@ -207,15 +209,15 @@
 
             sSQL = "select * from (select distinct a.分类编码,a.显示名字 from 材料分类表 as a ,(select distinct c.分类编码 as flbm " +
                            " from 采购商关注的材料表 as b ,材料表 as c  " +
-                           " where b.yh_id='" + s_yh_id + "' and b.cl_id=c.cl_id  ) as  d " +
+                           " where b.yh_id in(select yh_id from 用户表 where dw_id='" + dwid + "') and b.cl_id=c.cl_id  ) as  d " +
                           " where a.分类编码=d.flbm or a.分类编码=left(d.flbm,2))#temp where len(分类编码)=4";
             dt_cgsgzcl_xl = objConn.GetDataTable(sSQL);  //采购商关注材料 二级分类
 
 
             sSQL = "select b.cl_id ,分类编码,显示名 from 采购商关注的材料表 as a ,材料表 as b  " +
-                "  where a.yh_id='" + s_yh_id + "' and a.cl_id=b.cl_id order by b.cl_id";
+                "  where a.yh_id in(select yh_id from 用户表 where dw_id='" + dwid + "') and a.cl_id=b.cl_id order by b.cl_id";
             dt_clb = objConn.GetDataTable(sSQL);
-
+          
 //            if (string.IsNullOrEmpty(strFlmc))
 //            {
 //                sSQL = @"select top 10 材料表.cl_id,显示名,生产厂商,品牌名称,地址,规格型号 from 采购商关注的材料表   
@@ -236,13 +238,9 @@
 
             //sSQL = "select a.gys_id ,a.供应商 from 材料供应商信息表 as a ,采购商关注供应商表 as b  " +
             //       " where b.yh_id='" + s_yh_id + "' and a.gys_id=b.gys_id order by a.gys_id";
-            sSQL = "select gys_id,供应商名称,收藏人,收藏人QQ from 采购商关注供应商表 where yh_id=" + s_yh_id;
+            sSQL = "select distinct gys_id,供应商名称,收藏人,收藏人QQ from 采购商关注供应商表 where yh_id in(select yh_id from 用户表 where dw_id='" + dwid + "') and 是否启用='1'";
             dt_clgysxx = objConn.GetDataTable(sSQL);
-
-
-           
-
-
+ 
             //CancelFollowButton.Attributes.Add("onClick", "return confirm('您真的要取消对这些材料或供应商的关注吗？');");
 
         }
@@ -254,8 +252,10 @@
         /// <param name="e"></param>
         protected void dumpFollowCLs(object sender, EventArgs e)
         {
-
-            sSQL = "select b.* from 采购商关注的材料表 as  a ,材料表 as b  where a.yh_id='" + s_yh_id + "'  and a.cl_id = b.cl_id ";
+            //20141030 小张修改  取单位收藏
+            string sql_dwid = "select dw_id from 采购商关注的材料表 where yh_id='" + s_yh_id + "'";
+            string dwid = objConn.DBLook(sql_dwid);
+            sSQL = "select b.* from 采购商关注的材料表 as  a ,材料表 as b  where a.yh_id in(select yh_id from 用户表 where dw_id='" + dwid + "')  and a.cl_id = b.cl_id ";
             dt = null;
             dt = objConn.GetDataTable(sSQL);
             outToExcel(dt);   //导出Excel表
@@ -416,7 +416,7 @@
                                 if (dr_xl["分类编码"].ToString().Substring(0, 2) == dr_dl["分类编码"].ToString())
                                 { %>
                                                     <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )">
-                                                        <a href="javascript:void(0)" onclick="xscl('<%=dr_xl["显示名字"].ToString()%>')">
+                                                        <a href="javascript:void(0)" onclick="xscl('<%=dr_xl["分类编码"].ToString()%>')">
                                                             <%=dr_xl["显示名字"].ToString()%></a></h2>
                                                     <ul class="no">
                                                         <% 
@@ -466,7 +466,7 @@
                             foreach (DataRow drpp in dt_ppxx.Rows)
                       {%>
                     <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %>)">
-                        <a href="javascript:void(0)" onclick="ppgys('<%=drpp["品牌名称"].ToString()%>','<%=dr_gys["收藏人"].ToString()%>','<%=dr_gys["收藏人QQ"].ToString()%>')"><%=drpp["品牌名称"] %></a></h2>
+                        <a href="javascript:void(0)" onclick="ppgys('<%=drpp["pp_id"].ToString()%>')"><%=drpp["品牌名称"] %></a></h2>
                         <%} %>
                 <ul class="no">
                   <%--  <%
