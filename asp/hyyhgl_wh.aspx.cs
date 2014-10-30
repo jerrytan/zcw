@@ -53,59 +53,61 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
         string cgs_QQ_id;
         string sql_Add;
         string power = "";
-        if (this.cbx1.Checked == true)
+        if (cbx1.Checked == false && cbx2.Checked == false && cbx3.Checked == false)
         {
-            power += this.cbx1.Value + ",";
-        }
-        if (this.cbx2.Checked == true)
-        {
-            power += this.cbx2.Value + ",";
-        }
-        if (this.cbx3.Checked == true)
-        {
-            power += this.cbx3.Value + ",";
-        }
-        power = power.TrimEnd(',');
-
-
-
-        string sqlIsExistQQ = "select * from 用户表 where QQ号码='" + this.txt_QQ.Value + "' "; //查询QQ是否存在
-
-        if (Request.Cookies["GYS_QQ_ID"]!=null)
-        {
-            gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-            sql_Add = "insert into 用户表 (QQ号码,姓名,手机,邮箱,等级,角色权限,dw_id,类型,注册时间,updatetime) values ('" + this.txt_QQ.Value + "'"
-            + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','" + this.txt_Email.Value + "','普通用户','" + power + "',"
-            + "(select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "'),(select 类型 from 用户表 where QQ_id='" + gys_QQ_id + "'),getdate(),getdate())";
-        }
-        else
-        {
-            cgs_QQ_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
-            sql_Add = "insert into 用户表 (QQ号码,姓名,手机,邮箱,等级,角色权限,dw_id,类型,注册时间,updatetime) values ('" + this.txt_QQ.Value + "'"
-           + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','" + this.txt_Email.Value + "','普通用户','" + power + "',"
-           + "(select dw_id from 用户表 where QQ_id='" + cgs_QQ_id + "'),(select 类型 from 用户表 where QQ_id='" + cgs_QQ_id + "'),getdate(),getdate())";
-        }
-
-        
-
-   
-
-        string sql_AddYh_id = "update 用户表 set yh_id=myID where QQ号码='" + this.txt_QQ.Value + "';";
-        string sqlAll = sql_Add + sql_AddYh_id;
-
-        if (dc.GetRowCount(sqlIsExistQQ) > 0)
-        {
-            Response.Write("<script>window.alert('该QQ已注册');</script>");
+            Response.Write("<script>alert('请选择角色权限')</script>");
             return;
         }
-        if (dc.RunSqlTransaction(sqlAll))
-        {
-            Response.Write("<script>window.alert('添加成功');</script>");
-            Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
-        }
         else
         {
-            Response.Write("添加失败");
+            if (this.cbx1.Checked == true)
+            {
+                power += this.cbx1.Value + ",";
+            }
+            if (this.cbx2.Checked == true)
+            {
+                power += this.cbx2.Value + ",";
+            }
+            if (this.cbx3.Checked == true)
+            {
+                power += this.cbx3.Value + ",";
+            }
+            power = power.TrimEnd(',');
+
+            string sqlIsExistQQ = "select * from 用户表 where QQ号码='" + this.txt_QQ.Value + "' "; //查询QQ是否存在
+
+            if (Request.Cookies["GYS_QQ_ID"] != null)
+            {
+                gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+                sql_Add = "insert into 用户表 (QQ号码,姓名,手机,邮箱,等级,角色权限,dw_id,类型,注册时间,updatetime) values ('" + this.txt_QQ.Value + "'"
+                + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','" + this.txt_Email.Value + "','普通用户','" + power + "',"
+                + "(select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "'),(select 类型 from 用户表 where QQ_id='" + gys_QQ_id + "'),getdate(),getdate())";
+            }
+            else
+            {
+                cgs_QQ_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
+                sql_Add = "insert into 用户表 (QQ号码,姓名,手机,邮箱,等级,角色权限,dw_id,类型,注册时间,updatetime) values ('" + this.txt_QQ.Value + "'"
+               + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','" + this.txt_Email.Value + "','普通用户','" + power + "',"
+               + "(select dw_id from 用户表 where QQ_id='" + cgs_QQ_id + "'),(select 类型 from 用户表 where QQ_id='" + cgs_QQ_id + "'),getdate(),getdate())";
+            }
+
+            string sql_AddYh_id = "update 用户表 set yh_id=myID where QQ号码='" + this.txt_QQ.Value + "';";
+            string sqlAll = sql_Add + sql_AddYh_id;
+
+            if (dc.GetRowCount(sqlIsExistQQ) > 0)
+            {
+                Response.Write("<script>window.alert('该QQ已注册');</script>");
+                return;
+            }
+            if (dc.RunSqlTransaction(sqlAll))
+            {
+                Response.Write("<script>window.alert('添加成功');</script>");
+                Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
+            }
+            else
+            {
+                Response.Write("添加失败");
+            }
         }
     }
 
