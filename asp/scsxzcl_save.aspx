@@ -52,7 +52,7 @@
                      sSQL = "update 材料表 set cl_id= " + sqlclid + ","
                            + "fl_id = (select fl_id from 材料分类表 where 分类编码='" + flbm + "'),"
                            + "生产厂商 = (select 供应商 from 材料供应商信息表 where gys_id = '" + scsid + "'),"
-                           + "分类名称=(select fl_id from 材料分类表 where 分类编码='" + flbm + "'), "
+                           + "分类名称=(select 显示名字 from 材料分类表 where 分类编码='" + flbm + "'), "
                            + "品牌名称=(select 品牌名称 from 品牌字典 where pp_id='" + ppid + "' ),updatetime=(select getdate()),"
                            + "一级分类名称=( select 显示名字 from 材料分类表 where len(分类编码)=2 and 分类编码=SUBSTRING('" + flbm + "',1,2) ),yh_id='" +
                            s_yh_id
