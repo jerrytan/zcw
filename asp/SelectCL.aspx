@@ -76,6 +76,10 @@
 
         for (var i = 0; i < tr.length; i++)
         {
+            if (tr[i].cells[0].innerHTML == "品种")
+            {
+                document.getElementById("clmc").value = tr[i].cells[2].innerHTML;
+            }
             var tds = tr[i].cells;
             ggxh = ggxh + tr[i].cells[2].innerHTML;
             clbh += tr[i].cells[3].innerHTML.toString();

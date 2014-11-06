@@ -45,12 +45,23 @@
     }
     function btnFilter_Click() {
         var gy = document.getElementById("lblgys_id").value;
-        var ej_cl = document.getElementById("ej_cl").value;
-        window.parent.location.href = 'xzclym.aspx?gys_id=' + gy + '&ej=' + ej_cl;
+//        var ej_cl = document.getElementById("ej_cl").value;
+        //        window.parent.location.href = 'xzclym.aspx?gys_id=' + gy + '&ej=' + ej_cl;
+        var pp_id = document.getElementById("ppid").value;
+        if (pp_id==""||pp_id==undefined)
+        {
+            alert("请先选择品牌！");
+        }
+        else
+        {
+            window.parent.location.href = 'scsxzcl.aspx?scs_id=' + gy + "&ppid=" + pp_id;
+        }
+       
     }
-    function BJCL(cl_mc) {
-        var gys = document.getElementById("lblgys_id").value;
-        window.open("clbj.aspx?cl_mc=" + cl_mc + "&gys_id=" + gys);
+    function BJCL(cl_id,flbm,flmc) {
+      var gy = document.getElementById("lblgys_id").value;
+      var pp_id = document.getElementById("ppid").value;
+      window.open('scsxzcl.aspx?scs_id=' + gy + "&ppid=" + pp_id + "&cl_id=" + cl_id + "&flmc=" + flmc+"&flbm="+flbm);
     }
     function delete_cl() {
         var table = document.getElementById("table2");
@@ -126,8 +137,27 @@
 </script>
 
 <body>
-    <form id="form1" runat="server">
+<script runat="server">
+    public string gys_id = "";
+    public string pp_id = "";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (Request["gys_id"]!=null&&Request["gys_id"].ToString()!="")
+        {
+            gys_id = Request["gys_id"].ToString();
+        }
+        if (Request["ppid"]!=null&&Request["ppid"].ToString()!="")
+        {
+            pp_id = Request["ppid"].ToString();
+        }
+        this.lblgys_id.Value = gys_id;
+        this.ppid.Value = pp_id;
+            
+    }
+</script>
+  <form id="form1" runat="server">
     <input type="hidden" id="lblgys_id" runat="server" />
+    <input type="hidden" id="ppid" runat="server" />
     <div id="jiansuo2">
 检索条件：
 <input name="txtKeyWord" runat="server" type="text" id="txtKeyWord" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
@@ -169,7 +199,7 @@
           <td style="font-size:12px"><%=R_cl["材料编码"].ToString()%></td>
           <td align="left" style="font-size:12px"><%=R_cl["生产厂商"].ToString()%></td>
           <td align="center">
-          <input type="submit" name="input" value="编辑" id="filter" onclick="BJCL('<%=R_cl["显示名"].ToString()%>')" class="filter" filter="" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/>
+          <input type="submit" name="input" value="编辑" id="filter" onclick="BJCL('<%=R_cl["cl_id"].ToString() %>','<%=R_cl["分类编码"].ToString()%>','<%=R_cl["分类名称"].ToString() %>')" class="filter" filter="" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/>
           </td>
           </tr>
           <%}%>

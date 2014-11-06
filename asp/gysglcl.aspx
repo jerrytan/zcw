@@ -3,8 +3,6 @@
        传入参数：s_yh_id 用户id 
        author:张新颖,可也增加新的材料
 	   
-
-
        蒋桂娥使用ifram加入gysglcl_2.aspx页面
 -->
 <%@ Register Src="include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>
@@ -50,10 +48,12 @@
         var cl_mc = Trim(tds[1].innerHTML);
         document.getElementById("cl_mc").value = cl_mc;
     }
-    function CZ(ejfl) {
+    function lbs(ppid)
+    {
     var g;
     g = document.getElementById("lblgys_id").value;
-    document.getElementById("frame1").src = "gysglcl_2.aspx?gys_id=" + g + "&ejfl=" + ejfl;
+    var url = "gysglcl_2.aspx?gys_id=" + g + "&ppid=" + ppid;
+    document.getElementById("frame1").src = url;
 }
 </script>
 <body>
@@ -80,22 +80,22 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-        Products_gys_cl();
+      //  Products_gys_cl();
        
         gys_id = Request.QueryString["gys_id"].ToString();
         this.lblgys_id.Value = gys_id;
-        ejfl = Request.QueryString["ejfl"].ToString();
-        if(ejfl!="")
-        {
-            sSQL = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商 from 材料表 where left(是否启用,1) like '%1%' and 分类名称= '" + ejfl + "' order by cl_id";
-            string sSearchCondition = "显示名='" + ejfl + "'";
-            dt_cl = objConn.GetDataTable(sSQL);
-        }
-        else
-        {
-            sSQL = "select top 10 cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商,是否启用 from 材料表 where 是否启用=1 order by updatetime desc";
-            dt_cl = objConn.GetDataTable(sSQL);
-        }
+        //ejfl = Request.QueryString["ejfl"].ToString();
+        //if(ejfl!="")
+        //{
+        //    sSQL = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商 from 材料表 where left(是否启用,1) like '%1%' and 分类名称= '" + ejfl + "' order by cl_id";
+        //    string sSearchCondition = "显示名='" + ejfl + "'";
+        //    dt_cl = objConn.GetDataTable(sSQL);
+        //}
+        //else
+        //{
+        //    sSQL = "select top 10 cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商,是否启用 from 材料表 where 是否启用=1 order by updatetime desc";
+        //    dt_cl = objConn.GetDataTable(sSQL);
+        //}
         //btnDelete.Attributes.Add("onClick", "return confirm('您确定要删除该选中的材料吗？');");
     }
 
@@ -113,46 +113,46 @@
             userIsVIP=true;
         }
 
-        // 取 二级分类编码
-         sSQL="select 显示名字,分类编码 from 材料分类表 where 分类编码 in(select 分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1')";
-          dt_ejfl = objConn.GetDataTable(sSQL);
-          if(dt_ejfl!=null&&dt_ejfl.Rows.Count>0)
-          {
-              yjflbm=new string[dt_ejfl.Rows.Count];
-              for(int i=0;i<dt_ejfl.Rows.Count;i++)
-              {
-                    sSQL="select 显示名字,分类编码 from 材料分类表 where 分类编码='"+dt_ejfl.Rows[i]["分类编码"].ToString().Substring(0,2)+"'";
-                    DataTable flbm=objConn.GetDataTable(sSQL);
-                    if(flbm!=null&&flbm.Rows.Count>0)
-                    {
-                         yjflbm[i]=flbm.Rows[0]["分类编码"].ToString()+"|"+flbm.Rows[0]["显示名字"].ToString();
-                    }
-               } 
-                yjflbm=GetString(yjflbm);             
-          }
-          else
-          {
-             yjflbm=new string[0];
-          }
+        //// 取 二级分类编码
+        // sSQL="select 显示名字,分类编码 from 材料分类表 where 分类编码 in(select 分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1')";
+        //  dt_ejfl = objConn.GetDataTable(sSQL);
+        //  if(dt_ejfl!=null&&dt_ejfl.Rows.Count>0)
+        //  {
+        //      yjflbm=new string[dt_ejfl.Rows.Count];
+        //      for(int i=0;i<dt_ejfl.Rows.Count;i++)
+        //      {
+        //            sSQL="select 显示名字,分类编码 from 材料分类表 where 分类编码='"+dt_ejfl.Rows[i]["分类编码"].ToString().Substring(0,2)+"'";
+        //            DataTable flbm=objConn.GetDataTable(sSQL);
+        //            if(flbm!=null&&flbm.Rows.Count>0)
+        //            {
+        //                 yjflbm[i]=flbm.Rows[0]["分类编码"].ToString()+"|"+flbm.Rows[0]["显示名字"].ToString();
+        //            }
+        //       } 
+        //        yjflbm=GetString(yjflbm);             
+        //  }
+        //  else
+        //  {
+        //     yjflbm=new string[0];
+        //  }
                
-        //一级分类编码
+        ////一级分类编码
 
 
-         sSQL="select cl_id,显示名,分类编码 from 材料分类表 where 分类编码 in( select 分类编码 from 材料表 gys_id='" + gys_id + "'and 是否启用='1') and len(分类编码)=2 ";
-         dt_yjfl=objConn.GetDataTable(sSQL);
+        // sSQL="select cl_id,显示名,分类编码 from 材料分类表 where 分类编码 in( select 分类编码 from 材料表 gys_id='" + gys_id + "'and 是否启用='1') and len(分类编码)=2 ";
+        // dt_yjfl=objConn.GetDataTable(sSQL);
 
-         sSQL="select cl_id,显示名,分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1' and len(分类编码)=4 ";
-         dt_ejfl=objConn.GetDataTable(sSQL);
+        // sSQL="select cl_id,显示名,分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1' and len(分类编码)=4 ";
+        // dt_ejfl=objConn.GetDataTable(sSQL);
 
-        //根据供应商id 查询材料信息
-        sSQL = "select cl_id,显示名,分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1' ";
-        dt_cl = objConn.GetDataTable(sSQL);
+        ////根据供应商id 查询材料信息
+        //sSQL = "select cl_id,显示名,分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1' ";
+        //dt_cl = objConn.GetDataTable(sSQL);
 
       
 
-        //取二级分类名称
-        sSQL="select 显示名字,分类编码 from 材料分类表 where 分类编码 in(select 分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1' )";
-        dt_ejfl = objConn.GetDataTable(sSQL);       
+        ////取二级分类名称
+        //sSQL="select 显示名字,分类编码 from 材料分类表 where 分类编码 in(select 分类编码 from 材料表 where gys_id='" + gys_id + "'and 是否启用='1' )";
+        //dt_ejfl = objConn.GetDataTable(sSQL);       
         
     }
     public static string[] GetString(string[] values) 
@@ -277,45 +277,30 @@
     <form id="form1" runat="server">
  <div class="dlqqz5"  style="border:1px solid #ddd; padding-top:10px; margin: 10px 0 0 0;">
     <div class="dlqqz2">
-    
+        <input type="hidden" id="lblgys_id" runat="server" />
 <div id="menu">
-<div class="dlqqz1">您的产品列表</div>
- <% 
- 	int firstlevel = 0;
-    foreach (string yjfl in yjflbm)
-    {
-        string[] yj = new string[2];
-        yj = yjfl.Split('|');//yj[0]  一级编码  yj[1] 一级显示名字
-    %>
-    <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)"><a href="javascript:void(0)"><img src="images/biao2.jpg" />&nbsp;<%=yj[1]%></a></h1>
-    <span class="no">
-    <input type="hidden" id="lblgys_id" runat="server" />
-    <% 
-	int secondlevel = 0;
-	foreach (System.Data.DataRow R_ejfl in dt_ejfl.Rows)
-	{
-        if(yj[0]==R_ejfl["分类编码"].ToString().Substring(0,2))
-        {
-            string value = R_ejfl["分类编码"].ToString();
-            %>
-   <h2>  
-    <a href="javascript:void(0)" onclick="CZ('<%=value%>')"><%=R_ejfl["显示名字"].ToString() %></a>
-    </h2>  
-            <% 	 secondlevel++;
-                }      
-		    }
-        %>
-        </span>
-    <% 
-	    firstlevel++;
-    } %>
+<div class="dlqqz1">您的品牌列表</div>
+ <% int firstlevel = 0; %>
+ <%string sSQL=""; %>
+ <%sSQL="select pp_id,品牌名称 from 品牌字典 where scs_id="+gys_id; %>
+ <%DataTable dt_pp=new DataTable(); %>
+ <%dt_pp=objConn.GetDataTable(sSQL); %>
+ <%if(dt_pp!=null&&dt_pp.Rows.Count>0) %>
+ <%{ %>
+        <%foreach (DataRow drpp in dt_pp.Rows)%>
+        <%  {%>
+                    <h1><a href="javascript:void(0)"onclick="lbs('<%=drpp["pp_id"]%>')"><%=drpp["品牌名称"]%></a></h1>
+                                <span class="no"></span>
+                <%  firstlevel++;%>
+        <%  } %>
+<%} %>
     <span class="no"></span>
 </div>
 
 <div id="cgs_lb" style="width:795px; margin-left:182px;">
 <div id="divtable" runat="server">
 <iframe id="frame1" src="gysglcl_2.aspx" frameborder="0" marginheight="0"  style=" width:100%;  height:400px; padding:0px; margin:0px; border:0px; " > 
-    </iframe> 
+ </iframe> 
 </div>
 </div>
  </div>                
