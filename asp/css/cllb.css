@@ -1,6 +1,9 @@
 ﻿#menu_lb {
 	width:210px;
 	min-height:433px;
+	max-height:526px;
+	overflow:auto;
+	overflow-x: hidden; 
 	float:left;
 	margin:auto;
 	border: 1px solid #ddd;

@@ -81,27 +81,30 @@
                          if (b)
                          {
                              sSQL = "";
-                             //添加多媒体信息
-                             while (dmt.EndsWith("◥"))
+                             if (dmt != "")
                              {
-                                 dmt = dmt.Substring(0, dmt.Length - 1);
-                             }
-                             string[] arrPath = dmt.Split('◥');
-                             for (int i = 0; i < arrPath.Length; i++)
-                             {
-                                 string[] arrTotal = new string[3];
-                                 arrTotal = arrPath[i].Split(',');  
-                                 sSQL += "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,分类,存放地址,updatetime) values(" +
-                                  sqlclid + " ,'" + clbm + "','" + clmc + "','是','" + arrTotal[0] + "','" + arrTotal[1] + "','" + arrTotal[2] + "',(select getdate()))  ";
-                             }
-                             bool bdmt = Conn.RunSqlTransaction(sSQL);
-                             if (bdmt)
-                             {
-                                 value = "1";
-                             }
-                             else
-                             {
-                                 value = "添加多媒体信息失败 添加语句：" + sSQL;
+                                 //添加多媒体信息
+                                 while (dmt.EndsWith("◥"))
+                                 {
+                                     dmt = dmt.Substring(0, dmt.Length - 1);
+                                 }
+                                 string[] arrPath = dmt.Split('◥');
+                                 for (int i = 0; i < arrPath.Length; i++)
+                                 {
+                                     string[] arrTotal = new string[3];
+                                     arrTotal = arrPath[i].Split(',');
+                                     sSQL += "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,分类,存放地址,updatetime) values(" +
+                                      sqlclid + " ,'" + clbm + "','" + clmc + "','是','" + arrTotal[0] + "','" + arrTotal[1] + "','" + arrTotal[2] + "',(select getdate()))  ";
+                                 }
+                                 bool bdmt = Conn.RunSqlTransaction(sSQL);
+                                 if (bdmt)
+                                 {
+                                     value = "1";
+                                 }
+                                 else
+                                 {
+                                     value = "添加多媒体信息失败 添加语句：" + sSQL;
+                                 }
                              }
                          }
                          else
