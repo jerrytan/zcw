@@ -37,60 +37,73 @@
     public string s_yh_id = "";
     public string lx="";
     public string gys_id = "";//供应商id
+    public string QQ = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-            if (Request.Cookies["GYS_QQ_ID"] != null && Request.Cookies["GYS_QQ_ID"].Value.ToString() != "")
-            {
-                //s_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-                gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();//蒋,2014年8月22日
-            }
-            //获取QQ_id，如果数据库不存在此id，则跳转到QQ验证页面  苑
-            //string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();蒋,2014年8月21日
-            string sqlExistQQ_id = "select * from 用户表 where QQ_id='" + gys_QQ_id + "'";
-            string sql_Level = "select 等级 from 用户表 where QQ_id='" + gys_QQ_id + "'";
-            if (objConn.GetRowCount(sqlExistQQ_id) > 0)
-            {
-                if (objConn.DBLook(sql_Level) == "企业用户")
-                {
-                    Response.Redirect("hyyhgl.aspx");
-                }
-            }
-            else
-            {
-                Response.Redirect("QQ_dlyz.aspx");
-            }
+        if (Request["GYS_ID"] != null && Request["GYS_ID"].ToString() != "")
+        {
+            gys_id = Request["GYS_ID"].ToString();
+
+        }
+        if (Request["QQ"] != null && Request["QQ"].ToString() != "")
+        {
+            QQ = Request["QQ"].ToString();
+        }
+        //蒋注释IF判断(11月06日)
+            //if (Request.Cookies["GYS_QQ_ID"] != null && Request.Cookies["GYS_QQ_ID"].Value.ToString() != "")
+            //{
+            //    //s_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+            //    gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();//蒋,2014年8月22日
+            //}
+            ////获取QQ_id，如果数据库不存在此id，则跳转到QQ验证页面  苑
+            ////string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();蒋,2014年8月21日
+            //string sqlExistQQ_id = "select * from 用户表 where QQ_id='" + gys_QQ_id + "'";
+            //string sql_Level = "select 等级 from 用户表 where QQ_id='" + gys_QQ_id + "'";
+            //if (objConn.GetRowCount(sqlExistQQ_id) > 0)
+            //{
+            //    if (objConn.DBLook(sql_Level) == "企业用户")
+            //    {
+            //        Response.Redirect("hyyhgl.aspx");
+            //    }
+            //}
+            //else
+            //{
+            //    Response.Redirect("QQ_dlyz.aspx");
+            //}
 
             //蒋，2014年8月21日
-            string sql_Power = "select 角色权限 from 用户表 where QQ_id='"+gys_QQ_id+"'";
+            //string sql_Power = "select 角色权限 from 用户表 where QQ_id='"+gys_QQ_id+"'";
+            string sql_Power = "select 角色权限 from 用户表 where QQ号码='" + QQ + "'";
             power = objConn.DBLook(sql_Power).ToString();//21日
-        
 
-        if (gys_QQ_id != "")
-        {
-            //蒋，2014年8月21日          
+            if (QQ != "")
+            {
+        //if (gys_QQ_id != "")
+        //{
+                //蒋，2014年8月21日    (将以下所有的QQ_id改成QQ号码)        
             //string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + s_QQ_id + "'";
-            string str_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + gys_QQ_id + "'";
+                string str_checkuserexist = "select count(*) from 用户表 where QQ号码='" + QQ + "'";
             string s_Count=objConn.DBLook(str_checkuserexist);    
             if (s_Count != "")
             {
                 int count = Convert.ToInt32(s_Count);
                 if (count == 0)  //qq_id 不存在，需要增加用户表
                 {
-                    string str_insertuser = "insert into 用户表 (QQ_id) VALUES ('" + gys_QQ_id + "')";
+                    string str_insertuser = "insert into 用户表 (QQ号码) VALUES ('" + QQ + "')";
                      if(!objConn.ExecuteSQL(str_insertuser,false))
                        {
                          // objConn.MsgBox(this.Page,"执行SQL语句失败"+str_insertuser);
                        }
 
-                     string str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" + gys_QQ_id + "')"
-                    + ",updatetime=(select getdate()),注册时间=(select getdate())where QQ_id = '" + gys_QQ_id + "'";
+                     string str_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ号码 = '" + QQ + "')"
+                    + ",updatetime=(select getdate()),注册时间=(select getdate())where QQ号码 = '" + QQ + "'";
                      if(!objConn.ExecuteSQL(str_updateuser,false))
                        {
                           //objConn.MsgBox(this.Page,"执行SQL语句失败"+str_updateuser);
                        }
                 } 
             }
-            string s_SQL = "select 姓名,yh_id,是否验证通过,类型,等级,dw_id from 用户表 where QQ_id='" + gys_QQ_id + "'";      
+            string s_SQL = "select 姓名,yh_id,是否验证通过,类型,等级,dw_id from 用户表 where QQ号码 = '" + QQ + "'";      
              dt_yh = objConn.GetDataTable(s_SQL);
              
             if(dt_yh!=null&&dt_yh.Rows.Count>0)
@@ -107,48 +120,49 @@
             if (lx == "采购商")
             {
               
-                string cookieName = "";
-                cookieName = "GYS_QQ_ID";
-                if (Request.Cookies[cookieName] != null)
-                {
-                    HttpCookie myCookie = new HttpCookie(cookieName);
-                    myCookie.Expires = DateTime.Now.AddDays(-10d);
-                    Response.Cookies.Add(myCookie);
-                }
-                foreach (string cookiename in  Request.Cookies.AllKeys)
-				{
-					HttpCookie cookies = Request.Cookies[cookiename];
-					if (cookies != null)
-					{
-					   cookies.Expires = DateTime.Today.AddDays(-1);
-					   Response.Cookies.Add(cookies);
-					   Request.Cookies.Remove(cookiename);
-					}
-				}    
+                //string cookieName = "";
+                //cookieName = "GYS_QQ_ID";
+                //if (Request.Cookies[cookieName] != null)
+                //{
+                //    HttpCookie myCookie = new HttpCookie(cookieName);
+                //    myCookie.Expires = DateTime.Now.AddDays(-10d);
+                //    Response.Cookies.Add(myCookie);
+                //}
+                //foreach (string cookiename in  Request.Cookies.AllKeys)
+                //{
+                //    HttpCookie cookies = Request.Cookies[cookiename];
+                //    if (cookies != null)
+                //    {
+                //       cookies.Expires = DateTime.Today.AddDays(-1);
+                //       Response.Cookies.Add(cookies);
+                //       Request.Cookies.Remove(cookiename);
+                //    }
+                //}    
 				Response.Write("<script>window.alert('您是采购商，不能用供销商身份登录！');window.location.href='index.aspx';</" + "script>");
             }
 
-            else
-            {
+            //else
+            //{
 
-                //need to set session value
+            //    //need to set session value
 
-                Session["GYS_YH_ID"] = s_yh_id;
+            Session["GYS_YH_ID"] = s_yh_id;
 
-                //(供应商申请)的yh_id 是在认领厂商之后更新的
-                //蒋，2014年8月13日，注释sql以下语句
-                //string sSQL = "select 审批结果 from 供应商认领申请表 where yh_id='" + s_yh_id + "' ";
-                //DataTable dt_gyssq = new DataTable();
-                //dt_gyssq = objConn.GetDataTable(sSQL);
-                //if (dt_gyssq != null && dt_gyssq.Rows.Count > 0)
-                //{
-                //    passed_gys = dt_gyssq.Rows[0]["审批结果"].ToString();
-                //}
-            }
+            //    //(供应商申请)的yh_id 是在认领厂商之后更新的
+            //    //蒋，2014年8月13日，注释sql以下语句
+            //    //string sSQL = "select 审批结果 from 供应商认领申请表 where yh_id='" + s_yh_id + "' ";
+            //    //DataTable dt_gyssq = new DataTable();
+            //    //dt_gyssq = objConn.GetDataTable(sSQL);
+            //    //if (dt_gyssq != null && dt_gyssq.Rows.Count > 0)
+            //    //{
+            //    //    passed_gys = dt_gyssq.Rows[0]["审批结果"].ToString();
+            //    //}
+            //}
        }
      else
       {
-             objConn.MsgBox(this.Page,"QQ_ID不存在！请重新登录");
+          Response.Write("<script>window.alert('QQ_ID不存在！请重新登录')</" + "script>");
+          //objConn.MsgBox(this.Page, "QQ_ID不存在！请重新登录");
        }
 
     }

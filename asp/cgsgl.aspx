@@ -27,30 +27,43 @@
     <script runat="server">
       public string sCGS_QQ_id = "";
         public DataConn objConn = new DataConn();
+        string s_yh_id="";
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Request.Cookies["CGS_QQ_ID"]!=null&&Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
+            <%-- //蒋，注释if重加if--%>
+            //if (Request.Cookies["CGS_QQ_ID"]!=null&&Request.Cookies["CGS_QQ_ID"].Value.ToString()!="")
+            //{
+                //sCGS_QQ_id=Request.Cookies["CGS_QQ_ID"].Value.ToString();
+            //}  
+            if (Session["CGS_YH_ID"] != null && Session["CGS_YH_ID"].ToString() != "")
             {
-                sCGS_QQ_id=Request.Cookies["CGS_QQ_ID"].Value.ToString();
-            }      
-            if (sCGS_QQ_id!="")
+                s_yh_id = Session["CGS_YH_ID"].ToString();
+            }
+             <%--if (sCGS_QQ_id!="")
+            {--%>
+            if (s_yh_id!="")
             {
                 try
                 {
                     /*查询是否该QQid已经登录过*/
-                    string s_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + sCGS_QQ_id + "'";
+                   <%--蒋，注释sql语句并将sCGS_QQ_id改成s_yh_id--%>
+                    <%--string s_checkuserexist = "select count(*) from 用户表 where QQ_id = '" + sCGS_QQ_id + "'";--%>
+                    string s_checkuserexist = "select count(*) from 用户表 where yh_id = '" + s_yh_id + "'";
 					string s_Count=objConn.DBLook(s_checkuserexist);
                     int i_count =Convert.ToInt32(s_Count);
                     /* qq_id 不存在，需要增加用户表*/
                     if (i_count == 0) 
                     {
-                        string s_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('" +sCGS_QQ_id + "')";
+                        <%--string s_insertuser = "INSERT into 用户表 (QQ_id) VALUES ('" +sCGS_QQ_id + "')";--%>
+                        string s_insertuser = "INSERT into 用户表 (yh_id) VALUES ('" +s_yh_id + "')";
                         objConn.ExecuteSQL(s_insertuser,false);
-                        string s_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" +sCGS_QQ_id + "') where QQ_id = '" + sCGS_QQ_id + "')";
+                        <%-- string s_updateuser = "update 用户表 set yh_id = (select myId from 用户表 where QQ_id = '" +sCGS_QQ_id + "') where QQ_id = '" + sCGS_QQ_id + "')";--%>
+                        string s_updateuser = "update 用户表 set yh_id ='"+s_yh_id+"'";
                         objConn.ExecuteSQL(s_updateuser,false);
                     }
                     /*获取用户id 放入session */
-                    string s_getyhid = "select yh_id from 用户表 where QQ_id = '" + sCGS_QQ_id + "'";
+                      <%--string s_getyhid = "select yh_id from 用户表 where QQ_id = '" + sCGS_QQ_id + "'";--%>
+                    string s_getyhid = "select yh_id from 用户表 where yh_id ='"+s_yh_id+"'";
                     string yh_id = objConn.DBLook(s_getyhid);
                     Session["yh_id"] = yh_id;
                     Response.Redirect("cgsgl_2.aspx");

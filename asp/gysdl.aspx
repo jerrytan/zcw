@@ -28,7 +28,7 @@
     </script>
     <div class="dlqq">
         <div class="dlqq1">
-      <%
+     <%-- <%
         HttpCookie CGS_QQ_id = Request.Cookies["CGS_QQ_ID"];   
         Object cgs_yh_id = Session["CGS_YH_ID"];     
  
@@ -60,22 +60,27 @@
                     }
                 }    
             //Response.Write("openid is empty");
-            %>
+            %>--%>
             <span class="dlzi">尊敬的供应商，您好! </span>
             <span class="dlzi">请点击右边按钮登陆！</span>
             <span class="dlzi2" id="qqLoginBtn"></span>
+            <input type="button" value="登录" onclick="login()" />
             <script type="text/javascript">
-                QC.Login({
-                    btnId: "qqLoginBtn" //插入按钮的节点id  
+//                QC.Login({
+//                    btnId: "qqLoginBtn" //插入按钮的节点id  
 
-                });
-
+//                });
+                //蒋，注释，加方法
+                function login()
+                {
+                    window.location.href = "gysdl_2.aspx";
+                }
             </script>
             <img src="images/wz_03.jpg">
-            <%
+          <%--  <%
             }
           }
-     %>
+     %>--%>
             
         </div>
     </div>

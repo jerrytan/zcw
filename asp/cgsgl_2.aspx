@@ -87,12 +87,20 @@
 
         protected DataTable dt_type = new DataTable();   //一级分类列表    
         protected List<string> list = new List<string>();//用户已关注类别列表  
-
+        Object yh_id = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-            string cgs_QQ_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
-            string sqlExistQQ_id = "select myID from 用户表 where QQ_id='" + cgs_QQ_id + "'";
-            string sql_Level = "select 等级 from 用户表 where QQ_id='" + cgs_QQ_id + "'";
+
+            //蒋，注释（11月7日）,并加上IF判断
+            //string cgs_QQ_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
+            //string sqlExistQQ_id = "select myID from 用户表 where QQ_id='" + cgs_QQ_id + "'";
+            //string sql_Level = "select 等级 from 用户表 where QQ_id='" + cgs_QQ_id + "'";
+            if (Session["CGS_YH_ID"] != null && Session["CGS_YH_ID"].ToString() != "")
+            {
+                yh_id = Session["CGS_YH_ID"];
+            }
+            string sqlExistQQ_id = "select myID from 用户表 where yh_id='" + yh_id + "'";
+            string sql_Level = "select 等级 from 用户表 where yh_id='" + yh_id + "'";
             if (objConn.GetRowCount(sqlExistQQ_id) > 0)
             {
                 if (objConn.DBLook(sql_Level) == "企业用户")
@@ -104,17 +112,19 @@
             {
                 Response.Redirect("QQ_dlyz.aspx");
             }
-            if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString() != "")
+            //if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString() != "")
+            //{
+            //    s_QQid = Request.Cookies["CGS_QQ_ID"].Value.ToString();   //获取采购商登录QQ的ID
+            //}
+            //if (s_QQid != "")
+            //{
+            if (yh_id != "")
             {
-                s_QQid = Request.Cookies["CGS_QQ_ID"].Value.ToString();   //获取采购商登录QQ的ID
-            }
-            if (s_QQid != "")
-            {
-                sSQL = "select count(*) from 用户表 where QQ_id = '" + s_QQid + "'";  //根据QQ_id查询用户是否存在
+                sSQL = "select count(*) from 用户表 where yh_id='" + yh_id + "'";  //根据QQ_id查询用户是否存在
                 string count = objConn.DBLook(sSQL);
 
                 string lx = "";    //用户类型
-                sSQL = "select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where QQ_id = '" + s_QQid + "'";  //根据QQ_id查询用户信息
+                sSQL = "select 姓名,yh_id,是否验证通过,类型,等级 from 用户表 where yh_id='" + yh_id + "'";  //根据QQ_id查询用户信息
                 dt = objConn.GetDataTable(sSQL);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -130,14 +140,14 @@
 
                 if (lx != "采购商")        //如果从数据库获取的信息中类型是采购商
                 {
-                    string cookieName = "";
-                    cookieName = "CGS_YH_ID";
-                    if (Request.Cookies[cookieName] != null)
-                    {
-                        HttpCookie myCookie = new HttpCookie(cookieName);
-                        myCookie.Expires = DateTime.Now.AddDays(-10d);
-                        Response.Cookies.Add(myCookie);   //如果用户ID不为空，将用户ID写入Cookie
-                    }
+                    //string cookieName = "";
+                    //cookieName = "CGS_YH_ID";
+                    //if (Request.Cookies[cookieName] != null)
+                    //{
+                    //    HttpCookie myCookie = new HttpCookie(cookieName);
+                    //    myCookie.Expires = DateTime.Now.AddDays(-10d);
+                    //    Response.Cookies.Add(myCookie);   //如果用户ID不为空，将用户ID写入Cookie
+                    //}
                     Response.Write("<script>window.alert('您不是采购商，不能用采购商身份登录！');window.location.href='index.aspx';</" + "script>");
                 }
                 Session["CGS_YH_ID"] = s_yh_id;  //将用户ID保存到session
