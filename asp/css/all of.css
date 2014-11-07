@@ -435,7 +435,7 @@ line-height:36px; float:left; font-size:14px; color:#707070; font-weight:bold; b
 .queding_bk{
 	width:30px;
 	border:1px solid #ddd;}
-#jiansuo{
+/*#jiansuo{
 	width:1000px;
 	height:60px;
 	float:left;
@@ -443,7 +443,17 @@ line-height:36px; float:left; font-size:14px; color:#707070; font-weight:bold; b
 	background-color: #d9e5fd;
 	margin-top: 10px;
 	text-align:center;
+}*/
+#jiansuo{
+	width:1000px;
+	height:40px;
+	float:left;
+	line-height:40px;
+	background-color: #d9e5fd;
+	margin-top: 10px;
+	text-align:center;
 }
+
 #jiansuo2{
 	width:795px;
 	height:40px;
