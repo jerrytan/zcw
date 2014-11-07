@@ -53,17 +53,11 @@
 	protected DataTable dt_yh = new DataTable();  //供应商补填信息(用户表)  
 	public string s_yh_id="";<%--// 用户id--%>
 	public string sSQL=""; 
-    public string gys_id="";<%--//蒋，传入gys_id--%>
 	public DataConn objConn = new DataConn();  
     public string QQ="";    
 	protected void Page_Load(object sender, EventArgs e)
 	 {    
-     //注释（11月06日）
-     if(Request["gys_id"]!=null&&Request["gys_id"].ToString()!="")
-     {
-         gys_id=Request["gys_id"].ToString();
-     }
-       <%-- if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
+        if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
 		{
 			s_yh_id = Session["GYS_YH_ID"].ToString();
 		}
@@ -71,41 +65,29 @@
 		{
             sSQL="select 姓名,手机,QQ号码,邮箱,类型,是否验证通过 from 用户表 where yh_id='"+s_yh_id+"'";
 		    dt_yh = objConn.GetDataTable(sSQL);              
-		}	         --%>
-        if(gys_id!="")
-		{
-            sSQL="select 姓名,手机,QQ号码,邮箱,类型,是否验证通过 from 用户表 where dw_id='"+gys_id+"'";
-		    dt_yh = objConn.GetDataTable(sSQL);              
-		}	
+		}
         QQ=dt_yh.Rows[0]["QQ号码"].ToString();
 	}
-   // <%--蒋，2014年9月2日--%>
+     <%--蒋，2014年9月2日--%>
     protected void ImageButton3_Click(object sender, EventArgs e)	
     {
-   <%-- //注释11月06号，蒋--%>
-       <%--if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
+        if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
 	    {
 			s_yh_id = Session["GYS_YH_ID"].ToString();
-		}--%>
-         if(Request["gys_id"]!=null&&Request["gys_id"].ToString()!="")
-         {
-             gys_id=Request["gys_id"].ToString();
-         }
+		}
         if(this.user_phone.Value!="")
         {
             if(this.user_email.Value=="")
             {
-                sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "', 邮箱=''  where dw_id='" + gys_id + "'";
-                <%--sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "', 邮箱=''  where yh_id='" + s_yh_id + "'";--%>
+               sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "', 邮箱=''  where yh_id='" + s_yh_id + "'";
                 objConn.ExecuteSQLForCount(sSQL, true);
                 Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx?QQ= "+ QQ +" &GYS_ID= + gys_id'</"+"script>"); 
             }
             else
             {
-                sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "', 邮箱='"+ this.user_email.Value +"'  where dw_id='" + gys_id + "'";
-                <%--//  sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "', 邮箱='"+ this.user_email.Value +"'  where yh_id='" + s_yh_id + "'";//蒋，11月6日注释--%>
+                sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "', 邮箱='"+ this.user_email.Value +"'  where yh_id='" + s_yh_id + "'";
                 objConn.ExecuteSQLForCount(sSQL, true);
-                Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx?QQ="+QQ+"&GYS_ID=++'</"+"script>");
+                Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx?QQ=" + QQ + "&GYS_ID="+s_yh_id+"'</" + "script>");
             }
             <%--Response.Redirect("gyszym.aspx?QQ=" + QQ + "&GYS_ID=" + gys_id);--%>
         }

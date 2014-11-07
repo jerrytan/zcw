@@ -35,35 +35,50 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     protected DataTable dt_content = new DataTable();
     private int i_count = 0;
     public List<OptionItem> Items { get; set; }//用于跳转页面
-
+    public string QQ = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        HttpCookie QQ_id;
-        if (Request.Cookies["GYS_QQ_ID"] == null)
+        //蒋，2014年11月7日注释,并重新添加取值
+        //HttpCookie QQ_id;
+        //if (Request.Cookies["GYS_QQ_ID"] == null)
+        //{
+        //    QQ_id = Request.Cookies["CGS_QQ_ID"];
+        //}
+        //else
+        //{
+        //    QQ_id = Request.Cookies["GYS_QQ_ID"];
+        //}
+        //if (QQ_id != null)
+        //{
+        //    string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + QQ_id.Value + "'";
+        //    dt_Yh = dc.GetDataTable(str_Sql);
+        //}  
+        if (Request["QQ"] != null && Request["QQ"].ToString() != "")
         {
-            QQ_id = Request.Cookies["CGS_QQ_ID"];
+            QQ = Request["QQ"].ToString();
         }
-        else
-        {
-            QQ_id = Request.Cookies["GYS_QQ_ID"];
-        }
-        if (QQ_id != null)
-        {
-            string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + QQ_id.Value + "'";
-            dt_Yh = dc.GetDataTable(str_Sql);
-        }   
         string sql_dwid;
-
-        if (Request.Cookies["GYS_QQ_ID"]!=null)
-        {
-            string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-            sql_dwid = "select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "'";
-        }
+        if (Session["GYS_YH_ID"]!=null&&Session["GYS_YH_ID"].ToString()!="")
+	    {
+		    string gys_id=Session["GYS_YH_ID"].ToString();
+            //string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+            sql_dwid = "select dw_id from 用户表 where QQ号码='"+QQ+"'";
+	    }
         else
         {
-            string cgs_QQ_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
-            sql_dwid = "select dw_id from 用户表 where QQ_id='" + cgs_QQ_id + "'";
+            string cgs_QQ_id = Request["QQ"].ToString();
+            sql_dwid = "select dw_id from 用户表 where QQ号码='" + cgs_QQ_id + "'";
         }
+        //if (Request.Cookies["GYS_QQ_ID"]!=null)
+        //{
+        //    string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+        //    sql_dwid = "select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "'";
+        //}
+        //else
+        //{
+        //    string cgs_QQ_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
+        //    sql_dwid = "select dw_id from 用户表 where QQ_id='" + cgs_QQ_id + "'";
+        //}
 
         int dwid = Convert.ToInt32(dc.DBLook(sql_dwid));
 
@@ -205,8 +220,10 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     {
         try
         {
-            string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-            string str_sql = "select myID from 用户表 where dw_id = (select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "') and 等级='普通用户' order by updatetime desc";
+           //// string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+           // string str_sql = "select myID from 用户表 where dw_id = (select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "') and 等级='普通用户' order by updatetime desc";
+            // string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+            string str_sql = "select myID from 用户表 where dw_id = (select dw_id from 用户表 where QQ号码='"+QQ+"') and 等级='普通用户' order by updatetime desc";
             i_count = dc.GetRowCount(str_sql);
         }
         catch (Exception e)
@@ -222,7 +239,7 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     protected void filter_Click(object sender, EventArgs e)
     {
         string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-        string sql_Search = "select * from 用户表 where 1=1 and dw_id = (select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "') and 等级='普通用户'";
+        string sql_Search = "select * from 用户表 where 1=1 and dw_id = (select dw_id from 用户表 where QQ号码='" + QQ + "') and 等级='普通用户'";
 
         if (this.lieming.Value == "QQ号")
         {
@@ -254,11 +271,5 @@ public partial class asp_hyyhgl : System.Web.UI.Page
             ug.Power = dr["角色权限"].ToString();
             listGys.Add(ug);
         }
-        
-
     }
-
-
-
-
 }
