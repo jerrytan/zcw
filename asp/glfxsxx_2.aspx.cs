@@ -24,15 +24,22 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-        if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
+        //蒋
+        //if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
+        //{
+        //    gys_id = Request["gys_id"].ToString();
+        //    pp_mc = Request["pp_mc"].ToString();
+        //}
+
+        if (Request["GYS_ID"] != null && Request["GYS_ID"].ToString() != "")
         {
-            gys_id = Request["gys_id"].ToString();
+            gys_id = Request["GYS_ID"].ToString();
             pp_mc = Request["pp_mc"].ToString();
         }
         this.ppmc.Value = pp_mc;
-        sSQL = "select dw_id from 用户表 where yh_id=" + s_yh_id + "";
-        dt_yh = objConn.GetDataTable(sSQL);
-        this.lblgys_id.Value = dt_yh.Rows[0]["dw_id"].ToString();
+        //sSQL = "select dw_id from 用户表 where yh_id=" + s_yh_id + "";
+        //dt_yh = objConn.GetDataTable(sSQL);
+        this.lblgys_id.Value = s_yh_id;
         if (pp_mc != "" && gys_id != "")
         {
             sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where gys_id in " +
@@ -46,7 +53,9 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
-                sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where 是否启用=1 order by updatetime desc";
+                //蒋，，，把lsgys_id改成s_yh_id
+                sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where 是否启用=1 and gys_id in (select distinct fxs_id from 分销商和品牌对应关系表 where pp_id in (select pp_id from 品牌字典 where scs_id=" + s_yh_id + ")) order by updatetime desc";
+                //sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where 是否启用=1 order by updatetime desc";
                 dt_gxs = objConn.GetDataTable(sSQL);
                 this.dic.Visible = false;
             }
