@@ -82,7 +82,7 @@
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var text = xmlhttp.responseText;
-                if (text == 1) {
+                if (text == "1") {
                     alert('É¾³ý³É¹¦');
                     location.reload();
                 }
@@ -92,7 +92,7 @@
                 }
             }
         }
-        xmlhttp.open("GET", "gysglcl_2_ajax.aspx?cl_id=" + cl_id, true);
+        xmlhttp.open("GET", "scssccl.aspx?cl_id=" + cl_id, true);
         xmlhttp.send();
     }
     function onloadEvent(func) {

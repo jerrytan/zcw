@@ -8,7 +8,7 @@
      protected void Page_Load(object sender, EventArgs e)
      {
          string value = "";
-         
+         string scsid = "";
          try
          {
              string s_yh_id = "";
@@ -27,7 +27,7 @@
              string ppid = Request["ppid"];
              string cpjg = Request["cpjg"];
              string SQL = Request["SQL"];   //SQL语句
-             string scsid = Request["scsid"];   //SQL语句
+                    scsid = Request["scsid"];   //SQL语句
              string sSQL = "";
  
              string dmt = Request["dmt"];
@@ -106,6 +106,10 @@
                                      value = "添加多媒体信息失败 添加语句：" + sSQL;
                                  }
                              }
+                             else
+                             {
+                                 value = "1";
+                             }
                          }
                          else
                          {
@@ -128,15 +132,15 @@
          {
              value = "添加材料失败！错误信息：" + ee.ToString();
          }
-         Response.Write(value);
-         //if (value=="1")
-         //{
-         //    Response.Write("<scrpt>alert('添加成功！')</" + "script>");
-         //}
-         //else
-         //{
-         //    Response.Write("<scrpt>alert('"+value+"');</" + "script>");
-         //}
+        // Response.Write(value);
+         if (value == "1")
+         {
+             Response.Write("<scrpt>alert('添加成功！');window.localtion.href='gysglcl.aspx?gys_id=" + scsid + "';</" + "script>");
+         }
+         else
+         {
+             Response.Write("<scrpt>alert('" + value + "');window.localtion.href='gysglcl.aspx?gys_id=" + scsid + "';</" + "script>");
+         }
           
      }
      </script>

@@ -177,14 +177,14 @@
                 {
                     alert(message);
                 }
-            });      
-        return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转 
+            });
+            return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转  onsubmit="return saveReport();"
     }    
 </script>
  
 </HEAD> 
 <BODY>  
-<form runat="server" id="form1" action="scsxzcl_save.aspx" method="post" onsubmit="return saveReport();">
+<form runat="server" id="form1" action="scsxzcl_save.aspx" method="post">
 <script runat="server">
 public DataTable dt_sx = new DataTable();
 public DataTable dt_sxz = new DataTable();
