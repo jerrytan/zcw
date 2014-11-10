@@ -28,7 +28,7 @@
     </script>
     <div class="dlqq">
         <div class="dlqq1">
-     <%-- <%
+    <%--  <%
         HttpCookie CGS_QQ_id = Request.Cookies["CGS_QQ_ID"];   
         Object cgs_yh_id = Session["CGS_YH_ID"];     
  

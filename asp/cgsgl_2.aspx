@@ -112,6 +112,7 @@
             {
                 Response.Redirect("QQ_dlyz.aspx");
             }
+            //蒋，20141110注释
             //if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString() != "")
             //{
             //    s_QQid = Request.Cookies["CGS_QQ_ID"].Value.ToString();   //获取采购商登录QQ的ID
