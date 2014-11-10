@@ -87,7 +87,7 @@
             var phone = Trim(tds[4].innerHTML);
             var email = Trim(tds[5].innerHTML);
             var scs;var fxs;var cl;
-           <%if (Request.Cookies["GYS_QQ_ID"] != null){ %>
+           <%if (Session["GYS_QQ_ID"] != null){ %>//Session["GYS_QQ_ID"]改成Session["GYS_QQ_ID"]
                 scs = tds[6].childNodes[1].checked;
                 fxs = tds[6].childNodes[3].checked;
                 cl = tds[6].childNodes[5].checked;
@@ -137,10 +137,12 @@
     </div>
 
       <%         
-			HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
+            //HttpCookie GYS_QQ_ID = Session["GYS_QQ_ID"];更换成Session
+          Object GYS_QQ_ID = Session["GYS_QQ_ID"];
             Object gys_yh_id = Session["GYS_YH_ID"];  
 
-            HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+            //HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];//更换成Session
+            Object CGS_QQ_ID = Session["CGS_QQ_ID"];
             Object cgs_yh_id = Session["CGS_YH_ID"];     
     
               
@@ -247,7 +249,7 @@
                     <th align="center">
                         <strong>邮箱</strong>
                     </th>
-                    <%if (Request.Cookies["GYS_QQ_ID"] != null)
+                    <%if (Session["GYS_QQ_ID"] != null)
                       { %>
                     <th align="center">
                         <strong>角色权限</strong>
@@ -281,7 +283,7 @@
                         <%=listGys[i].Email%>
                     </td>
 
-                    <%if (Request.Cookies["GYS_QQ_ID"] != null)
+                    <%if (Session["GYS_QQ_ID"] != null)
                       { %>
                     <td>
                         <%string powerGys = listGys[i].Power.ToString(); %>

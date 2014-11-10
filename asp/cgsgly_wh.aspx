@@ -112,10 +112,12 @@
     </div>
 
       <%         
-			HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
+            //HttpCookie GYS_QQ_ID = Session["GYS_QQ_ID"];更换
+          Object GYS_QQ_ID = Session["GYS_QQ_ID"];
             Object gys_yh_id = Session["GYS_YH_ID"];  
 
-            HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+            //HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];//更换
+            Object CGS_QQ_ID = Session["CGS_QQ_ID"];
             Object cgs_yh_id = Session["CGS_YH_ID"];     
     
               

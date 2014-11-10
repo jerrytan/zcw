@@ -78,8 +78,10 @@
                     </label>
                     <input type="text" name="txt_Email" class="shuru" id="txt_Email" runat="server" onblur="yxCheck(this)"/>
                 </dt>
-                <%if (Request.Cookies["GYS_QQ_ID"] != null)
-                  { %>
+                <%--<%if (Session["GYS_QQ_ID"] != null)Session["GYS_QQ_ID"]
+                  { %>（更换注释）--%>
+                  <%if(Session["GYS_QQ_ID"]!=null)
+                    { %>
                 <dd>
                     角色权限：</dd>
                 <dt id="dt">

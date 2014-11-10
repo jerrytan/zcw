@@ -25,8 +25,8 @@
     </script>
     <div class="dlqq">
         <div class="dlqq1">
-    <%-- <%
-        HttpCookie gys_QQ_id = Request.Cookies["GYS_QQ_ID"];   
+     <%
+        Object gys_QQ_id = Session["GYS_QQ_ID"];   
         Object gys_yh_id = Session["GYS_YH_ID"];     
  
 		if (gys_QQ_id != null && gys_yh_id != null) 	
@@ -36,7 +36,7 @@
         
         else 
         {
-            HttpCookie cgs_QQ_id = Request.Cookies["CGS_QQ_ID"];   
+            Object cgs_QQ_id = Session["CYS_QQ_ID"];   
             Object cgs_yh_id = Session["CGS_YH_ID"];          
         
 		    if (cgs_QQ_id != null && cgs_yh_id != null) 	
@@ -56,7 +56,7 @@
                         Request.Cookies.Remove(cookiename);
                     }
                 }    
-            %>--%>
+            %>
             <span class="dlzi">尊敬的采购商用户，您好! </span><span class="dlzi">请点击右边按钮登陆！</span> <span
                 class="dlzi2" id="qqLoginBtn"></span>
                 <input class="dlzi2" type="button" value="账号登录" onclick="login()" />
@@ -72,11 +72,11 @@
             </script>
 
             <img src="images/wz_03.jpg">
-           <%-- <%
+            <%
             }
         }
    
-            %>--%>
+            %>
         </div>
     </div>
 </body>

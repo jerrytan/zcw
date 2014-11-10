@@ -9,9 +9,9 @@
         gysids = gysids.TrimEnd(',');
 
         //获取用户id
-        if (Request.Cookies["CGS_QQ_ID"].Value.ToString() != "")
+        if (Session["CGS_QQ_ID"].ToString() != "")//将Request.Cookies["CGS_QQ_ID"]更换成Session["CGS_QQ_ID"]
         {
-           string cgs_QQ_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
+           string cgs_QQ_id = Session["CGS_QQ_ID"].ToString();
            string sql = "select yh_id from 用户表 where QQ_id='" + cgs_QQ_id + "'";
            cgs_yh_id = dc.DBLook(sql);
         }

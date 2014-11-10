@@ -13,23 +13,25 @@ public partial class asp_cgsgly_wh : System.Web.UI.Page
     protected DataTable dt_Yh = new DataTable(); //用户名字(用户表)    	
     protected void Page_Load(object sender, EventArgs e)
     {
-        HttpCookie QQ_id;
-        if (Request.Cookies["GYS_QQ_ID"] == null)
+        //HttpCookie QQ_id;
+        string QQ_id;
+        if (Session["GYS_QQ_ID"] == null)
         {
-            QQ_id = Request.Cookies["CGS_QQ_ID"];
+            QQ_id = Session["CGS_QQ_ID"].ToString();//Request.Cookies["CGS_QQ_ID"];更换成Session["CGS_QQ_ID"]
         }
         else
         {
-            QQ_id = Request.Cookies["GYS_QQ_ID"];
+            QQ_id = Session["GYS_QQ_ID"].ToString();
         }
         if (QQ_id != null)
         {
-            string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + QQ_id.Value + "'";
+            string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + QQ_id+ "'";
             dt_Yh = dc.GetDataTable(str_Sql);
         }
         if (!IsPostBack)
         {
-            string cgsid = Request.Cookies["CGS_QQ_ID"].Value.ToString();
+            //Request.Cookies["CGS_QQ_ID"];更换成Session["CGS_QQ_ID"]
+            string cgsid = Session["CGS_QQ_ID"].ToString();
             string sqlGetInfo = @"select * from 采购商基本信息 left join 用户表 on 用户表.dw_id = 采购商基本信息.cgs_id 
             where QQ_id='" + cgsid + "'  and 等级='企业用户'";
             dt_info = dc.GetDataTable(sqlGetInfo);
@@ -80,7 +82,7 @@ public partial class asp_cgsgly_wh : System.Web.UI.Page
 
     protected void Submit1_Click(object sender, ImageClickEventArgs e)
     {
-        string cgs_qqid = Request.Cookies["CGS_QQ_ID"].Value.ToString();
+        string cgs_qqid = Session["CGS_QQ_ID"].ToString();
         string sql_dwqq = "select QQ号码  from 用户表 where QQ_id='" + cgs_qqid + "'";
         string dwqq = dc.DBLook(sql_dwqq);
         string sqlUpdate = @"update 采购商基本信息 set 单位简称='" + this.txt_gsjc.Value + "',法定代表人='"
