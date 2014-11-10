@@ -24,38 +24,15 @@
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <script src="js/gysglcl.js" type="text/javascript"></script>
     <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
-    <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <style type="text/css">
-        .style1
-        {
-            width: 94px;
-        }
-    </style>
-
-    <script type="text/javascript">
+    <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script> 
  
-        function onloadEvent(func)
-        {
-            var one = window.onload
-            if (typeof window.onload != 'function')
-            {
-                window.onload = func
-            }
-            else
-            {
-                window.onload = function ()
-                {
-                    one();
-                    func();
-                }
-            }
-        }
- 
-</script>
    <%-- 点击左侧列表数，右侧填值--%>
     <script type="text/javascript">
         function lbs(ppid,ppmc,scs)
         {
+            document.getElementById("ppid").value = ppid;
+            document.getElementById("ppmc").value = ppmc;
+            document.getElementById("scsid").value = scs;
             var xmlhttp;
             if (window.XMLHttpRequest)
             {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -78,11 +55,76 @@
             xmlhttp.send();
         }
     </script>
+      <script language="javascript" type="text/javascript">
+          function selectall1(obj)
+          {
+              if (obj.checked)
+              {
+                  var Table = document.getElementById("table4");
+                  var ck = Table.getElementsByTagName("input");
+                  for (var i = 0; i < ck.length; i++)
+                  {
+                      var e = ck[i];
+                      if (e.type == 'checkbox')
+                      {
+                          if (e.name == 'checkbox')
+                          {
+                              if (e.checked == false)
+                              {
+                                  document.getElementById("checkboxAll").checked = false;
+                              }
+                          }
+                          else
+                          {
+                              document.getElementById("checkboxAll").checked = true;
+                          }
+                      }
+                  }
+              }
+              else
+              {
+                  document.getElementById("checkboxAll").checked = false;
+              }
+          }
+          function selectall()
+          {
+              var Table = document.getElementById("table4");
+              var ck = Table.getElementsByTagName("input");
+              var ckb = document.getElementsByName("checkboxAll");
+              if (document.getElementById("checkboxAll").checked)
+              {
+                  for (var i = 0; i < ck.length; i++)
+                  {
+                      var e = ck[i];
+                      if (e.type == 'checkbox' && e.name == 'checkbox')
+                      {
+                          e.checked = true;
+                      }
+                  }
+              }
+              else
+              {
+                  for (var i = 0; i < ck.length; i++)
+                  {
+                      var e = ck[i];
+                      if (e.type == 'checkbox' && e.name == 'checkbox')
+                      {
+                          e.checked = false;
+                      }
+                  }
+              }
+          }
+    </script>
     <script type="text/javascript">
-    //新增
+    //新增材料
         function btnFilter_Click()
-        {          
-             
+        {
+            var fxs_id = document.getElementById("fxsid").value;
+            var ppid = document.getElementById("ppid").value;
+            var ppmc = document.getElementById("ppmc").value;
+            var scs = document.getElementById("scsid").value;
+            var url = "fxsxzdlcl.aspx?ppid=" + ppid + "&ppmc=" + ppmc + "&scsid=" + scs + "&fxsid=" + fxs_id;
+            window.location.href = url;
         }
         //查阅
         function Read(cl_id)
@@ -93,6 +135,11 @@
         //删除材料
         function delete_cl()
         {
+            var fxs_id = document.getElementById("fxsid").value;
+            var ppid = document.getElementById("ppid").value;
+            var ppmc = document.getElementById("ppmc").value;
+            var scs = document.getElementById("scsid").value;
+
             var table = document.getElementById("table4");
             var input = table.getElementsByTagName("input");
             var cl_id = "";
@@ -103,34 +150,42 @@
                     cl_id += Trim(input[i].value) + ",";
                 }
             }
-            var xmlhttp;
-            if (window.XMLHttpRequest)
+            if (cl_id == "" || cl_id == undefined)
             {
-                xmlhttp = new XMLHttpRequest();
+                alert("请选择要删除的材料!");
+                return;
             }
             else
             {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function ()
-            {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                var xmlhttp;
+                if (window.XMLHttpRequest)
                 {
-                    var text = xmlhttp.responseText;
-                    if (text == 1)
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else
+                {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function ()
+                {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
                     {
-                        alert('删除成功');
-                        location.reload();
-                    }
-                    else
-                    {
-                        alert('删除失败');
-                        location.reload();
+                        var text = xmlhttp.responseText;
+                        if (text == 1)
+                        {
+                            alert('删除成功');
+                            location.reload();
+                        }
+                        else
+                        {
+                            alert('删除失败');
+                            location.reload();
+                        }
                     }
                 }
+                xmlhttp.open("GET", "fxsscdlcl.aspx?cl_id=" + cl_id + "&ppid=" + ppid + "&ppmc=" + ppmc + "&scsid=" + scs + "&fxsid=" + fxs_id, true);
+                xmlhttp.send();
             }
-            xmlhttp.open("GET", "gysglcl_2_ajax.aspx?cl_id=" + cl_id, true);
-            xmlhttp.send();
         }
     </script>
 </head>
@@ -148,10 +203,15 @@
             {
                 gys_id = Request["gys_id"].ToString();
             }
+            this.fxsid.Value = gys_id;
           //  gys_id = "318";
         }
     </script>
     <form id="form1" runat="server">
+    <input type="hidden" runat="server" id="scsid" />
+    <input type="hidden" runat="server" id="ppid" />
+    <input type="hidden" runat="server" id="ppmc" />
+    <input type="hidden" runat="server" id="fxsid" />
     <DIV class="dlqqz5" style="border:1px solid #4ea6ee; padding-top:10px; margin-bottom:10px; ">
      <div id="menu2">
      <div class="dlqqz1_2" style="margin-left:10px;">您的生产商品牌列表</div>
@@ -215,7 +275,7 @@
 <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" class="table2" id="table4">
       <thead>
         <tr >
-          <th width="37" align="center"><strong>选择</strong></th>
+          <th width="37" align="center"><input  class="middle" type="checkbox" name="checkboxAll" id="checkboxAll" onclick="return selectall();"   /> </th>
           <th width="100" align="center"><strong>材料编码</strong></th>
           <th width="90" align="center"><strong>材料名称</strong></th>
           <th width="140" align="center"><strong>规格/型号</strong></th>

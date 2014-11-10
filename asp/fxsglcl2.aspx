@@ -27,7 +27,7 @@
          string html="";
          html = "  <thead>"
                 + "        <tr>"
-                + "           <th width='37' align='center'><strong>选择</strong></th>"
+                + "           <th width='37' align='center'><input  class='middle' type='checkbox' name='checkboxAll' id='checkboxAll' onclick='return selectall();'   /> </th>"
                 + "           <th width='100' align='center'><strong>材料编码</strong></th>"
                 + "           <th width='90' align='center'><strong>材料名称</strong></th>"
                 + "           <th width='140' align='center'><strong>规格/型号</strong></th>"
@@ -54,7 +54,7 @@
                      color = "#fff";
                  }
                  html += "<tr  style='background:" + color + "' onmouseover=\"this.style.backgroundColor='#fff0e9'\" onmouseout=\"this.style.backgroundColor='"+color+"'\">"
-                    + "    <td align='center'><input type='checkbox' name='checkbox' id='checkbox' />"
+                    + "    <td align='center'><input type='heckbox' name='checkbox' onclick=\"return selectall1(this);\"  />"
                     + "	  <label for='checkbox'></label></td>"
                     + "	  <td align='center'>"+drcl["材料编码"]+"</td>"
                     + "	  <td align='left'>"+drcl["材料名称"]+"</td>"
