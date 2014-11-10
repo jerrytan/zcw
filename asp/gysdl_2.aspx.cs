@@ -32,19 +32,11 @@ public partial class asp_gysdl_2 : System.Web.UI.Page
             
             if (dj == "普通用户")
             {
-                //window.screen.height
-
-                Server.Transfer("gyszym.aspx?QQ=" + this.username.Value + "&GYS_ID=" + gys_id);
-               // //?QQ='"+this.username.Value+"&GYS_ID="+gys_id+"
-                //Response.Write("<script type='text/javascript'>window.open ('gyszym.aspx?QQ=" + this.username.Value + "&GYS_ID=" + gys_id + "';</" + "script>");
-              
+                Response.Write("<script> window.open('gyszym.aspx?QQ=" + this.username.Value + "&GYS_ID="+gys_id+"');window.close();</" + "script>");
             }
             else
             {
-                //Response.Write("<script type='text/javascript'>window.open('hyzcsf.aspx');</" + "script>");
-                Server.Transfer("hyyhgl.aspx?QQ=" + this.username.Value);
-                //Response.Redirect("hyzcsf.aspx");
-                //Response.Write("<script type='text/javascript'>window.open ('hyyhgl.aspx?QQ=" + this.username.Value + "';</" + "script>");
+                Response.Write("<script> window.open('hyyhgl.aspx?QQ=" + this.username.Value + "');window.close();</" + "script>");
             }
         }
         else

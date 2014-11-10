@@ -28,12 +28,11 @@ public partial class asp_cgsdl_2 : System.Web.UI.Page
             Session["CGS_YH_ID"] = yh_id;
             if (dj == "普通用户")
             {
-                //Response.Write("<script>opener.opener.location.href='cgsgl_2.aspx';</" + "script>");
-                Server.Transfer("cgsgl_2.aspx");
+                Response.Write("<script> window.open('cgsgl_2.aspx');window.close();</" + "script>");
             }
             else
             {
-                Server.Transfer("hyyhgl.aspx?QQ="+this.username.Value);
+                Response.Write("<script> window.open('hyyhgl.aspx?QQ=" + this.username.Value + "');window.close();</" + "script>");
             }
         }
         else
