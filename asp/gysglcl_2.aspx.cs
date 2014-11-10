@@ -47,6 +47,7 @@ public partial class asp_gysglcl_2 : System.Web.UI.Page
             {
                 sSQL = "select top 10 cl_id, 显示名,品牌名称,规格型号,材料编码,生产厂商,是否启用,分类编码,分类名称 from 材料表 where 是否启用=1   order by updatetime desc";
                 dt_cl = objConn.GetDataTable(sSQL);
+                Response.Write(sSQL);
                 this.dic.Visible = false;
             }
         } 

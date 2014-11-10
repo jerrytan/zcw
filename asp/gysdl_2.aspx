@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-    <span>QQ号码：</span><input type="text" id="username" runat="server" /><br /><br />
+        <span>账号：</span><input type="text" id="username" runat="server" /><br /><br />
       <span>密码：</span><input type="text" id="Text1" runat="server" /><br />
     </div><%--<input type="submit" value="登录" />--%>
     <asp:Button ID="Button1" runat="server" Text="登录" onclick="Button1_Click" />

@@ -59,12 +59,12 @@
             %>--%>
             <span class="dlzi">尊敬的采购商用户，您好! </span><span class="dlzi">请点击右边按钮登陆！</span> <span
                 class="dlzi2" id="qqLoginBtn"></span>
-                <input type="button" value="登录" onclick="login()" />
+                <input class="dlzi2" type="button" value="账号登录" onclick="login()" />
             <script type="text/javascript">
-//                QC.Login({
-//                    btnId: "qqLoginBtn" //插入按钮的节点id  
+                QC.Login({
+                    btnId: "qqLoginBtn" //插入按钮的节点id  
 
-//                });
+                });
                 function login()
                 {
                     window.location.href = "cgsdl_2.aspx";
