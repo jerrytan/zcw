@@ -158,8 +158,8 @@
     
     function saveReport()
     {
-     //   document.getElementById("dmt").value = document.frames['frame1'].document.getElementById("dmtz").value;
-        
+        //   document.getElementById("dmt").value = document.frames['frame1'].document.getElementById("dmtz").value;
+        var scsid = document.getElementById("scsid").value;
             // jquery 表单提交
             $("#form1").ajaxSubmit(function (message)
             {
@@ -167,6 +167,8 @@
                 if (message == "1")
                 {
                     alert("提交成功");
+
+                    window.localtion.href = "gysglcl.aspx?gys_id=" + scsid;
                     //  $("#cl").empty();
                     //关闭
                     //                window.opener = null;
@@ -184,7 +186,7 @@
  
 </HEAD> 
 <BODY>  
-<form runat="server" id="form1" action="scsxzcl_save.aspx" method="post">
+<form runat="server" id="form1" action="scsxzcl_save.aspx" method="post" onsubmit="return saveReport();">
 <script runat="server">
 public DataTable dt_sx = new DataTable();
 public DataTable dt_sxz = new DataTable();

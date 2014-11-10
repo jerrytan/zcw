@@ -40,9 +40,20 @@
                 + "       </thead>";
          if (dtcl!=null&&dtcl.Rows.Count>0)
          {
+             int i = 0;
              foreach (DataRow drcl in dtcl.Rows)
              {
-               html += "<tr>"
+                 string color = ""; 
+                 i++;
+                 if (i%2==0)
+                 {
+                     color = "#f2f6ff";
+                 }
+                 else
+                 {
+                     color = "#fff";
+                 }
+                 html += "<tr  style='background:" + color + "' onmouseover=\"this.style.backgroundColor='#fff0e9'\" onmouseout=\"this.style.backgroundColor='"+color+"'\">"
                     + "    <td align='center'><input type='checkbox' name='checkbox' id='checkbox' />"
                     + "	  <label for='checkbox'></label></td>"
                     + "	  <td align='center'>"+drcl["材料编码"]+"</td>"
@@ -53,7 +64,7 @@
                     + "	  <td align='center'>" + drcl["计量单位"] + "</td>"
                     + "	  <td align='center'> </td>"    //单价
                     + "	  <td align='center'>"
-                    + "		<input type='Button' name='filter' value='查阅' id='filter' class='filter' filter='' onclick=\"Read('" + drcl["cl_id"] + "')\"  style='color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;'/>"
+                    + "	  <input type='Button' name='filter' value='查阅' id='filter' class='filter' filter='' onclick=\"Read('" + drcl["cl_id"] + "')\"  style='color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;'/>"
                     + "	  </td>"
                     + "	  </tr>";
              }  

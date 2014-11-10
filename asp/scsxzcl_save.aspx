@@ -1,7 +1,7 @@
 ﻿<%@ Import Namespace="System.Xml" %>
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
-<%@ Page Language="C#"%>
+<%@ Page Language="C#"  EnableViewStateMac= "false" %>
      <script runat="server">
      public DataConn Conn = new DataConn();
      private System.Web.HttpPostedFile postedFile = null;
@@ -132,15 +132,15 @@
          {
              value = "添加材料失败！错误信息：" + ee.ToString();
          }
-        // Response.Write(value);
-         if (value == "1")
-         {
-             Response.Write("<scrpt>alert('添加成功！');window.localtion.href='gysglcl.aspx?gys_id=" + scsid + "';</" + "script>");
-         }
-         else
-         {
-             Response.Write("<scrpt>alert('" + value + "');window.localtion.href='gysglcl.aspx?gys_id=" + scsid + "';</" + "script>");
-         }
+         Response.Write(value);
+         //if (value == "1")
+         //{
+         //    Response.Write("<scrpt>alert('添加成功！');window.localtion.href='gysglcl.aspx?gys_id=" + scsid + "';</" + "script>");
+         //}
+         //else
+         //{
+         //    Response.Write("<scrpt>alert('" + value + "');window.localtion.href='gysglcl.aspx?gys_id=" + scsid + "';</" + "script>");
+         //}
           
      }
      </script>

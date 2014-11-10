@@ -50,41 +50,6 @@
                 }
             }
         }
-        function showtable()
-        {
-            var tableid = 'table4';
-            //表格的id
-            var overcolor = '#fff0e9'; //鼠标经过颜色
-            var color1 = '#f2f6ff'; 	//第一种颜色
-            var color2 = '#fff'; 	//第二种颜色
-            var tablename = document.getElementById(tableid)
-            var tr = tablename.getElementsByTagName("tr")
-            for (var i = 1; i < tr.length; i++)
-            {
-                tr[i].onmouseover = function ()
-                {
-                    this.style.backgroundColor = overcolor;
-                }
-                tr[i].onmouseout = function ()
-                {
-                    if (this.rowIndex % 2 == 0)
-                    {
-                        this.style.backgroundColor = color1;
-                    } else
-                    {
-                        this.style.backgroundColor = color2;
-                    }
-                }
-                if (i % 2 == 0)
-                {
-                    tr[i].className = "color1";
-                } else
-                {
-                    tr[i].className = "color2";
-                }
-            }
-        }
-        onloadEvent(showtable);
  
 </script>
    <%-- 点击左侧列表数，右侧填值--%>
@@ -126,6 +91,47 @@
             window.location.href = url;
         }
         //删除材料
+        function delete_cl()
+        {
+            var table = document.getElementById("table4");
+            var input = table.getElementsByTagName("input");
+            var cl_id = "";
+            for (var i = 0; i < input.length; i++)
+            {
+                if (input[i].type == "checkbox" && input[i].checked)
+                {
+                    cl_id += Trim(input[i].value) + ",";
+                }
+            }
+            var xmlhttp;
+            if (window.XMLHttpRequest)
+            {
+                xmlhttp = new XMLHttpRequest();
+            }
+            else
+            {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function ()
+            {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                {
+                    var text = xmlhttp.responseText;
+                    if (text == 1)
+                    {
+                        alert('删除成功');
+                        location.reload();
+                    }
+                    else
+                    {
+                        alert('删除失败');
+                        location.reload();
+                    }
+                }
+            }
+            xmlhttp.open("GET", "gysglcl_2_ajax.aspx?cl_id=" + cl_id, true);
+            xmlhttp.send();
+        }
     </script>
 </head>
 <body>
@@ -208,7 +214,7 @@
 </div>
 <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" class="table2" id="table4">
       <thead>
-        <tr>
+        <tr >
           <th width="37" align="center"><strong>选择</strong></th>
           <th width="100" align="center"><strong>材料编码</strong></th>
           <th width="90" align="center"><strong>材料名称</strong></th>

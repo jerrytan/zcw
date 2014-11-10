@@ -18,10 +18,21 @@
     </style>
 </head>
 <script type="text/javascript" language="javascript">
-    function btnFilter_Click() {
-        var gys = document.getElementById("lblgys_id").value;
-        var pp= document.getElementById("ppmc").value;
-        window.parent.parent.location.href = 'xzgxs.aspx?pp_mc=' + pp + '&gxs_id=' + gys + '&xzlx=fxs';
+    function btnFilter_Click()
+    {
+        var pp_id = document.getElementById("ppid").value;
+        if (pp_id==""||pp_id==undefined)
+        {
+            alert("请选择品牌！");
+            return;
+        }
+        else
+        {
+            var gys = document.getElementById("lblgys_id").value;
+            var pp = document.getElementById("ppmc").value;
+            //window.parent.parent.location.href = 'xzgxs.aspx?pp_mc=' + pp + '&gxs_id=' + gys + '&xzlx=fxs';
+            window.parent.parent.location.href = 'scsxzfxs.aspx?ppmc=' + pp + '&scsid=' + gys + '&ppid=' + pp_id;
+        }
     }
     function Trim(str) {
         str = str.replace(/^(\s|\u00A0)+/, '');
@@ -113,6 +124,7 @@ onloadEvent(showtable);
 <body>
     <form id="form1" runat="server"> 
     <input type="hidden" id="lblgys_id" runat="server" />
+        <input type="hidden" id="ppid" runat="server" />
     <div id="jiansuo2"> 
 公司名称：
 <input name="txtKeyWord" runat="server" type="text" id="txtKeyWord" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />

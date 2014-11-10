@@ -167,6 +167,8 @@
                 if (message == "1")
                 {
                     alert("提交成功");
+                    //页面跳转
+                    window.localtion.href = "gysglcl.aspx?gys_id=" + scsid;
                     //  $("#cl").empty();
                     //关闭
                     //                window.opener = null;
@@ -184,7 +186,7 @@
  
 </HEAD> 
 <BODY>  
-<form runat="server" id="form1" action="scsxzcl_save.aspx" method="post">
+<form runat="server" id="form1" action="scsxzcl_save.aspx" method="post"  onsubmit="return saveReport();">
 <script runat="server">
 public DataTable dt_sx = new DataTable();
 public DataTable dt_sxz = new DataTable();

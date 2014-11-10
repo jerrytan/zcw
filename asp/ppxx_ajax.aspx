@@ -13,6 +13,7 @@
 <%@ Import Namespace="System.Web" %>
 <%@ Import Namespace="System.Web.UI" %>
 <%@ Import Namespace="System.Text" %>
+<%@ Page Language="C#" %>
 <script runat="server">
         protected DataConn dc_tool = new DataConn();
         protected DataTable dt_list = new DataTable();

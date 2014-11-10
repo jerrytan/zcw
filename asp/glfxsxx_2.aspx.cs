@@ -37,6 +37,12 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
             pp_mc = Request["pp_mc"].ToString();
         }
         this.ppmc.Value = pp_mc;
+        string pp_id = "";
+        if (Request["pp_id"] != null && Request["pp_id"].ToString() != "")
+        {
+            pp_id = Request["pp_id"].ToString();             
+        }
+        this.ppid.Value = pp_id;
         //sSQL = "select dw_id from 用户表 where yh_id=" + s_yh_id + "";
         //dt_yh = objConn.GetDataTable(sSQL);
         this.lblgys_id.Value = s_yh_id;

@@ -85,8 +85,7 @@
                 DataConn objConn  = new DataConn();
 				//采购商收藏材料
 				if(CGS_QQ_ID.Value !=null && CGS_QQ_ID.Value != "")
-				{
-                 
+				{                 
 					//Response.Write("QQ_id is " + QQ_id.Value + "<p>");
                     //string yh_id = "错误";
                     //string s_count1 = "";

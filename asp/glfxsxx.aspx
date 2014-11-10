@@ -9,7 +9,7 @@
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Web" %>
-
+<%@ Page Language="C#" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -207,10 +207,11 @@
         var cl_mc = Trim(tds[1].innerHTML);
         document.getElementById("cl_mc").value = cl_mc;
     }
-    function CZ_P(pp_mc) {
+    function CZ_P(pp_mc,pp_id)
+    {
         var g;
         g = document.getElementById("lblgys_id").value;
-        document.getElementById("frame1").src = "glfxsxx_2.aspx?gys_id=" + g + "&pp_mc=" + pp_mc; 
+        document.getElementById("frame1").src = "glfxsxx_2.aspx?gys_id=" + g + "&pp_mc=" + pp_mc+"&pp_id="+pp_id; 
     }
 </script>
 	
@@ -426,7 +427,7 @@
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部结束-->
     <form id="Form1" runat="server" name="update_fxs" action="glfxsxx2.aspx?gys_id=<%=gys_id %>" method="post">
-    <input type="hidden" id="lblgys_id" runat="server" />
+    <input type="hidden" id="lblgys_id" runat="server" /> 
      <%if (s_gys_type.Equals("生产商"))
        {%>
         <div class="dlqqz5"  style="border:1px solid #ddd; padding-top:10px; margin: 10px 0 0 0;">
@@ -435,7 +436,7 @@
         <div class="dlqqz1">您的品牌列表</div>
         <%foreach (System.Data.DataRow PP_MC in dt_pp_id.Rows)
           {%>
-        <ul><li><h2 id="h2"><a href="javascript:void(0)" onclick="CZ_P('<%=PP_MC["品牌名称"].ToString() %>')"><img src="images/biao2.jpg" />&nbsp;&nbsp;<%=PP_MC["品牌名称"].ToString()%></a></h2></li>
+        <ul><li><h2 id="h2"><a href="javascript:void(0)" onclick="CZ_P('<%=PP_MC["品牌名称"].ToString() %>','<%=PP_MC["pp_id"].ToString() %>')"><img src="images/biao2.jpg" />&nbsp;&nbsp;<%=PP_MC["品牌名称"].ToString()%></a></h2></li>
          </ul>
          <%} %>
       </div>
