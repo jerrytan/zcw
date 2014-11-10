@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="gysdl_2.aspx.cs" Inherits="asp_gysdl_2" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="cgsdl_2.aspx.cs" Inherits="asp_cgsdl_2" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -9,9 +9,9 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <span>账号：</span><input type="text" id="username" runat="server" /><br /><br />
+    <span>QQ号码：</span><input type="text" id="username" runat="server" /><br /><br />
       <span>密码：</span><input type="text" id="Text1" runat="server" /><br />
-    </div><%--<input type="submit" value="登录" />--%>
+    </div>
     <asp:Button ID="Button1" runat="server" Text="登录" onclick="Button1_Click" />
     </form>
 </body>

@@ -60,7 +60,7 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
             if (!IsPostBack)
             {
                 //蒋，，，把lsgys_id改成s_yh_id
-                sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where 是否启用=1 and gys_id in (select distinct fxs_id from 分销商和品牌对应关系表 where pp_id in (select pp_id from 品牌字典 where scs_id=" + s_yh_id + ")) order by updatetime desc";
+                sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where 是否启用=1 and gys_id in (select distinct fxs_id from 分销商和品牌对应关系表 where pp_id in (select pp_id from 品牌字典 where scs_id='" + s_yh_id + "')) order by updatetime desc";
                 //sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where 是否启用=1 order by updatetime desc";
                 dt_gxs = objConn.GetDataTable(sSQL);
                 this.dic.Visible = false;

@@ -49,6 +49,7 @@
         {
             QQ = Request["QQ"].ToString();
         }
+        
         //½¯×¢ÊÍIFÅÐ¶Ï(11ÔÂ06ÈÕ)
             //if (Request.Cookies["GYS_QQ_ID"] != null && Request.Cookies["GYS_QQ_ID"].Value.ToString() != "")
             //{
