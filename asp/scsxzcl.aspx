@@ -95,7 +95,8 @@
     {
         var clbm = document.getElementById("clbm").value;
         var clm = document.getElementById("clmc").value;
-        var ggjxh = document.getElementById("ggxh").value;
+        var ggjxh = document.getElementById("clmcjgg").value;
+        document.getElementById("ggxh").value = ggjxh;
         if (ggjxh == "" || ggjxh == undefined)
         {
             alert("请重新选择规格");
@@ -103,7 +104,6 @@
         }
         document.getElementById("cpbh").value = clbm;
         document.getElementById("mcgz").value = ggjxh;
-
         //拼写SQL语句
         var table = document.getElementById("sx");
         var tr = table.getElementsByTagName("tr");
@@ -218,9 +218,9 @@ protected void Page_Load(object sender, EventArgs e)
     {
         ppid = Request["ppid"].ToString();
     }
-    if (Request["clid"] != null && Request["clid"].ToString() != "")
+    if (Request["cl_id"] != null && Request["cl_id"].ToString() != "")
     {
-        clid = Request["clid"].ToString();
+        clid = Request["cl_id"].ToString();
         this.lx.Value = "bj";
     }
     this.scsid.Value = scs_id;
@@ -413,7 +413,7 @@ protected void Addsx(string flbm, string flmc, string clid)
        <tfoot>
         <tr>
         <td width="120" height="32" align="right" bgcolor="#FFFFFF">名称及规则：</td>
-        <td align="left" bgcolor="#FFFFFF"><input type="text" id="clmcjgg" style=" width: 293px; "/></td>
+        <td align="left" bgcolor="#FFFFFF"><input type="text"  id="clmcjgg" style=" width: 293px; "/></td>
         <td width="80" align="center" bgcolor="#FFFFFF">
         <input type="Button" name="btnDocNew" value="确定" onClick="AddValue()"  class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" /></td>
       </tr>
@@ -426,8 +426,8 @@ protected void Addsx(string flbm, string flmc, string clid)
       <tr> <td width="100" height="36" align="right" bgcolor="#FFFFFF">产品编号：</td>
         <td height="24" colspan="3" align="left" bgcolor="#FFFFFF"><label for="textfield"></label>
           <input name="cl_name4" type="text" id="cpbh" class="hyzhc_shrk9" readonly="readonly"  value='<%=cpbhsjk %>'/></td> 
-        <td width="100" align="right" bgcolor="#FFFFFF">名称及规则：</td> 
-        <td colspan="3" align="left" bgcolor="#FFFFFF"><input  readonly="readonly"  type="text" value='<%=ggxzsjk %>' id="mcgz" name="mcgz" class="hyzhc_shrk9" /></td>
+        <td width="100" align="right" bgcolor="#FFFFFF">产品名称：</td> 
+        <td colspan="3" align="left" bgcolor="#FFFFFF"><input  type="text" value='<%=ggxzsjk %>' id="mcgz" name="mcgz" class="hyzhc_shrk9" /></td>
         </tr>
       <tr>
         <td width="100" height="36" align="right" bgcolor="#FFFFFF">计量单位：</td>

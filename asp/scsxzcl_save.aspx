@@ -14,7 +14,7 @@
              string flbm = Request["flbm"];
              string clbm = Request["clbm"];
              string clmc = Request["clmc"];
-             string ggxh = Request["mcgz"];
+             string ggxh = Request["ggxh"];
              string jldw = Request["jldw"];
              string dwzl = Request["dwzl"];
              string dwtj = Request["dwtj"];
@@ -25,12 +25,13 @@
              string scsid = Request["scsid"];   //SQL语句
              string dmt = Request["dmt"];
              string clid = Request["clid"];  //编辑使用
+             string cpmc = Request["mcgz"];  //产品名称
              string sSQL = "";
              if (lx == "bj")
              {
                  string datetime = "";
                  datetime = DateTime.Now.ToString();
-                 sSQL = "update  材料表 set 显示名='" + clmc + "',规格型号='" + ggxh + "',计量单位='" + jldw + "',单位重量='" + dwzl + "',单位体积='" + dwtj +
+                 sSQL = "update  材料表 set 显示名='" + cpmc + "',规格型号='" + ggxh + "',计量单位='" + jldw + "',单位重量='" + dwzl + "',单位体积='" + dwtj +
                      "',说明='" + yyfw + "',是否启用='1',pp_id='" + ppid + "',price='" + cpjg + "',gys_id='" + scsid + "',分类编码='" + flbm +
                      "',材料编码='" + clbm + "',updatetime='" + datetime + "',fl_id=(select fl_id from 材料分类表 where 分类编码='" + flbm +
                      "'),生产厂商 = (select 供应商 from 材料供应商信息表 where gys_id = '" + scsid + "'), 分类名称=(select 显示名字 from 材料分类表 where 分类编码='" + flbm +
@@ -53,7 +54,7 @@
                      else
                      {         
                          sSQL="";                
-                         SQL = SQL.Replace("clmc", clmc);
+                         SQL = SQL.Replace("clmc", cpmc);
                          SQL = SQL.Replace("clbm", clbm);
                          string[] arrSql = SQL.Split('◣');
                          for (int i = 0; i < arrSql.Length; i++)
@@ -93,10 +94,10 @@
                                      string[] arrTotal = new string[3];
                                      arrTotal = arrPath[i].Split(',');
                                      sSQL += "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,分类,存放地址,updatetime) values(" +
-                                      clid + " ,'" + clbm + "','" + clmc + "','是','" + arrTotal[0] + "','" + arrTotal[1] + "','" + arrTotal[2] + "',(select getdate()))  ";
+                                      clid + " ,'" + clbm + "','" + cpmc + "','是','" + arrTotal[0] + "','" + arrTotal[1] + "','" + arrTotal[2] + "',(select getdate()))  ";
                                  }
                              }
-                             catch (Exception)
+                             catch (Exception eee)
                              {
                                  value = "";
                              }
@@ -129,7 +130,7 @@
              }
              else
              {
-                 string countSQL = "select count(*) from 材料表 where 材料编码='" + clbm + "' and pp_id='" + ppid + "' and gys_id='" + scsid + "'";
+                 string countSQL = "select count(*) from 材料表 where 材料编码='" + clbm + "' and pp_id='" + ppid + "' and gys_id='" + scsid + "' and 显示名='" + cpmc + "'";
                  string count = Conn.DBLook(countSQL);
 
                  if (Convert.ToInt32(count) > 0)
@@ -141,12 +142,12 @@
                      string datetime = "";
                      datetime = DateTime.Now.ToString();
                      sSQL = "insert into  材料表(显示名,规格型号,计量单位,单位重量,单位体积,说明,是否启用,pp_id,price,gys_id,分类编码,材料编码,updatetime) "
-                        + "values('" + clmc + "','" + ggxh + "','" + jldw + "','" + dwzl + "','" + dwtj + "','" + yyfw + "','1','" + ppid + "','" + cpjg + "','" + scsid + "','" + flbm + "','" + clbm + "','" + datetime + "') ";
+                        + "values('" + cpmc + "','" + ggxh + "','" + jldw + "','" + dwzl + "','" + dwtj + "','" + yyfw + "','1','" + ppid + "','" + cpjg + "','" + scsid + "','" + flbm + "','" + clbm + "','" + datetime + "') ";
                      //更新材料表
                      bool bcl = Conn.ExecuteSQL(sSQL, false);
                      if (bcl)
                      {
-                         string sqlclid = "(select myID from 材料表 where 显示名='" + clmc + "' and 材料编码='" + clbm + "' and gys_id='" + scsid + "' and pp_id='" + ppid + "')";
+                         string sqlclid = "(select myID from 材料表 where 显示名='" + cpmc + "' and 材料编码='" + clbm + "' and gys_id='" + scsid + "' and pp_id='" + ppid + "')";
                          sSQL = "update 材料表 set cl_id= " + sqlclid + ","
                                + "fl_id = (select fl_id from 材料分类表 where 分类编码='" + flbm + "'),"
                                + "生产厂商 = (select 供应商 from 材料供应商信息表 where gys_id = '" + scsid + "'),"
@@ -161,20 +162,19 @@
                              SQL = SQL.Substring(0, SQL.Length - 1);
                          }
                          sSQL = "";
-                         SQL = SQL.Replace("clmc", clmc);
+                         SQL = SQL.Replace("clmc", cpmc);
                          SQL = SQL.Replace("clbm", clbm);
                          string[] arrSql = SQL.Split('◣');
                          for (int i = 0; i < arrSql.Length; i++)
                          {
                              string sqlresult = "";
-                             if (sqlresult!="")
+                             if (arrSql[i] != "")
                              {
                                  sqlresult = "'" + arrSql[i].Replace(",", "','") + "'";
                                  sqlresult = sqlresult.Replace("'clid'", sqlclid);
                                  sSQL += "insert into 材料属性表 (分类属性名称,分类属性编码,flsx_id,分类属性值,分类属性值编号,flsxz_id,属性属性值编码,fl_id,分类名称,cl_id,材料名称,材料编码,updatetime)values("
                                  + sqlresult + ",(select getdate()))    ";
-                             }
-                            
+                             }                             
                          }
                          bool b = Conn.RunSqlTransaction(sSQL);
                          if (b)
@@ -193,7 +193,7 @@
                                      string[] arrTotal = new string[3];
                                      arrTotal = arrPath[i].Split(',');
                                      sSQL += "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,分类,存放地址,updatetime) values(" +
-                                      sqlclid + " ,'" + clbm + "','" + clmc + "','是','" + arrTotal[0] + "','" + arrTotal[1] + "','" + arrTotal[2] + "',(select getdate()))  ";
+                                      sqlclid + " ,'" + clbm + "','" + cpmc + "','是','" + arrTotal[0] + "','" + arrTotal[1] + "','" + arrTotal[2] + "',(select getdate()))  ";
                                  }
                                  bool bdmt = Conn.RunSqlTransaction(sSQL);
                                  if (bdmt)
@@ -207,7 +207,7 @@
                              }
                              else
                              {
-                                 value = "";
+                                 value = "1";
                              }
                          }
                          else

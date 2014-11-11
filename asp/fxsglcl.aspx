@@ -28,8 +28,15 @@
  
    <%-- 点击左侧列表数，右侧填值--%>
     <script type="text/javascript">
-        function lbs(ppid,ppmc,scs)
+        function lbs(obj,ppid,ppmc,scs)
         {
+            var h = obj.parentNode.parentNode;
+            var a = h.getElementsByTagName("a");
+            for (var i = 0; i < a.length; i++)
+            {
+                a[i].style.color = "#707070";
+            }
+            obj.style.color = "#4876FF";
             document.getElementById("ppid").value = ppid;
             document.getElementById("ppmc").value = ppmc;
             document.getElementById("scsid").value = scs;

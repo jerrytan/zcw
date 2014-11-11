@@ -12,7 +12,7 @@
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
-
+<%@ Page Language="C#" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -21,6 +21,7 @@
     <meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" />
+    <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
 <script type="text/javascript" language="javascript">
 
         function updateFL(id) {
@@ -31,10 +32,14 @@
             else {// code for IE6, IE5
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            xmlhttp.onreadystatechange = function ()
+            {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                {
                     //document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
-                    document.getElementById("ejflname").innerHTML = xmlhttp.responseText;
+                    $("#ej").empty();
+                    document.getElementById("ej").innerHTML = xmlhttp.responseText;                
+                   // document.getElementById("ejflname").innerHTML = xmlhttp.responseText;
 
                 }
             }
@@ -42,20 +47,30 @@
             xmlhttp.send();
         }
 
-
-    </script>
+        function ISQY(obj)
+        {
+            if (this.checked)
+            {
+                document.getElementById("Isqy").value = "1";
+            }
+            else
+            {
+                document.getElementById("Isqy").value = "0";
+            }
+        }
+</script>
     
 
 </head>
 <body>
-
-
     <script runat="server">
 
         protected DataTable dt_yjfl = new DataTable();   //材料分类大类
 		protected String gys_id="";
         public DataConn objConn=new DataConn();
         public string source1="";
+        public string pp_id = "";
+        public string pp_mc = "";
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -63,59 +78,61 @@
             {
                 gys_id = Request["gys_id"].ToString();
              }
-             if(Request["source"]!=null&&Request["source"].ToString()!="")
-             {
-                source1=Request["source"].ToString();
-             }
-             this.source.Value=source1;
-               string sSQL="select 显示名字,分类编码 from 材料分类表 where len(分类编码)='2'";
-          
-                dt_yjfl = objConn.GetDataTable(sSQL);
+            if (Request["pp_id"] != null && Request["pp_id"].ToString() != "")
+            {
+                pp_id = Request["pp_id"].ToString();
+            }
+            if (Request["ppmc"] != null && Request["ppmc"].ToString() != "")
+            {
+                pp_mc = Request["ppmc"].ToString();
+            }
+            this.ppid.Value = pp_id;               
+            if (pp_id != "" && pp_mc != "")
+            {
+                this.bj.Value = "1";
+                string sql = "";
+                sql = "select 品牌名称,是否启用,范围,等级 from 品牌字典 where pp_id='" + pp_id + "' and 品牌名称='" + pp_mc + "' and scs_id='" + gys_id + "'";
+               
+                DataTable dt = objConn.GetDataTable(sql);
+                if (dt!=null&&dt.Rows.Count>0)
+                {
+                    this.brandname.Value = dt.Rows[0]["品牌名称"].ToString();
+                    this.grade.Value = dt.Rows[0]["等级"].ToString();
+                    this.scope.Value = dt.Rows[0]["范围"].ToString();
+                    if (dt.Rows[0]["是否启用"].ToString() == "1")
+                    {
+                        this.Checkbox1.Checked = true;
+                        this.Isqy.Value = "1";
+                    }
+                    else
+                    {
+                        this.Checkbox1.Checked = false;
+                        this.Isqy.Value = "0";
+                    }
+                }
+            }
+            
          }
 
     </script>
+ 
+ <br />
+ <br />
 
-    
-
-    <center>
-
-        <form action="xzpp3.aspx" method="post">
-            <div id="myDiv"></div>
-            <table border="0" width="400px">
-            <tr>
-                  <td height="34" colspan="2" align="center" bgcolor="#cadbff"><strong>增加新品牌</strong></td>
-      </tr>
-
-                <tr>
-                    <td style="width: 120px; color:Black;height:34px;">一级分类名称：
-                    </td>
-                    <td align="left">
-                        <select id="yjflname" name="yjflname" style="width: 200px" onchange="updateFL(this.options[this.options.selectedIndex].value)">
-                           <option value="0">请选择一级分类</option>
-                            <% foreach(System.Data.DataRow row in dt_yjfl.Rows){%>
-
-                            <option value="<%=row["分类编码"] %>"><%=row["显示名字"]%></option>
-                            <%}%>
-                        </select>
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td style="width: 120px; color:Black;height:34px;">二级分类名称：
-                    </td>
-                    <td align="left">
-                        <select id="ejflname" name="ejflname" style="width: 200px">
-                            <option value="">请选择二级分类</option>
-                        </select>
-                    </td>
-                </tr>
-
+        <form action="xzpp3.aspx" method="post">   
+        <input type="hidden" runat="server" id="bj" />        
+        <input type="hidden" runat="server" id="ppid" />        
+            <div style=" text-align:center;">
+            <dd  style=" text-align:center; background-color:#cadbff; line-height:24px;"><strong>增加新品牌</strong></dd>
+             <table border="0" width="400px" style=" text-align:center;">
+             <br />
+               <br />
+             
                 <tr>
                     <td style="color:Black;height:34px;">品牌名称：
                     </td>
                     <td align="left">
-                        <input type="text" id="" name="brandname" value="" style="margin: 0px 10px 0px 0px; border: 1px solid Black; width: 198px; height: 20px; line-height: 20px; float: left; display: inline;"/>
+                        <input type="text" id="brandname" runat="server" name="brandname" value="" style="margin: 0px 10px 0px 0px; border: 1px solid Black; width: 198px; height: 20px; line-height: 20px; float: left; display: inline;"/>
                     </td>
                 </tr>
 
@@ -123,7 +140,7 @@
                     <td style="color:Black;height:34px;">等级：
                     </td>
                     <td align="left">
-                        <select name="grade" id="grade" >
+                        <select name="grade" id="grade" runat="server" >
                             <option value="一等">一等</option>
                             <option value="二等">二等</option>
                             <option value="三等">三等</option>
@@ -136,13 +153,19 @@
                     </td>
                     <td align="left">
                        
-                        <select name="scope" id="scope" >
+                        <select name="scope" id="scope" runat="server">
                             <option value="全国">全国</option>
                             <option value="地区">地区</option>                        
                         </select>
                     </td>
                 </tr>
-
+                <tr>
+                    <td valign="top" style="color:Black;height:34px;">是否启用：
+                    </td>
+                    <td align="left">                       
+                        <input type="checkbox" id="Checkbox1" onclick="ISQY(this)"  checked="checked" runat="server"/>
+                    </td>
+                </tr>
                 <tr>
                     <td></td><td align="left" style="height:34px;">
                     <input  type="hidden" runat="server" id="source"/>
@@ -152,8 +175,11 @@
                     </td>
                 </tr>
             </table>
+            </div>
+           
+            <input type="hidden" runat="server" id="Isqy"  value="1"/>
         </form>
-    </center>
+ 
 </body>
 </html>
 

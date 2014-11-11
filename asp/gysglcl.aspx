@@ -48,8 +48,15 @@
         var cl_mc = Trim(tds[1].innerHTML);
         document.getElementById("cl_mc").value = cl_mc;
     }
-    function lbs(ppid)
+    function lbs(obj,ppid)
     {
+        var h = obj.parentNode.parentNode;
+        var a = h.getElementsByTagName("a");
+        for (var i = 0; i < a.length; i++)
+        {
+            a[i].style.color = "#707070";
+        }
+        obj.style.color = "#4876FF";
     var g;
     g = document.getElementById("lblgys_id").value;
     var url = "gysglcl_2.aspx?gys_id=" + g + "&ppid=" + ppid;
@@ -289,7 +296,7 @@
  <%{ %>
         <%foreach (DataRow drpp in dt_pp.Rows)%>
         <%  {%>
-                    <h1><a href="javascript:void(0)"onclick="lbs('<%=drpp["pp_id"]%>')"><%=drpp["品牌名称"]%></a></h1>
+                    <h1><a href="javascript:void(0)"onclick="lbs(this,'<%=drpp["pp_id"]%>')"><%=drpp["品牌名称"]%></a></h1>
                                 <span class="no"></span>
                 <%  firstlevel++;%>
         <%  } %>

@@ -217,7 +217,7 @@
             this.fl_name2.InnerHtml = Convert.ToString(dt.Rows[0]["分类名称"]);
             this.fl_id.Value = Convert.ToString(dt.Rows[0]["fl_id"]);
         }
-        sSQL = " select top 10 供应商,地址,电话,联系人,联系人手机,单位类型,gys_id from 材料供应商信息表 where  gys_id not in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='" + pp_id +
+        sSQL = " select 供应商,地址,电话,联系人,联系人手机,单位类型,gys_id from 材料供应商信息表 where  gys_id not in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='" + pp_id +
             "' and 品牌名称='" + pp_mc + "' and 生产厂商ID='"+scs_id+"')";
         dt_fxs = Conn.GetDataTable(sSQL);
         
@@ -308,7 +308,7 @@
     </TD></TR></TBODY>
 </TABLE>
  
-<table border="0" align="left" cellpadding="0" cellspacing="1" bgcolor="#dddddd" id="table">
+<table border="0" align="left" cellpadding="0" cellspacing="1" bgcolor="#dddddd" id="table" >
       <thead>
         <tr>
           <th align="center"><strong><input type="checkbox" name="checkboxAll" id="checkboxAll" onclick="return selectall();"  /></strong></th>

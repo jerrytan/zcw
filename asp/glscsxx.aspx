@@ -137,7 +137,7 @@
       function AddNewBrand(id)
       {
           var url = "xzpp.aspx?gys_id=" + id;
-          window.open(url, "", "height=300,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+          window.open(url, "", "height=300,width=300,status=no,location=no,toolbar=no,directories=no,menubar=no");
       }
       function DeleteBrand(id) {
           var r = confirm("请确认您将删除此品牌!");
@@ -157,6 +157,34 @@
               var url = "scpp.aspx?fxs_id=" + id + "&pp_id=" + ppid + "&lx=1";
               window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
           }
+      }
+      function bj(id)
+      {
+         var ppid= document.getElementById("ppid").value;
+         var ppmc = document.getElementById("ppmc").value;
+         var url = "xzpp.aspx?gys_id=" + id + "&pp_id=" + ppid + "&ppmc=" + ppmc;
+         alert(url)
+          window.open(url, "", "height=300,width=300,status=no,location=no,toolbar=no,directories=no,menubar=no");
+      }
+      function ck(obj,ppmc,ppid)
+      {
+          var brands = document.getElementsByName("brand");
+          if (obj.checked)
+          {
+              for (var i = 0; i < brands.length; i++)
+              {
+                  brands[i].checked = false;
+              }
+              obj.checked = true;
+              document.getElementById("ppid").value = ppid;
+              document.getElementById("ppmc").value = ppmc;
+          }
+          else
+          {
+              document.getElementById("ppid").value = "";
+              document.getElementById("ppmc").value = "";
+          }
+         
       }
       function companyname_onclick() {
 
@@ -297,6 +325,8 @@
     <uc2:Header2 ID="Header2" runat="server" />
     <!-- 头部结束-->
     <form id="update_scs" name="update_scs" action="glscsxx2.aspx" method="post">
+    <input type="hidden" id="ppid" />
+    <input type="hidden" id="ppmc" />
     <%if (gys_type == "生产商")
       {%>
          <div class="fxsxx">
@@ -418,7 +448,7 @@
         <div class="fgstp">
     <img src="images/wwwq_03.jpg" />
       <div class="fdlpp1"> 
-        <input type="checkbox" name="brand" id="checkbox2" value="<%=row["pp_id"].ToString() %>"  class="middle"/><%=row["品牌名称"].ToString()%></div>
+        <input type="checkbox" name="brand" id="checkbox2" value="<%=row["pp_id"].ToString() %>" onclick="ck(this,'<%=row["品牌名称"].ToString()%>','<%=row["pp_id"].ToString() %>')"  class="middle"/><%=row["品牌名称"].ToString()%></div>
     </div>
   
   <%} %>
@@ -436,8 +466,9 @@
                     <%} %>
                     
                 </div>--%>
-            <span class="fxsbc1"><a onclick="DeleteBrand(<%=gys_id %>)" style="cursor:pointer;">删除选中品牌</a></span>
+          <%--  <span class="fxsbc1"><a onclick="DeleteBrand(<%=gys_id %>)" style="cursor:pointer;">删除选中品牌</a></span>--%>
             <span class="fxsbc1"><a onclick="AddNewBrand(<%=gys_id %>)" style="cursor:pointer;">增加新品牌</a></span>
+              <span class="fxsbc1"><a onclick="bj('<%=gys_id %>')" style="cursor:pointer;">编辑选中品牌</a></span>
            <%-- <span class="fxsbc1"><input type="button" onclick="DeleteBrand(<%=gys_id %>)" value="删除选中品牌" /></span>
             <span class="fxsbc1"><input type="button" onclick="AddNewBrand(<%=gys_id %>)" value="增加新品牌"/></span>--%>
     <%}
