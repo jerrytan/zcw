@@ -19,21 +19,26 @@
            
         protected DataTable dt_Yh = new DataTable(); //用户名字(用户表)    	
         protected DataConn  dc = new DataConn();
+        public string DW = "";
+        public string QQ_id;
         protected void Page_Load(object sender, EventArgs e)
         {
-             HttpCookie QQ_id;
-             if(Request.Cookies["GYS_QQ_ID"]==null)
+             if(Session["GYS_YH_ID"]==null)
              {
-                QQ_id=Request.Cookies["CGS_QQ_ID"];
+                QQ_id=Session["CYS_YH_ID"].ToString();
+                
              }
              else
              {
-                 QQ_id=Request.Cookies["GYS_QQ_ID"];
+                 //QQ_id = Session["GYS_YH_ID"].ToString();
+                 QQ_id = Session["QQ号码"].ToString();
              }
             if (QQ_id != null )
             {
-                string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='"+QQ_id.Value+"'";           
+                //string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='"+QQ_id+"'"; 
+                string str_Sql = "select 姓名,yh_id,dw_id from 用户表 where QQ号码='" + QQ_id + "'";        
                 dt_Yh = dc.GetDataTable(str_Sql);
+                DW=dt_Yh.Rows[0]["dw_id"].ToString();
             }
 		}
  </script>
@@ -66,7 +71,7 @@
             {
     %>
                  <div class="anniu"><a  href="QQ_out.aspx" target="_self">供应商登出</a></div>
-				 <div class="anniu"><a  href="gyszym.aspx" target="_self">供应商主页面</a></div>
+				 <div class="anniu"><a  href="gyszym.aspx?QQ=<%=QQ_id %>&GYS_ID=<%=DW %>" target="_self">供应商主页面</a></div>
     <%
             }
     %>

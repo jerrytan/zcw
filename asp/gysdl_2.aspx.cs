@@ -18,7 +18,7 @@ public partial class asp_gysdl_2 : System.Web.UI.Page
     }  
     protected void Button1_Click(object sender, EventArgs e)
     {
-       DataConn objcon = new DataConn();
+        DataConn objcon = new DataConn();
         string SQL = "select dw_id,QQ号码,QQ_id,等级 from 用户表 where QQ号码='" + this.username.Value + "'";
         DataTable dt_yh = new DataTable();
         dt_yh = objcon.GetDataTable(SQL);
@@ -29,7 +29,7 @@ public partial class asp_gysdl_2 : System.Web.UI.Page
             gys_id = dt_yh.Rows[0]["dw_id"].ToString();
             Session["GYS_QQ_ID"] = dt_yh.Rows[0]["QQ_id"].ToString();
             Session["GYS_YH_ID"] = gys_id;//蒋，11月07号添加
-            
+            Session["QQ号码"] = QQ;
             if (dj == "普通用户")
             {
                 Response.Write("<script> window.open('gyszym.aspx?QQ=" + this.username.Value + "&GYS_ID="+gys_id+"');window.close();</" + "script>");
