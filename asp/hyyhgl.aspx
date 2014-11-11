@@ -89,7 +89,7 @@
             var phone = Trim(tds[4].innerHTML);
             var email = Trim(tds[5].innerHTML);
             var scs;var fxs;var cl;
-           <%if (Session["GYS_QQ_ID"] != null){ %>//Session["GYS_QQ_ID"]改成Session["GYS_QQ_ID"]
+           <%if (Session["GYS_QQ_ID"] != null){ %>//Request.Cookies["GYS_QQ_ID"]改成Session["GYS_QQ_ID"]
                 scs = tds[6].childNodes[1].checked;
                 fxs = tds[6].childNodes[3].checked;
                 cl = tds[6].childNodes[5].checked;

@@ -43,24 +43,26 @@
     <div class="topx">
         <a href="index.aspx"><img src="images/topx_02.jpg" /></a>
     </div>
-
-      <%         
-			HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
+         <%--   HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
             Object gys_yh_id = Session["GYS_YH_ID"];  
 
             HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+            Object cgs_yh_id = Session["CGS_YH_ID"];  --%>
+      <%         
+            Object gys_yh_id = Session["GYS_YH_ID"];  
+
             Object cgs_yh_id = Session["CGS_YH_ID"];     
     
               
             //采购商登录
-             if(((GYS_QQ_ID == null ) || (gys_yh_id == null ))&&((CGS_QQ_ID != null ) && (cgs_yh_id != null)))
+             if(gys_yh_id == null && cgs_yh_id != null)
             {
     %>
              <div class="anniu"><a  href="QQ_out.aspx" target="_self">采购商登出</a></div>
     <%
             }
             //供应商登录
-            else if(((CGS_QQ_ID == null ) || (cgs_yh_id == null))&&((GYS_QQ_ID != null ) && (gys_yh_id != null )))
+            else if(cgs_yh_id == null && gys_yh_id != null)
             {
     %>
                  <div class="anniu"><a  href="QQ_out.aspx" target="_self">供应商登出</a></div>

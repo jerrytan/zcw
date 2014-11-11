@@ -108,8 +108,7 @@
                         </dt>
                         <%} %>
             </dl>
-        </div>
-        <div id="yhxx_bottom">
+            <div id="yhxx_bottom"  style="margin-top:0px">
             <asp:Button ID="btnSubmit" runat="server" Text="提交" class="filter" style="color: Black; border-style: None; font-family: 宋体;
                 font-size: 12px; height: 20px; width: 37px;" onclick="btnSubmit_Click" />
             <%--<input type="submit" name="btnDocNew" value="提交" 
@@ -120,8 +119,9 @@
                 font-size: 12px; height: 20px; width: 37px;" />--%>
             <asp:Button ID="btnCancel" runat="server" Text="取消" class="filter" style="color: Black; border-style: None; font-family: 宋体;
                 font-size: 12px; height: 20px; width: 37px;" onclick="btnCancel_Click"/>
-
         </div>
+        </div>
+        
     </div>
     </form>
 </body>

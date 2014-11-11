@@ -34,15 +34,16 @@
 
     <div class="dlqq">
         <div class="dlqq1">
-<%
-	     
-        String cookieName = "CGS_QQ_ID";
+       <%-- String cookieName = "CGS_QQ_ID";
 	    if (Request.Cookies[cookieName] != null)
         {
             HttpCookie myCookie = new HttpCookie(cookieName);
             myCookie.Expires = DateTime.Now.AddDays(-10d);
             Response.Cookies.Add(myCookie);
-        }		            
+        }	--%>	
+<%
+	     
+                    
 		if (Session["CGS_YH_ID"] != null) 
 		{
 			Session.Remove("CGS_YH_ID");
