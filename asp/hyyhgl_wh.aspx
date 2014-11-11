@@ -80,11 +80,13 @@
                 </dt>
                 <%--<%if (Session["GYS_QQ_ID"] != null)Session["GYS_QQ_ID"]
                   { %>（更换注释）--%>
-                  <%if(Session["GYS_QQ_ID"]!=null)
+                  <%if (Session["GYS_QQ_ID"] != null)
                     { %>
                 <dd>
                     角色权限：</dd>
                 <dt id="dt">
+                <%if (lx == "生产商")
+                  { %>
                     <label>
                         <input type="checkbox" name="CheckboxGroup1" value="管理生产商" id="cbx1" runat="server"/>
                         管理生产商</label>
@@ -93,7 +95,17 @@
                         管理分销商</label>
                     <label>
                         <input type="checkbox" name="CheckboxGroup1" value="管理材料信息" id="cbx3" runat="server"/>
-                        管理材料信息</label><span class="xinghao">*</span></dt>
+                        管理材料信息</label><span class="xinghao">*</span>
+                         <%}
+                  else
+                  {%>
+                   <input type="checkbox" name="CheckboxGroup1" value="管理分销商" id="Checkbox1" runat="server"/>
+                        管理分销商</label>
+                    <label>
+                        <input type="checkbox" name="CheckboxGroup1" value="管理材料信息" id="Checkbox2" runat="server"/>
+                        管理材料信息</label><span class="xinghao">*</span>
+                        <%} %>
+                        </dt>
                         <%} %>
             </dl>
         </div>

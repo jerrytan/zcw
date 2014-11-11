@@ -36,7 +36,7 @@ public partial class asp_gysdl_2 : System.Web.UI.Page
             }
             else
             {
-                Response.Write("<script> window.open('hyyhgl.aspx?QQ=" + this.username.Value + "');window.close();</" + "script>");
+                Response.Write("<script> window.open('hyyhgl.aspx?QQ=" + this.username.Value + "&dw_id="+gys_id+"');window.close();</" + "script>");
             }
         }
         else
