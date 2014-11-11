@@ -148,23 +148,38 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
     /// <summary>
     ///  编辑
     /// </summary>
+    /// 
     public void Update()
     {
         string power = "";
-        if (this.cbx1.Checked == true)
+        if (lx == "生产商")
         {
-            power += this.cbx1.Value + ",";
+            if (this.cbx1.Checked == true)
+            {
+                power += this.cbx1.Value + ",";
+            }
+            if (this.cbx2.Checked == true)
+            {
+                power += this.cbx2.Value + ",";
+            }
+            if (this.cbx3.Checked == true)
+            {
+                power += this.cbx3.Value + ",";
+            }
+            power = power.TrimEnd(',');
         }
-        if (this.cbx2.Checked == true)
+        else
         {
-            power += this.cbx2.Value + ",";
+            if (this.Checkbox1.Checked == true)
+            {
+                power += this.Checkbox1.Value + ",";
+            }
+            if (this.Checkbox2.Checked == true)
+            {
+                power += this.Checkbox2.Value + ",";
+            }
+            power = power.TrimEnd(',');
         }
-        if (this.cbx3.Checked == true)
-        {
-            power += this.cbx3.Value + ",";
-        }
-        power = power.TrimEnd(',');
-
 
      
 
@@ -181,7 +196,4 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
             Response.Write("修改失败");
         }
     }
-
-
-
 }

@@ -96,7 +96,8 @@
            <%} else{%>
                 scs=false;fxs=false;cl=false;
            <%} %>
-            newwin = window.open('hyyhgl_wh.aspx?qq=' + qq + '&name=' + name + '&phone=' + phone + '&email=' + email+'&scs='+scs+'&fxs='+fxs+'&cl='+cl + '&state=1', 'myWindow', 'height=270px,width=390px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
+           var lx= document.getElementById("lx").value;
+            newwin = window.open('hyyhgl_wh.aspx?qq=' + qq + '&name=' + name + '&phone=' + phone + '&email=' + email+'&scs='+scs+'&fxs='+fxs+'&cl='+cl + '&lx='+lx+'&state=1', 'myWindow', 'height=300px,width=390px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
 
          function Checked(obj) {
@@ -218,10 +219,7 @@
             class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;
             height: 20px; width: 37px;cursor:pointer;" />&nbsp;&nbsp;
         <input type="button" id="btnFilter" value="组合查询"  style="height: 20px;
-            width: 64px; border-style: none; font-family: 宋体; font-size: 12px;" />&nbsp;&nbsp;
-        <%--<input type="submit" name="btnDelete" value="删除选中行" onclick="return confirm(&#39;真的彻底删除选中的记录吗？&#39;);"
-            id="btnDelete" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
-            font-size: 12px; height: 20px; width: 72px;" />--%>
+            width: 64px; border-style: none; font-family: 宋体; font-size: 12px;" />&nbsp;&nbsp;       
           <asp:Button ID="btnDelete" runat="server" Text="删除选中行" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
             font-size: 12px; height: 20px; width: 72px;cursor:pointer;" 
             onclick="btnDelete_Click"/>

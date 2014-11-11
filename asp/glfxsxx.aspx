@@ -75,7 +75,6 @@
                 array = xmlhttp.responseText;     //接收替换返回的json字符串
                 var json = array;
                 var myobj = eval(json);              //将返回的JSON字符串转成JavaScript对象 			
-
                 if (myobj.length == 0) {
                     document.getElementById('companyname').value = "";       //供应商
                     document.getElementById('address').value = "";        //地址
@@ -441,11 +440,12 @@
     <div class="dlqqz2">
       <div id="menu">
         <div class="dlqqz1">您的品牌列表</div>
+        <h2 id="h2">
+        <ul>
         <%foreach (System.Data.DataRow PP_MC in dt_pp_id.Rows)
           {%>
-        <ul><li><h2 id="h2"><a href="javascript:void(0)" onclick="CZ_P(this,'<%=PP_MC["品牌名称"].ToString() %>','<%=PP_MC["pp_id"].ToString() %>')"><img src="images/biao2.jpg" />&nbsp;&nbsp;<%=PP_MC["品牌名称"].ToString()%></a></h2></li>
-         </ul>
-         <%} %>
+        <li><a href="javascript:void(0)" onclick="CZ_P(this,'<%=PP_MC["品牌名称"].ToString() %>','<%=PP_MC["pp_id"].ToString() %>')"><img src="images/biao2.jpg" />&nbsp;&nbsp;<%=PP_MC["品牌名称"].ToString()%></a></li>
+         <%} %></ul></h2>
       </div>
  <div id="cgs_lb" style="width:795px; margin-left:182px;">
 <div id="divtable" runat="server">
