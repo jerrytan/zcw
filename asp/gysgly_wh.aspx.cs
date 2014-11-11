@@ -14,23 +14,24 @@ public partial class asp_gysgly_wh : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        HttpCookie QQ_id;
-        if (Request.Cookies["GYS_QQ_ID"] == null)
+        //HttpCookie QQ_id;
+        string QQ_id;
+        if (Session["GYS_QQ_ID"] == null)//将Request.Cookies["GYS_QQ_ID"]更换成Session["GYS_QQ_ID"]
         {
-            QQ_id = Request.Cookies["CGS_QQ_ID"];
+            QQ_id = Session["CYS_QQ_ID"].ToString();
         }
         else
         {
-            QQ_id = Request.Cookies["GYS_QQ_ID"];
+            QQ_id = Session["GYS_QQ_ID"].ToString();
         }
         if (QQ_id != null)
         {
-            string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + QQ_id.Value + "'";
+            string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + QQ_id+ "'";
             dt_Yh = dc.GetDataTable(str_Sql);
         }
         if(!IsPostBack)
         {
-            string gysid = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+            string gysid = Session["GYS_QQ_ID"].ToString();
             string sqlGetInfo = @"select * from 材料供应商信息表 left join 用户表 on 用户表.dw_id = 材料供应商信息表.gys_id 
             where QQ_id='" + gysid + "' and 等级='企业用户'";
             dt_info = dc.GetDataTable(sqlGetInfo);
@@ -79,11 +80,11 @@ public partial class asp_gysgly_wh : System.Web.UI.Page
     }
     protected void Submit1_Click(object sender, ImageClickEventArgs e)
     {
-        string gys_qqid = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+        string gys_qqid = Session["GYS_QQ_ID"].ToString();//将Request.Cookies["GYS_QQ_ID"]更换成Session["GYS_QQ_ID"]
         string sql_dwid = "select dw_id  from 用户表 where QQ_id='" + gys_qqid + "'";
         string dwid = dc.DBLook(sql_dwid);
         string sqlUpdate = @"update 材料供应商信息表 set 单位简称='" + this.txt_gsjc.Value + "',法定代表人='"
-        + this.txt_fddbr.Value + "',资产总额='" + this.txt_zcze.Value + "',注册级别='"+this.zcjb.Value+"',资质等级='"
+        + this.txt_fddbr.Value + "',资产总额='" + this.txt_zcze.Value + "',注册级别='" + this.zcjb.Value + "',资质等级='"
         + this.zzdj.Value + "',企业类别='" + this.qylb.Value + "',开户银行='" + this.txt_khyh.Value + "',账户名称='"
         + this.txt_zhmc.Value + "',银行账户='" + this.txt_yhzh.Value + "',企业员工人数='" + this.txt_qyrs.Value + "',主页='"
         + this.txt_gszy.Value + "',邮编='" + this.txt_gsyb.Value + "',传真='" + this.txt_gscz.Value + "',备注='"

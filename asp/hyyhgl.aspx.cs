@@ -36,6 +36,7 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     private int i_count = 0;
     public List<OptionItem> Items { get; set; }//用于跳转页面
     public string QQ = "";
+    string SQL = "";
     protected void Page_Load(object sender, EventArgs e)
     {
         //蒋，2014年11月7日注释,并重新添加取值
@@ -56,11 +57,15 @@ public partial class asp_hyyhgl : System.Web.UI.Page
         if (Request["QQ"] != null && Request["QQ"].ToString() != "")
         {
             QQ = Request["QQ"].ToString();
+            string str_Sql = "select 姓名,yh_id,类型 from 用户表 where QQ号码='" + QQ + "'";
+            dt_Yh = dc.GetDataTable(str_Sql);
+            this.lx.Value = dt_Yh.Rows[0]["类型"].ToString();
         }
         string sql_dwid;
         if (Session["GYS_YH_ID"]!=null&&Session["GYS_YH_ID"].ToString()!="")
 	    {
 		    string gys_id=Session["GYS_YH_ID"].ToString();
+            this.gys_dw_id.Value = gys_id;
             //string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
             sql_dwid = "select dw_id from 用户表 where QQ号码='"+QQ+"'";
 	    }

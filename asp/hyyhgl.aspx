@@ -76,7 +76,9 @@
         }
         //添加
         function addPage() {
-            newwin = window.open('hyyhgl_wh.aspx?state=0', 'myWindow', 'height=300px,width=390px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
+        var lx= document.getElementById("lx").value;
+        var gys_dw_id=document.getElementById("gys_dw_id").value;
+            newwin = window.open('hyyhgl_wh.aspx?gys_dw_id='+gys_dw_id+'&lx='+lx+'&state=0', 'myWindow', 'height=300px,width=390px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
         //修改
         function changePage(obj) {
@@ -179,7 +181,7 @@
             </span>&nbsp;&nbsp;&nbsp;&nbsp;[<a href="index.aspx">退出登录</a>]
         </div></div>
     </div>
-
+    <input type="hidden" id="lx" runat="server" />
     <!-- 头部2结束-->
     <!-- 检索 开始-->
     <div id="jiansuo">
@@ -226,7 +228,7 @@
     </div>
     <!-- 检索 结束-->
     <!-- 用户信息 开始 -->
-
+    <input type="hidden" runat="server" id="gys_dw_id" />
     <div class="yhb">
         <table border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" id="table">
             <thead>
