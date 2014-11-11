@@ -207,8 +207,15 @@
         var cl_mc = Trim(tds[1].innerHTML);
         document.getElementById("cl_mc").value = cl_mc;
     }
-    function CZ_P(pp_mc,pp_id)
+    function CZ_P(obj,pp_mc,pp_id)
     {
+        var h = obj.parentNode.parentNode;
+        var a = h.getElementsByTagName("a");
+        for (var i = 0; i < a.length; i++)
+        {
+            a[i].style.color = "#707070";
+        }
+        obj.style.color = "#4876FF";
         var g;
         g = document.getElementById("lblgys_id").value;
         document.getElementById("frame1").src = "glfxsxx_2.aspx?gys_id=" + g + "&pp_mc=" + pp_mc+"&pp_id="+pp_id; 
@@ -436,7 +443,7 @@
         <div class="dlqqz1">您的品牌列表</div>
         <%foreach (System.Data.DataRow PP_MC in dt_pp_id.Rows)
           {%>
-        <ul><li><h2 id="h2"><a href="javascript:void(0)" onclick="CZ_P('<%=PP_MC["品牌名称"].ToString() %>','<%=PP_MC["pp_id"].ToString() %>')"><img src="images/biao2.jpg" />&nbsp;&nbsp;<%=PP_MC["品牌名称"].ToString()%></a></h2></li>
+        <ul><li><h2 id="h2"><a href="javascript:void(0)" onclick="CZ_P(this,'<%=PP_MC["品牌名称"].ToString() %>','<%=PP_MC["pp_id"].ToString() %>')"><img src="images/biao2.jpg" />&nbsp;&nbsp;<%=PP_MC["品牌名称"].ToString()%></a></h2></li>
          </ul>
          <%} %>
       </div>
