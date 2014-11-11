@@ -8,11 +8,12 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
+    <div style="margin-left:100px; margin-top:100px">
         <span>账号：</span><input type="text" id="username" runat="server" /><br /><br />
-      <span>密码：</span><input type="text" id="Text1" runat="server" /><br />
+      <span>密码：</span><input type="text" id="Text1" runat="server" /><br /><br />
+         <asp:Button ID="Button1" runat="server" Text="登录" onclick="Button1_Click" />
     </div><%--<input type="submit" value="登录" />--%>
-    <asp:Button ID="Button1" runat="server" Text="登录" onclick="Button1_Click" />
+ 
     </form>
 </body>
 </html>
