@@ -167,8 +167,7 @@
                 if (message == "1")
                 {
                     alert("提交成功");
-
-                    window.localtion.href = "gysglcl.aspx?gys_id=" + scsid;
+                    window.location.href = "gysglcl.aspx?gys_id=" + scsid;
                     //  $("#cl").empty();
                     //关闭
                     //                window.opener = null;

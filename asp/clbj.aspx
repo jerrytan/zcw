@@ -481,7 +481,8 @@
             <input runat="server" value="产品图片" name="select" type="radio" id="cptp" validationgroup="select"/>产品图片
        </dt>
        <dd>上传文件：</dd>
-               <dt><input name="file1" runat="server" type="file" id="file1" class="fxsxx3"/>&nbsp;&nbsp;<asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="ImageButton1" OnClick="UploadFile" /></dt>
+               <dt><input name="file1" runat="server" type="file" id="file1" class="fxsxx3"/>&nbsp;&nbsp;
+               <asp:ImageButton runat="server" ImageUrl="images/qweqwe_03.jpg" ID="ImageButton1" OnClick="UploadFile" /></dt>
      </dl>
       
 </div>

@@ -66,7 +66,7 @@
             FilePath = FilePath.Replace("\\", "/");
             FilePath = "asp/" + FilePath;
             FilePath = strVD + "/" + FilePath + "/" + name;
-            FilePath = "http://" + ip + "/" + FilePath;
+            FilePath = "http://www." + ip + "/" + FilePath;
 
 
             string s_mtlx = "";   //媒体类型

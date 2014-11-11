@@ -123,8 +123,16 @@
             var ppid = document.getElementById("ppid").value;
             var ppmc = document.getElementById("ppmc").value;
             var scs = document.getElementById("scsid").value;
-            var url = "fxsxzdlcl.aspx?ppid=" + ppid + "&ppmc=" + ppmc + "&scsid=" + scs + "&fxsid=" + fxs_id;
-            window.location.href = url;
+            if (ppid == "" || ppid == undefined)
+            {
+                alert("请选择品牌！");
+                return;
+            }
+            else
+            {
+                var url = "fxsxzdlcl.aspx?ppid=" + ppid + "&ppmc=" + ppmc + "&scsid=" + scs + "&fxsid=" + fxs_id;
+                window.location.href = url;
+            }
         }
         //查阅
         function Read(cl_id)
