@@ -3,7 +3,10 @@
        传入参数：gys_id和ejfl
        author:蒋桂娥
 -->
-<%@ Page Language="C#" EnableEventValidation="false" AutoEventWireup="true" CodeFile="gysglcl_2.aspx.cs" Inherits="asp_gysglcl_2" %>
+<%@ Import Namespace="System.Xml" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Page Language="C#" EnableViewStateMac= "false"  %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -140,6 +143,9 @@
 <script runat="server">
     public string gys_id = "";
     public string pp_id = "";
+    public DataConn Conn = new DataConn();
+    public int PageSize = 10;
+    DataTable dt_cl = null;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Request["gys_id"]!=null&&Request["gys_id"].ToString()!="")
@@ -152,7 +158,9 @@
         }
         this.lblgys_id.Value = gys_id;
         this.ppid.Value = pp_id;
-            
+        string sSQL = "";
+        sSQL = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称 from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "'";
+        dt_cl = Conn.GetDataTable(sSQL);  
     }
 </script>
   <form id="form1" runat="server">
@@ -165,7 +173,7 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" id="table">
   <tr>
     <td width="80" height="30" align="center">
-    <asp:ImageButton ID="ImageButton2" runat="server" ImageUrl="~/asp/images/jiansuo.gif" OnClick="JianSuo"/></td>
+    <asp:ImageButton ID="ImageButton2" runat="server" ImageUrl="~/asp/images/jiansuo.gif" /></td>
     <td width="85" align="left">
    <input type="button" class="btnFilter" value="添加材料" onclick="btnFilter_Click()" style=" margin-top:0px; height: 20px;width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" /></td>
     <td>
@@ -199,7 +207,7 @@
           <td style="font-size:12px"><%=R_cl["材料编码"].ToString()%></td>
           <td align="left" style="font-size:12px"><%=R_cl["生产厂商"].ToString()%></td>
           <td align="center">
-          <input type="submit" name="input" value="编辑" id="filter" onclick="BJCL('<%=R_cl["cl_id"].ToString() %>','<%=R_cl["分类编码"].ToString()%>','<%=R_cl["分类名称"].ToString() %>')" class="filter" filter="" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/>
+          <input type="Button" name="input" value="编辑" id="filter" onclick="BJCL('<%=R_cl["cl_id"].ToString() %>','<%=R_cl["分类编码"].ToString()%>','<%=R_cl["分类名称"].ToString() %>')" class="filter" filter="" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/>
           </td>
           </tr>
           <%}%>
@@ -212,20 +220,7 @@
             }%>
       </tbody>
     </table>
-  <div style="text-align:center"  runat="server" id="dic">
-    <asp:LinkButton ID="btnhead" runat="server" CommandArgument="Head" CommandName="Pager"
-                        OnCommand="PagerButtonClick" ForeColor="Black">首页</asp:LinkButton>&nbsp;
-     <asp:LinkButton ID="btnPrev" runat="server" CommandArgument="Prev" CommandName="Pager"
-                        OnCommand="PagerButtonClick" ForeColor="Black">上页</asp:LinkButton>&nbsp;
-    <asp:LinkButton ID="btnNext" runat="server" CommandArgument="Next" CommandName="Pager"
-            OnCommand="PagerButtonClick" ForeColor="Black">下页</asp:LinkButton>&nbsp;
-    <asp:LinkButton ID="btnfoot" runat="server" CommandArgument="Foot" CommandName="Pager"
-                        OnCommand="PagerButtonClick" ForeColor="Black">尾页</asp:LinkButton>&nbsp;
-            第<asp:Label ID="lblCurPage" runat="server"  Text="0" ForeColor="Blue">Label</asp:Label>/
-              <asp:Label ID="lblPageCount" runat="server" Text="0" ForeColor="Blue">Label</asp:Label>页
-     
-        <br />
-    </div>
+   
 </div>
     </form>
 </body>

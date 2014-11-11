@@ -54,7 +54,7 @@
 <script type="text/javascript">
     var value;
     //点击选择属性值
-    function AddSXZ(obj, sxbm, bh, sxz,sql)
+    function AddSXZ(obj, sxbm, bh, sxz, sql)
     {
         var td = obj.parentNode;
         var a = td.getElementsByTagName("a");
@@ -78,7 +78,7 @@
         var sxmc;
         for (var i = 0; i < tr.length; i++)
         {
-            if (tr[i].cells[0].innerHTML=="品种")
+            if (tr[i].cells[0].innerHTML == "品种")
             {
                 document.getElementById("clmc").value = tr[i].cells[2].innerHTML;
             }
@@ -92,7 +92,7 @@
     }
     //将组合的属性属性值 和对应材料信息 添加到材料列表中
     function AddValue()
-    {        
+    {
         var clbm = document.getElementById("clbm").value;
         var clm = document.getElementById("clmc").value;
         var ggjxh = document.getElementById("ggxh").value;
@@ -112,7 +112,7 @@
         {
             sSQL = sSQL + tr[i].cells[4].innerHTML + "◣";
         }
-        document.getElementById("SQL").value = sSQL;      
+        document.getElementById("SQL").value = sSQL;
     }
 </script>
 <script type="text/javascript">
@@ -154,32 +154,27 @@
         xmlhttp.open("GET", url, true);
         xmlhttp.send();
     }
-   
-    
+
+
     function saveReport()
     {
         //   document.getElementById("dmt").value = document.frames['frame1'].document.getElementById("dmtz").value;
         var scsid = document.getElementById("scsid").value;
-            // jquery 表单提交
-            $("#form1").ajaxSubmit(function (message)
+        // jquery 表单提交
+        $("#form1").ajaxSubmit(function (message)
+        {
+            // 对于表单提交成功后处理，message为提交页面saveReport.htm的返回内容 
+            if (message == "1")
             {
-                // 对于表单提交成功后处理，message为提交页面saveReport.htm的返回内容 
-                if (message == "1")
-                {
-                    alert("提交成功");
-                    window.location.href = "gysglcl.aspx?gys_id=" + scsid;
-                    //  $("#cl").empty();
-                    //关闭
-                    //                window.opener = null;
-                    //                window.open("", "_self");
-                    //                window.close();
-                } 
-                else
-                {
-                    alert(message);
-                }
-            });
-            return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转    onsubmit="return saveReport();"
+                alert("提交成功");
+                window.location.href = "gysglcl.aspx?gys_id=" + scsid;
+            }
+            else
+            {
+                alert(message);
+            }
+        });
+        return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转    onsubmit="return saveReport();"
     }    
 </script>
  
@@ -204,139 +199,141 @@ protected void Page_Load(object sender, EventArgs e)
 {
     string scs_id = "";  //营业注册号
     string ppid = "";
-    //this.scsid.Value = "300";
-    //this.ppid.Value = "300";
+    string flbm = "";
+    string flmc = "";
+    string clid = "";
+    //scs_id = "300";
+    //ppid = "300";
+    //flbm = "030107";
+    //flmc = "膨胀螺栓";
+    //clid = "331";
+    //this.lx.Value = "bj";
     if (Request["scs_id"] != null && Request["scs_id"].ToString() != "")
     {
         scs_id = Request["scs_id"].ToString();
-        this.scsid.Value = scs_id;
-        if (Request["ppid"] != null && Request["ppid"].ToString() != "")
-        {
-            ppid = Request["ppid"].ToString();
-            this.ppid.Value = ppid;
-            string flbm = "";
-            
-            if (Request["flbm"]!=null&&Request["flbm"].ToString()!="")
-            {
-                flbm = Request["flbm"].ToString();              
-            }
-          string flmc = "";
-            if (Request["flmc"] != null && Request["flmc"].ToString() != "")
-            {
-                flmc = Request["flmc"].ToString();
-            }
-            Addsx(flbm, flmc);
-            string clid = "";
-            if (Request["clid"] != null && Request["clid"].ToString() != "")
-            {
-                clid = Request["clid"].ToString();
-            }
-            string SQL = "";
-            SQL = "select 规格型号,计量单位,单位重量,单位体积,说明,price,材料编码 from 材料表 where cl_id=" + clid;
-            dt_cl = Conn.GetDataTable(SQL);
-            if (dt_cl != null && dt_cl.Rows.Count > 0)
-            {
-                cpbhsjk = Convert.ToString(dt_cl.Rows[0]["材料编码"]);
-                ggxzsjk = Convert.ToString(dt_cl.Rows[0]["规格型号"]);
-                jldwsjk = Convert.ToString(dt_cl.Rows[0]["计量单位"]);
-                dwzlsjk = Convert.ToString(dt_cl.Rows[0]["单位重量"]);
-                dwtjsjk = Convert.ToString(dt_cl.Rows[0]["单位体积"]);
-                smsjk = Convert.ToString(dt_cl.Rows[0]["说明"]);
-                pricesjk = Convert.ToString(dt_cl.Rows[0]["price"]);
-            }
-        }
-        else
-        {
-            Response.Write("<script>alert('请先选择品牌，在添加信息');history.go(-1);</" + "script>");
-        }
-       
     }
-    else
-    {
-        Response.Write("<script>alert('用户ID丢失，请重新登录！');history.go(-1);</" + "script>");
 
+
+    if (Request["ppid"] != null && Request["ppid"].ToString() != "")
+    {
+        ppid = Request["ppid"].ToString();
     }
+    if (Request["clid"] != null && Request["clid"].ToString() != "")
+    {
+        clid = Request["clid"].ToString();
+        this.lx.Value = "bj";
+    }
+    this.scsid.Value = scs_id;
+    this.ppid.Value = ppid;
    
-}
-protected void Addsx(string flbm, string flmc)
-{
-    string html = "";
-    if (flbm != "")
+    if (scs_id != "" && ppid != "" && clid != "")
     {
-        // string sql_sx = "select 属性名称,属性编码 from 材料分类属性表 where 分类编码='" + Request["flbm"].ToString() + "' and 分类名称='" + flmc + "' order by 分类编码";
-
-        string sql_sx = "select 显示 as 属性名称,属性编码 from 材料分类属性表 where 分类编码='" + Request["flbm"].ToString() + "' and 分类名称='" + flmc + "' order by 分类编码,属性编码";
-        dt_sx = Conn.GetDataTable(sql_sx);
-    }
-    if (dt_sx != null && dt_sx.Rows.Count > 0)
-    {
-       
-        html = "<table width='740' border='0' cellpadding='0' cellspacing='1' bgcolor='#dddddd' style='table-layout：fixed ;word-wrap：break-word'>"
-            + " <thead>"
-            + "   <tr>"
-            + "    <th width='70' height='30' align='center' bgcolor='#E3ECFF'><strong>属性名称</strong></th>"
-            + " <th align='center' bgcolor='#E3ECFF'><strong>规格\\型号</strong></th>"
-            + " <th width='80' align='center' bgcolor='#E3ECFF'><strong>选中项</strong></th>"
-            + " <th  style='display:none;' width='80' align='center' bgcolor='#E3ECFF'><strong>编码</strong></th>"
-              + " <th  style='display:none;' width='80' align='center' bgcolor='#E3ECFF'><strong>SQL语句</strong></th>"
-            + " </tr>"
-            + " </thead>"
-            + " <tbody id='sx'>";
-
-        foreach (DataRow drsx in dt_sx.Rows)
+        if (Request["flbm"] != null && Request["flbm"].ToString() != "")
         {
-            string sql_sx = "select 属性名称,属性值,属性编码,编号,flsx_id,flsxz_id,fl_id from 材料分类属性值表  where 属性名称='" + drsx["属性名称"] + "' and 分类编码=" + flbm;
-            dt_sxz = Conn.GetDataTable(sql_sx);
-            string sxmc = Convert.ToString(drsx["属性名称"]);
-            sxmc = sxmc.Replace("\r", " ");
-            sxmc = sxmc.Replace("\n", " ");
-            html += " <tr style='line-height:24px;'>"
-           + " <td align='center' bgcolor='#FFFFFF'>" + sxmc + "</td>"
-            + " <td align='left' bgcolor='#FFFFFF'> ";
-            if (dt_sxz != null && dt_sxz.Rows.Count > 0)
-            {
-                foreach (DataRow drsxz in dt_sxz.Rows)
-                {
-                    string value = "";
-                    string sxsxzbm = Convert.ToString(drsxz["属性编码"]) + Convert.ToString(drsxz["编号"]);
-                    value = drsxz["属性名称"] + "," + drsxz["属性编码"] + "," + drsxz["flsx_id"] + "," + drsxz["属性值"] + "," + drsxz["编号"] + "," + drsxz["flsx_id"]
-                        + "," + sxsxzbm + "," + drsxz["fl_id"] + "," + flmc + ",clid,clmc,clbm";
-                    string sxbm = Convert.ToString(drsxz["属性编码"]);
-                    string sxz = Convert.ToString(drsxz["属性值"]);
-                    string bh = Convert.ToString(drsxz["编号"]);
-                    sxbm = sxbm.Replace("\r", " ");
-                    sxbm = sxbm.Replace("\n", " ");
-                    sxz = sxz.Replace("\r", " ");
-                    sxz = sxz.Replace("\n", " ");
-                    bh = bh.Replace("\r", " ");
-                    bh = bh.Replace("\n", " ");
-
-                    html += "<a href='javascript:void(0)' onclick=\"AddSXZ(this,'" + sxbm +
-                        "','" + bh + "','" + sxz + "','" + value + "')\">" + sxz + "&nbsp;&nbsp;</a>";
-                }
-            }
-            html += "</td>"
-                + " <td align='center' bgcolor='#FFFFFF'></td>"
-                + " <td style='display:none;'></td>"
-                + " <td style='display:none;'></td>"
-                + "</tr>";
+            flbm = Request["flbm"].ToString();
         }
-        html += " </tbody> "
-                + " <tfoot>"
-                + "        <tr>"
-                + "        <td width='120' height='32' align='right' bgcolor='#FFFFFF'>名称及规则：</td>"
-                + "        <td align='left' bgcolor='#FFFFFF'><input type='text' id='clmcjgg' style=' width: 293px; '/></td>"
-                + "        <td width='80' align='center' bgcolor='#FFFFFF'>"
-                + "        <input type='Button' name='btnDocNew' value='确定' onClick='AddValue()'  class='filter' style='color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;' /></td>"
-                + "      </tr>"
-                + "       </tfoot>"
-                + " </table>";
+
+        if (Request["flmc"] != null && Request["flmc"].ToString() != "")
+        {
+            flmc = Request["flmc"].ToString();
+        }
+        this.flbm.Value = flbm;
+        this.flmc.Value = flmc;
+        Addsx(flbm, flmc, clid);
+        string SQL = "";
+        SQL = "select 规格型号,计量单位,单位重量,单位体积,说明,price,材料编码 from 材料表 where cl_id=" + clid;
+        dt_cl = Conn.GetDataTable(SQL);
+        if (dt_cl != null && dt_cl.Rows.Count > 0)
+        {
+            cpbhsjk = Convert.ToString(dt_cl.Rows[0]["材料编码"]);
+            ggxzsjk = Convert.ToString(dt_cl.Rows[0]["规格型号"]);
+            jldwsjk = Convert.ToString(dt_cl.Rows[0]["计量单位"]);
+            dwzlsjk = Convert.ToString(dt_cl.Rows[0]["单位重量"]);
+            dwtjsjk = Convert.ToString(dt_cl.Rows[0]["单位体积"]);
+            smsjk = Convert.ToString(dt_cl.Rows[0]["说明"]);
+            pricesjk = Convert.ToString(dt_cl.Rows[0]["price"]);
+        }
     }
-    if (html!="")
-    {
-        this.allcl.InnerHtml = "";
-        this.allcl.InnerHtml = html;
-    }
+}
+protected void Addsx(string flbm, string flmc, string clid)
+{    
+    this.SQL.Value = "1";
+        string html = "";
+        if (flbm != "")
+        {            
+            string sql_sx = "";
+            sql_sx = "select 显示 as 属性名称,属性编码 from 材料分类属性表 where 分类编码='" + flbm + "' and 分类名称='" + flmc + "' order by 分类编码,属性编码";
+            dt_sx = Conn.GetDataTable(sql_sx);
+        }
+        if (dt_sx != null && dt_sx.Rows.Count > 0)
+        {
+            html = "<table width='740' border='0' cellpadding='0' cellspacing='1' bgcolor='#dddddd' style='table-layout：fixed ;word-wrap：break-word'>"
+                + " <thead>"
+                + "   <tr>"
+                + "    <th width='70' height='30' align='center' bgcolor='#E3ECFF'><strong>属性名称</strong></th>"
+                + " <th align='center' bgcolor='#E3ECFF'><strong>规格\\型号</strong></th>"
+                + " <th width='80' align='center' bgcolor='#E3ECFF'><strong>选中项</strong></th>"
+                + " <th  style='display:none;' width='80' align='center' bgcolor='#E3ECFF'><strong>编码</strong></th>"
+                  + " <th  style='display:none;' width='80' align='center' bgcolor='#E3ECFF'><strong>SQL语句</strong></th>"
+                + " </tr>"
+                + " </thead>"
+                + " <tbody id='sx'>";
+
+            foreach (DataRow drsx in dt_sx.Rows)
+            {
+                string sql_sx = "select 属性名称,属性值,属性编码,编号,flsx_id,flsxz_id,fl_id from 材料分类属性值表  where 属性名称='" + drsx["属性名称"] + "' and 分类编码=" + flbm;
+                dt_sxz = Conn.GetDataTable(sql_sx);
+                string sxmc = Convert.ToString(drsx["属性名称"]);
+                sxmc = sxmc.Replace("\r", " ");
+                sxmc = sxmc.Replace("\n", " ");
+                html += " <tr style='line-height:24px;'>"
+               + " <td align='center' bgcolor='#FFFFFF'>" + sxmc + "</td>"
+                + " <td align='left' bgcolor='#FFFFFF'> ";
+                if (dt_sxz != null && dt_sxz.Rows.Count > 0)
+                {
+                    foreach (DataRow drsxz in dt_sxz.Rows)
+                    {
+                        string value = "";
+                        string sxsxzbm = Convert.ToString(drsxz["属性编码"]) + Convert.ToString(drsxz["编号"]);
+                        value = drsxz["属性名称"] + "," + drsxz["属性编码"] + "," + drsxz["flsx_id"] + "," + drsxz["属性值"] + "," + drsxz["编号"] + "," + drsxz["flsx_id"]
+                            + "," + sxsxzbm + "," + drsxz["fl_id"] + "," + flmc + ",clid,clmc,clbm";
+                        string sxbm = Convert.ToString(drsxz["属性编码"]);
+                        string sxz = Convert.ToString(drsxz["属性值"]);
+                        string bh = Convert.ToString(drsxz["编号"]);
+                        sxbm = sxbm.Replace("\r", " ");
+                        sxbm = sxbm.Replace("\n", " ");
+                        sxz = sxz.Replace("\r", " ");
+                        sxz = sxz.Replace("\n", " ");
+                        bh = bh.Replace("\r", " ");
+                        bh = bh.Replace("\n", " ");
+
+                        html += "<a href='javascript:void(0)' onclick=\"AddSXZ(this,'" + sxbm +
+                            "','" + bh + "','" + sxz + "','" + value + "')\">" + sxz + "&nbsp;&nbsp;</a>";
+                    }
+                }
+                html += "</td>"
+                    + " <td align='center' bgcolor='#FFFFFF'></td>"
+                    + " <td style='display:none;'></td>"
+                    + " <td style='display:none;'></td>"
+                    + "</tr>";
+            }
+            html += " </tbody> "
+                    + " <tfoot>"
+                    + "        <tr>"
+                    + "        <td width='120' height='32' align='right' bgcolor='#FFFFFF'>名称及规则：</td>"
+                    + "        <td align='left' bgcolor='#FFFFFF'><input type='text' id='clmcjgg' style=' width: 293px; '/></td>"
+                    + "        <td width='80' align='center' bgcolor='#FFFFFF'>"
+                    + "        <input type='Button' name='btnDocNew' value='确定' onClick='AddValue()'  class='filter' style='color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;' /></td>"
+                    + "      </tr>"
+                    + "       </tfoot>"
+                    + " </table>";
+        }
+        if (html != "")
+        {
+            this.allcl.InnerHtml = "";
+            this.allcl.InnerHtml = html;
+        }
+    //}
 }
 </script>
  
@@ -445,7 +442,7 @@ protected void Addsx(string flbm, string flmc)
         </tr>
       <tr>
         <td height="80" align="right" bgcolor="#FFFFFF">产品说明：</td>
-      <td height="80" colspan="7" align="center" bgcolor="#FFFFFF"><textarea class="hyzhc_shrk2_2" value='<%=smsjk %>' cols="40" id="yyfw" name="yyfw" rows="6" style="100%"></textarea></td>
+      <td height="80" colspan="7" align="center" bgcolor="#FFFFFF"><textarea class="hyzhc_shrk2_2"  cols="40" id="yyfw" name="yyfw" rows="6" style="100%"  value='<%=smsjk %>' ><%=smsjk %></textarea></td>
         </tr>
     </tbody>
 </table>
@@ -473,5 +470,7 @@ protected void Addsx(string flbm, string flmc)
  
 <input type="hidden"  runat="server" id="scsid"/>   <%-- 生产商ID   --%>
 <input type="hidden"  runat="server" id="ppid"/>    <%-- 生产商ID   --%>
+<input type="hidden"  runat="server" id="lx"/>    <%-- 是新增还是编辑   --%>
+<input type="hidden"  runat="server" id="clid"/>    <%-- 是新增还是编辑   --%>
 </form>
 </BODY></HTML>

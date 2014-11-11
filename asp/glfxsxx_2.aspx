@@ -157,8 +157,10 @@ onloadEvent(showtable);
             </tr>
           </thead>
           <tbody>
-          <% foreach (System.Data.DataRow dr in dt_gxs.Rows)
-             {%>
+          <% if (dt_gxs != null && dt_gxs.Rows.Count > 0)
+             {
+                 foreach (System.Data.DataRow dr in dt_gxs.Rows)
+                 {%>
             <tr>
               <td align="center"><input type="checkbox" name="input"  value="<%=dr["gys_id"]%>" />
                 <label for="checkbox"></label></td>
@@ -169,7 +171,8 @@ onloadEvent(showtable);
               <td align="left" style="font-size:12px"><%=dr["电话"]%></td>
               <td align="center"><input type="submit" name="input" value="查阅" class="filter" onclick="ChaYue('<%=dr["供应商"] %>')" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/></td>
          </tr>
-         <%}%>
+         <%}
+             }%>
          <%if (dt_gxs.Rows.Count < 10)
             {
                 for (int i = 0; i < 10 - dt_gxs.Rows.Count; i++)

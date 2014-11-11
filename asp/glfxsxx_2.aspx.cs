@@ -31,9 +31,9 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
         //    pp_mc = Request["pp_mc"].ToString();
         //}
 
-        if (Request["GYS_ID"] != null && Request["GYS_ID"].ToString() != "")
+        if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
         {
-            gys_id = Request["GYS_ID"].ToString();
+            gys_id = Request["gys_id"].ToString();
             pp_mc = Request["pp_mc"].ToString();
         }
         this.ppmc.Value = pp_mc;
@@ -45,7 +45,7 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
         this.ppid.Value = pp_id;
         //sSQL = "select dw_id from 用户表 where yh_id=" + s_yh_id + "";
         //dt_yh = objConn.GetDataTable(sSQL);
-        this.lblgys_id.Value = s_yh_id;
+        this.lblgys_id.Value = gys_id;
         if (pp_mc != "" && gys_id != "")
         {
             sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where gys_id in " +

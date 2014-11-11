@@ -1,7 +1,7 @@
 ﻿<%@ Import Namespace="System.Xml" %>
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
-<%@ Page Language="C#"%>
+<%@ Page Language="C#" EnableViewStateMac= "false" %>
      <script runat="server">
      public DataConn Conn = new DataConn();
     
@@ -60,19 +60,24 @@
                          {
                              int begin = arrSql[i].IndexOf(",");
                              string flsxmc = arrSql[i].Substring(0, begin);
+                            
                              string sqlresult = "";
                              sqlresult = "'" + arrSql[i].Replace(",", "','") + "'";
-                             SQL += "delete 材料属性表 where fl_id=(select fl_id from 材料表 where cl_id='" + clid +
-                 "') and cl_id='" + clid + "' and   分类属性名称='" + flsxmc + "' ";
-                             sSQL += "insert into 材料属性表 (分类属性名称,分类属性编码,flsx_id,分类属性值,分类属性值编号,flsxz_id,属性属性值编码,fl_id,分类名称,cl_id,材料名称,材料编码,updatetime)values("
-                             + sqlresult + ",(select getdate()))    ";
+                             if (sqlresult != "")
+                             {
+                                 SQL += "delete 材料属性表 where fl_id=(select fl_id from 材料表 where cl_id='" + clid +
+                                   "') and cl_id='" + clid + "' and   分类属性名称='" + flsxmc + "' ";
+                                 sSQL += "insert into 材料属性表 (分类属性名称,分类属性编码,flsx_id,分类属性值,分类属性值编号,flsxz_id,属性属性值编码,fl_id,分类名称,cl_id,材料名称,材料编码,updatetime)values("
+                                 + sqlresult + ",(select getdate()))    ";
+                             }
+                             
                          }
                          b = Conn.RunSqlTransaction(sSQL);
                      }
               
                      if (b)
                      {
-                         if (dmt != "")
+                         if (dmt.Trim() != "")
                          {
                             sSQL= "";
                              //添加多媒体信息
@@ -81,13 +86,21 @@
                                  dmt = dmt.Substring(0, dmt.Length - 1);
                              }
                              string[] arrPath = dmt.Split('◥');
-                             for (int i = 0; i < arrPath.Length; i++)
+                             try
                              {
-                                 string[] arrTotal = new string[3];
-                                 arrTotal = arrPath[i].Split(',');
-                                 sSQL += "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,分类,存放地址,updatetime) values(" +
-                                  clid + " ,'" + clbm + "','" + clmc + "','是','" + arrTotal[0] + "','" + arrTotal[1] + "','" + arrTotal[2] + "',(select getdate()))  ";
+                                 for (int i = 0; i < arrPath.Length; i++)
+                                 {
+                                     string[] arrTotal = new string[3];
+                                     arrTotal = arrPath[i].Split(',');
+                                     sSQL += "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,分类,存放地址,updatetime) values(" +
+                                      clid + " ,'" + clbm + "','" + clmc + "','是','" + arrTotal[0] + "','" + arrTotal[1] + "','" + arrTotal[2] + "',(select getdate()))  ";
+                                 }
                              }
+                             catch (Exception)
+                             {
+                                 value = "";
+                             }
+                             
                              bool bdmt = Conn.RunSqlTransaction(sSQL);
                              if (bdmt)
                              {
@@ -154,10 +167,14 @@
                          for (int i = 0; i < arrSql.Length; i++)
                          {
                              string sqlresult = "";
-                             sqlresult = "'" + arrSql[i].Replace(",", "','") + "'";
-                             sqlresult = sqlresult.Replace("'clid'", sqlclid);
-                             sSQL += "insert into 材料属性表 (分类属性名称,分类属性编码,flsx_id,分类属性值,分类属性值编号,flsxz_id,属性属性值编码,fl_id,分类名称,cl_id,材料名称,材料编码,updatetime)values("
-                             + sqlresult + ",(select getdate()))    ";
+                             if (sqlresult!="")
+                             {
+                                 sqlresult = "'" + arrSql[i].Replace(",", "','") + "'";
+                                 sqlresult = sqlresult.Replace("'clid'", sqlclid);
+                                 sSQL += "insert into 材料属性表 (分类属性名称,分类属性编码,flsx_id,分类属性值,分类属性值编号,flsxz_id,属性属性值编码,fl_id,分类名称,cl_id,材料名称,材料编码,updatetime)values("
+                                 + sqlresult + ",(select getdate()))    ";
+                             }
+                            
                          }
                          bool b = Conn.RunSqlTransaction(sSQL);
                          if (b)

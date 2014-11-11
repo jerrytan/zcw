@@ -126,10 +126,10 @@
 				dt_scsxx = dc_obj.GetDataTable(str_sqlgysxx);
                 <%--Response.Write(dt_scsxx.Rows[0]["供应商"]);--%>
 				
-				string str_sqltop3 =  "select top 3 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='大'";        
+				string str_sqltop3 =  "select top 3 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片'";        
 				dt_image = dc_obj.GetDataTable(str_sqltop3);
 				
-				string str_sqlfcdz = "select 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片' and 大小='小'";            
+				string str_sqlfcdz = "select 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片'";            
 				dt_images = dc_obj.GetDataTable(str_sqlfcdz);
 			
 				string str_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='"+cl_id+"'))";         

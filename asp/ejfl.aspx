@@ -386,7 +386,7 @@
                 <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>" title="<%=row["显示名"].ToString() %>">
                     <%
                     string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
-                        +row["cl_id"]+"' and 大小='小'";
+                        +row["cl_id"]+"'";
                     string imgsrc= "images/222_03.jpg";
                    
                     object result = dc_obj.DBLook(str_sqltop1);

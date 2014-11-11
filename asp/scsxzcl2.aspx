@@ -223,7 +223,9 @@ protected void Page_Load(object sender, EventArgs e)
         clid = Request["clid"].ToString();
         this.lx.Value = "bj";
     }
-
+    this.scsid.Value = scs_id;
+    this.ppid.Value = ppid;
+   
     if (scs_id != "" && ppid != "" && clid != "")
     {
         if (Request["flbm"] != null && Request["flbm"].ToString() != "")
@@ -235,8 +237,6 @@ protected void Page_Load(object sender, EventArgs e)
         {
             flmc = Request["flmc"].ToString();
         }
-        this.scsid.Value = scs_id;
-        this.ppid.Value = ppid;
         this.flbm.Value = flbm;
         this.flmc.Value = flmc;
         Addsx(flbm, flmc, clid);
