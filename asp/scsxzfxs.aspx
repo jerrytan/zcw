@@ -246,9 +246,9 @@
                     this.fl_id.Value + "'),'" + this.fl_id.Value + "')";
                 sSQL += "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" +
                     this.scs2.InnerHtml + "' and 品牌名称='" + this.ppmc.Value + "' and gys_id='" + fxs[i] + "' and pp_id='" +
-                    this.ppid.Value + "') where 供应商='" + this.scs2.InnerHtml + "' and 品牌名称='" + this.ppmc.Value + "' and gys_id='" + fxs[i] + "' and pp_id='" +
+                    this.ppid.Value + "') where isnull(uid,'')='' and 供应商='" + this.scs2.InnerHtml + "' and 品牌名称='" + this.ppmc.Value + "' and gys_id='" + fxs[i] + "' and pp_id='" +
                     this.ppid.Value+"'";
-            }
+            }           
             if (Conn.RunSqlTransaction(sSQL))
             {
                 Response.Write("<script>alert('添加成功！');window.location.href='glfxsxx.aspx?gys_id=" + this.scsid.Value + "';</" + "script>");

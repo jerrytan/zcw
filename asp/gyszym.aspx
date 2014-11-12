@@ -45,11 +45,23 @@
             gys_id = Request["GYS_ID"].ToString();
 
         }
+        else
+        {
+            if (Session["GYS_ID"] != null && Session["GYS_ID"].ToString() != "")
+            {
+                gys_id = Session["GYS_ID"].ToString();
+
+            }
+        }
         if (Request["QQ"] != null && Request["QQ"].ToString() != "")
         {
             QQ = Request["QQ"].ToString();
         }
-        
+        if (gys_id=="")
+        {
+            string sql = "select dw_id from 用户表 where QQ号码='" + QQ + "' and 类型<>'采购商'";
+            gys_id = objConn.DBLook(sql);
+        }
         //蒋注释IF判断(11月06日)
             //if (Request.Cookies["GYS_QQ_ID"] != null && Request.Cookies["GYS_QQ_ID"].Value.ToString() != "")
             //{

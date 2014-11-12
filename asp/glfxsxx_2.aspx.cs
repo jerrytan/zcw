@@ -43,13 +43,13 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
             pp_id = Request["pp_id"].ToString();             
         }
         this.ppid.Value = pp_id;
-        //sSQL = "select dw_id from 用户表 where yh_id=" + s_yh_id + "";
-        //dt_yh = objConn.GetDataTable(sSQL);
+       
         this.lblgys_id.Value = gys_id;
         if (pp_mc != "" && gys_id != "")
         {
             sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where gys_id in " +
-                "(select fxs_id from 分销商和品牌对应关系表 where 品牌名称='" + pp_mc + "') order by gys_id desc";
+                "(select fxs_id from 分销商和品牌对应关系表 where 品牌名称='" + pp_mc + "' and pp_id='"+ppid+"' and 生产厂商ID='"+gys_id+"')";
+            Response.Write(sSQL);
             dt_gxs = objConn.GetDataTable(sSQL);
             Session["SQLsource"] = sSQL;
             string sSearchCondition = "gys_id='" + gys_id + "'";
@@ -60,7 +60,8 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
             if (!IsPostBack)
             {
                 //蒋，，，把lsgys_id改成s_yh_id
-                sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where gys_id in (select distinct fxs_id from 分销商和品牌对应关系表 where pp_id in (select pp_id from 品牌字典 where scs_id='" + s_yh_id + "')) order by updatetime desc";
+                sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where gys_id in (select distinct fxs_id from 分销商和品牌对应关系表 where pp_id in (select pp_id from 品牌字典 where scs_id='" + gys_id + "')) order by updatetime desc";
+                Response.Write(sSQL);
                 //sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where 是否启用=1 order by updatetime desc";
                 dt_gxs = objConn.GetDataTable(sSQL);
                 this.dic.Visible = false;

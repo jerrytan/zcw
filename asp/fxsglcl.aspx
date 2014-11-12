@@ -40,6 +40,7 @@
             document.getElementById("ppid").value = ppid;
             document.getElementById("ppmc").value = ppmc;
             document.getElementById("scsid").value = scs;
+            var fxs_id = document.getElementById("fxsid").value;
             var xmlhttp;
             if (window.XMLHttpRequest)
             {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -57,14 +58,14 @@
                     $("#table4").append(xmlhttp.responseText);
                 }
             }
-            var url = "fxsglcl2.aspx?ppid=" + ppid+"&ppmc="+ppmc+"&scs="+scs;
+            var url = "fxsglcl2.aspx?ppid=" + ppid + "&ppmc=" + ppmc + "&scs=" + scs + "&fxs_id=" + fxs_id;
             xmlhttp.open("GET", url, true);
             xmlhttp.send();
         }
     </script>
       <script language="javascript" type="text/javascript">
-          function selectall1(obj)
-          {
+          function selectall1(obj,cl_id)
+          {              
               if (obj.checked)
               {
                   var Table = document.getElementById("table4");
@@ -79,7 +80,7 @@
                               if (e.checked == false)
                               {
                                   document.getElementById("checkboxAll").checked = false;
-                              }
+                              }                              
                           }
                           else
                           {
@@ -121,7 +122,7 @@
                   }
               }
           }
-    </script>
+      </script>
     <script type="text/javascript">
     //新增材料
         function btnFilter_Click()
@@ -162,14 +163,16 @@
             {
                 if (input[i].type == "checkbox" && input[i].checked)
                 {
-                    cl_id += Trim(input[i].value) + ",";
+                    var tr = input[i].parentNode.parentNode;
+                    cl_id += tr.cells[1].innerHTML + ",";
                 }
             }
+            alert(cl_id);
             if (cl_id == "" || cl_id == undefined)
             {
                 alert("请选择要删除的材料!");
                 return;
-            }
+            }          
             else
             {
                 var xmlhttp;
@@ -252,7 +255,7 @@
                                     <span class="no">
                         <%foreach (DataRow drpp in dtpp.Rows) %>
                         <%{ %>
-                             <h2><a href="javascript:void(0)" onclick="lbs(this,'<%=drpp["pp_id"] %>','<%=drpp["品牌名称"]%>','<%=drgys["生产商"]%>')"><%=drpp["品牌名称"]%></a></h2>
+                             <h2><a href="javascript:void(0)" onclick="lbs(this,'<%=drpp["pp_id"] %>','<%=drpp["品牌名称"]%>','<%=drgys["生产商Id"]%>')"><%=drpp["品牌名称"]%></a></h2>
                                <ul class="no"></ul>
                         <%} %>
                         </span>
@@ -291,6 +294,7 @@
       <thead>
         <tr >
           <th width="37" align="center"><input  class="middle" type="checkbox" name="checkboxAll" id="checkboxAll" onclick="return selectall();"   /> </th>
+        <th width="100" align="center" style=" display:none;"><strong>cl_id</strong></th>
           <th width="100" align="center"><strong>材料编码</strong></th>
           <th width="90" align="center"><strong>材料名称</strong></th>
           <th width="140" align="center"><strong>规格/型号</strong></th>

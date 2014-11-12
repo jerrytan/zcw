@@ -11,7 +11,7 @@
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
-
+ 
 <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
         data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/index.aspx" charset="utf8"></script>
 
@@ -20,24 +20,44 @@
         protected DataTable dt_Yh = new DataTable(); //用户名字(用户表)    	
         protected DataConn  dc = new DataConn();
         public string DW = "";
-        public string QQ_id;
+        public string QQ_id="";
         protected void Page_Load(object sender, EventArgs e)
         {
-             if(Session["GYS_YH_ID"]==null&&Session["CGS_YH_ID"]!=null)
-             {
-                QQ_id=Session["CGS_YH_ID"].ToString();
-             }
-             else
+             if(Session["GYS_YH_ID"]==null&&Session["CGS_YH_ID"]==null&& Session["QQ号码"]!=null&& Session["QQ号码"].ToString()!="")
              {
                  //QQ_id = Session["GYS_YH_ID"].ToString();
                  QQ_id = Session["QQ号码"].ToString();
              }
-            if (QQ_id != null )
+             else       
+             {
+                 if(Session["CGS_YH_ID"]!=null)
+                 {
+                    QQ_id=Session["CGS_YH_ID"].ToString();
+                 }
+                 else if(Session["GYS_YH_ID"]!=null)
+                 {
+                    QQ_id=Session["GYS_YH_ID"].ToString();
+                 }
+             }
+
+            if (QQ_id != "" )
             {
-                //string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='"+QQ_id+"'"; 
-                string str_Sql = "select 姓名,yh_id,dw_id from 用户表 where QQ号码='" + QQ_id + "'";        
-                dt_Yh = dc.GetDataTable(str_Sql);
-                DW=dt_Yh.Rows[0]["dw_id"].ToString();
+                //string str_Sql = "select 姓名,yh_id,类型 from 用户表 where QQ_id='"+QQ_id+"'"; 
+                string str_Sql = "select 姓名,yh_id,dw_id,类型 from 用户表 where QQ号码='" + QQ_id + "'";        
+             
+               dt_Yh = dc.GetDataTable(str_Sql);
+                if(dt_Yh!=null&&dt_Yh.Rows.Count>0)
+                {
+                  DW=dt_Yh.Rows[0]["dw_id"].ToString();
+                  if(dt_Yh.Rows[0]["类型"].ToString()=="采购商")
+                  {
+                  Session["CGS_YH_ID"]=dt_Yh.Rows[0]["yh_id"].ToString();
+                  }
+                  else
+                  {
+                  Session["GYS_YH_ID"]=dt_Yh.Rows[0]["yh_id"].ToString();
+                  }
+                }
             }
 		}
  </script>
