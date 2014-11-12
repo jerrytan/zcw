@@ -237,7 +237,7 @@
             for (int i = 0; i < fxs.Length; i++)
             {
                 sSQL += "insert into 分销商和品牌对应关系表 (pp_id,品牌名称,是否启用,fxs_id,分销商,updatetime,分类名称,fl_id,分类编码,yh_id,生产厂商ID)values('" +
-                    this.ppid.Value + "','" + this.ppmc.Value + "','1','" + fxs[i] + "',(select 供应商 from 材料供应商信息表 where gys_id='" + fxs[i] +
+                    this.ppid.Value + "','" + this.ppmc.Value + "','0','" + fxs[i] + "',(select 供应商 from 材料供应商信息表 where gys_id='" + fxs[i] +
                     "'),(select getdate()),'" + this.fl_name2.InnerHtml + "','" + this.fl_id.Value + "',(select 分类编码 from 材料分类表 where fl_id='" +
                     this.fl_id.Value + "'),(select yh_id from 材料供应商信息表 where gys_id='" + fxs[i] + "'),'" + this.scsid.Value + "')    ";
                 sSQL += "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime,分类名称,分类编码,fl_id)values('" +
