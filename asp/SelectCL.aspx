@@ -95,7 +95,7 @@
         var table = document.getElementById("cl");
         var tr = table.getElementsByTagName("tr");
         var clbm = document.getElementById("clbm").value;
-        var clm = document.getElementById("clmc").value;
+        var clm = document.getElementById("clmcjgg").value;
         var ggjxh = document.getElementById("ggxh").value;
         var wd = document.getElementById("dw").value;
         var bh = tr.length;
@@ -111,7 +111,7 @@
             html = "<tr>"
 		    + " <td align='center' bgcolor='#FFFFFF'>" + bh + "</td>"
 		    + " <td height='24' align='center' bgcolor='#FFFFFF'>" + clbm + "</td>"
-		    + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
+		    + " <td align='left' bgcolor='#FFFFFF'>" + clmcjgg + "</td>"
 		    + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
 		    + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"   //品牌
 		    + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"

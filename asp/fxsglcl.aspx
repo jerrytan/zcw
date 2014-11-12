@@ -252,7 +252,7 @@
                                     <span class="no">
                         <%foreach (DataRow drpp in dtpp.Rows) %>
                         <%{ %>
-                             <h2><a href="javascript:void(0)" onclick="lbs('<%=drpp["pp_id"] %>','<%=drpp["品牌名称"]%>','<%=drgys["生产商"]%>')"><%=drpp["品牌名称"]%></a></h2>
+                             <h2><a href="javascript:void(0)" onclick="lbs(this,'<%=drpp["pp_id"] %>','<%=drpp["品牌名称"]%>','<%=drgys["生产商"]%>')"><%=drpp["品牌名称"]%></a></h2>
                                <ul class="no"></ul>
                         <%} %>
                         </span>

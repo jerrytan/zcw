@@ -21,73 +21,58 @@
     public int ret=0;
     protected void Page_Load(object sender, EventArgs e)
     {
-            string yh_id ="";
-            string fxs_id="";
-            string lx="";
-            if(Session["GYS_YH_ID"]!=null&&Session["GYS_YH_ID"].ToString()!="")
+        string yh_id = "";
+        string fxs_id = "";
+        string lx = "";
+        if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
+        {
+            yh_id = Session["GYS_YH_ID"].ToString();
+        }
+        if (Request["fxs_id"] != null && Request["fxs_id"].ToString() != "")
+        {
+            fxs_id = Request["fxs_id"].ToString();
+        }
+        if (Request["lx"] != null && Request["lx"].ToString() != "")
+        {
+            lx = Request["lx"].ToString();
+        }
+        string sSQL = "";
+        //删除品牌  生产商 删除的是品牌字典表  分销商 删除分销商和品牌对应关系表
+        string ppid_str = "";
+        if (Request["pp_id"] != null && Request["pp_id"].ToString() != "")
+        {
+            ppid_str = Request["pp_id"].ToString();
+        }
+        ppid_str = ppid_str.Trim();
+        while (ppid_str.EndsWith(","))
+        {
+            ppid_str = ppid_str.Substring(0, ppid_str.Length - 1);
+        }
+        string[] ppid_list = new string[ppid_str.Length];
+        string ppid = "";
+        if (lx == "1")  //lx=1为生产商  2分销商为
+        {
+            while (ppid.EndsWith(","))
             {
-                yh_id =Session["GYS_YH_ID"].ToString();
-            }       
-            if(Request["fxs_id"]!=null&&Request["fxs_id"].ToString()!="")
-            {
-                fxs_id=Request["fxs_id"].ToString();
+                ppid = ppid.Substring(0, ppid.Length - 1);
             }
-           if(Request["lx"]!=null&&Request["lx"].ToString()!="")
+
+            sSQL = "delete 品牌字典 where scs_id='" + fxs_id + "' and pp_id in(" + ppid + ")";
+            ret = objConn.ExecuteSQLForCount(sSQL, true);
+
+        }
+        else
+        {
+            while (ppid.EndsWith(","))
             {
-                lx=Request["lx"].ToString();
+                ppid = ppid.Substring(0, ppid.Length - 1);
             }
-             string sSQL="";
-            //删除品牌  生产商 删除的是品牌字典表  分销商 删除分销商和品牌对应关系表
-                    string ppid_str="";
-                    if(Request["pp_id"]!=null&&Request["pp_id"].ToString()!="")
-                    {
-                         ppid_str = Request["pp_id"].ToString();
-                    }
-                    ppid_str = ppid_str.Trim();
-                    while (ppid_str.EndsWith(","))
-                    {
-                          ppid_str = ppid_str.Substring(0, ppid_str.Length - 1);
-                    }               
-                    string[] ppid_list=new string[ppid_str.Length];
-                    string ppid="";
-                 if(lx=="1")  //lx=1为生产商  2分销商为
-                 {         
-                   
-                    if(ppid_str.Contains(","))
-                    { 
-                        ppid_list=ppid_str.Split(',');
-                        for(int i=0;i<ppid_list.Length;i++)
-                        {
-                              sSQL="delete 品牌字典 where scs_id='"+fxs_id+"' and pp_id ='"+ ppid_list[i]+"'";                
-                             ret = objConn.ExecuteSQLForCount(sSQL,true);	
-                        }
-                    }
-                    else
-                    {
-                        ppid=ppid_str;
-                          sSQL="delete 品牌字典 where scs_id='"+fxs_id+"' and pp_id = '"+ ppid+"'";                 
-                         ret = objConn.ExecuteSQLForCount(sSQL,true);	
-                    } 		
-                }
-                else
-                {
-                     if(ppid_str.Contains(","))
-                    { 
-                        ppid_list=ppid_str.Split(',');
-                        for(int i=0;i<ppid_list.Length;i++)
-                        {
-                             sSQL="delete 分销商和品牌对应关系表 where fxs_id='"+fxs_id+"' and pp_id ='"+ ppid_list[i]+"'";              
-                             ret = objConn.ExecuteSQLForCount(sSQL,true);	
-                        }
-                    }
-                    else
-                    {
-                        ppid=ppid_str;
-                         sSQL="delete 分销商和品牌对应关系表 where fxs_id='"+fxs_id+"' and pp_id = '"+ ppid+"'";               
-                         ret = objConn.ExecuteSQLForCount(sSQL,true);	
-                    } 		
-                }
-     }     
+
+            sSQL = "delete 分销商和品牌对应关系表 where fxs_id='" + fxs_id + "' and pp_id in（" + ppid + ")";
+            ret = objConn.ExecuteSQLForCount(sSQL, true);
+
+        }
+    }
     </script>
     <p></p>
     <p></p>
