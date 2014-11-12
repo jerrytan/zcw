@@ -46,7 +46,7 @@
                 this.txt_zhmc.Value = dt_gys.Rows[0]["账户名称"].ToString();
                 this.txt_gsszd.Value = dt_gys.Rows[0]["地区名称"].ToString();
                 this.txt_gsdz.Value = dt_gys.Rows[0]["联系地址"].ToString();
-
+                this.txt_gsjc.Value = dt_gys.Rows[0]["单位简称"].ToString();
                 this.txt_gszy.Value = dt_gys.Rows[0]["主页"].ToString();
                 this.txt_gscz.Value = dt_gys.Rows[0]["传真"].ToString();
                 this.txt_xm2.Value = dt_gys.Rows[0]["联系人"].ToString();
@@ -82,7 +82,7 @@
       <input name="txt_gsmc" type="text" class="hyzhc_shrk" id="txt_gsmc" runat="server"/></td>
     <td width="50" align="right"></td>
     <td width="120">公司简称：</td>
-    <td width="329"><input name="txt_gsjc" type="text" class="hyzhc_shrk" id="txt_gsjc" /></td>
+    <td width="329"><input name="txt_gsjc" type="text" class="hyzhc_shrk" id="txt_gsjc" runat="server" /></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
