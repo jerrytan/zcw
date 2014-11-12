@@ -23,10 +23,9 @@
         public string QQ_id;
         protected void Page_Load(object sender, EventArgs e)
         {
-             if(Session["GYS_YH_ID"]==null)
+             if(Session["GYS_YH_ID"]==null&&Session["CGS_YH_ID"]!=null)
              {
-                QQ_id=Session["CYS_YH_ID"].ToString();
-                
+                QQ_id=Session["CGS_YH_ID"].ToString();
              }
              else
              {
