@@ -30,8 +30,8 @@
             window.close();
             opener.location.href = "cgsgl.aspx";
         }
-		<%	if(Request.Cookies["CGS_QQ_ID"]!=null) {%>
-				setTimeout("doload()",3000);
+		<%	if(Request.Cookies["CGS_QQ_ID"]!=null||Session["CGS_QQ_ID"]!=null) {%>
+			//	setTimeout("doload()",3000);
 		<%} %>
     </script>
 </head>
@@ -40,33 +40,33 @@
     <div class="dlqq">
         <div class="dlqq1">
             <%
-		
+                HttpCookie CGS_QQ_ID = null;
+                string CGS_QQ_ID1 = "";
 			//采购商 
-			HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+                if (Request.Cookies["CGS_QQ_ID"]!=null)
+                {
+                      CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+                }
+
+                if (Session["CGS_YH_ID"] != null)
+                    {
+                        CGS_QQ_ID1 = Session["CGS_YH_ID"].ToString();
+                    }
+                    
             object cgs_yh_id = Session["CGS_YH_ID"];
             string str_cl = Request["cl_id"];	   
             string str_gysid = Request["gys_id"];  //获取页面传过来的供应商id
             string str_sccs = Request["sccs"];     //获取页面传过来的生产厂商
             string str_clid = Request["clid"];     //获取页面传过来的材料id
             string str_clmc = Request["clmc"];     //获取页面传过来的材料名称  
-            string str_clbm = Request["clbm"];     //获取页面传过来的材料编码 
-			string cl_id = "";
-
-
-
-            //Response.Write(str_gysid);
-            //Response.Write(str_sccs);
-            //Response.Write(str_clbm);
-			
-			//供应商 
-			HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
-			object gys_yh_id = Session["GYS_YH_ID"];
+            string str_clbm = Request["clbm"];     //获取页面传过来的材料编码 ;            
 			
 			//采购商 登陆
-			if ((CGS_QQ_ID == null ) || (cgs_yh_id == null))
+            if (CGS_QQ_ID == null && CGS_QQ_ID1=="")
 			{
                 //Response.Write("openid is empty");
             %>
+             <span class="dlzi"><%=CGS_QQ_ID1%> </span>
             <span class="dlzi">尊敬的采购商，您好! </span>
             <span class="dlzi">请点击右边按钮登陆！</span>
             <span class="dlzi2" id="qqLoginBtn"></span>
@@ -84,34 +84,35 @@
 			{
                 DataConn objConn  = new DataConn();
 				//采购商收藏材料
-				if(CGS_QQ_ID.Value !=null && CGS_QQ_ID.Value != "")
+				if(CGS_QQ_ID != null||CGS_QQ_ID1!="")
 				{                 
 					//Response.Write("QQ_id is " + QQ_id.Value + "<p>");
                     //string yh_id = "错误";
                     //string s_count1 = "";
 					try
 					{
-
+                        string qqid = "";
                         DataTable dt_scrxx = new DataTable();
-                        string qqid = CGS_QQ_ID.Value.ToString();
-                        string sql_scrxx = "select yh_id,姓名,QQ号码,dw_id from  用户表 where QQ_id='" + qqid + "'";
+                        string sql_scrxx = "";
+                        if (CGS_QQ_ID==null)
+                        {
+                            qqid = CGS_QQ_ID1;
+                              sql_scrxx = "select yh_id,姓名,QQ号码,dw_id from  用户表 where yh_id='" + qqid + "'";
+                            dt_scrxx = objConn.GetDataTable(sql_scrxx);
+                        }
+                        else
+                        {
+                            qqid = CGS_QQ_ID.Value.ToString();
+                              sql_scrxx = "select yh_id,姓名,QQ号码,dw_id from  用户表 where QQ_id='" + qqid + "'";
+                            dt_scrxx = objConn.GetDataTable(sql_scrxx);
+                        }
+                        Response.Write(sql_scrxx);
                         dt_scrxx = objConn.GetDataTable(sql_scrxx);
-                        string scryhid = dt_scrxx.Rows[0]["yh_id"].ToString();
-                        string scrxm = dt_scrxx.Rows[0]["姓名"].ToString();
-                        string scrqq = dt_scrxx.Rows[0]["QQ号码"].ToString();
-                        string scrdwid = dt_scrxx.Rows[0]["dw_id"].ToString();
-
-                        //Response.Write(scryhid);
-                        //Response.Write(str_clid);
-                        //Response.Write(str_clmc);
-                        //Response.Write(str_clbm);
-                        //Response.Write(scrqq);
-
-
-
-
-                        //Response.Write(scrdwid);
-                        //Response.Write(str_clid);
+                        string scryhid = dt_scrxx.Rows[0]["yh_id"].ToString() == "" ? "" : dt_scrxx.Rows[0]["yh_id"].ToString();
+                        string scrxm = dt_scrxx.Rows[0]["姓名"].ToString() == "" ? "" : dt_scrxx.Rows[0]["姓名"].ToString();
+                        string scrqq = dt_scrxx.Rows[0]["QQ号码"].ToString() == "" ? "" : dt_scrxx.Rows[0]["QQ号码"].ToString();
+                        string scrdwid = dt_scrxx.Rows[0]["dw_id"].ToString() == "" ? "" : dt_scrxx.Rows[0]["dw_id"].ToString();
+                         
                         string sql_clcount = "select * from 采购商关注的材料表 where cl_id ='" + str_clid + "' and dw_id = '" + scrdwid + "'";
                         //Response.Write(objConn.GetRowCount(sql_clcount));
                         if (objConn.GetRowCount(sql_clcount) == 0)

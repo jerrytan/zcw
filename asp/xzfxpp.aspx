@@ -99,10 +99,10 @@
     <center>
 
         <form action="xzfxpp2.aspx" method="post">
-        <input type="hidden" id="scsid" />
-           <input type="hidden" id="pp_id" />
+        <input type="hidden" id="scsid"  runat="server"/>
+           <input type="hidden" id="pp_id" runat="server" />
            <input type="hidden"  runat="server" id="fxs_id" />
-              <input type="hidden" id="pp_name" />
+              <input type="hidden" id="pp_name" runat="server"/>
             <div id="myDiv"></div>
             <table border="0" width="600px">
             <tr>

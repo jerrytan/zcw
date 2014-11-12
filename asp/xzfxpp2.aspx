@@ -20,13 +20,13 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-        string fxs_id = Request["fxsid"];
+        string fxs_id = Request["fxs_id"];
         string dwlx = Request["lx"];             //单位类型 
-        string pp_id = Request["ppid"];	    //品牌id	
-        string pp_name = Request["ppmc"];   //品牌名称   
+        string pp_id = Request["pp_id"];	    //品牌id	
+        string pp_name = Request["pp_name"];   //品牌名称   
         string scsid = Request["scsid"];
 
-        sSQL = "select count(*) from 分销商和品牌对应关系表 where pp_id='" + pp_id + "' and 品牌名称='" + pp_name + "' and 是否启用='1' and fxs_id='" + fxs_id + "' and 生产厂商ID='" + scsid + "'";
+        sSQL = "select count(*) from 分销商和品牌对应关系表 where pp_id='" + pp_id + "' and 品牌名称='" + pp_name + "' and fxs_id='" + fxs_id + "' and 生产厂商ID='" + scsid + "'";
         string count = objConn.DBLook(sSQL);
         if (count == "0")
         {
@@ -38,10 +38,17 @@
         }
         else
         {
-            sSQL = "update 分销商和品牌对应关系表 set 是否启用='1' where 生产商ID='" + scsid + "' and fxs_id='" + fxs_id + "' and 品牌名称='" + pp_name + "' and pp_id='" + pp_id + "' ";
-            objConn.ExecuteSQL(sSQL, true);
-            Response.Write(" <a style='color: Red' onclick=\"clickMe()\">成功代理品牌！</a>");
+            sSQL = "update 分销商和品牌对应关系表 set 是否启用='1' where 生产厂商ID='" + scsid + "' and fxs_id='" + fxs_id + "' and 品牌名称='" + pp_name + "' and pp_id='" + pp_id + "' ";
+            if (objConn.ExecuteSQL(sSQL, true))
+            {
+                Response.Write(" <a style='color: Red' onclick=\"clickMe()\">成功代理品牌！</a>");
+            }
+            else
+            {
+                Response.Write(" <a style='color: Red' onclick=\"clickMe()\">代理品牌失败！！</a>");
+            }
         }
+        
     }
 </script>
  

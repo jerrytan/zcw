@@ -99,6 +99,7 @@
             {
                 yh_id = Session["CGS_YH_ID"];
             }
+          
             string sqlExistQQ_id = "select myID from 用户表 where yh_id='" + yh_id + "'";
             string sql_Level = "select 等级 from 用户表 where yh_id='" + yh_id + "'";
             if (objConn.GetRowCount(sqlExistQQ_id) > 0)
