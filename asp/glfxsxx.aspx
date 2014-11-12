@@ -252,7 +252,7 @@
         }
         if (s_gys_type == "生产商")
         {
-            sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id='" + gys_id + "' order by scs_id "; //查询品牌id
+            sSQL = "select pp_id,品牌名称 from 品牌字典 where isnull(是否启用,'')='1' and scs_id='" + gys_id + "' order by scs_id "; //查询品牌id
             dt_pp_id = objConn.GetDataTable(sSQL);
             if (dt_pp_id != null && dt_pp_id.Rows.Count > 0)
             {
@@ -310,7 +310,7 @@
         str_gysid = id;
         if (str_gysid_type.Equals("生产商"))
         {
-            sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id='" + str_gysid + "' order by myID "; //查询品牌id		
+            sSQL = "select pp_id,品牌名称 from 品牌字典 where isnull(是否启用,'')='1' and scs_id='" + str_gysid + "' order by myID "; //查询品牌id		
             string str_ppid="";
              dt_pp_id = objConn.GetDataTable(sSQL);
             if(dt_pp_id!=null&&dt_pp_id.Rows.Count>0)

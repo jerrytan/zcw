@@ -217,7 +217,7 @@
             this.fl_name2.InnerHtml = Convert.ToString(dt.Rows[0]["分类名称"]);
             this.fl_id.Value = Convert.ToString(dt.Rows[0]["fl_id"]);
         }
-        sSQL = " select 供应商,地址,电话,联系人,联系人手机,单位类型,gys_id from 材料供应商信息表 where  gys_id not in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='" + pp_id +
+        sSQL = " select 供应商,地址,电话,联系人,联系人手机,单位类型,gys_id from 材料供应商信息表 where isnull(是否启用,'')='1' and gys_id not in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='" + pp_id +
             "' and 品牌名称='" + pp_mc + "' and 生产厂商ID='"+scs_id+"')";
         dt_fxs = Conn.GetDataTable(sSQL);
         
@@ -335,7 +335,7 @@
                           <td align="center"><%=dr["联系人"]%></td>
                           <td align="center"><%=dr["联系人手机"]%></td>
                           <td align="center"><%=dr["单位类型"]%></td>
-                          <td align="center"><a href="cyfxsxx.htm" target="_blank"><img src="images/chayue.gif" width="37" height="20" /></a></td>
+                          <td align="center"><a href="cyfxsxx.aspx?gys_id=<%=dr["gys_id"] %>" target="_blank"><img src="images/chayue.gif" width="37" height="20" /></a></td>
                        </tr>
               <%  } %>       
       <%  } %>
