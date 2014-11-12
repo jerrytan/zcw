@@ -242,7 +242,7 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
-        gys_id = Request.QueryString["gys_id"].ToString();
+        gys_id = Request["gys_id"].ToString();
         this.lblgys_id.Value = gys_id;
         sSQL = "select 单位类型 from 材料供应商信息表 where gys_id='"+gys_id+"'";
         DataTable dt_type = objConn.GetDataTable(sSQL);

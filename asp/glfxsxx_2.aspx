@@ -47,10 +47,10 @@
     function Delete_gs() {
         var table = document.getElementById("table2");
         var input = table.getElementsByTagName("input");
-        var gs_id = "";
+        var fxs_id = "";
         for (var i = 0; i < input.length; i++) {
             if (input[i].type == "checkbox" && input[i].checked) {
-                gs_id += Trim(input[i].value) + ",";
+                fxs_id += Trim(input[i].value) + ",";
             }
         }
         var xmlhttp;
@@ -73,7 +73,9 @@
                 }
             }
         }
-        xmlhttp.open("GET", "glfxsxx_2_ajax.aspx?gs_id=" + gs_id, true);
+        var pp_id = document.getElementById("ppid").value;
+        var gys_id = document.getElementById("lblgys_id").value;
+        xmlhttp.open("GET", "glfxsxx_2_ajax.aspx?gys_id="+gys_id+"&pp_id="+pp_id+"&fxs_id=" + fxs_id, true);
         xmlhttp.send();
     }
 

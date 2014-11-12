@@ -105,7 +105,6 @@ public partial class asp_gyszc : System.Web.UI.Page
       
 
         qymc=this.x.Value+this.sj.Value+this.xsj.Value;
-        Response.Write(qymc);
         sqlAddGys = "insert into 材料供应商信息表 (供应商,主页,地址,电话,传真,联系人,联系人手机,是否启用,单位类型,"
         + "单位简称,地区名称,法定代表人,注册资金,邮编,电子邮箱,开户银行,银行账户,账户名称,资质等级,经营范围,"
         + "备注,注册日期,企业员工人数,资产总额,注册级别,企业类别,营业执照注册号,updatetime,单位QQ号)"

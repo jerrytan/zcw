@@ -67,10 +67,10 @@
         }
     }
 </script>
-<DIV class=box>
+<DIV class="box" style="padding-left:120px">
 <table width="1000" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px;">
   <tr>
-    <td height="34" colspan="6" align="center" bgcolor="#d9e5fd" style="font-size:14px; font-weight:bold;">新增分销商信息</td>
+    <td height="34" colspan="6" align="center" bgcolor="#d9e5fd" style="font-size:14px; font-weight:bold;">查阅分销商信息</td>
   </tr>
   <tr>
     <td height="20" colspan="6" align="right"></td>
@@ -79,121 +79,121 @@
     <td width="50" height="30">&nbsp;</td>
     <td width="120">公司名称：</td>
     <td width="329"><label for="textfield"></label>
-      <input name="txt_gsmc" type="text" class="hyzhc_shrk" id="txt_gsmc" runat="server"/></td>
+      <input name="txt_gsmc" type="text" class="hyzhc_shrk" id="txt_gsmc" runat="server" readonly /></td>
     <td width="50" align="right"></td>
     <td width="120">公司简称：</td>
-    <td width="329"><input name="txt_gsjc" type="text" class="hyzhc_shrk" id="txt_gsjc" runat="server" /></td>
+    <td width="329"><input name="txt_gsjc" type="text" class="hyzhc_shrk" id="txt_gsjc" runat="server" readonly /></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>营业执照注册号：</td>
-    <td><input name="txt_yyzzzch" type="text" class="hyzhc_shrk" id="txt_yyzzzch" runat="server"/></td>
+    <td><input name="txt_yyzzzch" type="text" class="hyzhc_shrk" id="txt_yyzzzch" runat="server" readonly/></td>
     <td>&nbsp;</td>
     <td>公司QQ号：</td>
-    <td><input name="txt_gsQQ" type="text" class="hyzhc_shrk" id="txt_gsQQ" runat="server"/></td>
+    <td><input name="txt_gsQQ" type="text" class="hyzhc_shrk" id="txt_gsQQ" runat="server" readonly/></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>公司注册日期：</td>
-    <td><input name="txt_zcrq" type="text" class="hyzhc_shrk" id="txt_zcrq" runat="server"/></td>
+    <td><input name="txt_zcrq" type="text" class="hyzhc_shrk" id="txt_zcrq" runat="server" readonly/></td>
     <td>&nbsp;</td>
     <td>法定代表人：</td>
-    <td><input name="txt_fddbr" type="text" class="hyzhc_shrk" id="txt_fddbr" runat="server" /></td>
+    <td><input name="txt_fddbr" type="text" class="hyzhc_shrk" id="txt_fddbr" runat="server" readonly /></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>资产总额（万元）：</td>
-    <td><input name="txt_zcze" type="text" class="hyzhc_shrk" id="txt_zcze" runat="server"/></td>
+    <td><input name="txt_zcze" type="text" class="hyzhc_shrk" id="txt_zcze" runat="server" readonly/></td>
     <td>&nbsp;</td>
     <td>注册资金（万元）：</td>
-    <td><input name="txt_zczj" type="text" class="hyzhc_shrk" id="txt_zczj" runat="server"/></td>
+    <td><input name="txt_zczj" type="text" class="hyzhc_shrk" id="txt_zczj" runat="server" readonly/></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>资质等级</td>
-    <td><input type="text" class="hyzhc_shrk" id="txt_zzdj" runat="server"/></td>
+    <td><input type="text" class="hyzhc_shrk" id="txt_zzdj" runat="server" readonly/></td>
     <td>&nbsp;</td>
     <td>注册级别</td>
-    <td><input type="text" class="hyzhc_shrk" id="txt_zcjb" runat="server"/></td>
+    <td><input type="text" class="hyzhc_shrk" id="txt_zcjb" runat="server" readonly/></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>开户银行：</td>
-    <td><input name="txt_khyh" type="text" class="hyzhc_shrk" id="txt_khyh" runat="server" /></td>
+    <td><input name="txt_khyh" type="text" class="hyzhc_shrk" id="txt_khyh" runat="server" readonly /></td>
     <td>&nbsp;</td>
     <td>企业类别</td>
-    <td><input type="text" class="hyzhc_shrk" id="txt_qylb" runat="server" /></td>
+    <td><input type="text" class="hyzhc_shrk" id="txt_qylb" runat="server" readonly /></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>账户名称：</td>
-    <td><input name="txt_zhmc" type="text" class="hyzhc_shrk" id="txt_zhmc" runat="server"/></td>
+    <td><input name="txt_zhmc" type="text" class="hyzhc_shrk" id="txt_zhmc" runat="server" readonly/></td>
     <td>&nbsp;</td>
     <td>单位类型：</td>
-    <td><input type="text" class="hyzhc_shrk" id="txt_dwlx" runat="server"/></td>
+    <td><input type="text" class="hyzhc_shrk" id="txt_dwlx" runat="server" readonly/></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>公司所在地：</td>
     <td><span class="fl">
-      <input type="text" class="hyzhc_shrk" id="txt_gsszd" runat="server"/>
+      <input type="text" class="hyzhc_shrk" id="txt_gsszd" runat="server" readonly/>
       
     </span></td>
     <td>&nbsp;</td>
     <td>银行账户：</td>
-    <td><input name="txt_yhzh" type="text" class="hyzhc_shrk" id="txt_yhzh" runat="server" /></td>
+    <td><input name="txt_yhzh" type="text" class="hyzhc_shrk" id="txt_yhzh" runat="server" readonly /></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>公司地址：</td>
-    <td><input name="txt_gsdz" type="text" class="hyzhc_shrk" id="txt_gsdz" runat="server" /></td>
+    <td><input name="txt_gsdz" type="text" class="hyzhc_shrk" id="txt_gsdz" runat="server" readonly /></td>
     <td>&nbsp;</td>
     <td>企业员工人数：</td>
-    <td><input name="txt_qyygrs" type="text" class="hyzhc_shrk" id="txt_qyygrs" runat="server" /></td>
+    <td><input name="txt_qyygrs" type="text" class="hyzhc_shrk" id="txt_qyygrs" runat="server" readonly /></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>公司主页：</td>
-    <td><input name="txt_gszy" type="text" class="hyzhc_shrk" id="txt_gszy" runat="server" /></td>
+    <td><input name="txt_gszy" type="text" class="hyzhc_shrk" id="txt_gszy" runat="server" readonly /></td>
     <td>&nbsp;</td>
     <td>公司电话：</td>
-    <td><input name="txt_gsdh" type="text" class="hyzhc_shrk" id="txt_gsdh" runat="server" /></td>
+    <td><input name="txt_gsdh" type="text" class="hyzhc_shrk" id="txt_gsdh" runat="server" readonly /></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>公司传真：</td>
-    <td><input name="txt_gscz" type="text" class="hyzhc_shrk" id="txt_gscz" runat="server"/></td>
+    <td><input name="txt_gscz" type="text" class="hyzhc_shrk" id="txt_gscz" runat="server" readonly/></td>
     <td>&nbsp;</td>
     <td>公司邮编：</td>
-    <td><input name="txt_gsyb" type="text" class="hyzhc_shrk" id="txt_gsyb" runat="server" /></td>
+    <td><input name="txt_gsyb" type="text" class="hyzhc_shrk" id="txt_gsyb" runat="server" readonly /></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>联系人姓名：</td>
-    <td><input name="txt_xm2" type="text" class="hyzhc_shrk" id="txt_xm2" runat="server" /></td>
+    <td><input name="txt_xm2" type="text" class="hyzhc_shrk" id="txt_xm2" runat="server" readonly /></td>
     <td>&nbsp;</td>
     <td>联系人地址：</td>
-    <td><input name="txt_szbm2" type="text" class="hyzhc_shrk" id="txt_szbm2" runat="server"  /></td>
+    <td><input name="txt_szbm2" type="text" class="hyzhc_shrk" id="txt_szbm2" runat="server" readonly  /></td>
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
     <td>联系人手机：</td>
-    <td><input name="txt_sj2" type="text" class="hyzhc_shrk" id="txt_sj2" runat="server" /></td>
+    <td><input name="txt_sj2" type="text" class="hyzhc_shrk" id="txt_sj2" runat="server" readonly/></td>
     <td>&nbsp;</td>
     <td>联系人邮箱：</td>
-    <td><input name="txt_yx2" type="text" class="hyzhc_shrk" id="txt_yx2" runat="server" /></td>
+    <td><input name="txt_yx2" type="text" class="hyzhc_shrk" id="txt_yx2" runat="server" readonly/></td>
   </tr>
   <tr>
     <td height="40">&nbsp;</td>
     <td>经营范围：</td>
     <td colspan="4" height="90px"><label for="textfield21"></label>
-      <textarea class="hyzhc_shrk2" cols="40" id="yyfw" name="yyfw" runat="server"  rows="6" style="30%" ></textarea></td>
+      <textarea class="hyzhc_shrk2" cols="40" id="yyfw" name="yyfw" runat="server"  rows="6" style="30%" readonly ></textarea></td>
   </tr>
   <tr>
     <td height="66">&nbsp;</td>
     <td>备 注：</td>
-    <td colspan="4" height="60px"><textarea class="hyzhc_shrk3" runat="server" cols="40" id="bz" name="bz" rows="6" style="30%"></textarea></td>
+    <td colspan="4" height="60px"><textarea class="hyzhc_shrk3" runat="server" cols="40" id="bz" name="bz" rows="6" style="30%" readonly></textarea></td>
   </tr>
-</table>
+</table></DIV>
 </BODY>
 </html>

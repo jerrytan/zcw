@@ -136,7 +136,6 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
             int order = sql.ToUpper().IndexOf("ORDER BY");
             if (order > 0)
             {
-
                 string left = sql.Substring(0, order);
                 string right = sql.Substring(order, sql.Length - order);
                 sSQL = "select * from (select *,row_number() over (" + right + ")as 编号 from (" + left + ")tb) T where T.编号 between " + begin.ToString() + " and " + end.ToString();
