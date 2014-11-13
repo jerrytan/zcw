@@ -103,19 +103,23 @@
 			  if (!Page.IsPostBack)
             {
 				cl_id = Request["cl_id"];
-
-				string str_sqlclname = "select 生产厂商,gys_id,显示名,fl_id,材料编码 from 材料表 where cl_id='"+cl_id+"' ";           
+                String fl_id="";
+				string str_sqlclname = "select 生产厂商,gys_id,显示名,fl_id,材料编码 from 材料表 where cl_id='"+cl_id+"' "; 
+                             
 				dt_clxx = dc_obj.GetDataTable(str_sqlclname);
+                if(dt_clxx!=null&&dt_clxx.Rows.Count>0)
+                {
                 gys_id = dt_clxx.Rows[0]["gys_id"].ToString();
                 sccs = dt_clxx.Rows[0]["生产厂商"].ToString();
                 clmc = dt_clxx.Rows[0]["显示名"].ToString();
                 clbm = dt_clxx.Rows[0]["材料编码"].ToString();
+                fl_id=dt_clxx.Rows[0]["fl_id"].ToString();
+                }
 
 				 //材料表访问计数加1
 				string str_updatecounter = "update 材料表 set 访问计数 = (select 访问计数 from 材料表 where cl_id = '"+ cl_id +"')+1 where cl_id = '"+ cl_id +"'";   
-				dc_obj.ExecuteSQL(str_updatecounter,true);
-				
-				string fl_id = Convert.ToString(dt_clxx.Rows[0]["fl_id"]);
+				dc_obj.ExecuteSQL(str_updatecounter,true);				
+				 
 				string str_sqlxsmz = "select 显示名字,分类编码 from 材料分类表 where fl_id='"+fl_id+"' ";           
 				dt_flxx = dc_obj.GetDataTable(str_sqlxsmz);
 				
@@ -124,8 +128,7 @@
 				
 				string str_sqlgysxx =  "select 供应商,联系人,电话,传真,主页,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='"+cl_id+"') ";
 				dt_scsxx = dc_obj.GetDataTable(str_sqlgysxx);
-                <%--Response.Write(dt_scsxx.Rows[0]["供应商"]);--%>
-				
+               
 				string str_sqltop3 =  "select top 3 存放地址,材料名称 from 材料多媒体信息表 where cl_id='"+cl_id+"' and 媒体类型 = '图片'";        
 				dt_image = dc_obj.GetDataTable(str_sqltop3);
 				
@@ -362,7 +365,7 @@
                         {
                             %>
                                  <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a id="A1"
-                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">
+                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>','<%=cl_id %>','<%=clmc %>','<%=clbm %>')">
                      请收藏，便于查找</a> </span>
                             <%
                         }
@@ -562,7 +565,40 @@
     <script type="text/javascript">
         function NewWindow(number, ppid, gysid, sccs, clid, clmc, clbm) {
             var url = "sccl.aspx?cl_id=" + number + "|" + ppid + "&gys_id=" + gysid + "&sccs=" + sccs+"&clid="+clid+"&clmc="+clmc+"&clbm="+clbm;        //cl_id="0801A01|183"
-            window.open(url, "", "height=400,width=400,top=100,left=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+          //  window.open(url, "", "height=400,width=400,top=100,left=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+            var xmlhttp;
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else
+            {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function ()
+            {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                {
+                    var value = xmlhttp.responseText;
+
+                    if (value == "1")
+                    {
+                        alert("收藏成功！");
+                        window.location.reload();
+                    }
+                    else if (value == "0")
+                    {
+                        window.open("cgsdl.aspx", "", "height=400,width=400,top=100,left=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+                    }
+                    else
+                    {
+                        alert(value);
+                    }
+                }
+            }
+
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
         }
         function changeImage(src) {
             document.getElementById("bigImage").src = src;

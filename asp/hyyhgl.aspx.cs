@@ -39,54 +39,46 @@ public partial class asp_hyyhgl : System.Web.UI.Page
     string SQL = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        //蒋，2014年11月7日注释,并重新添加取值
-        //HttpCookie QQ_id;
-        //if (Request.Cookies["GYS_QQ_ID"] == null)
-        //{
-        //    QQ_id = Request.Cookies["CGS_QQ_ID"];
-        //}
-        //else
-        //{
-        //    QQ_id = Request.Cookies["GYS_QQ_ID"];
-        //}
-        //if (QQ_id != null)
-        //{
-        //    string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + QQ_id.Value + "'";
-        //    dt_Yh = dc.GetDataTable(str_Sql);
-        //}  
-        if (Request["QQ"] != null && Request["QQ"].ToString() != "")
+        if (Request.Cookies["GYS_QQ_ID"]!=null||Request.Cookies["CGS_QQ_ID"]!=null)
         {
-            QQ = Request["QQ"].ToString();
-            string str_Sql = "select 姓名,yh_id,类型 from 用户表 where QQ号码='" + QQ + "'";
-            dt_Yh = dc.GetDataTable(str_Sql);
-            this.lx.Value = dt_Yh.Rows[0]["类型"].ToString();
+            HttpCookie QQ_id=null;
+            if (Request.Cookies["GYS_QQ_ID"]!=null)
+            {
+                QQ_id = Request.Cookies["GYS_QQ_ID"];
+            }
+            if ( Request.Cookies["CGS_QQ_ID"]!=null)
+            {
+                QQ_id = Request.Cookies["CGS_QQ_ID"];
+            }
+            if (QQ_id != null)
+            {
+                string str_Sql = "select 姓名,yh_id,dw_id,类型 from 用户表 where QQ_id='" + QQ_id.Value + "'";
+                dt_Yh = dc.GetDataTable(str_Sql);
+            }
         }
-        string sql_dwid;
-        if (Session["GYS_YH_ID"]!=null&&Session["GYS_YH_ID"].ToString()!="")
-	    {
-		    string gys_id=Session["GYS_YH_ID"].ToString();
-            this.gys_dw_id.Value = gys_id;
-            //string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-            sql_dwid = "select dw_id from 用户表 where QQ号码='"+QQ+"'";
-	    }
         else
         {
-            string cgs_QQ_id = Request["QQ"].ToString();
-            sql_dwid = "select dw_id from 用户表 where QQ号码='" + cgs_QQ_id + "'";
+            string s_yh_id = "";
+            //新增的QQ登录方式
+            if (Session["CGS_YH_ID"] != null)
+            {
+                s_yh_id = Session["CGS_YH_ID"].ToString();
+            }
+            if (Session["GYS_YH_ID"] != null)
+            {
+                s_yh_id = Session["GYS_YH_ID"].ToString();
+            }
+            string sql = "select 姓名,yh_id,dw_id,类型 from 用户表 where yh_id='" + s_yh_id + "'";
+            dt_Yh = dc.GetDataTable(sql);
         }
-        //if (Request.Cookies["GYS_QQ_ID"]!=null)
-        //{
-        //    string gys_QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
-        //    sql_dwid = "select dw_id from 用户表 where QQ_id='" + gys_QQ_id + "'";
-        //}
-        //else
-        //{
-        //    string cgs_QQ_id = Request.Cookies["CGS_QQ_ID"].Value.ToString();
-        //    sql_dwid = "select dw_id from 用户表 where QQ_id='" + cgs_QQ_id + "'";
-        //}
-
-        int dwid = Convert.ToInt32(dc.DBLook(sql_dwid));
-
+        string sql_dwid="0";
+        if (dt_Yh!=null&&dt_Yh.Rows.Count>0)
+        {
+            sql_dwid = dt_Yh.Rows[0]["dw_id"].ToString();
+            this.lx.Value = dt_Yh.Rows[0]["类型"].ToString();
+            this.gys_dw_id.Value = sql_dwid;
+        }
+        int dwid = Convert.ToInt32(sql_dwid);
 
         //从查询字符串中获取"页号"参数
         string strP = Request.QueryString["p"];

@@ -161,11 +161,13 @@
                 </tr>
             </thead>
             <tbody>
-                <%foreach (System.Data.DataRow dr in dt_topfxs.Rows)
-                  { %>
+                <% if (dt_topfxs != null)
+                   {
+                       foreach (System.Data.DataRow dr in dt_topfxs.Rows)
+                       { %>
                 <tr>
                     <td align="center" style="display: none">
-                        <%=dr["gys_id"] %>
+                        <%=dr["gys_id"]%>
                     </td>
                     <td align="center">
                         <input type="checkbox" name="checkbox" />
@@ -193,8 +195,9 @@
                         <%-- </a>--%>
                     </td>
                 </tr>
-                <%} %>
-                <%if (dt_topfxs.Rows.Count < 10)
+                <%}
+                   } %>
+                <%if (dt_topfxs!=null&&dt_topfxs.Rows.Count < 10)
                   {
                       for (int i = 0; i < 4 - dt_topfxs.Rows.Count; i++)
                       {%>

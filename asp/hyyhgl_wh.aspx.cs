@@ -13,7 +13,8 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         State = Convert.ToInt32(Request.QueryString["state"]);
-        lx = Request.QueryString["lx"];
+     
+        lx = Request["lx"];       
         if (State == 1)
         {
             if (!IsPostBack)
@@ -29,7 +30,7 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                     this.cbx3.Checked = Convert.ToBoolean(Request.QueryString["cl"].Trim());
                     this.txt_QQ.Disabled = true;
                 }
-                else
+                else if (lx == "分销商")
                 {
                     this.txt_QQ.Value = Request.QueryString["qq"].Trim();
                     this.txt_name.Value = Request.QueryString["name"].Trim();
@@ -37,6 +38,13 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                     this.txt_Email.Value = Request.QueryString["email"].Trim();
                     this.Checkbox1.Checked = Convert.ToBoolean(Request.QueryString["fxs"].Trim());
                     this.Checkbox2.Checked = Convert.ToBoolean(Request.QueryString["cl"].Trim());
+                    this.txt_QQ.Disabled = true;
+                }
+                else {
+                    this.txt_QQ.Value = Request.QueryString["qq"].Trim();
+                    this.txt_name.Value = Request.QueryString["name"].Trim();
+                    this.txt_phone.Value = Request.QueryString["phone"].Trim();
+                    this.txt_Email.Value = Request.QueryString["email"].Trim();
                     this.txt_QQ.Disabled = true;
                 }
             }
@@ -91,7 +99,7 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                 power = power.TrimEnd(',');
             }
         }
-        else
+        else if(lx=="分销商")
         {
             if (Checkbox1.Checked == false && Checkbox2.Checked == false)
             {
@@ -111,30 +119,24 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                 power = power.TrimEnd(',');
             }
         }
+         
             string sqlIsExistQQ = "select * from 用户表 where QQ号码='" + this.txt_QQ.Value + "' "; //查询QQ是否存在
             string dw_id = Request.QueryString["gys_dw_id"];
-            if (Session["GYS_QQ_ID"] != null)//更换Request.Cookies["GYS_QQ_ID"]为Session["GYS_QQ_ID"]
-            {
+             
                 sql_Add = "insert into 用户表 (QQ号码,姓名,手机,邮箱,等级,角色权限,dw_id,类型,注册时间,updatetime) values ('" + this.txt_QQ.Value + "'"
                 + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','" + this.txt_Email.Value + "','普通用户','" + power + "',"
                 + "'"+dw_id+"','"+lx+"',getdate(),getdate())";
-            }
-            else
-            {
-                sql_Add = "insert into 用户表 (QQ号码,姓名,手机,邮箱,等级,角色权限,dw_id,类型,注册时间,updatetime) values ('" + this.txt_QQ.Value + "'"
-               + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','" + this.txt_Email.Value + "','普通用户','" + power + "',"
-               + "'"+dw_id+"','"+lx+"',getdate(),getdate())";
-            }
 
-            string sql_AddYh_id = "update 用户表 set yh_id=myID where QQ号码='" + this.txt_QQ.Value + "';";
-            string sqlAll = sql_Add + sql_AddYh_id;
+
+                  sql_Add += "update 用户表 set yh_id=myID where QQ号码='" + this.txt_QQ.Value + "';";
+             
 
             if (dc.GetRowCount(sqlIsExistQQ) > 0)
             {
                 Response.Write("<script>window.alert('该QQ已注册');</script>");
                 return;
             }
-            if (dc.RunSqlTransaction(sqlAll))
+            if (dc.RunSqlTransaction(sql_Add))
             {
                 Response.Write("<script>window.alert('添加成功');</script>");
                 Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
@@ -168,7 +170,7 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
             }
             power = power.TrimEnd(',');
         }
-        else
+        else if(lx=="分销商")
         {
             if (this.Checkbox1.Checked == true)
             {

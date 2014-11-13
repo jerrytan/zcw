@@ -78,6 +78,7 @@
         function addPage() {
         var lx= document.getElementById("lx").value;
         var gys_dw_id=document.getElementById("gys_dw_id").value;
+        alert(gys_dw_id)
             newwin = window.open('hyyhgl_wh.aspx?gys_dw_id='+gys_dw_id+'&lx='+lx+'&state=0', 'myWindow', 'height=300px,width=390px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
         //修改
@@ -89,7 +90,7 @@
             var phone = Trim(tds[4].innerHTML);
             var email = Trim(tds[5].innerHTML);
             var scs;var fxs;var cl;
-           <%if (Session["GYS_QQ_ID"] != null){ %>//Request.Cookies["GYS_QQ_ID"]改成Session["GYS_QQ_ID"]
+           <%if (Request.Cookies["GYS_QQ_ID"]!=null||Session["GYS_YH_ID"] != null){ %>//Request.Cookies["GYS_QQ_ID"]改成Session["GYS_QQ_ID"]
                 scs = tds[6].childNodes[1].checked;
                 fxs = tds[6].childNodes[3].checked;
                 cl = tds[6].childNodes[5].checked;
@@ -138,33 +139,71 @@
     <div class="topx">
         <a href="index.aspx"><img src="images/topx_02.jpg" /></a>
     </div>
-
+    <%
+        HttpCookie GYS_QQ_ID = null;
+        Object gys_yh_id = null;
+        HttpCookie CGS_QQ_ID = null;
+        Object cgs_yh_id = null;
+        string gys_yh_id1 = "";
+        string cgs_yh_id1 = "";
+         %>
+    <%if (Request.Cookies["GYS_QQ_ID"] != null || Request.Cookies["CGS_QQ_ID"] != null) %>
+    <%{ %>
       <%         
-            //HttpCookie GYS_QQ_ID = Session["GYS_QQ_ID"];更换成Session
-          Object GYS_QQ_ID = Session["GYS_QQ_ID"];
-            Object gys_yh_id = Session["GYS_YH_ID"];  
+         GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
+          gys_yh_id = Session["GYS_YH_ID"];
 
-            //HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];//更换成Session
-            Object CGS_QQ_ID = Session["CGS_QQ_ID"];
-            Object cgs_yh_id = Session["CGS_YH_ID"];     
-    
-              
-            //采购商登录
-             if(((GYS_QQ_ID == null ) || (gys_yh_id == null ))&&((CGS_QQ_ID != null ) && (cgs_yh_id != null)))
-            {
+          CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+          cgs_yh_id = Session["CGS_YH_ID"];
+
+
+        //采购商登录
+        if (((GYS_QQ_ID == null) || (gys_yh_id == null)) && ((CGS_QQ_ID != null) && (cgs_yh_id != null)))
+        {
     %>
              <div class="anniu"><a  href="QQ_out.aspx" target="_self">采购商登出</a></div>
     <%
-            }
-            //供应商登录
-            else if(((CGS_QQ_ID == null ) || (cgs_yh_id == null))&&((GYS_QQ_ID != null ) && (gys_yh_id != null )))
-            {
+        }
+        //供应商登录
+        else if (((CGS_QQ_ID == null) || (cgs_yh_id == null)) && ((GYS_QQ_ID != null) && (gys_yh_id != null)))
+        {
     %>
                  <div class="anniu"><a  href="QQ_out.aspx" target="_self">供应商登出</a></div>
 				 <div class="anniu"><a  href="gyszym.aspx" target="_self">供应商主页面</a></div>
     <%
-            }
+        }
     %>
+    <%} %>
+    <%else %>
+    <%{ %>
+       <%
+           
+           if (Session["GYS_YH_ID"]!=null)
+           {
+               gys_yh_id1 = Session["GYS_YH_ID"].ToString();
+           }
+           if (Session["CGS_YH_ID"]!=null)
+           {
+               cgs_yh_id1 = Session["CGS_YH_ID"].ToString();
+           }
+           %>
+            <%if (gys_yh_id1 == "" && cgs_yh_id1 != "") { 
+              %>
+              <div class="anniu"><a  href="QQ_out.aspx" target="_self">采购商登出</a></div>
+            <%  }%>
+              <%if (gys_yh_id1 == "" && cgs_yh_id1 == "") { 
+              %>
+             <div class="anniu"><a href="gysdl.aspx" target="_self">供应商登录</a></div>
+                <div class="anniu"><a  href="cgsdl.aspx" target="_self">采购商登录</a></div>
+            <%  }%>
+              <%if (gys_yh_id1 != "" && cgs_yh_id1 == "") { 
+              %>
+               <div class="anniu"><a  href="QQ_out.aspx" target="_self">供应商登出</a></div>
+				 <div class="anniu"><a  href="gyszym.aspx" target="_self">供应商主页面</a></div>
+            <%  }%>
+    <%} %>
+      
+           
     <div class="gyzy0">
         <div class="gyzy">
             尊敬的
@@ -249,7 +288,7 @@
                     <th align="center">
                         <strong>邮箱</strong>
                     </th>
-                    <%if (Session["GYS_QQ_ID"] != null)
+                    <%if (Request.Cookies["GYS_QQ_ID"] != null || Session["GYS_YH_ID"] != null)
                       { %>
                     <th align="center">
                         <strong>角色权限</strong>
@@ -283,7 +322,7 @@
                         <%=listGys[i].Email%>
                     </td>
 
-                    <%if (Session["GYS_QQ_ID"] != null)
+                    <%if (gys_yh_id1 != "" || GYS_QQ_ID != null)
                       { %>
                     <td>
                         <%string powerGys = listGys[i].Power.ToString(); %>

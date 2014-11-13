@@ -10,6 +10,7 @@
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
+<%@ Page Language="C#" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -97,7 +98,7 @@
 
         protected string gys_id;    //供应商id
         protected string gys_type;  //供应商类型：生产商和分销商
-        protected string gys_addr;
+        protected string gys_addr="";
         protected string address;  //供应商地址
         protected DataConn dc = new DataConn();
         protected DataTable dt_content = new DataTable(); //分页后存放的分销商信息
@@ -120,7 +121,7 @@
             {
                 gys_id = Request["gys_id"];   //获取供应商id 
 
-			    string str_sqlclgys = "select 供应商,单位类型,联系人,联系人手机,联系地址 from 材料供应商信息表 where  gys_id='"+gys_id+"'";            
+			    string str_sqlclgys = "select 供应商,单位类型,联系人,联系人手机,联系地址,传真,主页 from 材料供应商信息表 where  gys_id='"+gys_id+"'";            
                 dt_gysxx = dc.GetDataTable(str_sqlclgys);
 
                 //访问计数加1
@@ -288,56 +289,97 @@
             <span class="gytu">
                 <img src="images/133123_03.jpg" /></span>
             <div class="gycs">
-            <% foreach(System.Data.DataRow row in dt_gysxx.Rows){
-            gys_addr = row["联系地址"].ToString();%>
+            <% if (dt_gysxx != null && dt_gysxx.Rows.Count > 0)
+               {
+                   gys_addr = dt_gysxx.Rows[0]["联系地址"].ToString();%>
  <ul>
-   <li>厂名：<a href="#" class="fxsa"><%=row["供应商"].ToString() %></a></li>
-   <li>联系人：<%=row["联系人"].ToString() %></li>
-   <li>电话：<%=row["联系人手机"].ToString() %></li> 
-   <li>传真：0595-86383948</li>
-   <li>主页：wwww.xishijituan.com</li>  
+   <li>厂名：<a href="#" class="fxsa"><%=dt_gysxx.Rows[0]["供应商"].ToString()%></a></li>
+   <li>联系人：<%=dt_gysxx.Rows[0]["联系人"].ToString()%></li>
+   <li>电话：<%=dt_gysxx.Rows[0]["联系人手机"].ToString()%></li> 
+   <li>传真：<%=dt_gysxx.Rows[0]["传真"].ToString()%></li>
+   <li>主页：<%=dt_gysxx.Rows[0]["主页"].ToString()%></li>  
    <li>地址：<%=gys_addr%></li></ul>
-<%--   <div  style="height:22px; line-height:22px;"><a href="#"><img src="images/shoucang.gif" width="56" height="22" /></a></div>--%>
-  <%} %>
-  </div>
-			 <%
-				//供应商
-				HttpCookie GYS_QQ_id = Request.Cookies["GYS_QQ_ID"];   
-				Object GYS_YH_id = Session["GYS_YH_ID"];
-				
-				HttpCookie CGS_QQ_id = Request.Cookies["CGS_QQ_ID"];
-				Object CGS_YH_id = Session["CGS_YH_ID"];
-				
-				if (Request.Cookies["GYS_QQ_ID"]!=null&& Request.Cookies["GYS_QQ_ID"].Value.ToString()!="")
-				{
-					QQ_id= Request.Cookies["GYS_QQ_ID"].Value.ToString();
-				}
-				if(QQ_id != "")
-				{	            
-					string str_sqlyhid  = "select yh_id from 用户表 where QQ_id = '" + QQ_id + "'";
-					yh_id = dc.DBLook(str_sqlyhid);
-					if(yh_id != null && yh_id != "" )
-					{
-						//只要该供应商有审核 或者 该QQ已经认领
-						string str_sql = "select 审批结果 from  供应商认领申请表 where gys_id ='" + gys_id + "' or yh_id ='" + yh_id + "' ";
-						pass = dc.DBLook(str_sql);
-					}
-				}		
-				
-			%>
-			
-			<%	
-			if(GYS_QQ_id != null && GYS_YH_id != null)//说明已经供应商已经登录成功
-			{
-				%>
-		<%	}else{%>
-				<div class="gyan1"><a href="" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
-		<%	}%>
-					
+ <%} %>
+            </div>
+            <%if (Request.Cookies["GYS_QQ_ID"] != null || Request.Cookies["CGS_QQ_ID"] != null)
+              { %>
+            <%
+                //供应商
+                HttpCookie GYS_QQ_id = Request.Cookies["GYS_QQ_ID"];
+                Object GYS_YH_id = Session["GYS_YH_ID"];
+
+                HttpCookie CGS_QQ_id = Request.Cookies["CGS_QQ_ID"];
+                Object CGS_YH_id = Session["CGS_YH_ID"];
+
+                if (Request.Cookies["GYS_QQ_ID"] != null && Request.Cookies["GYS_QQ_ID"].Value.ToString() != "")
+                {
+                    QQ_id = Request.Cookies["GYS_QQ_ID"].Value.ToString();
+                }
+                if (QQ_id != "")
+                {
+                    string str_sqlyhid = "select dw_id from 用户表 where QQ_id = '" + QQ_id + "'";
+                    string dwid = dc.DBLook(str_sqlyhid);
+                    if (dwid != "")
+                    {
+                        string sql = "select count(*) from 采购商关注供应商表 where dw_id='" + dwid + "' and gys_id='" + gys_id + "'";
+                        int count = Convert.ToInt32(dc.DBLook(sql));
+                        if (count > 0)
+                        {%>
+            <span class="xx4_1" style="display: block; margin-left: 40%; margin-right: auto;"><a
+                href="javascript:void(0)">已收藏</a> </span>
+            <%}
+              else
+              { %>
+            <div class="gyan1">
+                <a href="javascript:void(0)" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
+            <% }
+          }
+      }
+    }%>
+            <%else
+                { %>
+            <%
+                //供应商                     
+                string YH_id = "";
+                if (Session["GYS_YH_ID"] != null)
+                {
+                    YH_id = Session["GYS_YH_ID"].ToString();
+                }
+
+
+                if (Session["CGS_YH_ID"] != null)
+                {
+                    YH_id = Session["CGS_YH_ID"].ToString();
+                }
+                string str_sqlyhid = "select dw_id from 用户表 where yh_id = '" + YH_id + "'";
+                string dwid = dc.DBLook(str_sqlyhid);
+                if (dwid != "")
+                {
+                    string sql = "select count(*) from 采购商关注供应商表 where dw_id='" + dwid + "' and gys_id='" + gys_id + "'";
+                    int count = Convert.ToInt32(dc.DBLook(sql));
+                    if (count > 0)
+                    {%>
+            <span class="xx4_1" style="display: block; margin-left: 40%; margin-right: auto;"><a
+                href="javascript:void(0)">已收藏</a> </span>
+            <%	}
+
+          else
+          {%>
+            <div class="gyan1">
+                <a href="javascript:void(0)" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>
+            <%}
+      }
+else
+	{%>
+             <div class="gyan1">
+                <a href="javascript:void(0)" onclick="NewWindow(<%=gys_id %>)">请收藏，便于查找</a></div>        
+	<%}
+      }%>
+
 		<div class="ditu">
             <div class="ditu_zi">地理位置</div>
 			<div id="allmap"></div>
-            <script type="text/javascript">
+            <script>
                 // 百度地图API功能
                 var map = new BMap.Map("allmap");
                 var point = new BMap.Point(116.331398, 39.897445);
@@ -345,12 +387,12 @@
                 // 创建地址解析器实例
                 var myGeo = new BMap.Geocoder();
                 // 将地址解析结果显示在地图上,并调整地图视野
-                myGeo.getPoint("<%=gys_addr %>", function (point) {
+                myGeo.getPoint'<%=gys_addr %>', function (point) {
                     if (point) {
                         map.centerAndZoom(point, 13);
                         map.addOverlay(new BMap.Marker(point));
                     }
-                }, "<%=gys_addr %>");
+                }, '<%=gys_addr %>');
             </script>
         </div>	
         </div>		
@@ -379,7 +421,7 @@
                 <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">			
                 <div class="gydl1">
 			    <%	
-                    string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"+row["cl_id"]+"' and 大小='小'";
+                    string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"+row["cl_id"]+"'";
                     string imgsrc= "images/222_03.jpg";
                     object result = dc.DBLook(str_sqltop1);
                     if (result != null) {
@@ -460,7 +502,41 @@
     <script language="javascript" type="text/javascript">
         function NewWindow(id) {
             var url = "scgys.aspx?gys_id=" + id;
-            window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+           //window.open(url, "", "height=400,width=400,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+            var xmlhttp;
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else
+            {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function ()
+            {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                {
+                    var value = xmlhttp.responseText;
+
+                    if (value == "1")
+                    {
+                        alert("收藏成功！");
+                        window.location.reload();
+                    }
+                    else if (value == "0")
+                    { 
+                       window.open("cgsdl.aspx", "", "height=400,width=400,top=100,left=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+                    }
+                    else
+                    {
+                        alert(value);
+                    }
+                }
+            }
+             
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+           
         }
     </script>
 </body>
