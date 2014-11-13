@@ -47,12 +47,14 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
         this.lblgys_id.Value = gys_id;
         if (pp_mc != "" && gys_id != "")
         {
-            sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where gys_id in " +
-                "(select fxs_id from 分销商和品牌对应关系表 where 品牌名称='" + pp_mc + "' and pp_id='" + pp_id + "' and 生产厂商ID='" + gys_id + "')";
+            //sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where gys_id in " +
+            //    "(select fxs_id from 分销商和品牌对应关系表 where 品牌名称='" + pp_mc + "' and pp_id='" + pp_id + "' and 生产厂商ID='" + gys_id + "')";
+            sSQL = " select c.gys_id,c.供应商,c.地区名称,c.注册日期,c.注册资金,c.电话,f.是否启用 from 材料供应商信息表 c left join 分销商和品牌对应关系表 f on f.fxs_id=c.gys_id where  品牌名称='" + 
+                pp_mc + "' and pp_id='" + pp_id + "' and 生产厂商ID='" + gys_id + "'";
             dt_gxs = objConn.GetDataTable(sSQL);
-            Session["SQLsource"] = sSQL;
-            string sSearchCondition = "gys_id='" + gys_id + "'";
-            MyDataBind(true, sSQL, sSearchCondition); 
+            //Session["SQLsource"] = sSQL;
+            //string sSearchCondition = "gys_id='" + gys_id + "'";
+            //MyDataBind(true, sSQL, sSearchCondition); 
         }
         else
         {

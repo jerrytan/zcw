@@ -27,12 +27,18 @@
 	<script  language="javascript" defer="defer">
         function doload()
         {
+        var cl_id='<%=Session["cl_id"] %>'
             window.close();
-            opener.location.href = "cgsgl.aspx";
+         //   opener.location.href = "cgsgl.aspx";
+          opener.location.href = "clxx.aspx?cl_id="+cl_id;
         }
-		<%	if(Request.Cookies["CGS_QQ_ID"]!=null||Session["CGS_QQ_ID"]!=null) {%>
+		<%	
+       
+        if(Request.Cookies["CGS_QQ_ID"]!=null||Session["CGS_QQ_ID"]!=null) {%>
 				setTimeout("doload()",3000);
-		<%} %>
+		<%} 
+         Session["cl_id"]=null;
+        %>
     </script>
 </head>
 
@@ -60,7 +66,7 @@
             string str_clid = Request["clid"];     //获取页面传过来的材料id
             string str_clmc = Request["clmc"];     //获取页面传过来的材料名称  
             string str_clbm = Request["clbm"];     //获取页面传过来的材料编码 ;            
-			
+            Session["cl_id"] = str_cl;
 			//采购商 登陆
             if (CGS_QQ_ID == null && CGS_QQ_ID1=="")
 			{

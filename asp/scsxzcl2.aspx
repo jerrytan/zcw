@@ -195,6 +195,7 @@ public string dwzlsjk = "";
 public string dwtjsjk = "";
 public string smsjk = "";
 public string pricesjk = "";
+public string ggjxh = "";
 protected void Page_Load(object sender, EventArgs e)
 {
     string scs_id = "";  //营业注册号
@@ -239,23 +240,27 @@ protected void Page_Load(object sender, EventArgs e)
         }
         this.flbm.Value = flbm;
         this.flmc.Value = flmc;
-        Addsx(flbm, flmc, clid);
+      
         string SQL = "";
-        SQL = "select 规格型号,计量单位,单位重量,单位体积,说明,price,材料编码 from 材料表 where cl_id=" + clid;
+        SQL = "select 显示名,规格型号,计量单位,单位重量,单位体积,说明,price,材料编码 from 材料表 where cl_id=" + clid;
         dt_cl = Conn.GetDataTable(SQL);
         if (dt_cl != null && dt_cl.Rows.Count > 0)
         {
             cpbhsjk = Convert.ToString(dt_cl.Rows[0]["材料编码"]);
-            ggxzsjk = Convert.ToString(dt_cl.Rows[0]["规格型号"]);
+            ggxzsjk = Convert.ToString(dt_cl.Rows[0]["显示名"]);
             jldwsjk = Convert.ToString(dt_cl.Rows[0]["计量单位"]);
             dwzlsjk = Convert.ToString(dt_cl.Rows[0]["单位重量"]);
             dwtjsjk = Convert.ToString(dt_cl.Rows[0]["单位体积"]);
             smsjk = Convert.ToString(dt_cl.Rows[0]["说明"]);
             pricesjk = Convert.ToString(dt_cl.Rows[0]["price"]);
+            this.ggxh.Value = Convert.ToString(dt_cl.Rows[0]["规格型号"]);
+            ggjxh = Convert.ToString(dt_cl.Rows[0]["规格型号"]);
+            
         }
+        Addsx(flbm, flmc, clid,ggjxh);
     }
 }
-protected void Addsx(string flbm, string flmc, string clid)
+protected void Addsx(string flbm, string flmc, string clid,string ggxh)
 {    
     this.SQL.Value = "1";
         string html = "";
@@ -267,6 +272,7 @@ protected void Addsx(string flbm, string flmc, string clid)
         }
         if (dt_sx != null && dt_sx.Rows.Count > 0)
         {
+           
             html = "<table width='740' border='0' cellpadding='0' cellspacing='1' bgcolor='#dddddd' style='table-layout：fixed ;word-wrap：break-word'>"
                 + " <thead>"
                 + "   <tr>"
@@ -321,7 +327,7 @@ protected void Addsx(string flbm, string flmc, string clid)
                     + " <tfoot>"
                     + "        <tr>"
                     + "        <td width='120' height='32' align='right' bgcolor='#FFFFFF'>名称及规则：</td>"
-                    + "        <td align='left' bgcolor='#FFFFFF'><input type='text' id='clmcjgg' style=' width: 293px; '/></td>"
+                    + "        <td align='left' bgcolor='#FFFFFF'><input type='text' runat='server'  value='" + ggjxh + "' id='clmcjgg' style=' width: 293px; '/></td>"
                     + "        <td width='80' align='center' bgcolor='#FFFFFF'>"
                     + "        <input type='Button' name='btnDocNew' value='确定' onClick='AddValue()'  class='filter' style='color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;' /></td>"
                     + "      </tr>"
@@ -413,7 +419,7 @@ protected void Addsx(string flbm, string flmc, string clid)
        <tfoot>
         <tr>
         <td width="120" height="32" align="right" bgcolor="#FFFFFF">名称及规则：</td>
-        <td align="left" bgcolor="#FFFFFF"><input type="text"  id="clmcjgg" style=" width: 293px; "/></td>
+        <td align="left" bgcolor="#FFFFFF"><input type="text" runat="server" value='<%=ggxh %>'  id="clmcjgg" style=" width: 293px; " /></td>
         <td width="80" align="center" bgcolor="#FFFFFF">
         <input type="Button" name="btnDocNew" value="确定" onClick="AddValue()"  class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" /></td>
       </tr>

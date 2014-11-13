@@ -155,6 +155,7 @@ onloadEvent(showtable);
               <th width="100" align="center" style="font-size:12px"><strong>公司注册日期</strong></th>
               <th width="120" align="center" style="font-size:12px"><strong>注册资金（万元）</strong></th>
               <th width="100" align="center" style="font-size:12px"><strong>公司电话</strong></th>
+              <th width="45" align="center" style="font-size:12px"><strong>状态</strong></th>
               <th width="45" align="center" style="font-size:12px"><strong>操 作</strong></th>
             </tr>
           </thead>
@@ -171,15 +172,16 @@ onloadEvent(showtable);
               <td align="center" style="font-size:12px"><%=dr["注册日期"]%></td>
               <td align="center" style="font-size:12px"><%=dr["注册资金"]%></td>
               <td align="left" style="font-size:12px"><%=dr["电话"]%></td>
+               <td align="left" style="font-size:12px"><%=dr["是否启用"]=="1"?"启用":"未启用"%></td>
               <td align="center"><input type="submit" name="input" value="查阅" class="filter" onclick="ChaYue('<%=dr["供应商"] %>')" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/></td>
          </tr>
          <%}
              }%>
-         <%if (dt_gxs.Rows.Count < 10)
+         <%if (dt_gxs != null&&dt_gxs.Rows.Count < 10)
             {
                 for (int i = 0; i < 10 - dt_gxs.Rows.Count; i++)
                 {%>  
-                    <tr><td></td><td class="style1"></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td></td><td class="style1"></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                 <%}
             }%>
           </tbody>
