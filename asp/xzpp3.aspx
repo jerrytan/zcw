@@ -42,7 +42,7 @@
                 {
                     string sql = "";
                     sql = "update 品牌字典 set 品牌名称='" + brandname + "',是否启用='" + isqy + "',等级='" + grade + "',范围='" + scope + "' where pp_id='"+ppid+"'";
-                    Response.Write(sql);
+                    
                     ret = objConn.ExecuteSQLForCount(sql, true);
                 }
                 else
@@ -98,7 +98,8 @@
                 opener.location.href="gyszym.aspx";
             <%} else {%>
                 window.close();
-                opener.location.reload();
+//                opener.location.reload();
+                 opener.location.href='glscsxx.aspx';
                 <%} %>
             }
             setTimeout("doload()", 2000);
@@ -106,7 +107,8 @@
         <script type="text/javascript">
             function clickMe() {
                 window.close();
-                opener.location.reload();
+                // opener.location.reload();
+                opener.location.href = 'glscsxx.aspx';
             }
         </script>
         

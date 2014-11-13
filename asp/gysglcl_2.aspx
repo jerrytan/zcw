@@ -159,8 +159,16 @@
         this.lblgys_id.Value = gys_id;
         this.ppid.Value = pp_id;
         string sSQL = "";
-        sSQL = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称 from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "'";
-        dt_cl = Conn.GetDataTable(sSQL);  
+        if (pp_id!="")
+        {
+            sSQL = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称 from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "'";
+            dt_cl = Conn.GetDataTable(sSQL);  
+        }
+        else
+        {
+            sSQL = "select top 10 cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称 from 材料表 where gys_id='" + gys_id+"'";
+            dt_cl = Conn.GetDataTable(sSQL);  
+        }
     }
 </script>
   <form id="form1" runat="server">

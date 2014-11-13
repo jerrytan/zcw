@@ -23,18 +23,20 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
-        }
-        //蒋
-        //if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
-        //{
-        //    gys_id = Request["gys_id"].ToString();
-        //    pp_mc = Request["pp_mc"].ToString();
-        //}
-
+        }        
         if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
         {
             gys_id = Request["gys_id"].ToString();
-            pp_mc = Request["pp_mc"].ToString();
+           
+        }
+        else
+        {
+            string sql = "select dw_id from 用户表 where yh_id='" + s_yh_id + "'";
+            gys_id = objConn.DBLook(sql);
+        }
+        if (Request["pp_mc"]!=null)
+        {
+             pp_mc = Request["pp_mc"].ToString();
         }
         this.ppmc.Value = pp_mc;
         string pp_id = "";
@@ -58,15 +60,10 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
         }
         else
         {
-            if (!IsPostBack)
-            {
-                //蒋，，，把lsgys_id改成s_yh_id
-                sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where gys_id in (select distinct fxs_id from 分销商和品牌对应关系表 where pp_id in (select pp_id from 品牌字典 where scs_id='" + gys_id + "')) order by updatetime desc";
-             
-                //sSQL = "select top 10 gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where 是否启用=1 order by updatetime desc";
-                dt_gxs = objConn.GetDataTable(sSQL);
+           sSQL = " select top 10 c.gys_id,c.供应商,c.地区名称,c.注册日期,c.注册资金,c.电话,f.是否启用 from 材料供应商信息表 c left join 分销商和品牌对应关系表 f on f.fxs_id=c.gys_id where  生产厂商ID='" + gys_id + "'";
+            dt_gxs = objConn.GetDataTable(sSQL);
                 this.dic.Visible = false;
-            }
+             
         }
     }
     int intPageIndex;//当前页

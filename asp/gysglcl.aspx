@@ -87,9 +87,18 @@
         {
             s_yh_id = Session["GYS_YH_ID"].ToString();
         }
+        if ( Request["gys_id"]!=null)
+        {
+            gys_id = Request["gys_id"].ToString();
+        }
+        else
+        {
+            string sql = "select dw_id from ”√ªß±Ì where yh_id='" + s_yh_id + "'";
+            gys_id = objConn.DBLook(sql);
+        }
       //  Products_gys_cl();
        
-        gys_id = Request.QueryString["gys_id"].ToString();
+        
         this.lblgys_id.Value = gys_id;
         //ejfl = Request.QueryString["ejfl"].ToString();
         //if(ejfl!="")
@@ -306,7 +315,7 @@
 
 <div id="cgs_lb" style="width:795px; margin-left:182px;">
 <div id="divtable" runat="server">
-<iframe id="frame1" src="gysglcl_2.aspx" frameborder="0" marginheight="0"  style=" width:100%;  height:400px; padding:0px; margin:0px; border:0px; " > 
+<iframe id="frame1" src="gysglcl_2.aspx?gys_id=<%=gys_id %>" frameborder="0" marginheight="0"  style=" width:100%;  height:400px; padding:0px; margin:0px; border:0px; " > 
  </iframe> 
 </div>
 </div>

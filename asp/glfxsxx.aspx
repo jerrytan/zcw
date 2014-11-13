@@ -449,7 +449,7 @@
       </div>
  <div id="cgs_lb" style="width:795px; margin-left:182px;">
 <div id="divtable" runat="server">
-      <iframe id="frame1" src="glfxsxx_2.aspx" frameborder="0" marginheight="0"  style=" width:100%; height:450px; padding:0px; margin:0px; border:0px; " > 
+      <iframe id="frame1" src="glfxsxx_2.aspx?gys_id=<%=gys_id %>" frameborder="0" marginheight="0"  style=" width:100%; height:450px; padding:0px; margin:0px; border:0px; " > 
     </iframe> 
      </div>
      </div>
