@@ -31,7 +31,7 @@
             opener.location.href = "cgsgl.aspx";
         }
 		<%	if(Request.Cookies["CGS_QQ_ID"]!=null||Session["CGS_QQ_ID"]!=null) {%>
-			//	setTimeout("doload()",3000);
+				setTimeout("doload()",3000);
 		<%} %>
     </script>
 </head>
@@ -64,10 +64,14 @@
 			//采购商 登陆
             if (CGS_QQ_ID == null && CGS_QQ_ID1=="")
 			{
+               // Response.Redirect("cgsdl.aspx");
                 //Response.Write("openid is empty");
             %>
-             <span class="dlzi"><%=CGS_QQ_ID1%> </span>
-            <span class="dlzi">尊敬的采购商，您好! </span>
+             <script>
+                 window.open("cgsdl.aspx", "", "height=400,width=400,top=100,left=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+                 window.close();
+             </script>
+         <%--   <span class="dlzi">尊敬的采购商，您好! </span>
             <span class="dlzi">请点击右边按钮登陆！</span>
             <span class="dlzi2" id="qqLoginBtn"></span>
             <script type="text/javascript">
@@ -77,7 +81,7 @@
 
             </script>
             <img src="images/wz_03.jpg">
-   
+   --%>
            <%
             }
 			else   //采购商登录的情况
@@ -106,7 +110,7 @@
                               sql_scrxx = "select yh_id,姓名,QQ号码,dw_id from  用户表 where QQ_id='" + qqid + "'";
                             dt_scrxx = objConn.GetDataTable(sql_scrxx);
                         }
-                        Response.Write(sql_scrxx);
+                       // Response.Write(sql_scrxx);
                         dt_scrxx = objConn.GetDataTable(sql_scrxx);
                         string scryhid = dt_scrxx.Rows[0]["yh_id"].ToString() == "" ? "" : dt_scrxx.Rows[0]["yh_id"].ToString();
                         string scrxm = dt_scrxx.Rows[0]["姓名"].ToString() == "" ? "" : dt_scrxx.Rows[0]["姓名"].ToString();
@@ -293,7 +297,7 @@
 					Response.Write("<span class='dlzi'>尊敬的采购商，您好!</span>");
 					Response.Write("<span class='dlzi'>该材料已被收藏成功！</span>");
 					Response.Write("<span class='dlzi'><a href='cgsgl.aspx' target='_blank'>您可以点击查看已收藏的所有信息。</a></span>");
-                    //Response.Write("<span class='dlzi' onclick='window.close()'>关闭此窗口</span>");
+                    Response.Write("<span class='dlzi' onclick='window.close()'>关闭此窗口</span>");
 				}
 				
 			}

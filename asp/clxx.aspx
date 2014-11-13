@@ -333,6 +333,7 @@
                         <%= cl_number %></dt>
                     <%}%>
                 </dl>
+                <%if(Request.Cookies["CGS_QQ_ID"]!=null||Request.Cookies["GYS_QQ_ID"]!=null){ %>
                 <%
 				//供应商
 				HttpCookie CGS_QQ_id = Request.Cookies["CGS_QQ_ID"];   
@@ -381,8 +382,64 @@
                                   
                 }   
                 %>
+                <%} %>
+               <%else %>
+               <%{ %>
+                    <%
+                    string CGS_YH_id="";
+                    if(Session["CGS_YH_ID"]!=null)
+                    {
+                     CGS_YH_id=Session["CGS_YH_ID"].ToString();                     
+                    }
+                    string GYS_YH_id="";
+                    if(Session["GYS_YH_ID"]!=null)
+			        {
+                        GYS_YH_id = Session["GYS_YH_ID"].ToString(); 
+                    }
+			 
+				if(GYS_YH_id=="")	//供应商未登录，显示收藏
+				{
+                    if(CGS_YH_id != "" )
+                    {
+                         string s_SQL = "select dw_id from 用户表 where yh_id='" + CGS_YH_id+ "'"; 
+                         string dwid = dc_obj.DBLook(s_SQL);
 
-               
+                         string sqlCount = @"select * from 采购商关注的材料表 
+                            inner join 材料表 on 材料表.cl_id=采购商关注的材料表.cl_id 
+                            where dw_id='"+dwid+"' and 采购商关注的材料表.cl_id='"+cl_id+"'";
+                        if(dc_obj.GetRowCount(sqlCount)>0)
+                        {
+                            %>
+                                 <span class="xx4_1" style="display: block; margin-left: 40%; margin-right: auto;"><a 
+                    href="#" >
+                    已收藏</a> </span>
+                            <%
+                        }
+                        else
+                        {
+                            %>
+                                 <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a id="A2"
+                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">
+                     请收藏，便于查找</a> </span>
+                            <%
+                        }
+                         %>
+                         
+                         
+                         <%
+                    }
+                    else
+                    {
+                        %>
+                        <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a
+                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">
+                    请收藏，便于查找</a> </span>
+                        <%
+                    }
+                                  
+                }   
+                %>
+               <%} %>
               
                  
              
