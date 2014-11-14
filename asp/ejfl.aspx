@@ -12,12 +12,11 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
 <%@ Import Namespace="System.Text" %>
-
+<%@ Page Language="C#" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
-
+ 
 <head>
     <meta content="IE=10.000" http-equiv="X-UA-Compatible"/> 
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
@@ -75,8 +74,8 @@
 
 			string str_sqlclmz = "select 显示名字 from 材料分类表 where 分类编码='"+name+"' ";
             dt_ejflmc = dc_obj.GetDataTable(str_sqlclmz);
-			
-			string str_sqlppmc = "select 品牌名称,pp_id from 品牌字典  where  fl_id in(select fl_id from 材料分类表 where 分类编码='"+name+"') "; 
+            string str_sqlppmc = "select 品牌名称,pp_id from 品牌字典  where  pp_id in(select distinct pp_id from 材料表 where fl_id in(select fl_id from 材料分类表 where 分类编码='" + name + "')) ";
+            //string str_sqlppmc = "select 品牌名称,pp_id from 品牌字典  where  fl_id in(select fl_id from 材料分类表 where 分类编码='"+name+"') "; 
             dt_ejflpp = dc_obj.GetDataTable(str_sqlppmc);
            		
 			
@@ -87,9 +86,11 @@
 			dt_wz = dc_obj.GetDataTable(str_sqltop4);
          
             string str_sqlflsx="select flsx_id,显示 from dbo.材料分类属性表 where 分类编码='"+name+"'";
+       
             dt_flsx=dc_obj.GetDataTable(str_sqlflsx);
 
             string str_sqlflsxz="select flsxz_id,属性值,flsx_id from dbo.材料分类属性值表";
+  
             dt_flsxz=dc_obj.GetDataTable(str_sqlflsxz);
              
             url = Request.RawUrl;//获取当前请求的ur
@@ -103,6 +104,7 @@
              }      
             
            msg=result+GetParameterStr(url);//参数id组成的字符串 还原状态 
+ 
            string sqlParm=GetInputSqlParm(GetParameterStr(url));//传入sql语句的参数
             string  Pagestr=Request.QueryString["page"];
              if (!int.TryParse(Pagestr, out pageIndex))

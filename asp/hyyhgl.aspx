@@ -78,7 +78,6 @@
         function addPage() {
         var lx= document.getElementById("lx").value;
         var gys_dw_id=document.getElementById("gys_dw_id").value;
-        alert(gys_dw_id)
             newwin = window.open('hyyhgl_wh.aspx?gys_dw_id='+gys_dw_id+'&lx='+lx+'&state=0', 'myWindow', 'height=300px,width=390px,top=100,left=400,toolbar=no,menubar=no,resizable=no,location=no,status=no,scrollbars=no');
         }
         //修改

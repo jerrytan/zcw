@@ -206,52 +206,39 @@
         public string gys_type = "";                  //单位类型  
         public string id = "";
         protected void Page_Load(object sender, EventArgs e)
-        {
-            if(Session["GYS_YH_ID"]!=null)
+        {           
+            if (Request["gys_id"]!=null)
+            {
+                gys_id = Request["gys_id"].ToString();//获取供应商id
+            }
+            if (Session["GYS_YH_ID"] != null)
             {
                 s_yh_id = Session["GYS_YH_ID"].ToString();
+                if (gys_id=="")
+                {
+                    string sql = "select dw_id from 用户表 where yh_id='" + s_yh_id + "' ";
+                    gys_id = objConn.DBLook(sql);
+                }
             }
-             //sSQL = "select 单位类型 ,gys_id from  材料供应商信息表 where yh_id='" + s_yh_id + "' ";  //查询单位类型
-            //蒋，26日
-            gys_id = Request.QueryString["gys_id"].ToString();//获取供应商id
+             
             sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,单位类型 from 材料供应商信息表 where gys_id='" + gys_id + "'  ";
              dt_gysxx = objConn.GetDataTable(sSQL);
                 DataTable dt_type = objConn.GetDataTable(sSQL);
                 if(dt_type!=null&&dt_type.Rows.Count>0)
                 {
-			            gys_type = dt_type.Rows[0]["单位类型"].ToString();
-                        //gys_id = dt_type.Rows[0]["gys_id"].ToString();  //供应商id   141
+			       gys_type = dt_type.Rows[0]["单位类型"].ToString();                        
                 }
                 if (gys_type.Equals("生产商"))
-                {
-                    //如果是分销商信息 直接根据yh_id 查询供应商信息 
-                    //如果是生产商信息，直接根据yh_id查询供应商信息
+                {                     
                     sSQL = "select 品牌名称,pp_id from 品牌字典 where   scs_id='" + gys_id + "' ";
-                    dt_ppxx = objConn.GetDataTable(sSQL);
-                    //sSQL = "select 供应商,地址,电话,主页,传真,地区名称,联系人,联系人手机,经营范围,gys_id from 材料供应商信息表 where  yh_id='" + s_yh_id + "' ";//蒋，26日
-                    //dt_gysxx = objConn.GetDataTable(sSQL);
-                    //蒋,注释if判断，在供应商补填信息时已判断出供应商的单位类型
-                    //if (dt_gysxx.Rows.Count == 0)
-                    //    Response.Redirect("gysbtxx.aspx");
+                    dt_ppxx = objConn.GetDataTable(sSQL);                     
                 }
-                    //蒋，2014年8月13日，用户类型是分销商，没有管理生产商信息的权限，所以应注释
-                //else if (gys_type == "分销商")
-                //{
-                //    sSQL = "select pp_id,品牌名称 from 分销商和品牌对应关系表 where fxs_id='" + gys_id + "'";
-                //    dt_ppxx = objConn.GetDataTable(sSQL);
-                //}    
-               //蒋，2014年8月14日，没有分销商，所以不会从glfxsxx2页面返回数据
-                //if (Request["id"] != null && Request["id"].ToString() != "")
-                //{
-                //    id = Request["id"].ToString();    //获取glscsxx2页面返回的供应商id
-                //}
-                //if (id != "")
+                    
                 if (gys_id != "")
-                {
-                    //{
+                {                    
                     DWLX(gys_type, gys_id, gys_id);
                 }
-                //}
+                 
         }
       
         protected void DWLX(string str_gysid_type, string id, string str_gysid)
@@ -272,18 +259,7 @@
                     spjg(sp_result, gys_id, id);
                 }
             }
-            //蒋，2014年13日，用户类型是分销商，没有管理生产商信息的权限，所以应注释
-            //if (str_gysid_type.Equals("分销商"))
-            //{
-            //      //如果 供应商自己修改待审核表 有记录 查询审批结果
-            //        sSQL = "select 审批结果 from 供应商自己修改待审核表 where gys_id='" + id + "'";
-            //        DataTable dt_select = objConn.GetDataTable(sSQL);
-            //        sp_result = Convert.ToString(dt_select.Rows[0]["审批结果"]);
-            //        if (sp_result != "")
-            //        {
-            //            spjg(sp_result, gys_id, id);
-            //        }                 
-            //}
+           
         }
         public void spjg(string sp_result, string gys_id, string id)
     {

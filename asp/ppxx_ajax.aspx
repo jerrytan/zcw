@@ -26,7 +26,7 @@
         protected string address;   //地址
         protected double count; //数量
         protected string fy_list; //分页信息
-
+        protected string content = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             if(!Page.IsPostBack)

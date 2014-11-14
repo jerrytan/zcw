@@ -419,7 +419,7 @@ protected void Addsx(string flbm, string flmc, string clid,string ggxh)
        <tfoot>
         <tr>
         <td width="120" height="32" align="right" bgcolor="#FFFFFF">名称及规则：</td>
-        <td align="left" bgcolor="#FFFFFF"><input type="text" runat="server" value='<%=ggxh %>'  id="clmcjgg" style=" width: 293px; " /></td>
+        <td align="left" bgcolor="#FFFFFF"><input type="text" runat="server" value='<%=ggjxh %>'  id="clmcjgg" style=" width: 293px; " /></td>
         <td width="80" align="center" bgcolor="#FFFFFF">
         <input type="Button" name="btnDocNew" value="确定" onClick="AddValue()"  class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" /></td>
       </tr>
