@@ -74,6 +74,7 @@
 
 			string str_sqlclmz = "select 显示名字 from 材料分类表 where 分类编码='"+name+"' ";
             dt_ejflmc = dc_obj.GetDataTable(str_sqlclmz);
+            //从品牌字典取值 是否判断品牌是否启用  目前是没有判断的    判断加 isnull(是否启用,'')='1'
             string str_sqlppmc = "select 品牌名称,pp_id from 品牌字典  where  pp_id in(select distinct pp_id from 材料表 where fl_id in(select fl_id from 材料分类表 where 分类编码='" + name + "')) ";
             //string str_sqlppmc = "select 品牌名称,pp_id from 品牌字典  where  fl_id in(select fl_id from 材料分类表 where 分类编码='"+name+"') "; 
             dt_ejflpp = dc_obj.GetDataTable(str_sqlppmc);
@@ -96,7 +97,7 @@
             url = Request.RawUrl;//获取当前请求的ur
 		  
             sort=Request.QueryString["sort"];//排序方式
-            pp=Request.QueryString["pp"];//品牌
+            pp=Request.QueryString["pp"];//品牌          
             string result=string.Empty;
             if(sort!=null&&pp!=null)
              {
@@ -164,7 +165,7 @@
            string[] parmStr = str.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
            return string.Join(",", parmStr);           
         }
-
+        //20141114小张修改排序  未修改完成
         //得到分页信息
          protected DataTable GetPageList(string name,string pp,string sort,string ids,int pageIndex,int pageSize)      
         {         
@@ -177,7 +178,7 @@
             }
            if (ids != null && ids != "")
             {
-                sql += " and b.flsxz_id in(" + ids + ")";
+                sql += " and b.flsx_id in( select flsx_id from 材料分类属性值表 where flsxz_id in(" + ids + "))";// and b.分类属性值 in ( select 属性值 from 材料分类属性值表 where flsxz_id in(" + ids + "))
               
             }      
             string orderBy = string.Empty;
@@ -204,8 +205,7 @@
                                 };           
             parms[0].Value=pageIndex;
             parms[1].Value=pageSize; 
-            parms[2].Value=name;              
-                
+            parms[2].Value=name;            
             return  dc_obj.GetDataTable(sql1,parms);
                  
           
@@ -223,12 +223,17 @@
             }
             if (ids != null && ids != "")
             {
-               sql += " and b.flsxz_id in(" + ids + ")";
+                sql += " and b.flsx_id in( select flsx_id from 材料分类属性值表 where flsxz_id in(" + ids + "))";// and b.分类属性值 in ( select 属性值 from 材料分类属性值表 where flsxz_id in(" + ids + "))
             }     
             string sql1="select count(*) from (select  distinct 材料编码,pp_id,显示名,规格型号,分类编码,updatetime,访问计数,myID from ({0}  ) aa ) bb";
             sql1=string.Format(sql1,sql);           
              string pageStr = dc_obj.DBLook(sql1);
+             if (pageStr=="")
+             {
+                 pageStr = "0";
+             }
              int recordCount =Convert.ToInt32(pageStr);
+           //  Response.Write(sql1);
              return Convert.ToInt32(Math.Ceiling(1.0 * recordCount / pageSize));
       }
 
