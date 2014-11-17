@@ -27,7 +27,9 @@
             }
             return str;
         }
-        function deleteGzcl() {
+        function deleteGzcl()
+        {
+            var dw_id = document.getElementById("dwid").value;
             var tb_gzcl = document.getElementById("table3");
             var chks = tb_gzcl.getElementsByTagName("input");
             var gys_ids = '';
@@ -55,7 +57,7 @@
                         alert("删除失败");
                 }
             }
-            xmlhttp.open("GET", "cgsgzgys_ajax.aspx?gysids=" + gys_ids, true);
+            xmlhttp.open("GET", "cgsgzgys_ajax.aspx?gys_id=" + gys_ids + "&dwid=" + dw_id, true);
             xmlhttp.send();
 
         }
@@ -102,6 +104,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+    <input runat="server" id="dwid" />
     <div>
         <div class="jiansuo3">
             供应商：

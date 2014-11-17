@@ -1,37 +1,35 @@
 ﻿<%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Page Language="C#" %>
 
-<%
-
-        DataConn dc = new DataConn();
-        string cgs_yh_id;
-        string gysids = Request.QueryString["gysids"];
-        gysids = gysids.TrimEnd(',');
-
-        //获取用户id
-        if (Session["CGS_QQ_ID"].ToString() != "")//将Request.Cookies["CGS_QQ_ID"]更换成Session["CGS_QQ_ID"]
+<script runat="server">
+    DataConn dc = new DataConn();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        string dwid = "";
+        string gys_id = "";
+        if (Request["dwid"]!=null&&Request["dwid"].ToString()!="")
         {
-           string cgs_QQ_id = Session["CGS_QQ_ID"].ToString();
-           string sql = "select yh_id from 用户表 where QQ_id='" + cgs_QQ_id + "'";
-           cgs_yh_id = dc.DBLook(sql);
+            dwid = Request["dwid"].ToString();
+        }
+        if (Request["gys_id"] != null && Request["gys_id"].ToString() != "")
+        {
+            gys_id = Request["gys_id"].ToString();
+        }
+        while (gys_id.EndsWith(","))
+        {
+            gys_id = gys_id.Substring(0, gys_id.Length - 1);
+        }
+        string sqlDelete = "delete from 采购商关注供应商表 where gys_id in (" + gys_id + ") and dw_id='" + dwid + "'";
+        if (dc.ExecuteSQL(sqlDelete, true))
+        {
+            Response.Write(1); //删除成功
         }
         else
         {
-            cgs_yh_id = "";
+            Response.Write(0); //删除失败
         }
 
-        string sqlDelete = "delete from 采购商关注供应商表 where gys_id in (" + gysids + ") and yh_id='" + cgs_yh_id + "'";
-
-
-
-        if (dc.ExecuteSQL(sqlDelete,true))
-        {
-          Response.Write(1); //删除成功
-        }
-        else
-        {
-             Response.Write(0); //删除失败
-        }
-
-
- %>
+    }
+</script>
+ 

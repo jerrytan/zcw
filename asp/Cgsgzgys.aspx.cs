@@ -44,9 +44,7 @@ public partial class asp_Cgsgzgys : System.Web.UI.Page
 
             }
         }
-       
-        
-       
+        this.dwid.Value = dwid;          
         string ppid = "";
         strScr = Request["scr"];
         strScrQQ= Request["scrQQ"];
