@@ -167,7 +167,6 @@
                     cl_id += tr.cells[1].innerHTML + ",";
                 }
             }
-            alert(cl_id);
             if (cl_id == "" || cl_id == undefined)
             {
                 alert("请选择要删除的材料!");

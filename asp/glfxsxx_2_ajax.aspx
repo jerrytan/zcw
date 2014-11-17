@@ -17,15 +17,15 @@
             string a = sSQL;
             if (obCon.ExecuteSQL(sSQL, true))
             {
-                sSQL = "delete 材料供应商信息从表 where gys_id ='" + gys_id + "' and pp_id='" + pp_id + "'";
-                if (obCon.ExecuteSQL(sSQL, true))
-                {
+               // sSQL = "delete 材料供应商信息从表 where gys_id ='" + gys_id + "' and pp_id='" + pp_id + "'";
+                //if (obCon.ExecuteSQL(sSQL, true))
+                //{
                     Response.Write(1);
-                }
-                else
-                {
-                    Response.Write(0); 
-                }
+                //}
+                //else
+                //{
+                //    Response.Write(0); 
+                //}
             }
             else
             {

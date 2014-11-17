@@ -343,14 +343,14 @@
                     this.ppid.Value + "','" + this.ppmc.Value + "','0','" + fxs[i] + "',(select 供应商 from 材料供应商信息表 where gys_id='" + fxs[i] +
                     "'),(select getdate()),'" + this.fl_name2.InnerHtml + "','" + this.fl_id.Value + "',(select 分类编码 from 材料分类表 where fl_id='" +
                     this.fl_id.Value + "'),(select yh_id from 材料供应商信息表 where gys_id='" + fxs[i] + "'),'" + this.scsid.Value + "')    ";
-                sSQL += "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime,分类名称,分类编码,fl_id)values('" +
-                    this.ppid.Value + "','" + this.ppmc.Value + "','1','" + fxs[i] + "','" + this.grade2.InnerHtml + "','" +
-                    this.scope2.InnerHtml + "','" + this.scs2.InnerHtml + "',(select getdate()),'" + this.fl_name2.InnerHtml + "',(select 分类编码 from 材料分类表 where fl_id='" +
-                    this.fl_id.Value + "'),'" + this.fl_id.Value + "')";
-                sSQL += "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" +
-                    this.scs2.InnerHtml + "' and 品牌名称='" + this.ppmc.Value + "' and gys_id='" + fxs[i] + "' and pp_id='" +
-                    this.ppid.Value + "') where isnull(uid,'')='' and 供应商='" + this.scs2.InnerHtml + "' and 品牌名称='" + this.ppmc.Value + "' and gys_id='" + fxs[i] + "' and pp_id='" +
-                    this.ppid.Value+"'";
+                //sSQL += "insert into 材料供应商信息从表(pp_id,品牌名称,是否启用,gys_id,等级,范围,供应商,updatetime,分类名称,分类编码,fl_id)values('" +
+                //    this.ppid.Value + "','" + this.ppmc.Value + "','1','" + fxs[i] + "','" + this.grade2.InnerHtml + "','" +
+                //    this.scope2.InnerHtml + "','" + this.scs2.InnerHtml + "',(select getdate()),'" + this.fl_name2.InnerHtml + "',(select 分类编码 from 材料分类表 where fl_id='" +
+                //    this.fl_id.Value + "'),'" + this.fl_id.Value + "')";
+                //sSQL += "update 材料供应商信息从表 set uid=(select myID from 材料供应商信息从表 where 供应商 ='" +
+                //    this.scs2.InnerHtml + "' and 品牌名称='" + this.ppmc.Value + "' and gys_id='" + fxs[i] + "' and pp_id='" +
+                //    this.ppid.Value + "') where isnull(uid,'')='' and 供应商='" + this.scs2.InnerHtml + "' and 品牌名称='" + this.ppmc.Value + "' and gys_id='" + fxs[i] + "' and pp_id='" +
+                //    this.ppid.Value+"'";
             }           
             if (Conn.RunSqlTransaction(sSQL))
             {
