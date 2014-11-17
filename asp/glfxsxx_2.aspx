@@ -44,39 +44,56 @@
         }
         return str;
     }
-    function Delete_gs() {
-        var table = document.getElementById("table2");
-        var input = table.getElementsByTagName("input");
-        var fxs_id = "";
-        for (var i = 0; i < input.length; i++) {
-            if (input[i].type == "checkbox" && input[i].checked) {
-                fxs_id += Trim(input[i].value) + ",";
-            }
-        }
-        var xmlhttp;
-        if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
-        }
-        else {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                var text = xmlhttp.responseText;
-                if (text == 1) {
-                    alert('É¾³ý³É¹¦');
-                    location.reload();
-                }
-                else {
-                    alert('É¾³ýÊ§°Ü');
-                    location.reload();
-                }
-            }
-        }
+    function Delete_gs()
+    {
         var pp_id = document.getElementById("ppid").value;
-        var gys_id = document.getElementById("lblgys_id").value;
-        xmlhttp.open("GET", "glfxsxx_2_ajax.aspx?gys_id="+gys_id+"&pp_id="+pp_id+"&fxs_id=" + fxs_id, true);
-        xmlhttp.send();
+        if (pp_id == "" || pp_id == undefined)
+        {
+            alert("ÇëÏÈÑ¡ÔñÆ·ÅÆ£¡");
+            return;
+        }
+        else
+        {
+            var table = document.getElementById("table2");
+            var input = table.getElementsByTagName("input");
+            var fxs_id = "";
+            for (var i = 0; i < input.length; i++)
+            {
+                if (input[i].type == "checkbox" && input[i].checked)
+                {
+                    fxs_id += Trim(input[i].value) + ",";
+                }
+            }
+            var xmlhttp;
+            if (window.XMLHttpRequest)
+            {
+                xmlhttp = new XMLHttpRequest();
+            }
+            else
+            {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function ()
+            {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                {
+                    var text = xmlhttp.responseText;
+                    if (text == 1)
+                    {
+                        alert('É¾³ý³É¹¦');
+                        location.reload();
+                    }
+                    else
+                    {
+                        alert('É¾³ýÊ§°Ü');
+                        location.reload();
+                    }
+                }
+            }
+            var gys_id = document.getElementById("lblgys_id").value;
+            xmlhttp.open("GET", "glfxsxx_2_ajax.aspx?gys_id=" + gys_id + "&pp_id=" + pp_id + "&fxs_id=" + fxs_id, true);
+            xmlhttp.send();
+        }
     }
 
     function ChaYue(gsmc) {

@@ -72,31 +72,40 @@
         var cl_id = "";
         for (var i = 0; i < input.length;i++) {
             if (input[i].type == "checkbox" && input[i].checked) {
-                cl_id += Trim(input[i].value)+",";
+                cl_id += Trim(input[i].value) + ",";
             }
+
         }
-        var xmlhttp;
-        if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
+        if (cl_id == "" && cl_id == undefined)
+        {
+            alert("ÇëÏÈÑ¡ÔñÆ·ÅÆ£¡");
+            return;
         }
-        else {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                var text = xmlhttp.responseText;
-                if (text == "1") {
-                    alert('É¾³ý³É¹¦');
-                    location.reload();
-                }
-                else {
-                    alert('É¾³ýÊ§°Ü');
-                    location.reload();
+        else
+        {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var text = xmlhttp.responseText;
+                    if (text == "1") {
+                        alert('É¾³ý³É¹¦');
+                        location.reload();
+                    }
+                    else {
+                        alert('É¾³ýÊ§°Ü');
+                        location.reload();
+                    }
                 }
             }
+            xmlhttp.open("GET", "scssccl.aspx?cl_id=" + cl_id, true);
+            xmlhttp.send();
         }
-        xmlhttp.open("GET", "scssccl.aspx?cl_id=" + cl_id, true);
-        xmlhttp.send();
     }
     function onloadEvent(func) {
         var one = window.onload
