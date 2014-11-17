@@ -96,14 +96,9 @@
         <script defer="defer" type="text/javascript">
             function doload()
             {
-            <%if(source=="xzym") {%>
-              window.close();
-                opener.location.href="gyszym.aspx";
-            <%} else {%>
                 window.close();
 //                opener.location.reload();
                  opener.location.href='glscsxx.aspx?gys_id=<%=gys_id %>';
-                <%} %>
             }
             setTimeout("doload()", 2000);
         </script>

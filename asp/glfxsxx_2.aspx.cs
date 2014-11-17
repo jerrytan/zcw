@@ -368,7 +368,7 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
         }
         else
         {
-            string sql = "select COUNT(*) from 材料供应商信息表 where 供应商 like '%" + this.txtKeyWord.Value + "%'";
+            string sql = "select COUNT(*) from 材料供应商信息表 c left join 分销商和品牌对应关系表 f on f.fxs_id=c.gys_id where  生产厂商ID='"+gys_id+"' and 供应商 like '%" + this.txtKeyWord.Value + "%'";
             int count = Convert.ToInt32(objConn.DBLook(sql));
             if (count == 0)
             {
@@ -377,8 +377,9 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
             }
             else
             {
-                string gsxx = "select gys_id, 供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where left(单位类型,3)" +
-                    " like '%商%' and 供应商 like '%" + this.txtKeyWord.Value + "%' and 是否启用=1 order by updatetime desc";
+                string gsxx = "select  c.gys_id,c.供应商,c.地区名称,c.注册日期,c.注册资金,c.电话,f.是否启用 "+
+                    "from 材料供应商信息表 c left join 分销商和品牌对应关系表 f on f.fxs_id=c.gys_id where "+
+                    "生产厂商ID='"+gys_id+"' and 供应商 like '%"+this.txtKeyWord.Value+"%'";
                 dt_gxs = objConn.GetDataTable(gsxx);
                 if (gsxx.ToUpper().Contains("ORDER BY"))
                 {
@@ -394,13 +395,13 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
                         gsxx = "select * from(select *,row_number() over( order by " + name + ") as 编号 from (" + gsxx + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
                     }
                 } 
-                Session["SQLsource"] = gsxx;
-                string sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where left(单位类型,3)" +
-                    " like '%商%' and 是否启用=1 order by gys_id desc";
-                string sSearchCondition = "供应商 like '%" + this.txtKeyWord.Value + "%'";
-                MyDataBind(true, sSQL, sSearchCondition);
+                //Session["SQLsource"] = gsxx;
+                //string sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话,是否启用 from 材料供应商信息表 where left(单位类型,3)" +
+                //    " like '%商%' and 是否启用=1 order by gys_id desc";
+                //string sSearchCondition = "供应商 like '%" + this.txtKeyWord.Value + "%'";
+                //MyDataBind(true, sSQL, sSearchCondition);
                 this.txtKeyWord.Value = "";
-                this.dic.Visible = true;
+                //this.dic.Visible = true;
             }
         }
     }

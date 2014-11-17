@@ -149,8 +149,8 @@ onloadEvent(showtable);
             class="table2" id="table2" style="table-layout：fixed ;word-wrap：break-word;">
           <thead>
             <tr>
-              <th width="35" align="center" style="font-size:12px">选 择</th>
-              <th align="center" style="font-size:12px">分销商名称</th>
+              <th width="35" align="center" style="font-size:12px"><strong>选 择</strong></th>
+              <th align="center" style="font-size:12px"><strong>分销商名称</strong></th>
               <th width="60" align="center" style="font-size:12px"><strong>地 区</strong></th>
               <th width="100" align="center" style="font-size:12px"><strong>公司注册日期</strong></th>
               <th width="120" align="center" style="font-size:12px"><strong>注册资金（万元）</strong></th>

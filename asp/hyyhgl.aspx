@@ -217,7 +217,7 @@
             <%} else{ %>
             <a href="cgsgly_wh.aspx">[修改完善公司信息]</a>
             <%} %>
-            </span>&nbsp;&nbsp;&nbsp;&nbsp;[<a href="index.aspx">退出登录</a>]
+            </span>&nbsp;&nbsp;&nbsp;&nbsp;[<a href="QQ_out.aspx" target="_self">退出登录</a>]
         </div></div>
     </div>
     <input type="hidden" id="lx" runat="server" />

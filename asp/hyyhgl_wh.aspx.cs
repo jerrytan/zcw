@@ -96,6 +96,11 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                 {
                     power += this.cbx3.Value + ",";
                 }
+                if (this.txt_QQ.Value == "")
+                {
+                    Response.Write("<script>alert('请输入QQ号码');</script>");
+                    txt_QQ.Focus();
+                }
                 power = power.TrimEnd(',');
             }
         }
@@ -115,6 +120,11 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                 if (this.Checkbox2.Checked == true)
                 {
                     power += this.Checkbox2.Value + ",";
+                }
+                if (this.txt_QQ.Value == "")
+                {
+                    Response.Write("<script>alert('请输入QQ号码');</script>");
+                    txt_QQ.Focus();
                 }
                 power = power.TrimEnd(',');
             }
@@ -156,46 +166,69 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
         string power = "";
         if (lx == "生产商")
         {
-            if (this.cbx1.Checked == true)
+            if (this.cbx1.Checked == false || this.cbx3.Checked == false)
             {
-                power += this.cbx1.Value + ",";
+                Response.Write("<script>alert('请选择相应的角色权限！');</script>");
             }
-            if (this.cbx2.Checked == true)
+            else
             {
-                power += this.cbx2.Value + ",";
+                if (this.cbx1.Checked == true)
+                {
+                    power += this.cbx1.Value + ",";
+                }
+                if (this.cbx2.Checked == true)
+                {
+                    power += this.cbx2.Value + ",";
+                }
+                if (this.cbx3.Checked == true)
+                {
+                    power += this.cbx3.Value + ",";
+                }
+                power = power.TrimEnd(',');
+                string sql_Update = "update 用户表 set 姓名='" + this.txt_name.Value + "',"
+      + "手机='" + this.txt_phone.Value + "',邮箱 = '" + this.txt_Email.Value + "',角色权限='" + power + "' where QQ号码='" + this.txt_QQ.Value + "'";
+
+                if (dc.RunSqlTransaction(sql_Update))
+                {
+                    Response.Write("<script>window.alert('修改成功');</script>");
+                    Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
+                }
+                else
+                {
+                    Response.Write("修改失败");
+                }
             }
-            if (this.cbx3.Checked == true)
-            {
-                power += this.cbx3.Value + ",";
-            }
-            power = power.TrimEnd(',');
         }
         else if(lx=="分销商")
         {
-            if (this.Checkbox1.Checked == true)
+            if (this.Checkbox1.Checked == false && this.Checkbox2.Checked == false)
             {
-                power += this.Checkbox1.Value + ",";
+                Response.Write("<script>alert('请选择相应的角色权限！');</script>");
             }
-            if (this.Checkbox2.Checked == true)
+            else
             {
-                power += this.Checkbox2.Value + ",";
+                if (this.Checkbox1.Checked == true)
+                {
+                    power += this.Checkbox1.Value + ",";
+                }
+                if (this.Checkbox2.Checked == true)
+                {
+                    power += this.Checkbox2.Value + ",";
+                }
+                power = power.TrimEnd(',');
+                string sql_Update = "update 用户表 set 姓名='" + this.txt_name.Value + "',"
+       + "手机='" + this.txt_phone.Value + "',邮箱 = '" + this.txt_Email.Value + "',角色权限='" + power + "' where QQ号码='" + this.txt_QQ.Value + "'";
+
+                if (dc.RunSqlTransaction(sql_Update))
+                {
+                    Response.Write("<script>window.alert('修改成功');</script>");
+                    Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
+                }
+                else
+                {
+                    Response.Write("修改失败");
+                }
             }
-            power = power.TrimEnd(',');
-        }
-
-     
-
-        string sql_Update = "update 用户表 set 姓名='" + this.txt_name.Value + "',"
-        + "手机='" + this.txt_phone.Value + "',邮箱 = '" + this.txt_Email.Value + "',角色权限='" + power + "' where QQ号码='" + this.txt_QQ.Value + "'";
-
-        if (dc.RunSqlTransaction(sql_Update))
-        {
-            Response.Write("<script>window.alert('修改成功');</script>");
-            Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
-        }
-        else
-        {
-            Response.Write("修改失败");
-        }
+        } 
     }
 }

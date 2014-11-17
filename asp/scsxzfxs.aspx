@@ -167,6 +167,14 @@
                   return false;
               }
           }
+
+          function getup()
+          {
+              var sj = document.getElementById("s1").value;
+              var s = document.getElementById("s2").value;
+              document.getElementById("sj").value = sj;
+              document.getElementById("xsj").value = s;
+          }
       </script>
     <%-- 检索--%>
 </head>
@@ -177,12 +185,13 @@
 
 <script runat="server">
     DataConn Conn = new DataConn();
-    DataTable dt_fxs = new DataTable();
+    DataTable dt_fxs = new DataTable();//材料供应商信息表
+    public int PageSize = 10;
+    public string pp_id = "";
+    public string pp_mc = "";
+    public string scs_id = "";
     protected void Page_Load(object sender, EventArgs e)
     { 
-        string pp_id = "";
-        string pp_mc = "";
-        string scs_id = "";
         //scs_id = "300";
         //pp_id = "300";
         //pp_mc = "钢材测试";
@@ -222,7 +231,101 @@
         dt_fxs = Conn.GetDataTable(sSQL);
         
     }
+    //检索
+    protected void Check(object sender, EventArgs e)
+    {
+        if (this.txt_gys.Value == "")
+        {
+            this.lblhint.Text = "请输入公司名称！";
+        }
+        else
+        {
+            this.lblhint.Visible = false;
+            int count;
+            string sql = "";
+            if (this.sj.Value == "-省(市)-" && this.xsj.Value == "-地级市、区-")
+            {
+                sql = " select COUNT(*) from 材料供应商信息表 where isnull(是否启用,'')='1' and gys_id not in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='" + pp_id +
+            "' and 品牌名称='" + pp_mc + "' and 生产厂商ID='" + scs_id + "') and 供应商 like '%" + this.txt_gys.Value + "%'";
+               count = Convert.ToInt32(Conn.DBLook(sql));
+                if (count != 0)
+                {
+                    Response.Write("<script>alert('该分销商已存在,请查看')</" + "script>");
+                    string gsxx = "select 供应商,地址,电话,联系人,联系人手机,单位类型,gys_id " +
+                        "from 材料供应商信息表 where left(单位类型,3) like '%商%' and 供应商 like '%" + this.txt_gys.Value + "%' order by gys_id";
+                    if (gsxx.ToUpper().Contains("ORDER BY"))
+                    {
+                        int a = gsxx.ToUpper().IndexOf("ORDER BY");
+                        gsxx = "select * from(select *,row_number() over(" + gsxx.Substring(a, gsxx.Length - a) + ") as 编号 from (" + gsxx.Substring(0, a) + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
+                    }
+                    else
+                    {
+                        DataTable order_dt = Conn.GetDataTable("select top 1 * from (" + gsxx + ")#t");
+                        if (order_dt != null)
+                        {
+                            string name = order_dt.Columns[0].ColumnName.ToString();
+                            gsxx = "select * from(select *,row_number() over( order by " + name + ") as 编号 from (" + gsxx + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
+                        }
+                    }
+                    dt_fxs = Conn.GetDataTable(gsxx);
+                    //Session["SQLsource"] = gsxx;
+                    //string sSQL = "select gys_id,供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,注册日期 " +
+                    //                "from 材料供应商信息表 where left(单位类型,3) like '%商%' order by gys_id";
+                    //string sSearchCondition = "供应商 like '%" + this.txt_gys.Value + "%'";
+                    //MyDataBind(true, sSQL, sSearchCondition);
+                  
+                    this.txt_gys.Value = "";
+                }
+                else
+                {
+                    Response.Write("<script>alert('对不起，没有您要搜索的公司信息!');window.location.href='glfxsxx.aspx?gys_id=" + this.scsid.Value + "';</" + "script>");
+                    this.txt_gys.Value = "";
+                }
+            }
+            else
+            {
+               sql = "select COUNT(*) from 材料供应商信息表 where isnull(是否启用,'')='1' and gys_id not in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='" + pp_id +
+            "' and 品牌名称='" + pp_mc + "' and 生产厂商ID='" + scs_id + "') and 供应商 like '%" + this.txt_gys.Value + "%' and 地址 like '%" + this.sj.Value + "%'+'%" + this.xsj.Value + "%'";
+               count = Convert.ToInt32(Conn.DBLook(sql));
+               if (count != 0)
+               {
+                   Response.Write("<script>alert('该分销商已存在,请查看')</" + "script>");
+                   string gsxx = "select 供应商,地址,电话,联系人,联系人手机,单位类型,gys_id " +
+                       "from 材料供应商信息表 where left(单位类型,3) like '%商%' and isnull(是否启用,'')='1' and gys_id not in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='" + pp_id +
+            "' and 品牌名称='" + pp_mc + "' and 生产厂商ID='" + scs_id + "') and 供应商 like '%" + this.txt_gys.Value + "%' and 地址 like '%" + this.sj.Value + "%'+'%" + this.xsj.Value + "%' order by gys_id";
 
+                   if (gsxx.ToUpper().Contains("ORDER BY"))
+                   {
+                       int a = gsxx.ToUpper().IndexOf("ORDER BY");
+                       gsxx = "select * from(select *,row_number() over(" + gsxx.Substring(a, gsxx.Length - a) + ") as 编号 from (" + gsxx.Substring(0, a) + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
+                   }
+                   else
+                   {
+                       DataTable order_dt = Conn.GetDataTable("select top 1 * from (" + gsxx + ")#t");
+                       if (order_dt != null)
+                       {
+                           string name = order_dt.Columns[0].ColumnName.ToString();
+                           gsxx = "select * from(select *,row_number() over( order by " + name + ") as 编号 from (" + gsxx + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
+                       }
+                   }
+                   dt_fxs = Conn.GetDataTable(gsxx);
+                   //Session["SQLsource"] = gsxx;
+                   //string sSQL = "select gys_id,供应商,主页,地址,电话,传真,联系人,联系人手机,单位类型,注册日期 " +
+                   //                "from 材料供应商信息表 where left(单位类型,3) like '%商%' and 地址 like '%" + this.sj.Value + "%'+'%" + this.xsj.Value + "%' order by gys_id";
+                   //string sSearchCondition = "供应商 like '%" + this.txt_gys.Value + "%'";
+                   //MyDataBind(true, sSQL, sSearchCondition);
+
+                   this.txt_gys.Value = "";
+               }
+               else
+               {
+                   Response.Write("<script>alert('对不起，没有您要搜索的公司信息!');window.location.href='glfxsxx.aspx?gys_id=" + this.scsid.Value + "';</" + "script>");
+                   this.txt_gys.Value = "";
+               }
+            }
+        }
+    }
+    //添加
     protected void ADDFXS(object sender, EventArgs e)
     {
         string fxsid = this.fxsid.Value;  //选中作为分销商的 公司的gys_id
@@ -267,7 +370,7 @@
     <input type="hidden" runat="server" id="fxsid" />
     <input type="hidden" runat="server" id="fl_id" />
     <DIV class=fxsxx>
-<table width="1000" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #ddd; background-color:#f7f7f7; margin-top:10px;">
+<table width="1000" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #ddd; background-color:#f7f7f7; margin-top:10px; font-size:12px">
   <tr>
     <td width="120" height="50" align="right"><strong>品牌名称：</strong></td>
     <td width="200" style="padding-left:10px;"> <div id="ppmc1" runat="server"></div></td>
@@ -282,33 +385,33 @@
   </tr>
 </table>
  
-<TABLE width="1000" border="0" cellpadding="0" cellspacing="0" style="margin:10px 0; 	background-color: #d9e5fd;">
-  <TBODY>
-  <TR>
-    <TD height="40" style="WIDTH: 80px">&nbsp;</TD>
-    <TD style="WIDTH: 50px">供应商：</TD>
-    <TD style="width:300px;"><INPUT id=txt_gys name=txt_gys class="hyzhc_shrk"></TD>
-    <TD align="right" style="WIDTH: 50px">地区：</TD>
-    <TD class=style4 style="width:300px;"><SELECT id=Select1 class=fu1 name=Select1> 
-        <OPTION selected value=""></OPTION></SELECT> <SELECT id=Select2 class=fu1 
-      name=Select2> <OPTION selected value=""></OPTION></SELECT>
-        <SELECT id=Select4 class=fu3 name=Select4> 
-          <OPTION selected value=""></OPTION></SELECT>
-      <SCRIPT language=javascript type=text/javascript>
-          var s = ["s0", "s1", "s2", "s3"];
-          var opt0 = ["-区域-", "-省(市)-", "-地级市、区-", "-县级市、县、区-"];
+<table width="1000" border="0" cellpadding="0" cellspacing="0" style="margin:10px 0;background-color: #d9e5fd; font-size:12px">
+  <tbody>
+  <tr>
+    <td height="40" style="WIDTH: 80px">&nbsp;</td>
+    <td style="width: 50px">供应商：</td>
+    <td style="width:300px;"><input id="txt_gys" runat="server" name="txt_gys" class="hyzhc_shrk"></td>
+    <td align="right" style="width: 50px">地区：</td>
+    <td class="style4" style="width:400px;">
+    <select id="s0" class="fu1" runat="server"><option></option></select> 
+        <select id="s1" class="fu1" runat="server" value="<%=this.options[this.options.selectedIndex].text %>"><option></option></select> 
+        <select id="s2" class="fu2" runat="server" value="<%=this.options[this.options.selectedIndex].text %>"><option></option></select> 
+      <script language="javascript" type="text/javascript">
+          var s = ["s0", "s1", "s2"];
+          var opt0 = ["-区域-", "-省(市)-", "-地级市、区-"];
           for (i = 0; i < s.length - 1; i++)
               document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
           change(0);
-                </SCRIPT>
-       </TD>
-    <TD>
-   <input type="Button" name="filter" value="检索" id="filter" class="filter" filter="" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px;cursor:pointer;" />	&nbsp;&nbsp;&nbsp;               
+          </script>
+          <input type="hidden" value="" runat="server" id="sj" /><input type="hidden" value="" runat="server" id="xsj" />
+       </td>
+    <td>
+   <asp:Button ID="Button1"  runat="server" name="btnDocNew"  Text="检索" OnClientClick="getup()" OnClick="Check"  class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" />	&nbsp;&nbsp;&nbsp;               
 <asp:Button  runat="server" name="btnDocNew"  Text="添加" OnClientClick=" return Addfxs();" OnClick="ADDFXS"  class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" />
-    </TD></TR></TBODY>
-</TABLE>
- 
-<table border="0" align="left" cellpadding="0" cellspacing="1" bgcolor="#dddddd" id="table" >
+    </td></tr></tbody>
+</table>
+ <asp:Label Text="" runat="server" ID="lblhint" ForeColor="Red"></asp:Label>
+<table border="0" align="left" cellpadding="0" cellspacing="1" bgcolor="#dddddd" id="table"  style="font-size:12px">
       <thead>
         <tr>
           <th align="center"><strong><input type="checkbox" name="checkboxAll" id="checkboxAll" onclick="return selectall();"  /></strong></th>
