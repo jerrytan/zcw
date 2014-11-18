@@ -38,6 +38,7 @@
     public string lx="";
     public string gys_id = "";//供应商id
     public string QQ = "";
+    public string dj = "";//等级
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Request.Cookies["GYS_QQ_ID"] != null && Request.Cookies["GYS_QQ_ID"].Value.ToString() != "")
@@ -64,6 +65,7 @@
             power = dt_yh.Rows[0]["角色权限"].ToString();
             name = dt_yh.Rows[0]["姓名"].ToString();
             lx = dt_yh.Rows[0]["类型"].ToString();
+            dj = dt_yh.Rows[0]["等级"].ToString();
         }  
             //蒋，2014年8月28日
             string exists = "select 品牌名称 from 品牌字典 where scs_id='" + gys_id + "'";
@@ -108,7 +110,7 @@
                <span class="zyy1"><a href="grxx.aspx">补填个人信息</a></span>         
 		</span>
 		</span>
-        <%if (power.Contains("管理生产商"))
+        <%if (power.Contains("管理生产商") || dj == "企业用户" && lx == "生产商")
           { %>
 		<span class="zy2" runat="server" id="scsqx">
             <img src="images/scsqx.jpg" />
@@ -123,7 +125,7 @@
 			<%} %>
     </div>	
             <div class="gyzy2">
-            <% if (power.Contains("管理生产商"))
+            <% if (power.Contains("管理生产商") || dj == "企业用户" && lx == "生产商")
                {
                    if (ppname == "")
                    { %>

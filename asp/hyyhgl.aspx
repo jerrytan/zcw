@@ -149,12 +149,11 @@
     <%if (Request.Cookies["GYS_QQ_ID"] != null || Request.Cookies["CGS_QQ_ID"] != null) %>
     <%{ %>
       <%         
-         GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
+          GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
           gys_yh_id = Session["GYS_YH_ID"];
 
           CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
           cgs_yh_id = Session["CGS_YH_ID"];
-
 
         //采购商登录
         if (((GYS_QQ_ID == null) || (gys_yh_id == null)) && ((CGS_QQ_ID != null) && (cgs_yh_id != null)))
@@ -211,13 +210,15 @@
             <%}%>
             ，欢迎来到众材网！
             <div style="float:right"><span style="font-weight:bold;">
-            <%if (GYS_QQ_ID != null)
+            <%if (((CGS_QQ_ID == null) || (cgs_yh_id1 == null)) && ((GYS_QQ_ID != null) || (gys_yh_id1 != null)))
               { %>
             <a href="gysgly_wh.aspx">[修改完善公司信息]</a>
-            <%} else{ %>
+            <%}
+              else
+              { %>
             <a href="cgsgly_wh.aspx">[修改完善公司信息]</a>
             <%} %>
-            </span>&nbsp;&nbsp;&nbsp;&nbsp;[<a href="QQ_out.aspx" target="_self">退出登录</a>]
+            </span>
         </div></div>
     </div>
     <input type="hidden" id="lx" runat="server" />

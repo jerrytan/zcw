@@ -11,29 +11,41 @@ public partial class asp_gysgly_wh : System.Web.UI.Page
     DataConn dc = new DataConn();
     public DataTable dt_info = new DataTable();
     public DataTable dt_Yh = new DataTable(); //用户名字(用户表)   
-
+    HttpCookie GYS_QQ_ID = null;
+    Object gys_yh_id = null;
+    HttpCookie CGS_QQ_ID = null;
+    Object cgs_yh_id = null;
+    string str_Sql = "";
+    string sqlGetInfo = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        //HttpCookie QQ_id;
-        string QQ_id;
-        if (Session["GYS_QQ_ID"] == null)//将Request.Cookies["GYS_QQ_ID"]更换成Session["GYS_QQ_ID"]
+        if (Request.Cookies["GYS_QQ_ID"] != null)
         {
-            QQ_id = Session["CYS_QQ_ID"].ToString();
+            GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
+            str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + GYS_QQ_ID + "'";
         }
         else
         {
-            QQ_id = Session["GYS_QQ_ID"].ToString();
+            gys_yh_id = Session["GYS_YH_ID"].ToString();
+            str_Sql = "select 姓名,yh_id from 用户表 where yh_id='" + gys_yh_id + "'";
         }
-        if (QQ_id != null)
-        {
-            string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + QQ_id+ "'";
             dt_Yh = dc.GetDataTable(str_Sql);
-        }
         if(!IsPostBack)
         {
-            string gysid = Session["GYS_QQ_ID"].ToString();
-            string sqlGetInfo = @"select * from 材料供应商信息表 left join 用户表 on 用户表.dw_id = 材料供应商信息表.gys_id 
-            where QQ_id='" + gysid + "' and 等级='企业用户'";
+            if (Request.Cookies["GYS_QQ_ID"] != null)
+            {
+                GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
+                sqlGetInfo = @"select * from 材料供应商信息表 left join 用户表 on 用户表.dw_id = 材料供应商信息表.gys_id 
+            where 用户表.QQ_id='" + GYS_QQ_ID + "' and 用户表.等级='企业用户'";
+            }
+            else
+            {
+                gys_yh_id = Session["GYS_YH_ID"].ToString();
+                sqlGetInfo = @"select * from 材料供应商信息表 left join 用户表 on 用户表.dw_id = 材料供应商信息表.gys_id 
+            where 用户表.yh_id='" + gys_yh_id + "' and 用户表.等级='企业用户'";
+            }
+           // string gysid = Session["GYS_QQ_ID"].ToString();
+
             dt_info = dc.GetDataTable(sqlGetInfo);
             DataRow dr = dt_info.Rows[0];
             this.txt_gsmc.Value = dr["供应商"].ToString();
