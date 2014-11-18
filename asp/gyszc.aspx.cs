@@ -100,9 +100,7 @@ public partial class asp_gyszc : System.Web.UI.Page
             Response.Write("<script>window.alert('请输入联系人手机号');</script>");
             this.txt_sj.Focus();
             return;
-        }
-
-      
+        }      
 
         qymc=this.x.Value+this.sj.Value+this.xsj.Value;
         sqlAddGys = "insert into 材料供应商信息表 (供应商,主页,地址,电话,传真,联系人,联系人手机,是否启用,单位类型,"
@@ -116,11 +114,9 @@ public partial class asp_gyszc : System.Web.UI.Page
         + "'" + this.zcjb.Value + "','" + this.qylb.Value + "','" + this.txt_yyzzzch.Value + "',"
         + "GETDATE(),'" + this.txt_gsQQ.Value + "')";
 
-        string sqlAddGys_id = "update 材料供应商信息表 set gys_id=myID where 单位QQ号='" + this.txt_gsQQ.Value + "';";
+        string sqlAddGys_id = "  update 材料供应商信息表 set gys_id=myID where 单位QQ号='" + this.txt_gsQQ.Value + "';";
 
-        string sqlAll = sqlAddGys + sqlAddGys_id;
-
-
+        string sqlAll = sqlAddGys + sqlAddGys_id;       
         if (dc.RunSqlTransaction(sqlAll))
         {
             Response.Write("<script>window.alert('注册信息已提交,请等待审核');</script>");

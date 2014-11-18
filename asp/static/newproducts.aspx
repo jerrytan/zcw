@@ -31,6 +31,9 @@
         var imgtext = new Array();
         var imgLink = new Array();
 	<% 
+    if (dt_ClMedia!=null&&dt_ClMedia.Rows.Count>0) {
+    
+ 
 		 Response.Write("imgUrl[1] = '"+dt_ClMedia.Rows[0]["存放地址"].ToString()+"';\n");
 		 Response.Write("imgtext[1] = '"+dt_ClMedia.Rows[0]["材料名称"].ToString()+"'\n");
 		 Response.Write("imgLink[1] = 'clxx.aspx?cl_id="+dt_ClMedia.Rows[0]["cl_id"].ToString()+"';\n"); 
@@ -40,7 +43,7 @@
 		 Response.Write("imgUrl[3] = '"+dt_ClMedia.Rows[2]["存放地址"].ToString()+"';\n");
 		 Response.Write("imgtext[3] = '"+dt_ClMedia.Rows[2]["材料名称"].ToString()+"';\n");
 		 Response.Write("imgLink[3] = 'clxx.aspx?cl_id="+dt_ClMedia.Rows[2]["cl_id"].ToString()+"';\n");       
-		     
+		     }
 		%>
 
 

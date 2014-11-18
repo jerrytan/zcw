@@ -1,18 +1,9 @@
-﻿<!--
-        材料分类的导航，用于头部
-        文件名：menu.ascx
-        传入参数：无
-        owner:丁传宇
-        首页导航根据用户关注类别动态匹配
-        author:lilifeng
-        修改：苑伟业 导航条上"更多"链接到"gdfl.aspx"页面
-    -->
-<%@ Import Namespace="System.Data" %>
+﻿<%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
-
+ 
 <script runat="server">
 
         public List<FLObject> Items1 { get; set; }

@@ -68,7 +68,8 @@
         var tr = obj.parentNode.parentNode;
         var tds = tr.cells;
         tds[2].innerHTML = sxz;
-        tds[3].innerHTML = sxbm + bh;
+        //        tds[3].innerHTML = sxbm + bh;
+        tds[3].innerHTML = bh;
         var table = document.getElementById("sx");
         var tr = table.getElementsByTagName("tr");
         var ggxh = "";

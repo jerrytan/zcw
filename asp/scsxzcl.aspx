@@ -114,6 +114,28 @@
         }
         document.getElementById("SQL").value = sSQL;
     }
+    function AddValue1()
+    {
+        var clbm = document.getElementById("clbm").value;
+        var clm = document.getElementById("clmc").value;
+        var ggjxh = document.getElementById("clmcjgg").value;
+        document.getElementById("ggxh").value = ggjxh;
+        if (ggjxh == "" || ggjxh == undefined)
+        {
+            alert("请重新选择规格");
+            return;
+        }
+        document.getElementById("cpbh").value = clbm;
+        //拼写SQL语句
+        var table = document.getElementById("sx");
+        var tr = table.getElementsByTagName("tr");
+        var sSQL = "";
+        for (var i = 0; i < tr.length; i++)
+        {
+            sSQL = sSQL + tr[i].cells[4].innerHTML + "◣";
+        }
+        document.getElementById("SQL").value = sSQL;
+    }
 </script>
 <script type="text/javascript">
     //点击左侧列表数
@@ -167,7 +189,9 @@
             if (message == "1")
             {
                 alert("提交成功");
-                window.location.href = "gysglcl.aspx?gys_id=" + scsid;
+                window.opener.location.reload();
+                window.close();
+                //   window.location.href = "gysglcl.aspx?gys_id=" + scsid; 
             }
             else
             {
@@ -223,6 +247,7 @@ protected void Page_Load(object sender, EventArgs e)
     {
         clid = Request["cl_id"].ToString();
         this.lx.Value = "bj";
+        this.clid.Value = clid;
     }
     this.scsid.Value = scs_id;
     this.ppid.Value = ppid;
@@ -253,9 +278,17 @@ protected void Page_Load(object sender, EventArgs e)
             dwtjsjk = Convert.ToString(dt_cl.Rows[0]["单位体积"]);
             smsjk = Convert.ToString(dt_cl.Rows[0]["说明"]);
             pricesjk = Convert.ToString(dt_cl.Rows[0]["price"]);
-            this.ggxh.Value = Convert.ToString(dt_cl.Rows[0]["规格型号"]);
             ggjxh = Convert.ToString(dt_cl.Rows[0]["规格型号"]);
-            
+            this.ggxh.Value = Convert.ToString(dt_cl.Rows[0]["规格型号"]);       
+            this.cpbh.Value = cpbhsjk;
+            this.clbm.Value = cpbhsjk;
+            this.mcgz.Value = ggxzsjk;
+            this.jldw.Value = jldwsjk;
+            this.dwtj.Value = dwtjsjk;
+            this.dwzl.Value = dwzlsjk;
+            this.cpjg.Value = pricesjk;
+            this.yyfw.Value = smsjk;
+            this.clmcjgg.Value = ggjxh;
         }
         Addsx(flbm, flmc, clid,ggjxh);
     }
@@ -329,7 +362,7 @@ protected void Addsx(string flbm, string flmc, string clid,string ggxh)
                     + "        <td width='120' height='32' align='right' bgcolor='#FFFFFF'>名称及规则：</td>"
                     + "        <td align='left' bgcolor='#FFFFFF'><input type='text' runat='server'  value='" + ggjxh + "' id='clmcjgg' style=' width: 293px; '/></td>"
                     + "        <td width='80' align='center' bgcolor='#FFFFFF'>"
-                    + "        <input type='Button' name='btnDocNew' value='确定' onClick='AddValue()'  class='filter' style='color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;' /></td>"
+                    + "        <input type='Button' name='btnDocNew' value='确定' onClick='AddValue1()'  class='filter' style='color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;' /></td>"
                     + "      </tr>"
                     + "       </tfoot>"
                     + " </table>";
@@ -419,7 +452,7 @@ protected void Addsx(string flbm, string flmc, string clid,string ggxh)
        <tfoot>
         <tr>
         <td width="120" height="32" align="right" bgcolor="#FFFFFF">名称及规则：</td>
-        <td align="left" bgcolor="#FFFFFF"><input type="text" runat="server" value='<%=ggxh %>'  id="clmcjgg" style=" width: 293px; " /></td>
+        <td align="left" bgcolor="#FFFFFF"><input type="text" runat="server"  id="clmcjgg" name="clmcjgg" style=" width: 293px; " /></td>
         <td width="80" align="center" bgcolor="#FFFFFF">
         <input type="Button" name="btnDocNew" value="确定" onClick="AddValue()"  class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" /></td>
       </tr>
@@ -431,24 +464,24 @@ protected void Addsx(string flbm, string flmc, string clid,string ggxh)
     <tbody id="Tbody1">     
       <tr> <td width="100" height="36" align="right" bgcolor="#FFFFFF">产品编号：</td>
         <td height="24" colspan="3" align="left" bgcolor="#FFFFFF"><label for="textfield"></label>
-          <input name="cl_name4" type="text" id="cpbh" class="hyzhc_shrk9" readonly="readonly"  value='<%=cpbhsjk %>'/></td> 
+          <input name="cl_name4" type="text" runat="server" id="cpbh" class="hyzhc_shrk9" readonly="readonly"/></td> 
         <td width="100" align="right" bgcolor="#FFFFFF">产品名称：</td> 
-        <td colspan="3" align="left" bgcolor="#FFFFFF"><input  type="text" value='<%=ggxzsjk %>' id="mcgz" name="mcgz" class="hyzhc_shrk9" /></td>
+        <td colspan="3" align="left" bgcolor="#FFFFFF"><input  type="text" runat="server" id="mcgz" name="mcgz" class="hyzhc_shrk9" /></td>
         </tr>
       <tr>
         <td width="100" height="36" align="right" bgcolor="#FFFFFF">计量单位：</td>
-        <td width="80" height="24" align="center" bgcolor="#FFFFFF"><input  type="text"  value='<%=jldwsjk %>' name="jldw" id="jldw" class="hyzhc_shrk8" /></td>
+        <td width="80" height="24" align="center" bgcolor="#FFFFFF"><input  type="text" runat="server"  name="jldw" id="jldw" class="hyzhc_shrk8" /></td>
         <td width="80" align="right" bgcolor="#FFFFFF">单位重量：</td>
-        <td width="80" align="left" bgcolor="#FFFFFF"><input  type="text" name="dwzl" value='<%=dwzlsjk %>' id="dwzl" class="hyzhc_shrk8" /></td>
+        <td width="80" align="left" bgcolor="#FFFFFF"><input  type="text" name="dwzl" runat="server"   id="dwzl" class="hyzhc_shrk8" /></td>
   
       <td width="100" align="right" bgcolor="#FFFFFF">单位体积：</td>
-        <td width="80" align="left" bgcolor="#FFFFFF"><input type="text" id="dwtj" name="dwtj" value='<%=dwtjsjk %>' class="hyzhc_shrk8" /></td>
+        <td width="80" align="left" bgcolor="#FFFFFF"><input type="text" id="dwtj" runat="server" name="dwtj"   class="hyzhc_shrk8" /></td>
                 <td width="80" align="right" bgcolor="#FFFFFF">产品价格：</td>
-        <td align="left" bgcolor="#FFFFFF"><input type="text" id="cpjg" name="cpjg" value='<%=pricesjk %>' class="hyzhc_shrk8" /></td>
+        <td align="left" bgcolor="#FFFFFF"><input type="text" id="cpjg" name="cpjg" runat="server"  class="hyzhc_shrk8" /></td>
         </tr>
       <tr>
         <td height="80" align="right" bgcolor="#FFFFFF">产品说明：</td>
-      <td height="80" colspan="7" align="center" bgcolor="#FFFFFF"><textarea class="hyzhc_shrk2_2"  cols="40" id="yyfw" name="yyfw" rows="6" style="100%"  value='<%=smsjk %>' ><%=smsjk %></textarea></td>
+      <td height="80" colspan="7" align="center" bgcolor="#FFFFFF"><textarea class="hyzhc_shrk2_2" runat="server"  cols="40" id="yyfw" name="yyfw" rows="6" style="100%"   > </textarea></td>
         </tr>
     </tbody>
 </table>
@@ -472,11 +505,10 @@ protected void Addsx(string flbm, string flmc, string clid,string ggxh)
 <input type="hidden"  runat="server" id="SQL"/>     <%-- SQL语句  --%>
 <input type="hidden"  runat="server" id="DW_ID"/>   <%-- 单位id   --%>
 <input type="hidden"  runat="server" id="flmc"/>    <%-- 分类名称   --%>
-<input type="hidden"  runat="server" id="dmt"/>     <%-- 图片地址   --%>
- 
+<input type="hidden"  runat="server" id="dmt"/>     <%-- 图片地址   --%> 
 <input type="hidden"  runat="server" id="scsid"/>   <%-- 生产商ID   --%>
 <input type="hidden"  runat="server" id="ppid"/>    <%-- 生产商ID   --%>
-<input type="hidden"  runat="server" id="lx"/>      <%-- 是新增还是编辑   --%>
+<input type="hidden"  runat="server" id="lx"/>    <%-- 是新增还是编辑   --%>
 <input type="hidden"  runat="server" id="clid"/>    <%-- 是新增还是编辑   --%>
 </form>
 </BODY></HTML>
