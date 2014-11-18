@@ -64,40 +64,40 @@
       <td width="50" height="30">&nbsp;</td>
       <td class="style11">公司名称：</td>
       <td width="329"><label for="textfield"></label>
-        <input name="companyname" type="text" disabled id="companyname" class="fxsxx3" value="<%=dt_gys.Rows[0]["供应商"]%>"/></td>
+        <input name="companyname" type="text" readonly id="companyname" class="fxsxx3" value="<%=dt_gys.Rows[0]["供应商"]%>"/></td>
       <td width="50" align="right"></td>
       <td class="style12">公司地址：</td>
-      <td><input name="address" type="text" disabled id="address" class="fxsxx3" value="<%=dt_gys.Rows[0]["联系地址"]%>" /></td>
+      <td><input name="address" type="text" readonly id="address" class="fxsxx3" value="<%=dt_gys.Rows[0]["联系地址"]%>" /></td>
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
       <td class="style11">公司电话：</td>
-      <td><input name="tel" type="text" id="tel" disabled class="fxsxx3" value="<%=dt_gys.Rows[0]["电话"]%>"/></td>
+      <td><input name="tel" type="text" id="tel" readonly class="fxsxx3" value="<%=dt_gys.Rows[0]["电话"]%>"/></td>
       <td>&nbsp;</td>
       <td class="style12">公司主页:</td>
-      <td><input name="homepage" type="text" disabled id="homepage" class="fxsxx3" value="<%=dt_gys.Rows[0]["主页"]%>" /></td>
+      <td><input name="homepage" type="text" readonly id="homepage" class="fxsxx3" value="<%=dt_gys.Rows[0]["主页"]%>" /></td>
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
       <td class="style11">公司传真：</td>
-      <td><input name="fax" type="text" id="fax" disabled class="fxsxx3" value="<%=dt_gys.Rows[0]["传真"]%>" /></td>
+      <td><input name="fax" type="text" id="fax" readonly class="fxsxx3" value="<%=dt_gys.Rows[0]["传真"]%>" /></td>
       <td>&nbsp;</td>
       <td class="style12">公司地区：</td>
-      <td><input name="area" type="text" id="area" disabled class="fxsxx3" value="<%=dt_gys.Rows[0]["地区名称"]%>" /></td>
+      <td><input name="area" type="text" id="area" readonly class="fxsxx3" value="<%=dt_gys.Rows[0]["地区名称"]%>" /></td>
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
       <td class="style11">联系人姓名：</td>
-      <td><input name="name" type="text" id="name" disabled class="fxsxx3" value="<%=dt_gys.Rows[0]["联系人"]%>" /></td>
+      <td><input name="name" type="text" id="name" readonly class="fxsxx3" value="<%=dt_gys.Rows[0]["联系人"]%>" /></td>
       <td>&nbsp;</td>
       <td class="style12">联系人电话：</td>
-      <td><input name="phone" type="text" id="phone" disabled class="fxsxx3" value="<%=dt_gys.Rows[0]["联系人手机"]%>" /></td>
+      <td><input name="phone" type="text" id="phone" readonly class="fxsxx3" value="<%=dt_gys.Rows[0]["联系人手机"]%>" /></td>
     </tr>
     <tr>
       <td height="40">&nbsp;</td>
       <td class="style11">经验范围：</td>
       <td colspan="4" height="90px"><label for="textfield21"></label>
-         <input name="Business_Scope" disabled style="height:70px; width:770px;" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gys.Rows[0]["经营范围"]%>" /></td>
+         <input name="Business_Scope" readonly style="height:70px; width:770px;" type="text" id="Business_Scope" class="fxsxx3" value="<%=dt_gys.Rows[0]["经营范围"]%>" /></td>
     </tr>
   </table>
                       <div class="ggspp" runat="server" id="ggspp">

@@ -446,17 +446,6 @@
       </tbody>
 </table>
  
-    <table width="100%" align="left" cellpadding="0" cellspacing="0">
-              <tr>
-                <td width="266" height="40" align="left" valign="middle">共7页/当前第1页 </td>
-                <td align="right" valign="middle"> <a href="#">首页</a> <a href="#">上一页</a> <a href="#">下一页</a> <a href="#">尾页</a> 转到第
-<input name="textfield244" type="text" class="queding_bk" size="3" />
-                  页 
-                  <input type="submit" name="btnDocNew" value="确定" onClick="return VerifyMyIMP();"  class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" />
-                  
-                </td>
-      </tr>
-</table> 
  </DIV>
 </form>
 

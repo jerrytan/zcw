@@ -10,30 +10,40 @@ public partial class asp_cgsgly_wh : System.Web.UI.Page
 {
     DataConn dc = new DataConn();
     public DataTable dt_info = new DataTable();
-    protected DataTable dt_Yh = new DataTable(); //用户名字(用户表)    	
+    protected DataTable dt_Yh = new DataTable(); //用户名字(用户表)  
+    HttpCookie CGS_QQ_ID = null;
+    Object cgs_yh_id = null;
+    string str_Sql = "";
+    string sqlGetInfo = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        //HttpCookie QQ_id;
-        string QQ_id;
-        if (Session["GYS_QQ_ID"] == null)
+        if (Request.Cookies["CGS_QQ_ID"] != null)
         {
-            QQ_id = Session["CGS_QQ_ID"].ToString();//Request.Cookies["CGS_QQ_ID"];更换成Session["CGS_QQ_ID"]
+            CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+            str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + CGS_QQ_ID + "'";
         }
         else
         {
-            QQ_id = Session["GYS_QQ_ID"].ToString();
+            cgs_yh_id = Session["CGS_YH_ID"].ToString();
+            str_Sql = "select 姓名,yh_id from 用户表 where yh_id='" + cgs_yh_id + "'";
         }
-        if (QQ_id != null)
-        {
-            string str_Sql = "select 姓名,yh_id from 用户表 where QQ_id='" + QQ_id+ "'";
             dt_Yh = dc.GetDataTable(str_Sql);
-        }
         if (!IsPostBack)
         {
-            //Request.Cookies["CGS_QQ_ID"];更换成Session["CGS_QQ_ID"]
-            string cgsid = Session["CGS_QQ_ID"].ToString();
-            string sqlGetInfo = @"select * from 采购商基本信息 left join 用户表 on 用户表.dw_id = 采购商基本信息.cgs_id 
-            where QQ_id='" + cgsid + "'  and 等级='企业用户'";
+            //string cgsid = Session["CGS_QQ_ID"].ToString();
+            if (Request.Cookies["CGS_QQ_ID"] != null)
+            {
+                CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
+                sqlGetInfo = @"select * from 采购商基本信息 left join 用户表 on 用户表.dw_id = 采购商基本信息.cgs_id 
+            where 用户表.QQ_id='" + CGS_QQ_ID + "'  and 用户表.等级='企业用户'";
+            }
+            else
+            {
+                cgs_yh_id = Session["CGS_YH_ID"].ToString();
+                sqlGetInfo = @"select * from 采购商基本信息 left join 用户表 on 用户表.dw_id = 采购商基本信息.cgs_id 
+            where 用户表.yh_id='" + cgs_yh_id + "'  and 用户表.等级='企业用户'";
+            }
+           
             dt_info = dc.GetDataTable(sqlGetInfo);
             DataRow dr = dt_info.Rows[0];
             this.txt_gsmc.Value = dr["单位名称"].ToString();
