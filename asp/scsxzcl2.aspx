@@ -83,13 +83,16 @@
             {
                 document.getElementById("clmc").value = tr[i].cells[2].innerHTML;
             }
-            var tds = tr[i];
-            ggxh = ggxh + tr[i].cells[2].innerHTML;
+            else
+            {
+                var tds = tr[i];
+                ggxh = ggxh + tr[i].cells[2].innerHTML;
+            }
             clbh += tr[i].cells[3].innerHTML.toString();
         }
         document.getElementById("clbm").value = clbh;
         document.getElementById("clmcjgg").value = ggxh;
-        document.getElementById("ggxh").value = document.getElementById("clmcjgg").value;
+        document.getElementById("ggxh").value = ggxh;
     }
     //将组合的属性属性值 和对应材料信息 添加到材料列表中
     function AddValue()

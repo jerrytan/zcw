@@ -42,7 +42,7 @@
 
             foreach (DataRow drsx in dt_sx.Rows)
             {
-                string sql_sx = "select 属性名称,属性值,属性编码,编号 from 材料分类属性值表  where 属性名称='" + drsx["属性名称"] + "' and 分类编码=" + flbm;
+                string sql_sx = "select 属性名称,属性值,属性编码,编号 from 材料分类属性值表  where 属性名称='" + drsx["属性名称"] + "' and 分类编码='" + flbm+"' order by 编号";
                 dt_sxz = Conn.GetDataTable(sql_sx);
                 string sxmc = Convert.ToString(drsx["属性名称"]);
                 sxmc = sxmc.Replace("\r", " ");

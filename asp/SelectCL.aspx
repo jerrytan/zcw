@@ -81,13 +81,17 @@
             {
                 document.getElementById("clmc").value = tr[i].cells[2].innerHTML;
             }
-            var tds = tr[i].cells;
-            ggxh = ggxh + tr[i].cells[2].innerHTML;
-            clbh += tr[i].cells[3].innerHTML.toString();
+            else
+            {
+                var tds = tr[i].cells;
+                ggxh = ggxh + tr[i].cells[2].innerHTML;
+            }
+                clbh += tr[i].cells[3].innerHTML.toString();
+            
         }
         document.getElementById("clbm").value = clbh;
         document.getElementById("clmcjgg").value = ggxh;
-        document.getElementById("ggxh").value = document.getElementById("clmcjgg").value;
+        document.getElementById("ggxh").value = ggxh;
     }
     //将组合的属性属性值 和对应材料信息 添加到材料列表中
     function AddValue()
@@ -96,7 +100,7 @@
         var table = document.getElementById("cl");
         var tr = table.getElementsByTagName("tr");
         var clbm = document.getElementById("clbm").value;
-        var clm = document.getElementById("clmcjgg").value;
+        var clm = document.getElementById("clmc").value;
         var ggjxh = document.getElementById("ggxh").value;
         var wd = document.getElementById("dw").value;
         var bh = tr.length;
@@ -112,7 +116,7 @@
             html = "<tr>"
 		    + " <td align='center' bgcolor='#FFFFFF'>" + bh + "</td>"
 		    + " <td height='24' align='center' bgcolor='#FFFFFF'>" + clbm + "</td>"
-		    + " <td align='left' bgcolor='#FFFFFF'>" + clmcjgg + "</td>"
+		    + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
 		    + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
 		    + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"   //品牌
 		    + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"
@@ -704,5 +708,6 @@ protected void Page_Load(object sender, EventArgs e)
 <input type="hidden"  runat="server" id="HTML"/>    <%--返回的html--%>
 <input type="hidden"  runat="server" id="SQL"/>     <%-- SQL语句  --%>
 <input type="hidden"  runat="server" id="DW_ID"/>   <%-- 单位id   --%>
+<input runat="server" type="hidden" id="clmcjgg" />
 </form>
 </BODY></HTML>

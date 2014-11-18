@@ -3,10 +3,14 @@
 <%@ Page Language="C#" EnableViewStateMac= "false" %>
 
 <script runat="server">
+    /// <summary>
+    /// 属性值
+    /// </summary>
     public DataTable dt_sx = new DataTable();
     public DataTable dt_sxz = new DataTable();
     protected void Page_Load(object sender, EventArgs e)
     {
+        
         DataConn Conn = new DataConn();
         //获取属性 属性值 页面
         string flbm = "";
@@ -43,7 +47,7 @@
 
             foreach (DataRow drsx in dt_sx.Rows)
             {
-                string sql_sx = "select 属性名称,属性值,属性编码,编号,flsx_id,flsxz_id,fl_id from 材料分类属性值表  where 属性名称='" + drsx["属性名称"] + "' and 分类编码=" + flbm;
+                string sql_sx = "select 属性名称,属性值,属性编码,编号,flsx_id,flsxz_id,fl_id from 材料分类属性值表  where 属性名称='" + drsx["属性名称"] + "' and 分类编码='" + flbm+"' order by 编号";
                 dt_sxz = Conn.GetDataTable(sql_sx);
                 string sxmc = Convert.ToString(drsx["属性名称"]);
                 sxmc = sxmc.Replace("\r", " ");
