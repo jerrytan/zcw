@@ -116,25 +116,54 @@
             Object gys_yh_id = Session["GYS_YH_ID"];  
 
             HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
-            Object cgs_yh_id = Session["CGS_YH_ID"];     
-    
-              
-            //采购商登录
-             if(((GYS_QQ_ID == null ) || (gys_yh_id == null ))&&((CGS_QQ_ID != null ) && (cgs_yh_id != null)))
+            Object cgs_yh_id = Session["CGS_YH_ID"];
+            string gys_yh_id1 = "";
+            string cgs_yh_id1 = "";
+            if (Request.Cookies["GYS_QQ_ID"] != null || Request.Cookies["CGS_QQ_ID"] != null)
             {
+                //采购商登录
+                if (((GYS_QQ_ID == null) || (gys_yh_id == null)) && ((CGS_QQ_ID != null) && (cgs_yh_id != null)))
+                {
     %>
              <div class="anniu"><a  href="QQ_out.aspx" target="_self">采购商登出</a></div>
-    <%
-            }
-            //供应商登录
-            else if(((CGS_QQ_ID == null ) || (cgs_yh_id == null))&&((GYS_QQ_ID != null ) && (gys_yh_id != null )))
-            {
+    <%          }
+                //供应商登录
+                else if (((CGS_QQ_ID == null) || (cgs_yh_id == null)) && ((GYS_QQ_ID != null) && (gys_yh_id != null)))
+                {
     %>
                  <div class="anniu"><a  href="QQ_out.aspx" target="_self">供应商登出</a></div>
 				 <div class="anniu"><a  href="gyszym.aspx" target="_self">供应商主页面</a></div>
-    <%
+    <%          }
             }
     %>
+        <%else %>
+    <%{ %>
+       <%
+           
+           if (Session["GYS_YH_ID"]!=null)
+           {
+               gys_yh_id1 = Session["GYS_YH_ID"].ToString();
+           }
+           if (Session["CGS_YH_ID"]!=null)
+           {
+               cgs_yh_id1 = Session["CGS_YH_ID"].ToString();
+           }
+           %>
+            <%if (gys_yh_id1 == "" && cgs_yh_id1 != "") { 
+              %>
+              <div class="anniu"><a  href="QQ_out.aspx" target="_self">采购商登出</a></div>
+            <%  }%>
+              <%if (gys_yh_id1 == "" && cgs_yh_id1 == "") { 
+              %>
+             <div class="anniu"><a href="gysdl.aspx" target="_self">供应商登录</a></div>
+                <div class="anniu"><a  href="cgsdl.aspx" target="_self">采购商登录</a></div>
+            <%  }%>
+              <%if (gys_yh_id1 != "" && cgs_yh_id1 == "") { 
+              %>
+               <div class="anniu"><a  href="QQ_out.aspx" target="_self">供应商登出</a></div>
+				 <div class="anniu"><a  href="gyszym.aspx" target="_self">供应商主页面</a></div>
+            <%  }%>
+    <%} %>
     <div class="gyzy0">
         <div class="gyzy">
 			<%foreach(System.Data.DataRow row in dt_Yh.Rows){%>            
