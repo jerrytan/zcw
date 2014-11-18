@@ -323,40 +323,40 @@
       <td width="50" height="30">&nbsp;</td>
       <td width="120">公司名称:</td>
       <td width="329"><label for="textfield"></label>
-        <input name="companyname" disabled type="text" id="Text1" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" onclick="return companyname_onclick()" /></td>
+        <input name="companyname" readonly type="text" id="Text1" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司名称"] %>" onclick="return companyname_onclick()" /></td>
       <td width="50" align="right"></td>
       <td width="120">公司地址：</td>
-      <td width="329"><input name="address" disabled type="text" id="Text2" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>"/></td>
+      <td width="329"><input name="address" readonly type="text" id="Text2" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地址"] %>"/></td>
     </tr>
      <tr>
       <td height="30">&nbsp;</td>
       <td>公司电话：</td>
-      <td><input name="tel" type="text" id="Text3" disabled class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>"/></td>
+      <td><input name="tel" type="text" id="Text3" readonly class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司电话"] %>"/></td>
       <td>&nbsp;</td>
       <td>公司主页：</td>
-      <td><input name="homepage" type="text" id="Text4" disabled class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" onclick="return homepage_onclick()" /></td>
+      <td><input name="homepage" type="text" id="Text4" readonly class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司主页"] %>" onclick="return homepage_onclick()" /></td>
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
       <td>公司传真：</td>
-      <td><input id="Text5" class="fxsxx3" name="fax" disabled type="text" value='<%=dt_gysxx.Rows[0]["贵公司传真"] %>' /></td>
+      <td><input id="Text5" class="fxsxx3" name="fax" readonly type="text" value='<%=dt_gysxx.Rows[0]["贵公司传真"] %>' /></td>
       <td>&nbsp;</td>
       <td>公司地区：</td>
-      <td><input name="area" type="text" id="Text6" disabled class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地区"] %>"/></td>
+      <td><input name="area" type="text" id="Text6" readonly class="fxsxx3" value="<%=dt_gysxx.Rows[0]["贵公司地区"] %>"/></td>
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
       <td>联系人姓名：</td>
-      <td><input name="name" type="text" id="Text7" disabled class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人姓名"] %>" /></td>
+      <td><input name="name" type="text" id="Text7" readonly class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人姓名"] %>" /></td>
       <td>&nbsp;</td>
       <td>联系人电话：</td>
-      <td><input name="phone" type="text" id="Text8" disabled class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人电话"] %>" /></td>
+      <td><input name="phone" type="text" id="Text8" readonly class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人电话"] %>" /></td>
     </tr>
     <tr>
       <td height="40">&nbsp;</td>
       <td>经验范围：</td>
       <td colspan="4" height="90px"><label for="textfield21"></label>
-          <input name="Business_Scope" disabled style="height:70px; width:805px;" type="text" id="Text9" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
+          <input name="Business_Scope" readonly style="height:70px; width:805px;" type="text" id="Text9" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
     </tr>
 
            <%}
@@ -372,40 +372,40 @@
       <td width="50" height="30">&nbsp;</td>
       <td width="120">公司名称:</td>
       <td width="329"><label for="textfield"></label>
-        <input name="companyname" type="text" id="Text10" disabled class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" onclick="return companyname_onclick()" /></td>
+        <input name="companyname" type="text" id="Text10" readonly class="fxsxx3" value="<%=dt_gysxx.Rows[0]["供应商"] %>" onclick="return companyname_onclick()" /></td>
       <td width="50" align="right"></td>
       <td width="120">公司地址：</td>
-      <td width="329"><input name="address" type="text" disabled id="Text11" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地址"] %>"/></td>
+      <td width="329"><input name="address" type="text" readonly id="Text11" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地址"] %>"/></td>
     </tr>
      <tr>
       <td height="30">&nbsp;</td>
       <td>公司电话：</td>
-      <td><input name="tel" type="text" id="Text12" disabled class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>"/></td>
+      <td><input name="tel" type="text" id="Text12" readonly class="fxsxx3" value="<%=dt_gysxx.Rows[0]["电话"] %>"/></td>
       <td>&nbsp;</td>
       <td>公司主页：</td>
-      <td><input name="homepage" type="text" id="Text13" disabled class="fxsxx3" value="<%=dt_gysxx.Rows[0]["主页"] %>" onclick="return homepage_onclick()" /></td>
+      <td><input name="homepage" type="text" id="Text13" readonly class="fxsxx3" value="<%=dt_gysxx.Rows[0]["主页"] %>" onclick="return homepage_onclick()" /></td>
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
       <td>公司传真：</td>
-      <td><input id="Text14" class="fxsxx3" name="fax" disabled type="text" value='<%=dt_gysxx.Rows[0]["传真"] %>' /></td>
+      <td><input id="Text14" class="fxsxx3" name="fax" readonly type="text" value='<%=dt_gysxx.Rows[0]["传真"] %>' /></td>
       <td>&nbsp;</td>
       <td>公司地区：</td>
-      <td><input name="area" type="text" id="Text15" disabled class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地区名称"] %>"/></td>
+      <td><input name="area" type="text" id="Text15" readonly class="fxsxx3" value="<%=dt_gysxx.Rows[0]["地区名称"] %>"/></td>
     </tr>
     <tr>
       <td height="30">&nbsp;</td>
       <td>联系人姓名：</td>
-      <td><input name="name" type="text" id="Text16" disabled class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人"] %>" /></td>
+      <td><input name="name" type="text" id="Text16" readonly class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人"] %>" /></td>
       <td>&nbsp;</td>
       <td>联系人电话：</td>
-      <td><input name="phone" type="text" id="Text17" disabled class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人手机"] %>" /></td>
+      <td><input name="phone" type="text" id="Text17" readonly class="fxsxx3" value="<%=dt_gysxx.Rows[0]["联系人手机"] %>" /></td>
     </tr>
     <tr>
       <td height="40">&nbsp;</td>
       <td>经验范围：</td>
       <td colspan="4" height="90px"><label for="textfield21"></label>
-          <input name="Business_Scope" disabled style="height:70px; width:805px;" type="text" id="Text18" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
+          <input name="Business_Scope" readonly style="height:70px; width:805px;" type="text" id="Text18" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
     </tr>
 
            <%} %>	

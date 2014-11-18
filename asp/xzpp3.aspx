@@ -51,7 +51,7 @@
             }
             else
             {
-                string sSQL = "select count(*) from 品牌字典 where 品牌名称='" + brandname + "'";
+                string sSQL = "select count(*) from 品牌字典 where 品牌名称='" + brandname + "' and scs_id='"+gys_id+"'";
                 string count = objConn.DBLook(sSQL);
                 if (count == "0")
                 {
@@ -67,12 +67,12 @@
                         + " where 品牌名称='" + brandname + "'";
 
                     ret = objConn.ExecuteSQLForCount(str_update, true);
-                    if (ret == 0)
-                    {
-                        string sql = "delete 品牌字典 where 品牌名称='" + brandname +
-                            "' and 是否启用=1 and scs_id='" + gys_id + "' and  yh_id='" + yh_id + "'";
-                        objConn.ExecuteSQL(sql, true);
-                    }
+                    //if (ret == 0)
+                    //{
+                    //    string sql = "delete 品牌字典 where 品牌名称='" + brandname +
+                    //        "' and 是否启用=1 and scs_id='" + gys_id + "' and  yh_id='" + yh_id + "'";
+                    //    objConn.ExecuteSQL(sql, true);
+                    //}
                 }
                 else
                 {
