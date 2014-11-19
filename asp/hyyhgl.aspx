@@ -191,7 +191,7 @@
 
         
             string sql_js = "";
-            sql_js = "select QQ号码,姓名,手机,邮箱,角色权限,yh_id from 用户表 where dw_id='" + dwid + "'";
+            sql_js = "select QQ号码,姓名,手机,邮箱,角色权限,yh_id from 用户表 where dw_id='" + dwid + "' and 等级<>'企业用户'";
             dt_js = dc.GetDataTable(sql_js);
             if (!IsPostBack)
             {
@@ -249,7 +249,7 @@
 
         //得到要筛选字段的类型
         string sql_js = "";
-        sql_js = "select QQ号码,姓名,手机,邮箱,角色权限,yh_id from 用户表 where dw_id='" + dwid + "'";
+        sql_js = "select QQ号码,姓名,手机,邮箱,角色权限,yh_id from 用户表 where dw_id='" + dwid + "' and 等级<>'企业用户' ";
 
         sSQL = "select * from (" + sql_js + ") where 1=0";
         objDt = dc.GetDataTable(sSQL);
@@ -326,7 +326,7 @@
 
         }
         string sql = sql_js;
-        sql = "select * from (" + sql + ") where " + strCondition;
+        sql = "select * from (" + sql + ") where " + strCondition + "and 等级<>'企业用户'";
         dt_js = dc.GetDataTable(sql);
     }
     

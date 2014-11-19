@@ -86,8 +86,8 @@
                 var tds = tr[i].cells;
                 ggxh = ggxh + tr[i].cells[2].innerHTML;
             }
-            clbh += tr[i].cells[3].innerHTML.toString();
-
+                clbh += tr[i].cells[3].innerHTML.toString();
+            
         }
         document.getElementById("clbm").value = clbh;
         document.getElementById("clmcjgg").value = ggxh;
@@ -152,7 +152,7 @@
 		                + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
 		                + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
                         + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"   //品牌
-		                + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"
+		                + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"		              
                         + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		                + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox' checked='checked'/>"
 		                + " <label for='checkbox11'></label></td>"
@@ -347,7 +347,7 @@
 		            + " <td align='left' bgcolor='#FFFFFF'>" + trck.cells[2].innerHTML + "</td>"
 		            + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
 		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
-		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
+		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"     
                     + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		            + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		            + " <label for='checkbox11'></label></td>"
@@ -403,7 +403,7 @@
                     var trck = chks[i].parentNode.parentNode;
                     if (value.indexOf(trck.cells[1].innerHTML) >= 0 && pp.indexOf(trck.cells[5].innerHTML) >= 0)
                     {
-                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！");
+                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！");                        
                     }
                     else
                     {
@@ -441,11 +441,11 @@
                 }
             }
         }
-        if (Html != "" && Html != undefined)
+        if (Html!=""&&Html!=undefined)
         {
             $("#tjTable").append(Html);
         }
-
+       
     }
 </script>
 </HEAD> 
