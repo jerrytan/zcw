@@ -162,6 +162,16 @@
       {
          var ppid= document.getElementById("ppid").value;
          var ppmc = document.getElementById("ppmc").value;
+         if (ppid==""||ppid==undefined)
+         {
+             alert("请选择品牌在进行编辑");
+             return;
+         }
+         if (ppmc == "" || ppmc == undefined)
+         {
+             alert("请选择品牌在进行编辑");
+             return;
+         }
          var url = "xzpp.aspx?gys_id=" + id + "&pp_id=" + ppid + "&ppmc=" + ppmc;        
           window.open(url, "", "height=300,width=300,status=no,location=no,toolbar=no,directories=no,menubar=no");
       }

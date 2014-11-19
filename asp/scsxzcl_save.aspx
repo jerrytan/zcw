@@ -14,7 +14,7 @@
              string flbm = Request["flbm"];
              string clbm = Request["clbm"];
              string clmc = Request["clmc"];
-             string ggxh = Request["clmcjgg"];
+             string ggxh = Request["gg_xh"];
              string jldw = Request["jldw"];
              string dwzl = Request["dwzl"];
              string dwtj = Request["dwtj"];

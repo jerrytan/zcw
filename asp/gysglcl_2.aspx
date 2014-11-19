@@ -57,13 +57,20 @@
         }
         else
         {
-            window.parent.location.href = 'scsxzcl.aspx?scs_id=' + gy + "&ppid=" + pp_id;
+            var url = 'scsxzcl.aspx?scs_id=' + gy + "&ppid=" + pp_id;
+            window.open(url);
+          //  window.parent.location.href = 'scsxzcl.aspx?scs_id=' + gy + "&ppid=" + pp_id;
         }
        
     }
     function BJCL(cl_id,flbm,flmc) {
       var gy = document.getElementById("lblgys_id").value;
       var pp_id = document.getElementById("ppid").value;
+      if (pp_id==""||pp_id==undefined)
+      {
+          alert("请选择品牌！");
+          return;
+      }
       window.open('scsxzcl.aspx?scs_id=' + gy + "&ppid=" + pp_id + "&cl_id=" + cl_id + "&flmc=" + flmc+"&flbm="+flbm);
     }
     function delete_cl() {
@@ -78,7 +85,7 @@
         }
         if (cl_id == "" && cl_id == undefined)
         {
-            alert("请先选择品牌！");
+            alert("请先勾选需要删除的材料！");
             return;
         }
         else
@@ -178,26 +185,168 @@
             sSQL = "select top 10 cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称 from 材料表 where gys_id='" + gys_id+"'";
             dt_cl = Conn.GetDataTable(sSQL);  
         }
+       
+        if (!IsPostBack)
+        {
+            createlm(dt_cl);
+        }
     }
+
+    //*****************************小张新增检索功能开始********************************* 
+    protected void filter_Click(object sender, System.EventArgs e)
+    {
+        string strCondition = "";
+        string sColumName, sTempColumnName;
+        string sOperator;
+        string sKeyWord;
+        string sFieldType;
+        string sSQL;
+        DataTable objDt = null;
+
+        sColumName = lieming.SelectedItem.Value.ToString().Trim();
+        sOperator = yunsuanfu.SelectedItem.Value.ToString().Trim();
+        sKeyWord = txtKeyWord.Text.ToString().Trim();
+
+        //得到要筛选字段的类型
+        string sql_js = "";
+        if (pp_id != "")
+        {
+            sql_js = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称 from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "'"; 
+        }
+        else
+        {
+            sql_js = "select top 10 cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称 from 材料表 where gys_id='" + gys_id + "'";
+        }
+        sSQL = "select * from (" + sql_js + ")#temp where 1=0";
+        objDt = Conn.GetDataTable(sSQL);
+        for (int i = 0; i < objDt.Columns.Count; i++)
+        {
+            sTempColumnName = objDt.Columns[i].ColumnName.ToString().Trim();
+            if (sTempColumnName == sColumName)
+            {
+                sFieldType = objDt.Columns[i].DataType.Name.ToString().Trim();
+                switch (sFieldType.ToUpper().Trim())
+                {
+                    case "STRING":
+                        sFieldType = "字符串型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                    case "DATETIME":
+                        sFieldType = "日期型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                    case "INT32":
+                        sFieldType = "整型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                    case "DECIMAL":
+                        sFieldType = "货币型";
+
+                        if (sOperator.Trim() == "like")
+                        {
+                            Response.Write("<script>alert(\"字段：" + sFieldType + " 不允许用 包含 筛选\")</" + "script>");
+                            return;
+                        }
+                        else
+                            strCondition = sColumName + " " + sOperator + sKeyWord;
+
+                        break;
+                    case "DOUBLE":
+                        sFieldType = "浮点型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                    default:
+                        sFieldType = "字符串型";
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+                        break;
+                }
+                break;
+            }
+
+        } 
+       string sql = "select * from (" + sql_js + ")#temp where " + strCondition;
+        dt_cl = Conn.GetDataTable(sql);
+    }
+   
+    private void createlm(DataTable objDt)
+    {
+        ListItem objItem = null;
+        if (objDt != null)
+        {             
+            for (int i = 0; i < objDt.Columns.Count; i++)
+            {
+                switch (objDt.Columns[i].ColumnName)
+                {
+                    case "cl_id":
+                        break;
+                    default:
+                        objItem = null;
+                        objItem = new ListItem();
+                        objItem.Text = objDt.Columns[i].ColumnName;
+                        lieming.Items.Add(objItem);
+                        break;
+                }
+            }
+        }
+    }
+    //*****************************小张新增检索功能结束*********************************
 </script>
   <form id="form1" runat="server">
     <input type="hidden" id="lblgys_id" runat="server" />
     <input type="hidden" id="ppid" runat="server" />
-    <div id="jiansuo2">
-检索条件：
-<input name="txtKeyWord" runat="server" type="text" id="txtKeyWord" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
-<div class="jiansuo_img">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" id="table">
-  <tr>
-    <td width="80" height="30" align="center">
-    <asp:ImageButton ID="ImageButton2" runat="server" ImageUrl="~/asp/images/jiansuo.gif" /></td>
-    <td width="85" align="left">
-   <input type="button" class="btnFilter" value="添加材料" onclick="btnFilter_Click()" style=" margin-top:0px; height: 20px;width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" /></td>
-    <td>
-     <input type="button" class="btnFilter" value="删除材料" onclick="delete_cl()" style=" margin-top:0px; height: 20px;width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" /></td>
-  </tr>
-</table>
-</div></div>
+
+        <div id="jiansuo2"> 
+  <asp:Label ID="shaixu" runat="server"><font style="FONT-SIZE: 9pt">检索条件：</font></asp:Label>
+                    <asp:DropDownList ID="lieming" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="128px">
+                    </asp:DropDownList>
+                    <asp:DropDownList ID="yunsuanfu" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="88px">
+                        <asp:ListItem Value="like" Selected="True">包含关键字</asp:ListItem>
+                        <asp:ListItem Value="=">等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;">小于</asp:ListItem>
+                        <asp:ListItem Value="&gt;">大于</asp:ListItem>
+                        <asp:ListItem Value="&gt;=">大于等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;=">小于等于</asp:ListItem>
+                       
+                    </asp:DropDownList>&nbsp; <asp:TextBox ID="txtKeyWord" Style="border-right: #808080 1px solid;
+                        border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server"></asp:TextBox>  
+                        &nbsp;            
+                    <asp:Button ID="Button1" runat="server" Text="检索" OnClick="filter_Click" CssClass="filter"
+                        BorderStyle="None" Width="37px" Height="20px" ForeColor="Black" Font-Size="12px"
+                        filter Font-Names="宋体"></asp:Button>
+                        &nbsp;
+                         <input type="button" class="btnDelete1" value="新增材料" onclick="btnFilter_Click()" style="height: 20px;width: 72px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" />&nbsp;
+                         <input type="button" class="btnDelete1" value="删除材料" onclick="delete_cl()" style="height: 20px;width: 72px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" /></td>
+
+</div>
+
 <input type="hidden" value="" id="ej_cl" runat="server" />
    <div id="divtable" runat="server" style="height:230px"> 
 <table width="100%"  border="0"  cellpadding="0" cellspacing="1" bgcolor="#dddddd" class="table2" id="table2" style="table-layout：fixed ;word-wrap：break-word;">

@@ -30,8 +30,10 @@
         {
             var gys = document.getElementById("lblgys_id").value;
             var pp = document.getElementById("ppmc").value;
+            var url = 'scsxzfxs.aspx?ppmc=' + pp + '&scsid=' + gys + '&ppid=' + pp_id;
+            window.parent.parent.open(url);
             //window.parent.parent.location.href = 'xzgxs.aspx?pp_mc=' + pp + '&gxs_id=' + gys + '&xzlx=fxs';
-            window.parent.parent.location.href = 'scsxzfxs.aspx?ppmc=' + pp + '&scsid=' + gys + '&ppid=' + pp_id;
+           // window.parent.parent.location.href = 'scsxzfxs.aspx?ppmc=' + pp + '&scsid=' + gys + '&ppid=' + pp_id;
         }
     }
     function Trim(str) {
@@ -144,22 +146,35 @@ onloadEvent(showtable);
     <form id="form1" runat="server"> 
     <input type="hidden" id="lblgys_id" runat="server" />
         <input type="hidden" id="ppid" runat="server" />
+        <input type="hidden" id="ppmc" value="" runat="server" />
+
     <div id="jiansuo2"> 
-公司名称：
-<input name="txtKeyWord" runat="server" type="text" id="txtKeyWord" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
-<input type="hidden" id="ppmc" value="" runat="server" />
-<div class="jiansuo_img">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px">
-  <tr>
-    <td width="80" height="30" align="center">
-    <asp:ImageButton ID="ImageButton2" runat="server" ImageUrl="~/asp/images/jiansuo.gif" OnClick="JianSuo"/></td>
-    <td width="85" align="left">
-   <input type="button" class="btnDelete1" value="新增分销商" onclick="btnFilter_Click()" style="height: 20px;width: 72px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" /></td>
- <td width="85" align="left">
- <input type="button" class="btnDelete1" value="删除分销商" onclick="Delete_gs()" style="height: 20px;width: 72px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" /></td>
-  </tr>
-</table>
-</div>
+  <asp:Label ID="shaixu" runat="server"><font style="FONT-SIZE: 9pt">检索条件：</font></asp:Label>
+                    <asp:DropDownList ID="lieming" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="128px">
+                    </asp:DropDownList>
+                    <asp:DropDownList ID="yunsuanfu" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="88px">
+                        <asp:ListItem Value="like" Selected="True">包含关键字</asp:ListItem>
+                        <asp:ListItem Value="=">等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;">小于</asp:ListItem>
+                        <asp:ListItem Value="&gt;">大于</asp:ListItem>
+                        <asp:ListItem Value="&gt;=">大于等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;=">小于等于</asp:ListItem>
+                       
+                    </asp:DropDownList>&nbsp; <asp:TextBox ID="txtKeyWord" Style="border-right: #808080 1px solid;
+                        border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server"></asp:TextBox>  
+                        &nbsp;            
+                    <asp:Button ID="filter" runat="server" Text="检索" OnClick="filter_Click" CssClass="filter"
+                        BorderStyle="None" Width="37px" Height="20px" ForeColor="Black" Font-Size="12px"
+                        filter Font-Names="宋体"></asp:Button>
+                        &nbsp;
+                         <input type="button" class="btnDelete1" value="新增分销商" onclick="btnFilter_Click()" style="height: 20px;width: 72px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" />&nbsp;
+                         <input type="button" class="btnDelete1" value="删除分销商" onclick="Delete_gs()" style="height: 20px;width: 72px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" />
+
 </div>
 <div id="divtable" runat="server" style="height:200px"> 
         <table  border="0"  cellpadding="0" cellspacing="1" bgcolor="#dddddd" 
@@ -189,7 +204,7 @@ onloadEvent(showtable);
               <td align="center" style="font-size:12px"><%=dr["注册日期"]%></td>
               <td align="center" style="font-size:12px"><%=dr["注册资金"]%></td>
               <td align="left" style="font-size:12px"><%=dr["电话"]%></td>
-               <td align="left" style="font-size:12px"><%=dr["是否启用"]=="1"?"启用":"未启用"%></td>
+               <td align="left" style="font-size:12px"><%=Convert.ToString(dr["是否启用"])=="1"?"启用":"未启用"%></td>
               <td align="center"><input type="submit" name="input" value="查阅" class="filter" onclick="ChaYue('<%=dr["供应商"] %>')" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/></td>
          </tr>
          <%}

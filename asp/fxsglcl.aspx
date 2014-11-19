@@ -41,170 +41,30 @@
             document.getElementById("ppmc").value = ppmc;
             document.getElementById("scsid").value = scs;
             var fxs_id = document.getElementById("fxsid").value;
-            var xmlhttp;
-            if (window.XMLHttpRequest)
-            {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp = new XMLHttpRequest();
-            }
-            else
-            {// code for IE6, IE5
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function ()
-            {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-                {
-                    $("#table4").empty();
-                    $("#table4").append(xmlhttp.responseText);
-                }
-            }
-            var url = "fxsglcl2.aspx?ppid=" + ppid + "&ppmc=" + ppmc + "&scs=" + scs + "&fxs_id=" + fxs_id;
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
+//            var xmlhttp;
+//            if (window.XMLHttpRequest)
+//            {// code for IE7+, Firefox, Chrome, Opera, Safari
+//                xmlhttp = new XMLHttpRequest();
+//            }
+//            else
+//            {// code for IE6, IE5
+//                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+//            }
+//            xmlhttp.onreadystatechange = function ()
+//            {
+//                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+//                {
+//                    $("#table4").empty();
+//                    $("#table4").append(xmlhttp.responseText);
+//                }
+//            }
+            var url = "fxsglclcl.aspx?ppid=" + ppid + "&ppmc=" + ppmc + "&scs=" + scs + "&fxs_id=" + fxs_id;
+            document.getElementById("frame1").src = url;
+//            xmlhttp.open("GET", url, true);
+//            xmlhttp.send();
         }
     </script>
-      <script language="javascript" type="text/javascript">
-          function selectall1(obj,cl_id)
-          {              
-              if (obj.checked)
-              {
-                  var Table = document.getElementById("table4");
-                  var ck = Table.getElementsByTagName("input");
-                  for (var i = 0; i < ck.length; i++)
-                  {
-                      var e = ck[i];
-                      if (e.type == 'checkbox')
-                      {
-                          if (e.name == 'checkbox')
-                          {
-                              if (e.checked == false)
-                              {
-                                  document.getElementById("checkboxAll").checked = false;
-                              }                              
-                          }
-                          else
-                          {
-                              document.getElementById("checkboxAll").checked = true;
-                          }
-                      }
-                  }
-              }
-              else
-              {
-                  document.getElementById("checkboxAll").checked = false;
-              }
-          }
-          function selectall()
-          {
-              var Table = document.getElementById("table4");
-              var ck = Table.getElementsByTagName("input");
-              var ckb = document.getElementsByName("checkboxAll");
-              if (document.getElementById("checkboxAll").checked)
-              {
-                  for (var i = 0; i < ck.length; i++)
-                  {
-                      var e = ck[i];
-                      if (e.type == 'checkbox' && e.name == 'checkbox')
-                      {
-                          e.checked = true;
-                      }
-                  }
-              }
-              else
-              {
-                  for (var i = 0; i < ck.length; i++)
-                  {
-                      var e = ck[i];
-                      if (e.type == 'checkbox' && e.name == 'checkbox')
-                      {
-                          e.checked = false;
-                      }
-                  }
-              }
-          }
-      </script>
-    <script type="text/javascript">
-    //新增材料
-        function btnFilter_Click()
-        {
-            var fxs_id = document.getElementById("fxsid").value;
-            var ppid = document.getElementById("ppid").value;
-            var ppmc = document.getElementById("ppmc").value;
-            var scs = document.getElementById("scsid").value;
-            if (ppid == "" || ppid == undefined)
-            {
-                alert("请选择品牌！");
-                return;
-            }
-            else
-            {
-                var url = "fxsxzdlcl.aspx?ppid=" + ppid + "&ppmc=" + ppmc + "&scsid=" + scs + "&fxsid=" + fxs_id;
-                window.location.href = url;
-            }
-        }
-        //查阅
-        function Read(cl_id)
-        {
-            var url = "clxx.aspx?cl_id=" + cl_id;
-            window.location.href = url;
-        }
-        //删除材料
-        function delete_cl()
-        {
-            var fxs_id = document.getElementById("fxsid").value;
-            var ppid = document.getElementById("ppid").value;
-            var ppmc = document.getElementById("ppmc").value;
-            var scs = document.getElementById("scsid").value;
-
-            var table = document.getElementById("table4");
-            var input = table.getElementsByTagName("input");
-            var cl_id = "";
-            for (var i = 0; i < input.length; i++)
-            {
-                if (input[i].type == "checkbox" && input[i].checked)
-                {
-                    var tr = input[i].parentNode.parentNode;
-                    cl_id += tr.cells[1].innerHTML + ",";
-                }
-            }
-            if (cl_id == "" || cl_id == undefined)
-            {
-                alert("请选择要删除的材料!");
-                return;
-            }          
-            else
-            {
-                var xmlhttp;
-                if (window.XMLHttpRequest)
-                {
-                    xmlhttp = new XMLHttpRequest();
-                }
-                else
-                {
-                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                xmlhttp.onreadystatechange = function ()
-                {
-                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-                    {
-                        var text = xmlhttp.responseText;
-                        if (text == 1)
-                        {
-                            alert('删除成功');
-                            location.reload();
-                        }
-                        else
-                        {
-                            alert('删除失败');
-                            location.reload();
-                        }
-                    }
-                }
-                xmlhttp.open("GET", "fxsscdlcl.aspx?cl_id=" + cl_id + "&ppid=" + ppid + "&ppmc=" + ppmc + "&scsid=" + scs + "&fxsid=" + fxs_id, true);
-                xmlhttp.send();
-            }
-        }
-    </script>
+ 
 </head>
 <body>
     <!-- 头部开始-->
@@ -220,9 +80,9 @@
             {
                 gys_id = Request["gys_id"].ToString();
             }
-            this.fxsid.Value = gys_id;
-          //  gys_id = "318";
-        }
+            this.fxsid.Value = gys_id;          
+        }      
+        
     </script>
     <form id="form1" runat="server">
     <input type="hidden" runat="server" id="scsid" />
@@ -235,7 +95,7 @@
      <%if (gys_id != "") %>
      <%{ %>
          <%string sSQL = ""; %>
-         <% sSQL = "select  distinct a.gys_id as 生产商Id,a.供应商 as 生产商 from 材料供应商信息表 a left join (select * from  品牌字典  where pp_id in (select pp_id from 分销商和品牌对应关系表  where fxs_id='"+gys_id+"'))b on a.gys_id=b.scs_id where pp_id in (select pp_id from 分销商和品牌对应关系表  where fxs_id='"+gys_id+"')";%>
+         <% sSQL = "select  distinct a.gys_id as 生产商Id,a.供应商 as 生产商 from 材料供应商信息表 a left join (select * from  品牌字典  where pp_id in (select pp_id from 分销商和品牌对应关系表  where fxs_id='" + gys_id + "'))b on a.gys_id=b.scs_id where pp_id in (select pp_id from 分销商和品牌对应关系表  where fxs_id='" + gys_id + "'  and isnull(是否启用,'')='1')";%>
          <% dt_gys = objConn.GetDataTable(sSQL); %>
          <%if (dt_gys != null && dt_gys.Rows.Count > 0) %>
          <%{ %>
@@ -243,7 +103,7 @@
              <%foreach (DataRow drgys in dt_gys.Rows)%>
              <% {%>
                    <%sSQL = ""; %>
-                   <%sSQL = "select 品牌名称,pp_id from 品牌字典 where scs_id='" + drgys["生产商Id"] + "' and 是否启用='1' and pp_id in (select pp_id from 分销商和品牌对应关系表  where fxs_id='"+gys_id+"')"; %>
+                   <%sSQL = "select 品牌名称,pp_id from 品牌字典 where scs_id='" + drgys["生产商Id"] + "' and pp_id in (select pp_id from 分销商和品牌对应关系表  where fxs_id='" + gys_id + "'  and isnull(是否启用,'')='1')"; %>
                    <%DataTable dtpp = new DataTable(); %>
                    <%dtpp = objConn.GetDataTable(sSQL); %>
                    <%if (dtpp != null && dtpp.Rows.Count > 0) %>
@@ -272,54 +132,10 @@
      <%{ %>
      <%} %>
      </div>
+
      <div id="cgs_lb" style="width:755px; margin-left:232px;">
-    <div   class="jiansuo3">
-    检索条件：
-    <input name="txtKeyWord" runat="server" type="text" id="txtKeyWord" style="border-right: #808080 1px solid; border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
-    <div class="jiansuo_img">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" id="table">
-  <tr>
-    <td width="80" height="30" align="center">
-    <asp:ImageButton ID="ImageButton2" runat="server" ImageUrl="~/asp/images/jiansuo.gif" /></td>
-    <td width="85" align="left">
-   <input type="button" class="btnFilter" value="添加材料" onclick="btnFilter_Click()" style=" margin-top:0px; height: 20px;width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" /></td>
-    <td>
-     <input type="button" class="btnFilter" value="删除材料" onclick="delete_cl()" style=" margin-top:0px; height: 20px;width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" /></td>
-  </tr>
-</table>
-</div>
-</div>
-<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" class="table2" id="table4">
-      <thead>
-        <tr >
-          <th width="37" align="center"><input  class="middle" type="checkbox" name="checkboxAll" id="checkboxAll" onclick="return selectall();"   /> </th>
-        <th width="100" align="center" style=" display:none;"><strong>cl_id</strong></th>
-          <th width="100" align="center"><strong>材料编码</strong></th>
-          <th width="90" align="center"><strong>材料名称</strong></th>
-          <th width="140" align="center"><strong>规格/型号</strong></th>
-          <th width="180" align="center"><strong>供应商</strong></th>
-          <th width="80" align="center"><strong>品牌</strong></th>
-          <th width="55" align="center"><strong>单位</strong></th>
-          <th width="80" align="center"><strong>价格</strong></th>
-          <th width="44" align="center"><strong>操作</strong></th>
-        </tr>
-      </thead>
-      <tbody>       
-      </tbody>
-    </table>
- <%--<div style="text-align:center"  runat="server" id="dic">
-    <asp:LinkButton ID="btnhead" runat="server" CommandArgument="Head" CommandName="Pager"
-                        OnCommand="PagerButtonClick" ForeColor="Black">首页</asp:LinkButton>&nbsp;
-     <asp:LinkButton ID="btnPrev" runat="server" CommandArgument="Prev" CommandName="Pager"
-                        OnCommand="PagerButtonClick" ForeColor="Black">上页</asp:LinkButton>&nbsp;
-    <asp:LinkButton ID="btnNext" runat="server" CommandArgument="Next" CommandName="Pager"
-            OnCommand="PagerButtonClick" ForeColor="Black">下页</asp:LinkButton>&nbsp;
-    <asp:LinkButton ID="btnfoot" runat="server" CommandArgument="Foot" CommandName="Pager"
-                        OnCommand="PagerButtonClick" ForeColor="Black">尾页</asp:LinkButton>&nbsp;
-            第<asp:Label ID="lblCurPage" runat="server"  Text="0" ForeColor="Blue">Label</asp:Label>/
-              <asp:Label ID="lblPageCount" runat="server" Text="0" ForeColor="Blue">Label</asp:Label>页
-        <br />
-    </div>--%>
+        <iframe id="frame1" src="fxsglclcl.aspx?fxs_id=<%=gys_id %>" frameborder="0" marginheight="0"  style=" width:100%; height:450px; padding:0px; margin:0px; border:0px; " > 
+       </iframe> 
 </div>
      </DIV>
     </form>

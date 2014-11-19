@@ -7,8 +7,13 @@
 -->
 
 <%--<%@ Register Src="~/asp/include/header2.ascx" TagName="Header2" TagPrefix="uc2" %>--%>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Web" %>
 
-<%@ Page Language="C#" EnableEventValidation="false" AutoEventWireup="true" CodeFile="hyyhgl.aspx.cs" Inherits="asp_hyyhgl" %>
+<%@ Page Language="C#"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -16,7 +21,7 @@
 <meta content="IE=10.000" http-equiv="X-UA-Compatible">
     <title>会员用户管理</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
-    <link href="css/all%20of.css" rel="stylesheet" type="text/css" />
+    <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
         function deleteS() {
             alert("删除成功");
@@ -122,17 +127,237 @@
     </script>
 </head>
 <body>
+<script runat="server">
+    
+    protected DataTable dtGys = new DataTable();
+    protected DataConn dc = new DataConn();
+    protected DataTable dt_Yh = new DataTable(); //用户名字(用户表) 
+    private const int Page_Size = 10; //每页的记录数量
+    public int current_page = 1;//当前默认页为第一页
+    public int pageCount_page; //总页数
+    protected DataTable dt_content = new DataTable();
+    public DataTable dt_js = new DataTable();    //检索待分页完成后在合并DataTable 即可
+    private int i_count = 0;
+    public string QQ = "";
+    string SQL = "";
+    public int dwid;
+    public string powerGys = "";
+    public string yh_lx = "";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+       //*******************两种登录方式后的值
+        if (Request.Cookies["GYS_QQ_ID"] != null || Request.Cookies["CGS_QQ_ID"] != null)
+        {
+            HttpCookie QQ_id = null;
+            if (Request.Cookies["GYS_QQ_ID"] != null)
+            {
+                QQ_id = Request.Cookies["GYS_QQ_ID"];
+            }
+            if (Request.Cookies["CGS_QQ_ID"] != null)
+            {
+                QQ_id = Request.Cookies["CGS_QQ_ID"];
+            }
+            if (QQ_id != null)
+            {
+                string str_Sql = "select 姓名,yh_id,dw_id,类型 from 用户表 where QQ_id='" + QQ_id.Value + "'";
+                dt_Yh = dc.GetDataTable(str_Sql);
+            }
+        }
+        else
+        {
+            string s_yh_id = "";
+            //新增的QQ登录方式
+            if (Session["CGS_YH_ID"] != null)
+            {
+                s_yh_id = Session["CGS_YH_ID"].ToString();
+            }
+            if (Session["GYS_YH_ID"] != null)
+            {
+                s_yh_id = Session["GYS_YH_ID"].ToString();
+            }
+            string sql = "select 姓名,yh_id,dw_id,类型 from 用户表 where yh_id='" + s_yh_id + "'";
+            dt_Yh = dc.GetDataTable(sql);
+        }
+        //*********************************************
+        string sql_dwid = "0";
+        if (dt_Yh != null && dt_Yh.Rows.Count > 0)
+        {
+            sql_dwid = dt_Yh.Rows[0]["dw_id"].ToString();
+            this.lx.Value = dt_Yh.Rows[0]["类型"].ToString();
+            yh_lx = dt_Yh.Rows[0]["类型"].ToString();
+            this.gys_dw_id.Value = sql_dwid;
+        }
+        dwid = Convert.ToInt32(sql_dwid);
+
+        
+            string sql_js = "";
+            sql_js = "select QQ号码,姓名,手机,邮箱,角色权限,yh_id from 用户表 where dw_id='" + dwid + "'";
+            dt_js = dc.GetDataTable(sql_js);
+            if (!IsPostBack)
+            {
+                createlm(dt_js);                 
+            }
+        
+    } 
+    protected void btnDelete_Click(object sender, EventArgs e)
+    {
+        //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "描述性词语", "getDelete();", true);
+        string sqlDelete = "";
+        string strSelected = this.txt_Selected.Value.ToString();
+        if (string.IsNullOrEmpty(strSelected))
+        {
+            Response.Write("<script>window.alert('请选中要删除的行')</"+"script>");
+        }
+        else
+        {
+            strSelected = strSelected.TrimEnd(',');
+            string[] arrSelected = strSelected.Split(',');
+            for (int i = 0; i < arrSelected.Length; i++)
+            {
+                sqlDelete += "delete from 用户表 where QQ号码 = '" + arrSelected[i] + "'; ";
+            }
+
+            if (dc.RunSqlTransaction(sqlDelete))
+            {
+                Response.Write("<script>window.alert('删除成功')</"+"script>");
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "script", "<script>window.alert('删除成功')</"+"script>", true);
+                Response.Write("<script>window.location.href=document.URL;</"+"script>");  //刷新页面
+
+            }
+            else
+            {
+                Response.Write("<script>window.alert('删除失败')</"+"script>");
+            }
+
+        }
+    }
+     
+    //*****************************小张新增检索功能开始********************************* 
+    protected void filter_Click(object sender, System.EventArgs e)
+    {
+        string strCondition = "";
+        string sColumName, sTempColumnName;
+        string sOperator;
+        string sKeyWord;
+        string sFieldType;
+        string sSQL;
+        DataTable objDt = null;
+ 
+        sColumName = lieming.SelectedItem.Value.ToString().Trim();
+        sOperator = yunsuanfu.SelectedItem.Value.ToString().Trim();
+        sKeyWord = txtKeyWord.Text.ToString().Trim();
+
+        //得到要筛选字段的类型
+        string sql_js = "";
+        sql_js = "select QQ号码,姓名,手机,邮箱,角色权限,yh_id from 用户表 where dw_id='" + dwid + "'";
+
+        sSQL = "select * from (" + sql_js + ") where 1=0";
+        objDt = dc.GetDataTable(sSQL);
+        for (int i = 0; i < objDt.Columns.Count; i++)
+        {
+            sTempColumnName = objDt.Columns[i].ColumnName.ToString().Trim();
+            if (sTempColumnName == sColumName)
+            {
+
+
+                sFieldType = objDt.Columns[i].DataType.Name.ToString().Trim();
+                switch (sFieldType.ToUpper().Trim())
+                {
+                    case "STRING":
+                        sFieldType = "字符串型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                    case "DATETIME":
+                        sFieldType = "日期型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                    case "INT32":
+                        sFieldType = "整型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                    case "DECIMAL":
+                        sFieldType = "货币型";
+
+                        if (sOperator.Trim() == "like")
+                        {
+                            Response.Write("<script>alert(\"字段：" + sFieldType + " 不允许用 包含 筛选\")</" + "script>");
+                            return;
+                        }
+                        else
+                            strCondition = sColumName + " " + sOperator + sKeyWord;
+
+                        break;
+                    case "DOUBLE":
+                        sFieldType = "浮点型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                    default:
+                        sFieldType = "字符串型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                }
+                break;
+            }
+
+        }
+        string sql = sql_js;
+        sql = "select * from (" + sql + ") where " + strCondition;
+        dt_js = dc.GetDataTable(sql);
+    }
+    
+    private void createlm(DataTable objDt)
+    {
+        ListItem objItem = null;    
+        if (objDt != null)
+        {
+            //----------------------旧版的检索------------------------
+            for (int i = 0; i < objDt.Columns.Count; i++)
+            {
+                switch (objDt.Columns[i].ColumnName)
+                {
+                    case "yh_id":
+                        break;
+                    default:
+                        objItem = null;
+                        objItem = new ListItem();
+                        objItem.Text = objDt.Columns[i].ColumnName;
+                        lieming.Items.Add(objItem);
+                        break;
+                }
+                
+            }            
+        }
+    }
+    //*****************************小张新增检索功能结束*********************************
+    </script>
     <form runat="server">
     <!-- 头部2开始-->
    <%-- <uc2:Header2 ID="Header2" runat="server" />--%>
-   <%@ Import Namespace="System.Data" %>
-<%@ Import Namespace="System.Data.SqlClient" %>
-<%@ Import Namespace="System" %>
-<%@ Import Namespace="System.Collections.Generic" %>
-<%@ Import Namespace="System.Web" %>
-
-<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
-        data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/index.aspx" charset="utf8"></script>
         <div class="box">
 
     <div class="topx">
@@ -223,42 +448,34 @@
     </div>
     <input type="hidden" id="lx" runat="server" />
     <!-- 头部2结束-->
-    <!-- 检索 开始-->
+    <!-- 检索 开始-->            
     <div id="jiansuo">
-        <font style="font-size: 9pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检索条件：</font>
-        <select runat="server" name="lieming" id="lieming" style="width: 128px; border-right: #808080 1px solid;
-            border-top: #808080 1px solid; font-size: 9pt; border-left: #808080 1px solid;
-            border-bottom: #808080 1px solid">
-            <option value=""></option>
-            <option value="QQ号">QQ号</option>
-            <option value="姓名">姓名</option>
-            <option value="手机号">手机号</option>
-        </select>
-        <select name="yunsuanfu" id="yunsuanfu" style="width: 88px; border-right: #808080 1px solid;
-            border-top: #808080 1px solid; font-size: 9pt; border-left: #808080 1px solid;
-            border-bottom: #808080 1px solid">
-            <option selected="selected" value="like">包含关键字</option>
-            <option value="=">等于</option>
-            <option value="&lt;">小于</option>
-            <option value=">">大于</option>
-            <option value="">=">大于等于</option>
-            <option value="&lt;=">小于等于</option>
-        </select><input runat="server" name="txtKeyWord" type="text" id="txtKeyWord" style="border-right: #808080 1px solid;
-            border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
-        <input id="chkSearchInResult" type="checkbox" name="chkSearchInResult" checked="checked" /><label
-            for="chkSearchInResult">在结果中检索</label>&nbsp;&nbsp;
-        <%--<input type="submit" name="filter" value="检索" id="filter" class="filter" style="color: Black;
-            border-style: None; font-family: 宋体; font-size: 12px; height: 20px; width: 37px;" />--%>
-        <asp:Button ID="filter" name="filter" runat="server" Text="检索"  class="filter" 
-            style="color: Black;
-            border-style: None; font-family: 宋体; font-size: 12px; height: 20px; width: 37px;cursor:pointer;" 
-            onclick="filter_Click"/>
+      <asp:Label ID="shaixu" runat="server"><font style="FONT-SIZE: 9pt">&nbsp;&nbsp;检索条件：</font></asp:Label>
+                    <asp:DropDownList ID="lieming" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="128px">
+                    </asp:DropDownList>
+                    <asp:DropDownList ID="yunsuanfu" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="88px">
+                        <asp:ListItem Value="like" Selected="True">包含关键字</asp:ListItem>
+                        <asp:ListItem Value="=">等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;">小于</asp:ListItem>
+                        <asp:ListItem Value="&gt;">大于</asp:ListItem>
+                        <asp:ListItem Value="&gt;=">大于等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;=">小于等于</asp:ListItem>
+                    </asp:DropDownList>&nbsp;
+                    <asp:TextBox ID="txtKeyWord" Style="border-right: #808080 1px solid;
+                        border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server"></asp:TextBox>  
+                        &nbsp; &nbsp;                
+                    <asp:Button ID="filter" runat="server" Text="检索" OnClick="filter_Click" CssClass="filter"
+                        BorderStyle="None" Width="37px" Height="20px" ForeColor="Black" Font-Size="12px"
+                        filter Font-Names="宋体"></asp:Button>
         &nbsp;&nbsp;
-        <input type="submit" name="btnDocNew" value="添加" onclick="addPage();" id="btnDocNew"
+        <input type="button" name="btnDocNew" value="添加" onclick="addPage();" id="btnDocNew"
             class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;
-            height: 20px; width: 37px;cursor:pointer;" />&nbsp;&nbsp;
-        <input type="button" id="btnFilter" value="组合查询"  style="height: 20px;
-            width: 64px; border-style: none; font-family: 宋体; font-size: 12px;" />&nbsp;&nbsp;       
+            height: 20px; width: 37px;cursor:pointer;" />&nbsp;&nbsp;          
           <asp:Button ID="btnDelete" runat="server" Text="删除选中行" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;
             font-size: 12px; height: 20px; width: 72px;cursor:pointer;" 
             onclick="btnDelete_Click"/>
@@ -300,8 +517,8 @@
                 </tr>
             </thead>
             <tbody id="tbody">
-                <%for (int i = 0; i < listGys.Count; i++)
-                  { %>
+                <%for (int i = 0; i < dt_js.Rows.Count; i++)%>
+                <% { %>
                 <tr>
                     <td align="center">
                         <input type="checkbox" onclick="Checked(this)" />
@@ -310,95 +527,83 @@
                         <%=i+1 %>
                     </td>
                     <td>
-                        <%=listGys[i].QQ%>
+                        <%=dt_js.Rows[i]["QQ号码"]%>
                     </td>
                     <td class="gridtable">
-                        <%=listGys[i].Name%>
+                        <%=dt_js.Rows[i]["姓名"]%>
                     </td>
                     <td>
-                        <%=listGys[i].Phone%>
+                        <%=dt_js.Rows[i]["手机"]%>
                     </td>
                     <td>
-                        <%=listGys[i].Email%>
+                        <%=dt_js.Rows[i]["邮箱"]%>
                     </td>
 
                     <%if (gys_yh_id1 != "" || GYS_QQ_ID != null)
                       { %>
-                    <td>
-                        <%string powerGys = listGys[i].Power.ToString(); %>
-                        <%if (powerGys.Contains("管理生产商") && powerGys.Contains("管理分销商") && powerGys.Contains("管理材料信息")) %>
-                        <%{%>
-                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
-                            管理生产商
-                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
-                            管理分销商
-                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
+                      
+                           <td>
+                           <%if (yh_lx == "生产商") %>
+                           <%{ %>
+                               <%powerGys = dt_js.Rows[i]["角色权限"] == "" ? "" : dt_js.Rows[i]["角色权限"].ToString(); %>
+                                 <%if (!powerGys.Contains("管理生产商")) %>
+                                 <%{ %>
+                                <input   type="checkbox" checked="checked" value="管理生产商" runat="server"   name="cbx1" disabled="disabled" runat="server" />
+                                管理生产商
+                                <%} %>
+                                <%else %>
+                                <%{ %>
+                                <input id="Checkbox1"   type="checkbox" value="管理生产商" runat="server"   name="cbx1" disabled="disabled" runat="server" />
+                                管理生产商
+                                <%} %>
+                                 <%if (!powerGys.Contains("管理分销商")) %>
+                                 <%{ %>
+                                 <input id="Checkbox2"   type="checkbox" checked="checked" value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
+                                管理分销商
+                                 <%} %>
+                                 <%else %>
+                                 <%{ %>
+                                 <input id="Checkbox3"   type="checkbox" value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
+                                管理分销商
+                                 <%} %>
+                                <%if (!powerGys.Contains("管理材料信息")) %>
+                                <%{ %>
+                               <input   type="checkbox" checked="checked" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
+                                管理材料信息
+                                <%} %>
+                                <%else %>
+                                <%{ %>
+                                  <input id="Checkbox4"   type="checkbox"   value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
+                                管理材料信息
+                                <%} %>
+                                
+                           <%} %>
+                           <%else if (yh_lx == "分销商") %>
+                           <%{ %>
+                                 <%if (!powerGys.Contains("管理分销商")) %>
+                                 <%{ %>
+                                  <input type="checkbox" checked="checked" value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
+                                管理分销商
+                                 <%} %>
+                                 <%else %>
+                                 <%{ %>
+                                  <input type="checkbox"  value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
+                                管理分销商
+                                 <%} %>
+                                  <%if (!powerGys.Contains("管理材料信息")) %>
+                                 <%{ %>
+                                   <input id="Checkbox5"   type="checkbox" checked="checked" value="管理材料信息" runat="server" name="cbx3" disabled="disabled" runat="server" />
                             管理材料信息
-                        <% } %>
-                        <%else if (powerGys.Contains("管理生产商") && powerGys.Contains("管理分销商")) %>
-                        <%{%>
-                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
-                            管理生产商
-                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
-                            管理分销商
-                            <input type="checkbox" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
+                                 <%} %>
+                                 <%else %>
+                                 <%{ %>
+                                   <inpu type="checkbox" value="管理材料信息" runat="server" name="cbx3" disabled="disabled" runat="server" />
                             管理材料信息
-                        <% } %>
-                        <%else if (powerGys.Contains("管理生产商") && powerGys.Contains("管理材料信息")) %>
-                        <%{%>
-                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
-                            管理生产商
-                            <input type="checkbox" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
-                            管理分销商
-                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
-                            管理材料信息
-                        <% } %>
-                        <%else if (powerGys.Contains("管理分销商") && powerGys.Contains("管理材料信息")) %>
-                        <%{%>
-                            <input type="checkbox" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
-                            管理生产商
-                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
-                            管理分销商
-                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
-                            管理材料信息
-                        <% } %>
-                        <%else if (powerGys.Contains("管理生产商")) %>
-                        <%{%>
-                            <input type="checkbox" checked="checked" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
-                            管理生产商
-                            <input type="checkbox" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
-                            管理分销商
-                            <input type="checkbox" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
-                            管理材料信息
-                        <% } %>
-                        <%else if (powerGys.Contains("管理分销商"))
-                        { %>
-                            <input type="checkbox" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
-                            管理生产商
-                            <input type="checkbox" checked="checked" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
-                            管理分销商
-                            <input type="checkbox" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
-                            管理材料信息
-                        <%} %>
-                        <%else if (powerGys.Contains("管理材料信息"))
-                        { %>
-                            <input type="checkbox" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
-                            管理生产商
-                            <input type="checkbox" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
-                            管理分销商
-                            <input type="checkbox" checked="checked" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
-                            管理材料信息
-                        <%} %>
-                        <%else
-                        { %>
-                        <input id="Checkbox1" type="checkbox" value="管理生产商" name="cbx1" disabled="disabled" runat="server" />
-                        管理生产商
-                        <input id="Checkbox2" type="checkbox" value="管理分销商" name="cbx2" disabled="disabled" runat="server" />
-                        管理分销商
-                        <input id="Checkbox3" type="checkbox" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
-                        管理材料信息
-                        <%} %>
+                                 <%} %>
+                           <%} %>
+                            
                     </td>
+                      
                     <%} %>
                     <td align="center">
                         <input type="button" name="filter" value="编辑" id="Submit1" onclick="changePage(this);"
@@ -457,10 +662,10 @@
                 <%} %>
                 <font style="color:Black" >直接到第</font>  
                 <select onchange="window.location=this.value" name="" class="p" style="color:Black">
-                <% foreach (var v in this.Items)
+             <%--   <% foreach (var v in this.Items)
                 { %>
                     <option value="<%=v.Value %>" <%=v.SelectedString %>><%=v.Text %></option>
-                <%} %>
+                <%} %>--%>
                 </select>
                 <font style="color:Black" >页&nbsp;&nbsp;&nbsp;第 <%=current_page %> 页/共 <%=pageCount_page %> 页</font>
             </div>

@@ -12,8 +12,6 @@
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <link href="css/cllb.css" rel="stylesheet" type="text/css" />
     <link href="css/css.css" rel="stylesheet" type="text/css" />
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="http://malsup.github.io/jquery.form.js"></script>
     <script type="text/javascript">
 <!--
         function onloadEvent(func)
@@ -190,6 +188,7 @@
                      return false;
                  }
              }
+
              function saveReport()
              {
                  var fxs = document.getElementById("fxs_id").value;
@@ -212,7 +211,7 @@
                          alert(message);
                      }
                  });
-                 return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转 
+                 return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转 action="fxsxzdlcl_Save.aspx" method="post" onsubmit="return saveReport();"
              }  
          </script>
     
@@ -251,16 +250,248 @@ protected void Page_Load(object sender, EventArgs e)
     string sSQL = "select 材料编码,显示名,规格型号,计量单位,price,pp_id,品牌名称,cl_id from 材料表 where gys_id='" + scsid
         + "'  and pp_id='" + ppid + "' and 品牌名称='" + ppmc + "' and cl_id not in(select cl_id from 供应商材料表 where gys_id='"+scsid+"' and fxs_id='"+fxsid+"')";
     dt = Conn.GetDataTable(sSQL);
+    if (!IsPostBack)
+    {
+        createlm(dt);
+    }
 }
+protected void Add_Click(object sender, System.EventArgs e)
+{
+    string value = "";
+    string cl_id1= "";   //SQL语句
+    string fxs_id1 = "";   //SQL语句
+    try
+    {    
+        cl_id1 = this.cl_id.Value;
+        fxs_id1 = this.fxs_id.Value;
+        string sSQL = "";
+        if (cl_id1 != "")
+        {
+            while (cl_id1.EndsWith(","))
+            {
+                cl_id1 = cl_id1.Substring(0, cl_id1.Length - 1);
+            }
+            string Insert = "";
+            string[] cl_price = cl_id1.Split(',');   //添加几项
+            for (int i = 0; i < cl_price.Length; i++)
+            {
+                string[] cl = cl_price[i].Split('|');
+                string price = "";
+                price = cl[1];
+                sSQL = "select fl_id,材料编码,是否启用,类型,price,显示名,pp_id,说明,分类名称,品牌名称,生产厂商,规格型号,计量单位,单位体积,单位重量,gys_id,分类编码,yh_id,一级分类名称 from 材料表 where cl_id='" + cl[0] + "'";
+                DataTable dt_cl = Conn.GetDataTable(sSQL);
+                if (dt_cl != null && dt_cl.Rows.Count > 0)
+                {
+                    if (price == "0" || price == "")
+                    {
+                        price = dt_cl.Rows[0]["price"].ToString();
+                    }
+                    string sql = "select count(*) from 供应商材料表 where cl_id='" + cl[0] + "' and fxs_id='" + fxs_id1 + "'";
+                    string count = Conn.DBLook(sql);
+                    if (count=="")
+                    {
+                        count = "0";
+                    }
+                    int sl = Convert.ToInt32(count);
+                    if (sl > 0)
+                    {
+                        value += "材料名称为：" + dt_cl.Rows[0]["显示名"] + " 材料编码为：" + dt_cl.Rows[0]["材料编码"] + " 的材料已存在！";
+                    }
+                    else
+                    {
+                        Insert += "   insert into 供应商材料表(cl_id,fl_id,材料编码,是否启用,类型,price,显示名,pp_id,说明,分类名称,品牌名称,生产厂商,规格型号,计量单位,单位体积,单位重量,gys_id,分类编码,yh_id,一级分类名称,fxs_id,updatetime) values(" +
+                         "'" + cl[0] + "','" + dt_cl.Rows[0]["fl_id"] + "','" + dt_cl.Rows[0]["材料编码"] + "','1','" + dt_cl.Rows[0]["类型"] + "','" + price + "','"
+                         + dt_cl.Rows[0]["显示名"] + "','" + dt_cl.Rows[0]["pp_id"] + "','" + dt_cl.Rows[0]["说明"] + "','" + dt_cl.Rows[0]["分类名称"] + "','" +
+                         dt_cl.Rows[0]["品牌名称"] + "','" + dt_cl.Rows[0]["生产厂商"] + "','" + dt_cl.Rows[0]["规格型号"] + "','" + dt_cl.Rows[0]["计量单位"] + "','"
+                         + dt_cl.Rows[0]["单位体积"] + "','" + dt_cl.Rows[0]["单位重量"] + "','" + dt_cl.Rows[0]["gys_id"] + "','" + dt_cl.Rows[0]["分类编码"] + "','" +
+                         dt_cl.Rows[0]["yh_id"] + "','" + dt_cl.Rows[0]["一级分类名称"] + "','" + fxs_id1 + "',(select getdate()))";
+                    }
+                }
+            }
+            if (Conn.RunSqlTransaction(Insert))
+            {
+                if (value=="")
+                {
+                    value = "添加成功！";
+                }           
+            }
+            else
+            {
+                value = "添加失败！";
+            }
+        }
+        else
+        {
+            value = "未选中材料！";
+        }
+    }
+    catch (Exception ee)
+    {
+        value = "添加材料失败！错误信息：" + ee.ToString();
+    }
+    //Response.Write("<script>window.alert('" + value + "');window.opener.reload()location.href = 'fxsglcl.aspx?gys_id=" + fxs_id1 + "'; </" + "script>");
+    Response.Write("<script>window.alert('" + value + "');window.opener.location.reload();window.close(); </" + "script>");
+}
+protected void filter_Click(object sender, System.EventArgs e)
+{
+    string strCondition = "";
+    string sColumName, sTempColumnName;
+    string sOperator;
+    string sKeyWord;
+    string sFieldType;
+    string sSQL;
+    DataTable objDt = null;
+
+    sColumName = lieming.SelectedItem.Value.ToString().Trim();
+    sOperator = yunsuanfu.SelectedItem.Value.ToString().Trim();
+    sKeyWord = txtKeyWord.Text.ToString().Trim();
+    if (sColumName=="出厂价格")
+    {
+        sColumName="price";
+    }
+    //得到要筛选字段的类型
+    string SQL = "select 材料编码,显示名,规格型号,计量单位,price,pp_id,品牌名称,cl_id from 材料表 where gys_id='" + scsid
+         + "'  and pp_id='" + ppid + "' and 品牌名称='" + ppmc + "' and cl_id not in(select cl_id from 供应商材料表 where gys_id='" + scsid + "' and fxs_id='" + fxsid + "')";
+    sSQL = "select * from (" + SQL + ")#temp where 1=0";
+    objDt = Conn.GetDataTable(sSQL);
+    for (int i = 0; i < objDt.Columns.Count; i++)
+    {
+        sTempColumnName = objDt.Columns[i].ColumnName.ToString().Trim();
+        sFieldType = objDt.Columns[i].DataType.Name.ToString().Trim();
+        if (sColumName==sTempColumnName)
+        {
+            switch (sFieldType.ToUpper().Trim())
+            {
+                case "STRING":
+                    sFieldType = "字符串型";
+
+                    if (sOperator.Trim() == "like")
+                        strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                    else
+                        strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                    break;
+                case "DATETIME":
+                    sFieldType = "日期型";
+
+                    if (sOperator.Trim() == "like")
+                        strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                    else
+                        strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                    break;
+                case "INT32":
+                    sFieldType = "整型";
+
+                    if (sOperator.Trim() == "like")
+                        strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                    else
+                        strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                    break;
+                case "DECIMAL":
+                    sFieldType = "货币型";
+
+                    if (sOperator.Trim() == "like")
+                    {
+                        Response.Write("<script>alert(\"字段：" + sFieldType + " 不允许用 包含 筛选\")</" + "script>");
+                        return;
+                    }
+                    else
+                        strCondition = sColumName + " " + sOperator + sKeyWord;
+
+                    break;
+                case "DOUBLE":
+                    sFieldType = "浮点型";
+
+                    if (sOperator.Trim() == "like")
+                        strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                    else
+                        strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                    break;
+                default:
+                    sFieldType = "字符串型";
+                    if (sOperator.Trim() == "like")
+                        strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                    else
+                        strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+                    break;
+            }
+            break;
+        }      
+    }
+    string sql = SQL;  
+    sql = "select * from (" + sql + ")#temp where " + strCondition;
+    dt = Conn.GetDataTable(sql);
+}
+
+private void createlm(DataTable objDt)
+{
+    ListItem objItem = null;
+    if (objDt != null)
+    {
+
+        for (int i = 0; i < objDt.Columns.Count; i++)
+        {
+            switch (objDt.Columns[i].ColumnName)
+            {
+                case "cl_id":
+                    break;
+                case "pp_id":
+                    break;
+                case "price":
+                       objItem = null;
+                    objItem = new ListItem();
+                    objItem.Text = "出厂价格";
+                    lieming.Items.Add(objItem);
+                    break;
+                default:
+                    objItem = null;
+                    objItem = new ListItem();
+                    objItem.Text = objDt.Columns[i].ColumnName;
+                    objItem.Text = objDt.Columns[i].ColumnName;
+                    lieming.Items.Add(objItem);
+                    break;
+            }
+
+        }
+    }
+}
+    
+//*****************************小张新增检索功能结束*********************************
 </script>
-<form  runat="server" id="form1" action="fxsxzdlcl_Save.aspx" method="post" onsubmit="return saveReport();">
+<form  runat="server" id="form1" >
 <input type="hidden" runat="server" id="cl_id" />
   <DIV class="box">
-  <div id="jiansuo" style="margin-bottom:10px;">检索条件：
-<input name="txtKeyWord" type="text" id="txtKeyWord" style="border-right: #808080 1px solid;
-                        border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid; width:250px;" />&nbsp;&nbsp;
-                    <input type="submit" name="filter" value="检索" id="filter" class="filter" filter="" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px;cursor:pointer;" />	&nbsp;&nbsp;&nbsp;               
-<input type="submit" name="btnDocNew" value="添加" onClick="Fxsxzdlcl()"  class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" /></div>
+        <asp:Label ID="shaixu" runat="server"><font style="FONT-SIZE: 9pt">&nbsp;&nbsp;检索条件：</font></asp:Label>
+                    <asp:DropDownList ID="lieming" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="128px">
+                    </asp:DropDownList>
+                    <asp:DropDownList ID="yunsuanfu" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="88px">
+                        <asp:ListItem Value="like" Selected="True">包含关键字</asp:ListItem>
+                        <asp:ListItem Value="=">等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;">小于</asp:ListItem>
+                        <asp:ListItem Value="&gt;">大于</asp:ListItem>
+                        <asp:ListItem Value="&gt;=">大于等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;=">小于等于</asp:ListItem>
+                    </asp:DropDownList>&nbsp; <asp:TextBox ID="txtKeyWord" Style="border-right: #808080 1px solid;
+                        border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server"></asp:TextBox>  
+                        &nbsp; &nbsp;                   
+                    <asp:Button ID="filter" runat="server" Text="检索" OnClick="filter_Click" CssClass="filter"
+                        BorderStyle="None" Width="37px" Height="20px" ForeColor="Black" Font-Size="12px"
+                        filter Font-Names="宋体"></asp:Button>    
+                         <asp:Button ID="btnDocNew" runat="server" Text="添加" OnClientClick="return Fxsxzdlcl();" OnClick="Add_Click" CssClass="filter"
+                        BorderStyle="None" Width="37px" Height="20px" ForeColor="Black" Font-Size="12px"
+                        filter Font-Names="宋体"></asp:Button>          
+<%--<input type="submit" name="btnDocNew" value="添加" onClick="Fxsxzdlcl()"  class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" />
+--%></div>
+
+
 <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" class="table2" id="table">
       <thead>
         <tr>

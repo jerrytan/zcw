@@ -14,10 +14,12 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
     public string gys_id = "";//接收传过来的gys_id
     public string pp_mc = "";
     public string s_yh_id;
+    public string pp_id = "";
     DataTable objDt = null;
     DataView objVe = null;
     public DataTable dt_gxs = new DataTable();//材料供应商信息表
     public DataTable dt_yh = new DataTable();
+    public DataTable dt_js = new DataTable();
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["GYS_YH_ID"] != null && Session["GYS_YH_ID"].ToString() != "")
@@ -39,7 +41,7 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
              pp_mc = Request["pp_mc"].ToString();
         }
         this.ppmc.Value = pp_mc;
-        string pp_id = "";
+       
         if (Request["pp_id"] != null && Request["pp_id"].ToString() != "")
         {
             pp_id = Request["pp_id"].ToString();             
@@ -48,25 +50,160 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
        
         this.lblgys_id.Value = gys_id;
         if (pp_mc != "" && gys_id != "")
-        {
-            //sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话 from 材料供应商信息表 where gys_id in " +
-            //    "(select fxs_id from 分销商和品牌对应关系表 where 品牌名称='" + pp_mc + "' and pp_id='" + pp_id + "' and 生产厂商ID='" + gys_id + "')";
+        {            
             sSQL = " select c.gys_id,c.供应商,c.地区名称,c.注册日期,c.注册资金,c.电话,f.是否启用 from 材料供应商信息表 c left join 分销商和品牌对应关系表 f on f.fxs_id=c.gys_id where  品牌名称='" + 
                 pp_mc + "' and pp_id='" + pp_id + "' and 生产厂商ID='" + gys_id + "'";
             dt_gxs = objConn.GetDataTable(sSQL);
-            //Session["SQLsource"] = sSQL;
-            //string sSearchCondition = "gys_id='" + gys_id + "'";
-            //MyDataBind(true, sSQL, sSearchCondition); 
         }
         else
         {
            sSQL = " select top 10 c.gys_id,c.供应商,c.地区名称,c.注册日期,c.注册资金,c.电话,f.是否启用 from 材料供应商信息表 c left join 分销商和品牌对应关系表 f on f.fxs_id=c.gys_id where  生产厂商ID='" + gys_id + "'";
             dt_gxs = objConn.GetDataTable(sSQL);
                 this.dic.Visible = false;
-             
+        }         
+        if (!IsPostBack)
+        {
+            createlm(dt_gxs);
         }
     }
-    int intPageIndex;//当前页
+
+  
+      //*****************************小张新增检索功能开始********************************* 
+    protected void filter_Click(object sender, System.EventArgs e)
+    {
+        string strCondition = "";
+        string sColumName, sTempColumnName;
+        string sOperator;
+        string sKeyWord;
+        string sFieldType;
+        string sSQL;
+        DataTable objDt = null;
+ 
+        sColumName = lieming.SelectedItem.Value.ToString().Trim();
+        sOperator = yunsuanfu.SelectedItem.Value.ToString().Trim();
+        sKeyWord = txtKeyWord.Text.ToString().Trim();
+        if (sColumName == "是否启用")
+        {
+            if (sKeyWord == "是" || sKeyWord == "启用" || sKeyWord == "1")
+            {
+                sKeyWord = "1";
+            }
+            else
+            {
+                sKeyWord = "0";
+            }
+        }
+
+        string sql_js = "";
+        if (pp_id != "" && gys_id != ""&&pp_mc!="")
+        {
+            sql_js = " select c.gys_id,c.供应商,c.地区名称,c.注册日期,c.注册资金,c.电话,f.是否启用 from 材料供应商信息表 c left join 分销商和品牌对应关系表 f on f.fxs_id=c.gys_id where  品牌名称='" +
+                pp_mc + "' and pp_id='" + pp_id + "' and 生产厂商ID='" + gys_id + "'";            
+        }
+        else
+        {
+            sql_js = " select top 10 c.gys_id,c.供应商,c.地区名称,c.注册日期,c.注册资金,c.电话,f.是否启用 from 材料供应商信息表 c left join 分销商和品牌对应关系表 f on f.fxs_id=c.gys_id where  生产厂商ID='" + gys_id + "'"; 
+        }         
+        //得到要筛选字段的类型
+
+        sSQL = "select * from (" + sql_js + ")#temp where 1=0";
+        objDt = objConn.GetDataTable(sSQL);
+        for (int i = 0; i < objDt.Columns.Count; i++)
+        {
+            sTempColumnName = objDt.Columns[i].ColumnName.ToString().Trim();
+            if (sTempColumnName == sColumName)
+            {
+                sFieldType = objDt.Columns[i].DataType.Name.ToString().Trim();
+                switch (sFieldType.ToUpper().Trim())
+                {
+                    case "STRING":
+                        sFieldType = "字符串型";
+                        
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+                        break;
+                    case "DATETIME":
+                        sFieldType = "日期型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                    case "INT32":
+                        sFieldType = "整型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                    case "DECIMAL":
+                        sFieldType = "货币型";
+
+                        if (sOperator.Trim() == "like")
+                        {
+                            Response.Write("<script>alert(\"字段：" + sFieldType + " 不允许用 包含 筛选\")</" + "script>");
+                            return;
+                        }
+                        else
+                            strCondition = sColumName + " " + sOperator + sKeyWord;
+
+                        break;
+                    case "DOUBLE":
+                        sFieldType = "浮点型";
+
+                        if (sOperator.Trim() == "like")
+                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                        else
+                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                        break;
+                    default:
+                        sFieldType = "字符串型";
+                        
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+                        
+                        break;
+                }
+                break;
+            }
+        }
+        string sql = sql_js;
+        sql = "select * from (" + sql + ")#temp where " + strCondition;
+        dt_gxs = objConn.GetDataTable(sql);
+    }
+     private void createlm(DataTable objDt)
+    {
+        ListItem objItem = null;   
+        if (objDt != null)
+        {            
+            for (int i = 0; i < objDt.Columns.Count; i++)
+            {
+
+                switch (objDt.Columns[i].ColumnName)
+                {
+                    case "gys_id":
+                        break;
+                    default:            
+                        objItem = null;
+                        objItem = new ListItem();
+                        objItem.Text = objDt.Columns[i].ColumnName;
+                        lieming.Items.Add(objItem);
+                        break;
+                }
+            }        
+        }
+    }
+    //*****************************小张新增检索功能结束*********************************
+    public int intPageIndex;//当前页
     public void PagerButtonClick(Object sender, CommandEventArgs e)
     {
         btnNext.Enabled = true;
@@ -360,49 +497,6 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
 
         }
     }
-    protected void JianSuo(object sender, EventArgs e)
-    {
-        if (this.txtKeyWord.Value == "")
-        {
-            Response.Write("<script>alert('请输入公司名称')</"+"script>");
-        }
-        else
-        {
-            string sql = "select COUNT(*) from 材料供应商信息表 c left join 分销商和品牌对应关系表 f on f.fxs_id=c.gys_id where  生产厂商ID='"+gys_id+"' and 供应商 like '%" + this.txtKeyWord.Value + "%'";
-            int count = Convert.ToInt32(objConn.DBLook(sql));
-            if (count == 0)
-            {
-                Response.Write("<script>alert('没有您要搜索的公司信息!')</" + "script>");
-                this.txtKeyWord.Value = "";
-            }
-            else
-            {
-                string gsxx = "select  c.gys_id,c.供应商,c.地区名称,c.注册日期,c.注册资金,c.电话,f.是否启用 "+
-                    "from 材料供应商信息表 c left join 分销商和品牌对应关系表 f on f.fxs_id=c.gys_id where "+
-                    "生产厂商ID='"+gys_id+"' and 供应商 like '%"+this.txtKeyWord.Value+"%'";
-                dt_gxs = objConn.GetDataTable(gsxx);
-                if (gsxx.ToUpper().Contains("ORDER BY"))
-                {
-                    int a = gsxx.ToUpper().IndexOf("ORDER BY");
-                    gsxx = "select * from(select *,row_number() over(" + gsxx.Substring(a, gsxx.Length - a) + ") as 编号 from (" + gsxx.Substring(0, a) + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
-                }
-                else
-                {
-                    DataTable order_dt = objConn.GetDataTable("select top 1 * from (" + gsxx + ")#t");
-                    if (order_dt != null)
-                    {
-                        string name = order_dt.Columns[0].ColumnName.ToString();
-                        gsxx = "select * from(select *,row_number() over( order by " + name + ") as 编号 from (" + gsxx + ") tb ) T  where T.编号 between 1 and " + PageSize.ToString();
-                    }
-                } 
-                //Session["SQLsource"] = gsxx;
-                //string sSQL = "select gys_id,供应商,地区名称,注册日期,注册资金,电话,是否启用 from 材料供应商信息表 where left(单位类型,3)" +
-                //    " like '%商%' and 是否启用=1 order by gys_id desc";
-                //string sSearchCondition = "供应商 like '%" + this.txtKeyWord.Value + "%'";
-                //MyDataBind(true, sSQL, sSearchCondition);
-                this.txtKeyWord.Value = "";
-                //this.dic.Visible = true;
-            }
-        }
-    }
+
+    
 }

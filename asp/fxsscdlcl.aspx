@@ -44,7 +44,7 @@ protected void Page_Load(object sender, EventArgs e)
         sql = "delete 供应商材料表 where fxs_id='" + fxsid + "' and gys_id='" + scsid + "' and pp_id='" + ppid +
             "' and 品牌名称='" + ppmc + "' and cl_id in(" + cl_id + ")";
         
-        if (Conn.ExecuteSQL(sql, true))
+        if (Conn.ExecuteSQLForCount(sql, true)>0)
         {
             sValue = "1";
         }
