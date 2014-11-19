@@ -86,12 +86,12 @@
                 var tds = tr[i].cells;
                 ggxh = ggxh + tr[i].cells[2].innerHTML;
             }
-                clbh += tr[i].cells[3].innerHTML.toString();
-            
+            clbh += tr[i].cells[3].innerHTML.toString();
+
         }
         document.getElementById("clbm").value = clbh;
         document.getElementById("clmcjgg").value = ggxh;
-        document.getElementById("ggxh").value = ggxh;
+        document.getElementById("gg_xh").value = ggxh;
     }
     //将组合的属性属性值 和对应材料信息 添加到材料列表中
     function AddValue()
@@ -101,7 +101,7 @@
         var tr = table.getElementsByTagName("tr");
         var clbm = document.getElementById("clbm").value;
         var clm = document.getElementById("clmc").value;
-        var ggjxh = document.getElementById("ggxh").value;
+        var ggjxh = document.getElementById("gg_xh").value;
         var wd = document.getElementById("dw").value;
         var bh = tr.length;
         bh = bh + 1;
@@ -152,7 +152,7 @@
 		                + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
 		                + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
                         + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"   //品牌
-		                + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"		              
+		                + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"
                         + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		                + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox' checked='checked'/>"
 		                + " <label for='checkbox11'></label></td>"
@@ -174,7 +174,7 @@
             a[i].style.color = "#707070";
         }
         obj.style.color = "#4876FF";
-        document.getElementById("ggxh").value = "";
+        document.getElementById("gg_xh").value = "";
         document.getElementById("clmcjgg").value = "";
         document.getElementById("flbm").value = flbm;
         document.getElementById("clmc").value = mc;
@@ -347,7 +347,7 @@
 		            + " <td align='left' bgcolor='#FFFFFF'>" + trck.cells[2].innerHTML + "</td>"
 		            + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
 		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
-		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"     
+		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
                     + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		            + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		            + " <label for='checkbox11'></label></td>"
@@ -403,7 +403,7 @@
                     var trck = chks[i].parentNode.parentNode;
                     if (value.indexOf(trck.cells[1].innerHTML) >= 0 && pp.indexOf(trck.cells[5].innerHTML) >= 0)
                     {
-                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！");                        
+                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！");
                     }
                     else
                     {
@@ -441,11 +441,11 @@
                 }
             }
         }
-        if (Html!=""&&Html!=undefined)
+        if (Html != "" && Html != undefined)
         {
             $("#tjTable").append(Html);
         }
-       
+
     }
 </script>
 </HEAD> 
@@ -634,7 +634,7 @@ protected void Page_Load(object sender, EventArgs e)
        <tfoot>
         <tr>
         <td width="120" height="32" align="right" bgcolor="#FFFFFF">名称及规则：</td>
-        <td align="left" bgcolor="#FFFFFF"><input type="text" id="clmcjgg" style=" width: 293px; "/></td>
+        <td align="left" bgcolor="#FFFFFF"><input type="text" runat="server" name="clmcjgg" id="clmcjgg" style=" width: 293px; "/></td>
         <td width="80" align="center" bgcolor="#FFFFFF">
         <input type="Button" name="btnDocNew" value="确定" onClick="AddValue()"  class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" /></td>
       </tr>
@@ -700,7 +700,7 @@ protected void Page_Load(object sender, EventArgs e)
 
 <input type="hidden"  runat="server" id="flbm"/>    <%--分类编码  --%>
 <input type="hidden"  runat="server" id="clbm"/>    <%--  材料编码--%>
-<input type="hidden"  runat="server" id="ggxh"/>    <%--规格型号  --%>
+<input type="hidden"  runat="server" id="gg_xh"/>    <%--规格型号  --%>
 <input type="hidden"  runat="server" id="clmc"/>    <%--材料名称  --%>
 <input type="hidden"  runat="server" id="dw"/>      <%--单位      --%>
 <input type="hidden"  runat="server" id="wjj"/>     <%-- 文件夹   --%>
@@ -708,6 +708,5 @@ protected void Page_Load(object sender, EventArgs e)
 <input type="hidden"  runat="server" id="HTML"/>    <%--返回的html--%>
 <input type="hidden"  runat="server" id="SQL"/>     <%-- SQL语句  --%>
 <input type="hidden"  runat="server" id="DW_ID"/>   <%-- 单位id   --%>
-<input runat="server" type="hidden" id="clmcjgg" />
 </form>
 </BODY></HTML>

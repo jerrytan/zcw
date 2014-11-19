@@ -92,22 +92,23 @@
         }
         document.getElementById("clbm").value = clbh;
         document.getElementById("clmcjgg").value = ggxh;
-        document.getElementById("ggxh").value = ggxh;
+        document.getElementById("gg_xh").value = ggxh;
     }
     //将组合的属性属性值 和对应材料信息 添加到材料列表中
     function AddValue()
     {
         var clbm = document.getElementById("clbm").value;
         var clm = document.getElementById("clmc").value;
+        document.getElementById("mcgz").value = clm;
         var ggjxh = document.getElementById("clmcjgg").value;
-        document.getElementById("ggxh").value = ggjxh;
+        document.getElementById("gg_xh").value = ggjxh;
         if (ggjxh == "" || ggjxh == undefined)
         {
             alert("请重新选择规格");
             return;
         }
         document.getElementById("cpbh").value = clbm;
-        document.getElementById("mcgz").value = ggjxh;
+        // document.getElementById("mcgz").value = ggjxh;
         //拼写SQL语句
         var table = document.getElementById("sx");
         var tr = table.getElementsByTagName("tr");
@@ -123,7 +124,8 @@
         var clbm = document.getElementById("clbm").value;
         var clm = document.getElementById("clmc").value;
         var ggjxh = document.getElementById("clmcjgg").value;
-        document.getElementById("ggxh").value = ggjxh;
+        document.getElementById("gg_xh").value = ggjxh;
+        document.getElementById("mcgz").value = clm;
         if (ggjxh == "" || ggjxh == undefined)
         {
             alert("请重新选择规格");
@@ -152,7 +154,7 @@
             a[i].style.color = "#707070";
         }
         obj.style.color = "#4876FF";
-        document.getElementById("ggxh").value = "";
+        document.getElementById("gg_xh").value = "";
         document.getElementById("clmcjgg").value = "";
         document.getElementById("flbm").value = flbm;
         document.getElementById("flmc").value = mc;
@@ -283,7 +285,7 @@ protected void Page_Load(object sender, EventArgs e)
             smsjk = Convert.ToString(dt_cl.Rows[0]["说明"]);
             pricesjk = Convert.ToString(dt_cl.Rows[0]["price"]);
             ggjxh = Convert.ToString(dt_cl.Rows[0]["规格型号"]);
-            this.ggxh.Value = Convert.ToString(dt_cl.Rows[0]["规格型号"]);       
+            this.gg_xh.Value = Convert.ToString(dt_cl.Rows[0]["规格型号"]);       
             this.cpbh.Value = cpbhsjk;
             this.clbm.Value = cpbhsjk;
             this.mcgz.Value = ggxzsjk;
@@ -364,7 +366,7 @@ protected void Addsx(string flbm, string flmc, string clid,string ggxh)
                     + " <tfoot>"
                     + "        <tr>"
                     + "        <td width='120' height='32' align='right' bgcolor='#FFFFFF'>名称及规则：</td>"
-                    + "        <td align='left' bgcolor='#FFFFFF'><input type='text' runat='server'  value='" + ggjxh + "' id='clmcjgg' name='clmcjgg' style=' width: 293px; '/></td>"
+                    + "        <td align='left' bgcolor='#FFFFFF'><input type='text' runat='server'  value='" + ggxh + "' id='clmcjgg' name='clmcjgg' style=' width: 293px; '/></td>"
                     + "        <td width='80' align='center' bgcolor='#FFFFFF'>"
                     + "        <input type='Button' name='btnDocNew' value='确定' onClick='AddValue1()'  class='filter' style='color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;' /></td>"
                     + "      </tr>"
@@ -503,16 +505,16 @@ protected void Addsx(string flbm, string flmc, string clid,string ggxh)
  
 <input type="hidden"  runat="server" id="flbm"/>    <%--分类编码  --%>
 <input type="hidden"  runat="server" id="clbm"/>    <%--  材料编码--%>
-<input type="hidden"  runat="server" id="ggxh"/>    <%--规格型号  --%>
+<input type="hidden"  runat="server" id="gg_xh"/>    <%--规格型号  --%>
 <input type="hidden"  runat="server" id="clmc"/>    <%--材料名称  --%>
-<input type="hidden"  runat="server" id="dw"/>      <%--单位      --%>
+<input type="hidden"  runat="server" id="dw"/>      <%--单位  材料    --%>
 <input type="hidden"  runat="server" id="SQL"/>     <%-- SQL语句  --%>
 <input type="hidden"  runat="server" id="DW_ID"/>   <%-- 单位id   --%>
 <input type="hidden"  runat="server" id="flmc"/>    <%-- 分类名称   --%>
 <input type="hidden"  runat="server" id="dmt"/>     <%-- 图片地址   --%> 
 <input type="hidden"  runat="server" id="scsid"/>   <%-- 生产商ID   --%>
-<input type="hidden"  runat="server" id="ppid"/>    <%-- 生产商ID   --%>
-<input type="hidden"  runat="server" id="lx"/>    <%-- 是新增还是编辑   --%>
-<input type="hidden"  runat="server" id="clid"/>    <%-- 是新增还是编辑   --%>
+<input type="hidden"  runat="server" id="ppid"/>    <%-- 品牌id   --%>
+<input type="hidden"  runat="server" id="lx"/>      <%-- 是新增还是编辑   --%>
+<input type="hidden"  runat="server" id="clid"/>    <%-- 材料id   --%>
 </form>
 </BODY></HTML>
