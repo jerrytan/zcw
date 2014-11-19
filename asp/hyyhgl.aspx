@@ -17,7 +17,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
 <meta content="IE=10.000" http-equiv="X-UA-Compatible">
     <title>会员用户管理</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
@@ -251,7 +251,7 @@
         string sql_js = "";
         sql_js = "select QQ号码,姓名,手机,邮箱,角色权限,yh_id from 用户表 where dw_id='" + dwid + "' and 等级<>'企业用户' ";
 
-        sSQL = "select * from (" + sql_js + ") where 1=0";
+        sSQL = "select * from (" + sql_js + ")#temp where 1=0";
         objDt = dc.GetDataTable(sSQL);
         for (int i = 0; i < objDt.Columns.Count; i++)
         {
@@ -326,7 +326,7 @@
 
         }
         string sql = sql_js;
-        sql = "select * from (" + sql + ") where " + strCondition + "and 等级<>'企业用户'";
+        sql = "select * from (" + sql + ")#temp where " + strCondition;
         dt_js = dc.GetDataTable(sql);
     }
     
@@ -355,7 +355,7 @@
     }
     //*****************************小张新增检索功能结束*********************************
     </script>
-    <form runat="server">
+    <form id="Form1" runat="server">
     <!-- 头部2开始-->
    <%-- <uc2:Header2 ID="Header2" runat="server" />--%>
         <div class="box">
@@ -517,6 +517,8 @@
                 </tr>
             </thead>
             <tbody id="tbody">
+            <%if (dt_js != null) %>
+            <%{ %>
                 <%for (int i = 0; i < dt_js.Rows.Count; i++)%>
                 <% { %>
                 <tr>
@@ -524,7 +526,7 @@
                         <input type="checkbox" onclick="Checked(this)" />
                     </td>
                     <td align="center">
-                        <%=i+1 %>
+                        <%=i + 1%>
                     </td>
                     <td>
                         <%=dt_js.Rows[i]["QQ号码"]%>
@@ -548,32 +550,32 @@
                                <%powerGys = dt_js.Rows[i]["角色权限"] == "" ? "" : dt_js.Rows[i]["角色权限"].ToString(); %>
                                  <%if (!powerGys.Contains("管理生产商")) %>
                                  <%{ %>
-                                <input   type="checkbox" checked="checked" value="管理生产商" runat="server"   name="cbx1" disabled="disabled" runat="server" />
+                                <input id="Checkbox1"   type="checkbox" checked="checked" value="管理生产商" runat="server"   name="cbx1" disabled="disabled" runat="server" />
                                 管理生产商
                                 <%} %>
                                 <%else %>
                                 <%{ %>
-                                <input id="Checkbox1"   type="checkbox" value="管理生产商" runat="server"   name="cbx1" disabled="disabled" runat="server" />
+                                <input id="Checkbox2"   type="checkbox" value="管理生产商" runat="server"   name="cbx1" disabled="disabled" runat="server" />
                                 管理生产商
                                 <%} %>
                                  <%if (!powerGys.Contains("管理分销商")) %>
                                  <%{ %>
-                                 <input id="Checkbox2"   type="checkbox" checked="checked" value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
+                                 <input id="Checkbox3"   type="checkbox" checked="checked" value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
                                 管理分销商
                                  <%} %>
                                  <%else %>
                                  <%{ %>
-                                 <input id="Checkbox3"   type="checkbox" value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
+                                 <input id="Checkbox4"   type="checkbox" value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
                                 管理分销商
                                  <%} %>
                                 <%if (!powerGys.Contains("管理材料信息")) %>
                                 <%{ %>
-                               <input   type="checkbox" checked="checked" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
+                               <input id="Checkbox5"   type="checkbox" checked="checked" value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
                                 管理材料信息
                                 <%} %>
                                 <%else %>
                                 <%{ %>
-                                  <input id="Checkbox4"   type="checkbox"   value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
+                                  <input id="Checkbox6"   type="checkbox"   value="管理材料信息" name="cbx3" disabled="disabled" runat="server" />
                                 管理材料信息
                                 <%} %>
                                 
@@ -582,17 +584,17 @@
                            <%{ %>
                                  <%if (!powerGys.Contains("管理分销商")) %>
                                  <%{ %>
-                                  <input type="checkbox" checked="checked" value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
+                                  <input id="Checkbox7" type="checkbox" checked="checked" value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
                                 管理分销商
                                  <%} %>
                                  <%else %>
                                  <%{ %>
-                                  <input type="checkbox"  value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
+                                  <input id="Checkbox8" type="checkbox"  value="管理分销商" runat="server" name="cbx2" disabled="disabled" runat="server" />
                                 管理分销商
                                  <%} %>
                                   <%if (!powerGys.Contains("管理材料信息")) %>
                                  <%{ %>
-                                   <input id="Checkbox5"   type="checkbox" checked="checked" value="管理材料信息" runat="server" name="cbx3" disabled="disabled" runat="server" />
+                                   <input id="Checkbox9"   type="checkbox" checked="checked" value="管理材料信息" runat="server" name="cbx3" disabled="disabled" runat="server" />
                             管理材料信息
                                  <%} %>
                                  <%else %>
@@ -611,6 +613,7 @@
                             height: 20px; width: 37px;cursor:pointer;" />
                     </td>
                 </tr>
+                <%} %>
                 <%} %>
             </tbody>
         </table>

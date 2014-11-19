@@ -7,7 +7,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <title>分销商新增代理材料</title>
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <link href="css/cllb.css" rel="stylesheet" type="text/css" />
@@ -69,150 +69,150 @@
 
 </script>
     <script language="javascript" type="text/javascript">
-                function selectall1(obj)
+        function selectall1(obj)
+        {
+            if (obj.checked)
+            {
+                var Table = document.getElementById("table");
+                var ck = Table.getElementsByTagName("input");
+                for (var i = 0; i < ck.length; i++)
                 {
-                    if (obj.checked)
+                    var e = ck[i];
+                    if (e.type == 'checkbox')
                     {
-                        var Table = document.getElementById("table");
-                        var ck = Table.getElementsByTagName("input");
-                        for (var i = 0; i < ck.length; i++)
+                        if (e.name == 'checkbox')
                         {
-                            var e = ck[i];
-                            if (e.type == 'checkbox')
-                            {                               
-                                if (e.name == 'checkbox')
+                            if (e.checked == false)
+                            {
+                                document.getElementById("checkboxAll").checked = false;
+                            }
+                        }
+                        else
+                        {
+                            document.getElementById("checkboxAll").checked = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                document.getElementById("checkboxAll").checked = false;
+            }
+        }
+        function selectall()
+        {
+            var Table = document.getElementById("table");
+            var ck = Table.getElementsByTagName("input");
+            var ckb = document.getElementsByName("checkboxAll");
+            if (document.getElementById("checkboxAll").checked)
+            {
+                for (var i = 0; i < ck.length; i++)
+                {
+                    var e = ck[i];
+                    if (e.type == 'checkbox' && e.name == 'checkbox')
+                    {
+                        e.checked = true;
+                    }
+                }
+            }
+            else
+            {
+                for (var i = 0; i < ck.length; i++)
+                {
+                    var e = ck[i];
+                    if (e.type == 'checkbox' && e.name == 'checkbox')
+                    {
+                        e.checked = false;
+                    }
+                }
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function Fxsxzdlcl()
+        {
+            try
+            {
+                var cl_id;
+                var Table = document.getElementById("table");
+                var ck = Table.getElementsByTagName("input");
+                for (var i = 0; i < ck.length; i++)
+                {
+                    var e = ck[i];
+                    var tr = e.parentNode.parentNode;
+                    if (e.type == 'checkbox')
+                    {
+                        if (e.name == 'checkbox')
+                        {
+                            if (e.checked)
+                            {
+                                var price;
+                                var txt = tr.getElementsByTagName("input");
+                                for (var j = 0; j < txt.length; j++)
                                 {
-                                    if (e.checked == false)
+                                    if (txt[j].type == "text")
                                     {
-                                        document.getElementById("checkboxAll").checked = false;
+                                        price = txt[j].value;
                                     }
+                                }
+                                if (price == "" || price == undefined)
+                                {
+                                    price = "0";
+                                }
+                                if (cl_id == "" || cl_id == undefined)
+                                {
+                                    cl_id = tr.cells[7].innerHTML + "|" + price + ",";
                                 }
                                 else
                                 {
-                                    document.getElementById("checkboxAll").checked = true;
+                                    cl_id += tr.cells[7].innerHTML + "|" + price + ",";
                                 }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        document.getElementById("checkboxAll").checked = false;
-                    }
-                }
-                function selectall()
-                {
-                    var Table = document.getElementById("table");
-                    var ck = Table.getElementsByTagName("input");
-                    var ckb = document.getElementsByName("checkboxAll");
-                    if (document.getElementById("checkboxAll").checked)
-                    {
-                        for (var i = 0; i < ck.length; i++)
-                        {
-                            var e = ck[i];
-                            if (e.type == 'checkbox' && e.name == 'checkbox')
-                            {
-                                e.checked = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (var i = 0; i < ck.length; i++)
-                        {
-                            var e = ck[i];
-                            if (e.type == 'checkbox' && e.name == 'checkbox')
-                            {
-                                e.checked = false;
-                            }
-                        }
-                    }
-                }
-    </script>
-    <script type="text/javascript">
-             function Fxsxzdlcl()
-             {
-                 try
-                 {
-                     var cl_id;
-                     var Table = document.getElementById("table");
-                     var ck = Table.getElementsByTagName("input");
-                     for (var i = 0; i < ck.length; i++)
-                     {
-                         var e = ck[i];
-                         var tr = e.parentNode.parentNode;
-                         if (e.type == 'checkbox')
-                         {
-                            if (e.name == 'checkbox')
-                             {
-                                 if (e.checked)
-                                 {
-                                     var price;
-                                     var txt = tr.getElementsByTagName("input");
-                                     for (var j = 0; j < txt.length; j++)
-                                     {
-                                         if (txt[j].type == "text")
-                                         {
-                                             price = txt[j].value;
-                                         }
-                                     }
-                                     if (price==""||price==undefined)
-                                     {
-                                         price = "0";
-                                     }
-                                     if (cl_id == "" || cl_id == undefined)
-                                     {
-                                         cl_id = tr.cells[7].innerHTML + "|" + price + ",";
-                                     }
-                                     else
-                                     {
-                                         cl_id += tr.cells[7].innerHTML + "|" + price + ",";
-                                     }
-                                     
-                                 }
-                             }
-                         }
-                     }
-                     if (cl_id == "" || cl_id == undefined)
-                     {
-                         alert("请选择要新增的材料！");
-                         return false;
-                     }
-                     else
-                     {
-                          document.getElementById("cl_id").value = cl_id;
-                         return true;
-                     }
-                 } catch (e)
-                 {
-                     alert("添加错误！错误信息：" + e);
-                     return false;
-                 }
-             }
 
-             function saveReport()
-             {
-                 var fxs = document.getElementById("fxs_id").value;
-                 // jquery 表单提交
-                 $("#form1").ajaxSubmit(function (message)
-                 {
-                     // 对于表单提交成功后处理，message为提交页面saveReport.htm的返回内容 
-                     if (message == "1")
-                     {
-                         alert("提交成功");
-                         window.location.href = 'fxsglcl.aspx?gys_id=' + fxs;
-                         //  $("#cl").empty();
-                         //关闭
-                         //                window.opener = null;
-                         //                window.open("", "_self");
-                         //                window.close();
-                     }
-                     else
-                     {
-                         alert(message);
-                     }
-                 });
-                 return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转 action="fxsxzdlcl_Save.aspx" method="post" onsubmit="return saveReport();"
-             }  
+                            }
+                        }
+                    }
+                }
+                if (cl_id == "" || cl_id == undefined)
+                {
+                    alert("请选择要新增的材料！");
+                    return false;
+                }
+                else
+                {
+                    document.getElementById("cl_id").value = cl_id;
+                    return true;
+                }
+            } catch (e)
+            {
+                alert("添加错误！错误信息：" + e);
+                return false;
+            }
+        }
+
+        function saveReport()
+        {
+            var fxs = document.getElementById("fxs_id").value;
+            // jquery 表单提交
+            $("#form1").ajaxSubmit(function (message)
+            {
+                // 对于表单提交成功后处理，message为提交页面saveReport.htm的返回内容 
+                if (message == "1")
+                {
+                    alert("提交成功");
+                    window.location.href = 'fxsglcl.aspx?gys_id=' + fxs;
+                    //  $("#cl").empty();
+                    //关闭
+                    //                window.opener = null;
+                    //                window.open("", "_self");
+                    //                window.close();
+                }
+                else
+                {
+                    alert(message);
+                }
+            });
+            return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转 action="fxsxzdlcl_Save.aspx" method="post" onsubmit="return saveReport();"
+        }  
          </script>
     
 </head>
@@ -464,6 +464,7 @@ private void createlm(DataTable objDt)
 <form  runat="server" id="form1" >
 <input type="hidden" runat="server" id="cl_id" />
   <DIV class="box">
+ <div id="jiansuo" style="margin-bottom:10px;">
         <asp:Label ID="shaixu" runat="server"><font style="FONT-SIZE: 9pt">&nbsp;&nbsp;检索条件：</font></asp:Label>
                     <asp:DropDownList ID="lieming" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
                         font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
@@ -488,9 +489,8 @@ private void createlm(DataTable objDt)
                          <asp:Button ID="btnDocNew" runat="server" Text="添加" OnClientClick="return Fxsxzdlcl();" OnClick="Add_Click" CssClass="filter"
                         BorderStyle="None" Width="37px" Height="20px" ForeColor="Black" Font-Size="12px"
                         filter Font-Names="宋体"></asp:Button>          
-<%--<input type="submit" name="btnDocNew" value="添加" onClick="Fxsxzdlcl()"  class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" />
---%></div>
 
+ </div>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" class="table2" id="table">
       <thead>

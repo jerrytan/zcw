@@ -2,7 +2,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
 <meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
     <title>管理分销商页面2</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
@@ -21,7 +21,7 @@
     function btnFilter_Click()
     {
         var pp_id = document.getElementById("ppid").value;
-        if (pp_id==""||pp_id==undefined)
+        if (pp_id == "" || pp_id == undefined)
         {
             alert("请选择品牌！");
             return;
@@ -33,13 +33,16 @@
             var url = 'scsxzfxs.aspx?ppmc=' + pp + '&scsid=' + gys + '&ppid=' + pp_id;
             window.parent.parent.open(url);
             //window.parent.parent.location.href = 'xzgxs.aspx?pp_mc=' + pp + '&gxs_id=' + gys + '&xzlx=fxs';
-           // window.parent.parent.location.href = 'scsxzfxs.aspx?ppmc=' + pp + '&scsid=' + gys + '&ppid=' + pp_id;
+            // window.parent.parent.location.href = 'scsxzfxs.aspx?ppmc=' + pp + '&scsid=' + gys + '&ppid=' + pp_id;
         }
     }
-    function Trim(str) {
+    function Trim(str)
+    {
         str = str.replace(/^(\s|\u00A0)+/, '');
-        for (var i = str.length - 1; i >= 0; i--) {
-            if (/\S/.test(str.charAt(i))) {
+        for (var i = str.length - 1; i >= 0; i--)
+        {
+            if (/\S/.test(str.charAt(i)))
+            {
                 str = str.substring(0, i + 1);
                 break;
             }
@@ -65,6 +68,11 @@
                 {
                     fxs_id += Trim(input[i].value) + ",";
                 }
+            }
+            if (fxs_id == "" || fxs_id == undefined)
+            {
+                alert("请选择需要删除的分销商！");
+                return;
             }
             var xmlhttp;
             if (window.XMLHttpRequest)
@@ -98,23 +106,29 @@
         }
     }
 
-    function ChaYue(gsmc) {
+    function ChaYue(gsmc)
+    {
         window.open("glfxsxx_3.aspx?gsmc=" + gsmc + "&lx=fxs");
     }
 
-function onloadEvent(func) {
+    function onloadEvent(func)
+    {
         var one = window.onload
-        if (typeof window.onload != 'function') {
+        if (typeof window.onload != 'function')
+        {
             window.onload = func
         }
-        else {
-            window.onload = function () {
+        else
+        {
+            window.onload = function ()
+            {
                 one();
                 func();
             }
         }
     }
-function showtable() {
+    function showtable()
+    {
         var tableid = 'table2';
         //表格的id
         var overcolor = '#fff0e9'; //鼠标经过颜色
@@ -122,25 +136,32 @@ function showtable() {
         var color2 = '#fff'; 	//第二种颜色
         var tablename = document.getElementById(tableid)
         var tr = tablename.getElementsByTagName("tr")
-        for (var i = 1; i < tr.length; i++) {
-            tr[i].onmouseover = function () {
+        for (var i = 1; i < tr.length; i++)
+        {
+            tr[i].onmouseover = function ()
+            {
                 this.style.backgroundColor = overcolor;
             }
-            tr[i].onmouseout = function () {
-                if (this.rowIndex % 2 == 0) {
+            tr[i].onmouseout = function ()
+            {
+                if (this.rowIndex % 2 == 0)
+                {
                     this.style.backgroundColor = color1;
-                } else {
+                } else
+                {
                     this.style.backgroundColor = color2;
                 }
             }
-            if (i % 2 == 0) {
+            if (i % 2 == 0)
+            {
                 tr[i].className = "color1";
-            } else {
+            } else
+            {
                 tr[i].className = "color2";
             }
         }
     }
-onloadEvent(showtable);
+    onloadEvent(showtable);
 </script>
 <body>
     <form id="form1" runat="server"> 
