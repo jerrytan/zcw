@@ -242,97 +242,130 @@
         sColumName = lieming.SelectedItem.Value.ToString().Trim();
         sOperator = yunsuanfu.SelectedItem.Value.ToString().Trim();
         sKeyWord = txtKeyWord.Text.ToString().Trim();
-        
+        if (sColumName == "全部")
+        {
+            sColumName = "";
+            sOperator = "";
+            sKeyWord = "";
+            txtKeyWord.Text = "";
+        }
+        if (sColumName == "公司名称")
+        {
+            sColumName = "供应商";
+        }
         string sql_js = "";
         sql_js = " select 供应商,地址,电话,联系人,联系人手机,单位类型,gys_id from 材料供应商信息表 where isnull(是否启用,'')='1' and gys_id not in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='" + pp_id +
              "' and 品牌名称='" + pp_mc + "' and 生产厂商ID='" + scs_id + "')";
-        //得到要筛选字段的类型
-
-        sSQL = "select * from (" + sql_js + ")#temp where 1=0";
-        objDt = Conn.GetDataTable(sSQL);
-        for (int i = 0; i < objDt.Columns.Count; i++)
+        if (sColumName == "" && sOperator == "" && sKeyWord == "")
         {
-            sTempColumnName = objDt.Columns[i].ColumnName.ToString().Trim();
-            if (sTempColumnName == sColumName)
+            strCondition = "";
+        }
+        else
+        {
+            sSQL = "select * from (" + sql_js + ")#temp where 1=0";
+            objDt = Conn.GetDataTable(sSQL);
+            for (int i = 0; i < objDt.Columns.Count; i++)
             {
-                sFieldType = objDt.Columns[i].DataType.Name.ToString().Trim();
-                switch (sFieldType.ToUpper().Trim())
+                sTempColumnName = objDt.Columns[i].ColumnName.ToString().Trim();
+                if (sTempColumnName == sColumName)
                 {
-                    case "STRING":
-                        sFieldType = "字符串型";
+                    sFieldType = objDt.Columns[i].DataType.Name.ToString().Trim();
+                    switch (sFieldType.ToUpper().Trim())
+                    {
+                        case "STRING":
+                            sFieldType = "字符串型";
 
-                        if (sOperator.Trim() == "like")
-                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
-                        else
-                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
-                        break;
-                    case "DATETIME":
-                        sFieldType = "日期型";
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+                            break;
+                        case "DATETIME":
+                            sFieldType = "日期型";
 
-                        if (sOperator.Trim() == "like")
-                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
-                        else
-                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
 
-                        break;
-                    case "INT32":
-                        sFieldType = "整型";
+                            break;
+                        case "INT32":
+                            sFieldType = "整型";
 
-                        if (sOperator.Trim() == "like")
-                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
-                        else
-                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
 
-                        break;
-                    case "DECIMAL":
-                        sFieldType = "货币型";
+                            break;
+                        case "DECIMAL":
+                            sFieldType = "货币型";
 
-                        if (sOperator.Trim() == "like")
-                        {
-                            Response.Write("<script>alert(\"字段：" + sFieldType + " 不允许用 包含 筛选\")</" + "script>");
-                            return;
-                        }
-                        else
-                            strCondition = sColumName + " " + sOperator + sKeyWord;
+                            if (sOperator.Trim() == "like")
+                            {
+                                Response.Write("<script>alert(\"字段：" + sFieldType + " 不允许用 包含 筛选\")</" + "script>");
+                                return;
+                            }
+                            else
+                                strCondition = sColumName + " " + sOperator + sKeyWord;
 
-                        break;
-                    case "DOUBLE":
-                        sFieldType = "浮点型";
+                            break;
+                        case "DOUBLE":
+                            sFieldType = "浮点型";
 
-                        if (sOperator.Trim() == "like")
-                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
-                        else
-                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
 
-                        break;
-                    default:
-                        sFieldType = "字符串型";
+                            break;
+                        default:
+                            sFieldType = "字符串型";
 
-                        if (sOperator.Trim() == "like")
-                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
-                        else
-                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
 
-                        break;
+                            break;
+                    }
+                    break;
                 }
-                break;
             }
         }
-        string sql = sql_js;
-        sql = "select * from (" + sql + ")#temp where " + strCondition;
-        dt_fxs = Conn.GetDataTable(sql);
+        if (strCondition=="")
+        {
+            string sql = sql_js;
+            dt_fxs = Conn.GetDataTable(sql); 
+        }
+        else
+        {
+            string sql = sql_js;
+            sql = "select * from (" + sql + ")#temp where " + strCondition;
+            dt_fxs = Conn.GetDataTable(sql);
+        }
+      
     }
     private void createlm(DataTable objDt)
     {
         ListItem objItem = null;
         if (objDt != null)
         {
+            objItem = null;
+            objItem = new ListItem();
+            objItem.Text = "全部";
+            lieming.Items.Add(objItem);
             for (int i = 0; i < objDt.Columns.Count; i++)
             {
-
                 switch (objDt.Columns[i].ColumnName)
                 {
                     case "gys_id":
+                        break;
+                    case "供应商":
+                         objItem = null;
+                        objItem = new ListItem();
+                        objItem.Text = "公司名称";
+                        lieming.Items.Add(objItem);
                         break;
                     default:
                         objItem = null;

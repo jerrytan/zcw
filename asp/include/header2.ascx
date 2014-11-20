@@ -18,6 +18,7 @@
     protected DataConn dc = new DataConn();
     public string DW = "";
     public string QQ_id = "";
+    public string yh_lx="";
     protected void Page_Load(object sender, EventArgs e)
     {
       
@@ -32,7 +33,7 @@
             {
                 QQ_id = Request.Cookies["GYS_QQ_ID"];
             }
-            string str_Sql = "select 姓名,yh_id,类型 from 用户表 where QQ_id='" + QQ_id + "'";
+            string str_Sql = "select 姓名,yh_id,类型,等级 from 用户表 where QQ_id='" + QQ_id + "'";
             dt_Yh = dc.GetDataTable(str_Sql);
         }
         else
@@ -53,7 +54,7 @@
             if (QQ_id != "")
             {
                 //string str_Sql = "select 姓名,yh_id,类型 from 用户表 where QQ_id='"+QQ_id+"'"; 
-                string str_Sql = "select 姓名,yh_id,dw_id,类型 from 用户表 where QQ号码='" + QQ_id + "'";
+                string str_Sql = "select 姓名,yh_id,dw_id,类型,等级 from 用户表 where yh_id='" + QQ_id + "'";
 
                 dt_Yh = dc.GetDataTable(str_Sql);
                 if (dt_Yh != null && dt_Yh.Rows.Count > 0)
@@ -62,7 +63,10 @@
                 }
             }
         }
-       
+       if(dt_Yh!=null&&dt_Yh.Rows.Count>0)
+       {
+       yh_lx=dt_Yh.Rows[0]["等级"].ToString();
+       }
     }
 </script>
 <div class="box">
@@ -92,6 +96,11 @@
         else if (((CGS_QQ_ID == null) || (cgs_yh_id == null)) && ((GYS_QQ_ID != null) && (gys_yh_id != null)))
         {
     %>
+    <%if(yh_lx=="企业用户") %>
+    <%{ %>
+    <div class="anniu">
+        <a href="hyyhgl.aspx" target="_self">供应商登出</a></div>
+    <%} %>
     <div class="anniu">
         <a href="QQ_out.aspx" target="_self">供应商登出</a></div>
     <div class="anniu">
@@ -127,6 +136,11 @@
              else if (cgs_yh_id == "" && gys_yh_id != "")
              {
     %>
+      <%if(yh_lx=="企业用户") %>
+    <%{ %>
+    <div class="anniu">
+        <a href="hyyhgl.aspx" target="_self">管理账户</a></div>
+    <%} %>
     <div class="anniu">
         <a href="QQ_out.aspx" target="_self">供应商登出</a></div>
     <div class="anniu">

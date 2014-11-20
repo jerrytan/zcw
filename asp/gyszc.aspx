@@ -11,21 +11,15 @@
     <script src="js/SJLD.js" type="text/javascript"></script>
     <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
-    <link href="css/all%20of.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="Scripts/jquery-1.8.3.js"></script>
-<script type="text/javascript" src="Scripts/ui/jquery.ui.core.js"></script>
-<script type="text/javascript" src="Scripts/ui/jquery.ui.widget.js"></script>
-<script type="text/javascript" src="Scripts/ui/jquery.ui.datepicker.js"></script>
-<script type="text/javascript" src="Scripts/ui/i18n/jquery.ui.datepicker-zh-CN.js" charset="UTF-8"></script>
-
+    <link href="css/all%20of.css" rel="stylesheet" type="text/css" /><script type="text/javascript" src="Scripts/datepicker/jquery-1.4.2.js"></script>
+    <script type="text/javascript" src="Scripts/datepicker/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="Scripts/datepicker/jquery.ui.datepicker.js"></script>
+    <script type="text/javascript" src="Scripts/datepicker/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="Scripts/datepicker/jquery.ui.datepicker-zh-CN.js"  charset="UTF-8"></script>
     <!--前台数据输入验证 开始-->
     <script type="text/javascript">
         $(function () {
-        $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
-            $( "#txt_zcrq" ).datepicker({
-			    changeMonth: true,
-			    changeYear: true
-		    });
+            $("#txt_zcrq").datepicker();
         });
 
 
@@ -48,23 +42,11 @@
             }
         }
         function isPhone(str) {
-//            var _d = /^1[3578][01379]\d{8}$/g;
-
-//            var _l = /^1[34578][01256]\d{8}$/g;
-
-//            var _y = /^(134[012345678]\d{7}|1[34578][0123456789]\d{8})$/g;
-            var strs = /^1[34578][01256]\d{8}$/g;
-
-//            if (!_y.test(document.getElementById("txt_sj").value) ||! _l.test(document.getElementById("txt_sj").value) || !_d.test(document.getElementById("txt_sj").value) ) {
-            if (!strs.test(document.getElementById("txt_sj").value)) {
-                if (document.getElementById("txt_sj").value != "") {
-                    alert("手机号格式错误，请重新输入");
-                    document.getElementById("txt_sj").focus();
-                }else if(document.getElementById("txt_sj").value == ""){
-                    alert("请输入手机号");
-                    document.getElementById("txt_sj").focus();
-                 }
-             }
+            var reg = /^0?1[358]\d{9}$/;
+            if (!reg.test(str.value) && document.getElementById("txt_sj").value != "") {
+                alert("手机号格式错误，请重新输入");
+                document.getElementById("txt_sj").focus();
+            }
         }
         function isTelePhone(str) {
             
@@ -75,6 +57,7 @@
                 
             } else {
                 alert("电话格式错误，请重新输入");
+                document.getElementById("txt_gsdh").value != "";
                 document.getElementById("txt_gsdh").focus();
             }
 
@@ -94,14 +77,6 @@
                 document.getElementById("txt_gsmc").style.color = "#999";
             }
         }
-        function getiphone(obj)
-        {
-            if(document.getElementById("txt_sj").value == "请输入手机号！")
-            {
-                document.getElementById("txt_sj").value ="";
-                document.getElementById("txt_gsmc").style.color = "#000";
-            }
-        }
         function getfocus(obj) {
             if (obj.value == "请填写工商局注册的全称（4-40位字符）") {
                 obj.value = "";
@@ -110,33 +85,23 @@
                 obj.value = "";
                 obj.style.color = "#000";
             } else if (obj.value == "请填写区号+电话号码") {
-                document.getElementById("txt_gsdh").value = "";
+                obj.value = "";
                 obj.style.color = "#000";
-            }else if(obj.value=="请注意邮箱格式"){
-                obj.value="";
-                obj.style.color = "#000";
-
             }
              else {
                 obj.style.color = "#000";
             }
         }
-        function losefocus(obj) {
+        function losefocus() {
             if (document.getElementById("txt_gsdz").value == "") {
                 document.getElementById("txt_gsdz").value = "请填写公司地址";
                 document.getElementById("txt_gsdz").style.color = "#999";
             }
         }
-        function lose(obj) {
-            ///^[+]{0,1}(/d){1,3}[ ]?([-]?((/d)|[ ]){1,12})+$/
-        var reg= /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        function lose() {
             if (document.getElementById("txt_yx").value == "") {
                 document.getElementById("txt_yx").value = "请注意邮箱格式";
                 document.getElementById("txt_yx").style.color = "#999";
-            }
-            else if (!reg.test(document.getElementById("txt_yx").value) ) {
-                alert("邮箱格式不正确");
-                document.getElementById("txt_yx").focus();
             }
         }
         function isQQ(str) {
@@ -223,7 +188,7 @@
                 <td width="50" height="40">
                     <span class="xinghao">*</span>
                 </td>
-                <td width="130">
+                <td width="120">
                     公司名称：
                 </td>
                 <td width="329">
@@ -362,7 +327,6 @@
                         <option value="个体">个体</option>
                         <option value="集体">集体</option>
                         <option value="三资">三资</option>
-                        <option value="外资">外资</option>
                         <option value="其他">其他</option>
                     </select>
                 </td>
@@ -564,7 +528,7 @@
                                 手 机：
                             </td>
                             <td align="left">
-                                <input name="txt_sj" type="text" class="hyzhc_shrk_2" id="txt_sj" style="color: #999" onfocus="getiphone(this)"   onblur="isPhone(this)" runat="server" value="请输入手机号！" />
+                                <input name="txt_sj" type="text" class="hyzhc_shrk_2" id="txt_sj" runat="server" />
                             </td>
                             <td width="70">
                                 &nbsp;
@@ -574,7 +538,7 @@
                             </td>
                             <td align="left">
                                 <input name="txt_yx" style="color: #999" type="text" class="hyzhc_shrk_3" id="txt_yx"
-                                    onblur="lose(this)" onfocus="getfocus(this)" runat="server" value="请注意邮箱格式" />
+                                    onblur="lose()" onfocus="getfocus(this)" runat="server" value="请注意邮箱格式" />
                             </td>
                             <td width="48">
                                 &nbsp;

@@ -42,29 +42,46 @@
 
                 }
             }
-
-            var xmlhttp;
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp = new XMLHttpRequest();
+            if (cl_ids == "" || cl_ids==undefined)
+            {
+                alert("请选择需要删除的材料！");
+                return;
             }
-            else {// code for IE6, IE5
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
+            if (confirm("是否删除选中的材料"))
+            {
 
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    var array = xmlhttp.responseText;     //接收替换返回的json字符串
-                    if (array == 1) {
-                        alert("删除成功");
-                        location.reload();
-                    }
-                    else
-                        alert("删除失败");
+
+                var xmlhttp;
+                if (window.XMLHttpRequest)
+                {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
                 }
-            }
-            xmlhttp.open("GET", "cgsgzcl_ajax.aspx?clids=" + cl_ids, true);
-            xmlhttp.send();
+                else
+                {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
 
+                xmlhttp.onreadystatechange = function ()
+                {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                    {
+                        var array = xmlhttp.responseText;     //接收替换返回的json字符串
+                        if (array == 1)
+                        {
+                            alert("删除成功");
+                            location.reload();
+                        }
+                        else
+                            alert("删除失败");
+                    }
+                }
+                xmlhttp.open("GET", "cgsgzcl_ajax.aspx?clids=" + cl_ids, true);
+                xmlhttp.send();
+            }
+            else
+            {
+                return;
+            }
         }
         function onloadEvent(func) {
             var one = window.onload
@@ -112,16 +129,27 @@
           
     <div>
                     <div id="jiansuo2" >
-                        材料名称：
-                        <input  type="text" runat="server" id="txt_search" style="border-right: #808080 1px solid;
-                            border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
-                        &nbsp;&nbsp;
-                     <%--   <input type="submit"  value="检索" id="Submit2" class="filter" 
-                            style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
-                            width: 37px; cursor: pointer;" />--%>
-                        <asp:Button ID="btnSearch" runat="server" Text="检索" class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
-                            width: 37px; cursor: pointer;" onclick="btnSearch_Click"/>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <asp:Label ID="shaixu" runat="server"><font style="FONT-SIZE: 9pt">&nbsp;&nbsp;检索条件：</font></asp:Label>
+                    <asp:DropDownList ID="lieming" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="128px">
+                    </asp:DropDownList>
+                    <asp:DropDownList ID="yunsuanfu" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="88px">
+                        <asp:ListItem Value="like" Selected="True">包含关键字</asp:ListItem>
+                        <asp:ListItem Value="=">等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;">小于</asp:ListItem>
+                        <asp:ListItem Value="&gt;">大于</asp:ListItem>
+                        <asp:ListItem Value="&gt;=">大于等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;=">小于等于</asp:ListItem>
+                    </asp:DropDownList><asp:TextBox ID="txtKeyWord" Style="border-right: #808080 1px solid;
+                        border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server"></asp:TextBox>  
+                        &nbsp; &nbsp; &nbsp;                     
+                    <asp:Button ID="filter" runat="server" Text="检索" OnClick="filter_Click" CssClass="filter"
+                        BorderStyle="None" Width="37px" Height="20px" ForeColor="Black" Font-Size="12px"
+                        filter Font-Names="宋体"></asp:Button>&nbsp;&nbsp;
                         <input type="button" id="btnFilter" value="删除材料" onclick="deleteGzcl()" style="height: 20px;
                             width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor: pointer;" />
                     </div>

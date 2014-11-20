@@ -38,28 +38,44 @@
                     gys_ids += Trim(chks[i].parentNode.parentNode.cells[0].innerHTML) + ",";
                 }
             }
-            var xmlhttp;
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp = new XMLHttpRequest();
+            if (gys_ids==""||gys_ids==undefined)
+            {
+                alert("请选择需要删除的分销商！");
             }
-            else {// code for IE6, IE5
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
+            if (confirm("是否删除该分销商？"))
+            {
 
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    var array = xmlhttp.responseText;     //接收替换返回的json字符串
-                    if (array == 1) {
-                        alert("删除成功");
-                        location.href = "Cgsgzgys.aspx";
-                    }
-                    else
-                        alert("删除失败");
+                var xmlhttp;
+                if (window.XMLHttpRequest)
+                {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
                 }
-            }
-            xmlhttp.open("GET", "cgsgzgys_ajax.aspx?gys_id=" + gys_ids + "&dwid=" + dw_id, true);
-            xmlhttp.send();
+                else
+                {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
 
+                xmlhttp.onreadystatechange = function ()
+                {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                    {
+                        var array = xmlhttp.responseText;     //接收替换返回的json字符串
+                        if (array == 1)
+                        {
+                            alert("删除成功");
+                            location.href = "Cgsgzgys.aspx";
+                        }
+                        else
+                            alert("删除失败");
+                    }
+                }
+                xmlhttp.open("GET", "cgsgzgys_ajax.aspx?gys_id=" + gys_ids + "&dwid=" + dw_id, true);
+                xmlhttp.send();
+            }
+            else
+            {
+                return;
+            }
         }
         function onloadEvent(func) {
             var one = window.onload
@@ -104,33 +120,30 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <input runat="server" id="dwid" />
+    <input runat="server" type="hidden" id="dwid" />
     <div>
         <div class="jiansuo3">
-            供应商：
-            <input name="txtKeyWord2" type="text" id="txtKeyWord2" style="border-right: #808080 1px solid;
-                border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid" />
-            &nbsp;&nbsp;地区：
-           <span class="fl">
-                        <select id="s1"  class="fu1" runat="server"><option></option></select>
-                        <select id="s2" class="fu2" runat="server"><option></option></select>
-                        
-                        <script type="text/javascript">
-                            var s = ["s1", "s2"];
-                            var opt0 = ["— 省 —", "— 市 —"];
-                            for (i = 0; i < s.length - 1; i++)
-                                document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
-                            change(0);
-                            function btn_sub_onclick() {
-
-                            }
-
-                        </script>
-                    </span>
-            &nbsp;
-            <input type="submit" name="filter2" value="检索" id="filter2" class="filter" filter=""
-                style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
-                width: 37px; cursor: pointer;" />
+                <asp:Label ID="shaixu" runat="server"><font style="FONT-SIZE: 9pt">&nbsp;&nbsp;检索条件：</font></asp:Label>
+                    <asp:DropDownList ID="lieming" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="128px">
+                    </asp:DropDownList>
+                    <asp:DropDownList ID="yunsuanfu" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
+                        font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server" Width="88px">
+                        <asp:ListItem Value="like" Selected="True">包含关键字</asp:ListItem>
+                        <asp:ListItem Value="=">等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;">小于</asp:ListItem>
+                        <asp:ListItem Value="&gt;">大于</asp:ListItem>
+                        <asp:ListItem Value="&gt;=">大于等于</asp:ListItem>
+                        <asp:ListItem Value="&lt;=">小于等于</asp:ListItem>
+                    </asp:DropDownList><asp:TextBox ID="txtKeyWord" Style="border-right: #808080 1px solid;
+                        border-top: #808080 1px solid; border-left: #808080 1px solid; border-bottom: #808080 1px solid"
+                        runat="server"></asp:TextBox>  
+                        &nbsp; &nbsp; &nbsp;                     
+                    <asp:Button ID="filter" runat="server" Text="检索" OnClick="filter_Click" CssClass="filter"
+                        BorderStyle="None" Width="37px" Height="20px" ForeColor="Black" Font-Size="12px"
+                        filter Font-Names="宋体"></asp:Button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <input type="submit" name="btnDelete" value="删除分销商" onclick="deleteGzcl()"
                 id="btnDelete" class="btnDelete1" style="color: Black; border-style: None; font-family: 宋体;

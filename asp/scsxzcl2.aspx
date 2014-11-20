@@ -83,11 +83,8 @@
             {
                 document.getElementById("clmc").value = tr[i].cells[2].innerHTML;
             }
-            else
-            {
-                var tds = tr[i];
-                ggxh = ggxh + tr[i].cells[2].innerHTML;
-            }
+            var tds = tr[i];
+            ggxh = ggxh + tr[i].cells[2].innerHTML;            
             clbh += tr[i].cells[3].innerHTML.toString();
         }
         document.getElementById("clbm").value = clbh;
@@ -108,7 +105,6 @@
             return;
         }
         document.getElementById("cpbh").value = clbm;
-        // document.getElementById("mcgz").value = ggjxh;
         //拼写SQL语句
         var table = document.getElementById("sx");
         var tr = table.getElementsByTagName("tr");

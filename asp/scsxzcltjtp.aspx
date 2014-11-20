@@ -66,9 +66,14 @@
             FilePath = FilePath.Replace("\\", "/");
             FilePath = "asp/" + FilePath;
             FilePath = strVD + "/" + FilePath + "/" + name;
-            FilePath = "http://www." + ip + "/" + FilePath;
-
-
+            if (ip.Contains("zhcnet.cn"))
+            {
+                 FilePath = "http://www." + ip + "/" + FilePath;
+            }
+            else
+            {
+                FilePath = "http://" + ip + "/" + FilePath;
+            }
             string s_mtlx = "";   //媒体类型
             string s_fl = "";
             s_mtlx = this.mtlx.Value;

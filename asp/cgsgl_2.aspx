@@ -70,6 +70,7 @@
         public int flevel = 0;
         public string xx = "";                           //是否存在信息   
         public string sftg = "";                         //是否验证通过
+        public string yh_lx = "";
         //public DataTable dt_content;                     //分页查询的结果
 
         //public string tbName = "材料表,采购商关注的材料表,材料供应商信息表";   //分页用的表名
@@ -99,20 +100,21 @@
             {
                 yh_id = Session["CGS_YH_ID"];
             }
-          
-            string sqlExistQQ_id = "select myID from 用户表 where yh_id='" + yh_id + "'";
-            string sql_Level = "select 等级 from 用户表 where yh_id='" + yh_id + "'";
-            if (objConn.GetRowCount(sqlExistQQ_id) > 0)
-            {
-                if (objConn.DBLook(sql_Level) == "企业用户")
-                {
-                    Response.Redirect("hyyhgl.aspx");
-                }
-            }
-            else
-            {
-                Response.Redirect("QQ_dlyz.aspx");
-            }
+            string sqllx = "select 等级 from 用户表 where yh_id='" + yh_id + "'";
+            yh_lx = objConn.DBLook(sqllx);
+            //string sqlExistQQ_id = "select myID from 用户表 where yh_id='" + yh_id + "'";
+            //string sql_Level = "select 等级 from 用户表 where yh_id='" + yh_id + "'";
+            //if (objConn.GetRowCount(sqlExistQQ_id) > 0)
+            //{
+            //    if (objConn.DBLook(sql_Level) == "企业用户")
+            //    {
+            //        Response.Redirect("hyyhgl.aspx");
+            //    }
+            //}
+            //else
+            //{
+            //    Response.Redirect("QQ_dlyz.aspx");
+            //}
             //蒋，20141110注释
             //if (Request.Cookies["CGS_QQ_ID"] != null && Request.Cookies["CGS_QQ_ID"].Value.ToString() != "")
             //{
@@ -398,6 +400,10 @@
         <%
             }	
         %>
+        <%if (yh_lx == "企业用户") %>
+        <%{ %>
+           <div class="anniu"><a  href="hyyhgl.aspx" target="_self">管理用户页面</a></div>
+        <%} %>
     </div>
     </form>
     <div class="gyzy2">

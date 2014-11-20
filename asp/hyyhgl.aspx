@@ -246,88 +246,105 @@
         sColumName = lieming.SelectedItem.Value.ToString().Trim();
         sOperator = yunsuanfu.SelectedItem.Value.ToString().Trim();
         sKeyWord = txtKeyWord.Text.ToString().Trim();
-
+        if (sColumName=="全部")
+        {
+            sColumName = "";
+            sOperator = "";
+            sKeyWord = "";
+        }
         //得到要筛选字段的类型
         string sql_js = "";
         sql_js = "select QQ号码,姓名,手机,邮箱,角色权限,yh_id from 用户表 where dw_id='" + dwid + "' and 等级<>'企业用户' ";
-
-        sSQL = "select * from (" + sql_js + ")#temp where 1=0";
-        objDt = dc.GetDataTable(sSQL);
-        for (int i = 0; i < objDt.Columns.Count; i++)
+        if (sColumName == "" && sOperator == "" && sKeyWord == "")
         {
-            sTempColumnName = objDt.Columns[i].ColumnName.ToString().Trim();
-            if (sTempColumnName == sColumName)
-            {
-
-
-                sFieldType = objDt.Columns[i].DataType.Name.ToString().Trim();
-                switch (sFieldType.ToUpper().Trim())
-                {
-                    case "STRING":
-                        sFieldType = "字符串型";
-
-                        if (sOperator.Trim() == "like")
-                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
-                        else
-                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
-
-                        break;
-                    case "DATETIME":
-                        sFieldType = "日期型";
-
-                        if (sOperator.Trim() == "like")
-                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
-                        else
-                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
-
-                        break;
-                    case "INT32":
-                        sFieldType = "整型";
-
-                        if (sOperator.Trim() == "like")
-                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
-                        else
-                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
-
-                        break;
-                    case "DECIMAL":
-                        sFieldType = "货币型";
-
-                        if (sOperator.Trim() == "like")
-                        {
-                            Response.Write("<script>alert(\"字段：" + sFieldType + " 不允许用 包含 筛选\")</" + "script>");
-                            return;
-                        }
-                        else
-                            strCondition = sColumName + " " + sOperator + sKeyWord;
-
-                        break;
-                    case "DOUBLE":
-                        sFieldType = "浮点型";
-
-                        if (sOperator.Trim() == "like")
-                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
-                        else
-                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
-
-                        break;
-                    default:
-                        sFieldType = "字符串型";
-
-                        if (sOperator.Trim() == "like")
-                            strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
-                        else
-                            strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
-
-                        break;
-                }
-                break;
-            }
-
+            strCondition = "";
         }
-        string sql = sql_js;
-        sql = "select * from (" + sql + ")#temp where " + strCondition;
-        dt_js = dc.GetDataTable(sql);
+        else
+        {
+            sSQL = "select * from (" + sql_js + ")#temp where 1=0";
+            objDt = dc.GetDataTable(sSQL);
+            for (int i = 0; i < objDt.Columns.Count; i++)
+            {
+                sTempColumnName = objDt.Columns[i].ColumnName.ToString().Trim();
+                if (sTempColumnName == sColumName)
+                {
+                    sFieldType = objDt.Columns[i].DataType.Name.ToString().Trim();
+                    switch (sFieldType.ToUpper().Trim())
+                    {
+                        case "STRING":
+                            sFieldType = "字符串型";
+
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                            break;
+                        case "DATETIME":
+                            sFieldType = "日期型";
+
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                            break;
+                        case "INT32":
+                            sFieldType = "整型";
+
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                            break;
+                        case "DECIMAL":
+                            sFieldType = "货币型";
+
+                            if (sOperator.Trim() == "like")
+                            {
+                                Response.Write("<script>alert(\"字段：" + sFieldType + " 不允许用 包含 筛选\")</" + "script>");
+                                return;
+                            }
+                            else
+                                strCondition = sColumName + " " + sOperator + sKeyWord;
+
+                            break;
+                        case "DOUBLE":
+                            sFieldType = "浮点型";
+
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                            break;
+                        default:
+                            sFieldType = "字符串型";
+
+                            if (sOperator.Trim() == "like")
+                                strCondition = sColumName + " " + sOperator + " '%" + sKeyWord + "%'";
+                            else
+                                strCondition = sColumName + " " + sOperator + " '" + sKeyWord + "'";
+
+                            break;
+                    }
+                    break;
+                }
+            }
+        }
+        if (strCondition!="")
+        {
+            string sql = sql_js;
+            sql = "select * from (" + sql + ")#temp where " + strCondition;
+            dt_js = dc.GetDataTable(sql);
+        }
+        else
+        {
+            string sql = sql_js;
+            dt_js = dc.GetDataTable(sql);
+        }
+        
     }
     
     private void createlm(DataTable objDt)
@@ -350,7 +367,11 @@
                         break;
                 }
                 
-            }            
+            }
+            objItem = null;
+            objItem = new ListItem();
+            objItem.Text = "全部";
+            lieming.Items.Add(objItem);          
         }
     }
     //*****************************小张新增检索功能结束*********************************
@@ -412,6 +433,7 @@
            %>
             <%if (gys_yh_id1 == "" && cgs_yh_id1 != "") { 
               %>
+               <div class="anniu"><a  href="cgsgl_2.aspx" target="_self">采购商主页面</a></div>
               <div class="anniu"><a  href="QQ_out.aspx" target="_self">采购商登出</a></div>
             <%  }%>
               <%if (gys_yh_id1 == "" && cgs_yh_id1 == "") { 
