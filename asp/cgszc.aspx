@@ -7,18 +7,65 @@
 <head id="Head1" runat="server">
 <meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
     <title>会员注册</title>
+    <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
+    <link href="css/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
     <script src="js/SJLD.js" type="text/javascript"></script>
-    <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all%20of.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/ui/jquery.ui.core.js" type="text/javascript"></script>
+    <script src="Scripts/ui/jquery.ui.widget.js" type="text/javascript"></script>
+    <script src="Scripts/ui/jquery.ui.datepicker.js" type="text/javascript"></script>
+    <script type="text/javascript" src="Scripts/ui/i18n/jquery.ui.datepicker-zh-CN.js" charset="UTF-8"></script>
 
     <!--前台数据输入验证 开始-->
     <script type="text/javascript">
+        $(function () {
+            $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
+            $("#txt_zcrq").datepicker({
+                changeMonth: true,
+                changeYear: true
+            });
+            
+        });
+        function isQQ(str) {
+            var reg = /^\d{5,10}$/;
+            if (!reg.test(str.value) && document.getElementById("txt_gsQQ").value != "") {
+                alert("QQ号格式错误，请重新输入");
+                document.getElementById("txt_gsQQ").focus();
+            }
+            else if (document.getElementById("txt_gsQQ").value == "") {
+                alert("请重新输入！");
+                document.getElementById("txt_gsQQ").focus();
+            }
+        }
+
+
         function gsyxCheck(str) {
             var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
             if (!reg.test(str.value) && document.getElementById("txt_gsyx").value != "") {
                 alert("请输入有效的邮箱地址");
                 document.getElementById("txt_gsyx").focus();
+            }
+        }
+
+        //李宗鹏
+        function getfocus(obj) {
+            if (obj.value == "请填写工商局注册的全称（4-40位字符）") {
+                obj.value = "";
+                obj.style.color = "#000";
+            } else if (obj.value == "请填写公司地址") {
+                obj.value = "";
+                obj.style.color = "#000";
+            } else if (obj.value == "请填写区号+电话号码") {
+                document.getElementById("txt_gsdh").value = "";
+                obj.style.color = "#000";
+            } else if (obj.value == "请注意邮箱格式") {
+                obj.value = "";
+                obj.style.color = "#000";
+
+            }
+            else {
+                obj.style.color = "#000";
             }
         }
         function yxCheck(str) {
@@ -29,15 +76,25 @@
             }
         }
         function isPhone(str) {
-            var reg = /^0?1[358]\d{9}$/;
-            if (!reg.test(str.value) && document.getElementById("txt_sj").value != "") {
-                alert("手机号格式错误，请重新输入");
-                document.getElementById("txt_sj").focus();
+            var strs = /^1[34578][01234567890]\d{8}$/g;
+
+            if (!strs.test(document.getElementById("txt_sj").value)) {
+                if (document.getElementById("txt_sj").value != "") {
+                    alert("手机号格式错误，请重新输入");
+                    document.getElementById("txt_sj").focus();
+                } else if (document.getElementById("txt_sj").value == "") {
+                    alert("请输入手机号");
+                    document.getElementById("txt_sj").focus();
+                }
             }
         }
         function isTelePhone(str) {
             var reg = /^(0(10|2[1-3]|[3-9]\d{2}))?[1-9]\d{6,7}$/;
-            if (!reg.test(str.value) && document.getElementById("txt_gsdh").value != "") {
+            var regStr = /^0\d{2,4}-?\d{7,8}$/;
+            if (reg.test(str.value) || regStr.test(str.value)) {
+                //&& document.getElementById("txt_gsdh").value != ""
+
+            } else {
                 alert("电话格式错误，请重新输入");
                 document.getElementById("txt_gsdh").focus();
             }
@@ -46,13 +103,11 @@
             if ((str.value.length > 40 || str.value.length < 4) && document.getElementById("txt_gsmc").value != "") {
                 alert("公司名称长度只能在4-40位字符之间");
                 document.getElementById("txt_gsmc").focus();
-            }
-        }
-        function isQQ(str) {
-            var reg = /^\d{5,10}$/;
-            if (!reg.test(str.value) && document.getElementById("txt_gsQQ").value != "") {
-                alert("QQ号格式错误，请重新输入");
-                document.getElementById("txt_gsQQ").focus();
+            } else if (document.getElementById("txt_gsmc").value == "") {
+                alert("请输入公司名称！");
+                document.getElementById("txt_gsmc").value == "请填写工商局注册的全称（4-40位字符）";
+                document.getElementById("txt_gsmc").style.color="#999";
+                document.getElementById("txt_gsmc").focus();
             }
         }
         function gszyCheck(str) {
@@ -127,7 +182,7 @@
                 <td width="329">
                     <label for="textfield">
                     </label>
-                    <input name="txt_gsmc" type="text" class="hyzhc_shrk" id="txt_gsmc" runat="server" onblur="gsmcCheck(this);"/>
+                    <input name="txt_gsmc" type="text" class="hyzhc_shrk" id="txt_gsmc" runat="server" onblur="gsmcCheck(this);" onfocus="getfocus(this)" value="请填写工商局注册的全称（4-40位字符）"  style="color: #999"/>
                 </td>
                 <td width="50" align="right">
                 </td>
