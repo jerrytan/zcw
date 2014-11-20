@@ -25,8 +25,30 @@
                 changeMonth: true,
                 changeYear: true
             });
-            
+
         });
+
+        function zczj(str) {
+            var reg = /^\d{1,15}$/;
+            if (!reg.test(str.value) || document.getElementById("txt_zczj").value == "") {
+                //&& document.getElementById("txt_zczj").value != ""
+                alert("请输入数字！");
+                document.getElementById("txt_zczj").focus();
+            }
+        }
+        function lose(obj) {
+            ///^[+]{0,1}(/d){1,3}[ ]?([-]?((/d)|[ ]){1,12})+$/
+            var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+            if (document.getElementById("txt_yx").value == "") {
+                document.getElementById("txt_yx").value = "请注意邮箱格式";
+                document.getElementById("txt_yx").style.color = "#999";
+            }
+            else if (!reg.test(document.getElementById("txt_yx").value)) {
+                alert("邮箱格式不正确");
+                document.getElementById("txt_yx").focus();
+            }
+        }
+
         function isQQ(str) {
             var reg = /^\d{5,10}$/;
             if (!reg.test(str.value) && document.getElementById("txt_gsQQ").value != "") {
@@ -63,6 +85,10 @@
                 obj.value = "";
                 obj.style.color = "#000";
 
+            } else if (obj.value == "请输入手机号！") {
+                obj.value = "";
+                obj.style.color = "#000";
+
             }
             else {
                 obj.style.color = "#000";
@@ -94,7 +120,11 @@
             if (reg.test(str.value) || regStr.test(str.value)) {
                 //&& document.getElementById("txt_gsdh").value != ""
 
-            } else {
+            } else if (document.getElementById("txt_gsdh").value == "") {
+                alert("请输入电话号吗");
+                document.getElementById("txt_gsdh").focus();
+            } else 
+            {
                 alert("电话格式错误，请重新输入");
                 document.getElementById("txt_gsdh").focus();
             }
@@ -252,7 +282,7 @@
                     注册资金（万元）：
                 </td>
                 <td>
-                    <input name="txt_zczj" type="text" class="hyzhc_shrk" id="txt_zczj" runat="server"/>
+                    <input name="txt_zczj" type="text" onblur="zczj(this)" class="hyzhc_shrk" id="txt_zczj" runat="server"/>
                 </td>
             </tr>
             <tr>
@@ -310,6 +340,7 @@
                         <option value="个体">个体</option>
                         <option value="集体">集体</option>
                         <option value="三资">三资</option>
+                        <option value="外资">外资</option>
                         <option value="其他">其他</option>
                     </select>
                 </td>
@@ -486,7 +517,7 @@
                 <td height="20" colspan="6" align="right">
                 </td>
             </tr>
-            <tr>
+           <%-- <tr>
                 <td>
                     <span class="xinghao">*</span>
                 </td>
@@ -505,8 +536,8 @@
                 <td>
                      <input name="txt_lxdz" maxlength="20" type="text" class="hyzhc_shrk" id="txt_lxdz" runat="server"/>
                 </td>
-            </tr>
-            <tr>
+            </tr>--%>
+           <%-- <tr>
                 <td>
                     <span class="xinghao">*</span>
                 </td>
@@ -525,7 +556,44 @@
                 <td>
                     <input name="txt_yx" type="text" class="hyzhc_shrk" id="txt_yx" runat="server" onblur="yxCheck(this)"/>
                 </td>
-            </tr>
+            </tr>--%>
+            <td height="40" colspan="6">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="50">
+                                <span class="xinghao">*</span>
+                            </td>
+                            <td width="120" height="40">
+                                姓 名：
+                            </td>
+                            <td align="left">
+                                <input name="txt_xm" type="text" class="hyzhc_shrk_2" id="txt_xm" runat="server" />
+                            </td>
+                            <td width="80">
+                                <span class="xinghao">*</span>
+                            </td>
+                            <td width="60" height="40">
+                                手 机：
+                            </td>
+                            <td align="left">
+                                <input name="txt_sj" type="text" class="hyzhc_shrk_2" id="txt_sj" style="color: #999" onfocus="getfocus(this)"   onblur="isPhone(this)" runat="server" value="请输入手机号！" />
+                            </td>
+                            <td width="70">
+                                &nbsp;
+                            </td>
+                            <td width="60">
+                                邮 箱：
+                            </td>
+                            <td align="left">
+                                <input name="txt_yx" style="color: #999" type="text" class="hyzhc_shrk_3" id="txt_yx"
+                                    onblur="lose(this)" onfocus="getfocus(this)" runat="server" value="请注意邮箱格式" />
+                            </td>
+                            <td width="48">
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </table>
+                </td>
             <tr>
                 <td>
                     &nbsp;
@@ -548,6 +616,7 @@
                     &nbsp;
                 </td>
             </tr>
+
         </table>
     </div>
     </form>

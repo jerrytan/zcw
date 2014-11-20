@@ -66,11 +66,19 @@
                  }
              }
         }
+        function zczj(str) {
+            var reg = /^\d{1,15}$/;
+            if (!reg.test(str.value) || document.getElementById("txt_zczj").value == "") {
+                //&& document.getElementById("txt_zczj").value != ""
+                alert("请输入数字！");
+                document.getElementById("txt_zczj").focus();
+            } 
+        }
         function isTelePhone(str) {
             
             var reg = /^(0(10|2[1-3]|[3-9]\d{2}))?[1-9]\d{6,7}$/;
             var regStr = /^0\d{2,4}-?\d{7,8}$/;
-            if (reg.test(str.value) || regStr.test(str.value)) {
+            if (reg.test(str.value) || regStr.test(str.value) && document.getElementById("txt_gsdh").value != "") {
                 //&& document.getElementById("txt_gsdh").value != ""
                 
             } else {
@@ -303,7 +311,7 @@
                     注册资金（万元）：
                 </td>
                 <td>
-                    <input name="txt_zczj" type="text" class="hyzhc_shrk" id="txt_zczj" runat="server" />
+                    <input name="txt_zczj" type="text" onblur="zczj(this)" class="hyzhc_shrk" id="txt_zczj" runat="server" />
                 </td>
             </tr>
             <tr>
