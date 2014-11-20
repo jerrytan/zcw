@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 public partial class asp_cgszc : System.Web.UI.Page
-{
+{ 
     public string qymc = "";
     protected void Page_Load(object sender, EventArgs e)
     {

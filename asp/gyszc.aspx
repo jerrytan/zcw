@@ -65,7 +65,7 @@
                     document.getElementById("txt_sj").focus();
                  }
              }
-        }
+        } 
         function zczj(str) {
             var reg = /^\d{1,15}$/;
             if (!reg.test(str.value) || document.getElementById("txt_zczj").value == "") {

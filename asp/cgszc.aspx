@@ -283,7 +283,7 @@
                 </td>
                 <td>
                     <input name="txt_zczj" type="text" onblur="zczj(this)" class="hyzhc_shrk" id="txt_zczj" runat="server"/>
-                </td>
+                </td> 
             </tr>
             <tr>
                 <td height="40">
