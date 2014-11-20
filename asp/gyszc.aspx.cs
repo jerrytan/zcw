@@ -115,17 +115,35 @@ public partial class asp_gyszc : System.Web.UI.Page
         + "GETDATE(),'" + this.txt_gsQQ.Value + "')";
 
         string sqlAddGys_id = "  update 材料供应商信息表 set gys_id=myID where 单位QQ号='" + this.txt_gsQQ.Value + "';";
-
-        string sqlAll = sqlAddGys + sqlAddGys_id;       
-        if (dc.RunSqlTransaction(sqlAll))
+        if (dc.ExecuteSQL(sqlAddGys, true))
         {
-            Response.Write("<script>window.alert('注册信息已提交,请等待审核');</script>");
-            Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
+            if (dc.ExecuteSQL(sqlAddGys_id, true))
+            {
+                Response.Write("<script>window.alert('注册信息已提交,请等待审核');</script>");
+                Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
+            }
+            else
+            {
+                Response.Write("<script>window.alert('注册失败');</script>");
+                return;
+            }
         }
         else
         {
             Response.Write("<script>window.alert('注册失败');</script>");
             return;
         }
+        //20141120小张注释  执行事务报错
+        //string sqlAll = sqlAddGys + sqlAddGys_id;       
+        //if (dc.RunSqlTransaction(sqlAll))
+        //{
+        //    Response.Write("<script>window.alert('注册信息已提交,请等待审核');</script>");
+        //    Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
+        //}
+        //else
+        //{
+        //    Response.Write("<script>window.alert('注册失败');</script>");
+        //    return;
+        //}
     }
 }
