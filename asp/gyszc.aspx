@@ -53,7 +53,7 @@
 //            var _l = /^1[34578][01256]\d{8}$/g;
 
 //            var _y = /^(134[012345678]\d{7}|1[34578][0123456789]\d{8})$/g;
-            var strs = /^1[34578][01256]\d{8}$/g;
+            var strs = /^1[34578][01234567890]\d{8}$/g;
 
 //            if (!_y.test(document.getElementById("txt_sj").value) ||! _l.test(document.getElementById("txt_sj").value) || !_d.test(document.getElementById("txt_sj").value) ) {
             if (!strs.test(document.getElementById("txt_sj").value)) {
