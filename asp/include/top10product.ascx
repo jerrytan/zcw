@@ -29,13 +29,29 @@
 
             <% foreach(System.Data.DataRow row in dt_Top10cp.Rows){%>
             <%
-            string roStr=row["显示名"].ToString();
-            if (roStr.Length>12)
+            string strs=row["显示名"].ToString();
+             StringBuilder sb=new StringBuilder();
+            int temp = 0;
+            for (int i = 0; i < strs.Length; i++)
             {
-                roStr = roStr.Substring(0, 12)+"...";
+                if ((int)strs[i]>127 && temp < 22)
+                {
+                    sb.Append(strs[i]);
+                    temp = temp + 2;
+                }
+                else if ((int)strs[i]<127 && temp < 22)
+                {
+                    sb.Append(strs[i]);
+                    temp = temp + 1;
+                }
+                else
+                {
+                    break;
+                }
             }
+
              %>
-            <li><a href="clxx.aspx?cl_id=<%=row["cl_id"]%> " class="leftToptitle" title="<%=row["显示名"].ToString() %>"  ><%=roStr.ToString() %></a></li>
+            <li><a style="margin-left:5px; width:165px;" href="clxx.aspx?cl_id=<%=row["cl_id"]%> " class="leftToptitle" title="<%=row["显示名"].ToString() %>"  ><%=sb.ToString() %></a></li>
             <% } %>
         </ul>
     </div>

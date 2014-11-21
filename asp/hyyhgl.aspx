@@ -36,67 +36,67 @@
     <script src="Scripts/ui/jquery.ui.effect-explode.js" type="text/javascript"></script>
     <script type="text/javascript">
     $.fx.speeds._default = 1000;
-	$(function() {
-		$( "#AddDialog" ).dialog({
-			autoOpen: false,
-			show: "blind",
-			hide: "explode",
-            modal:true,
-            width:305,
-            buttons: {
-				"提交": function() {
-                    var scm;
-                    var fxm;
-                    var clm;
-                    if ($("#cbx1").attr("checked")=="checked") {
-                        scm=1;
-                    }
-                    else {
-                        scm=0;
-                        }
-                    if ($("#cbx2").attr("checked")=="checked") {
-                        fxm=1;
-                    }else{
-                        fxm=0;
-                    }
-                    if ($("#cbx3").attr("checked")=="checked") {
-                        clm=1;
-                    }else{
-                        clm=0;
-                    }
-                    
-                    var url={
-                        "action":"scsAdd",
-                        "qq":$("#newQQ").val(),
-                        "name":$("#newName").val(),
-                        "phone":$("#newPhone").val(),
-                        "email":$("#newEmail").val(),
-                        "scm":scm,
-                        "fxm":fxm,
-                        "clm":clm
+//	$(function() {
+//		$( "#AddDialog" ).dialog({
+//			autoOpen: false,
+//			show: "blind",
+//			hide: "explode",
+//            modal:true,
+//            width:305,
+//            buttons: {
+//				"提交": function() {
+//                    var scm;
+//                    var fxm;
+//                    var clm;
+//                    if ($("#cbx1").attr("checked")=="checked") {
+//                        scm=1;
+//                    }
+//                    else {
+//                        scm=0;
+//                        }
+//                    if ($("#cbx2").attr("checked")=="checked") {
+//                        fxm=1;
+//                    }else{
+//                        fxm=0;
+//                    }
+//                    if ($("#cbx3").attr("checked")=="checked") {
+//                        clm=1;
+//                    }else{
+//                        clm=0;
+//                    }
+//                    
+//                    var url={
+//                        "action":"scsAdd",
+//                        "qq":$("#newQQ").val(),
+//                        "name":$("#newName").val(),
+//                        "phone":$("#newPhone").val(),
+//                        "email":$("#newEmail").val(),
+//                        "scm":scm,
+//                        "fxm":fxm,
+//                        "clm":clm
 
-                    };
-                    $.get("Ashx/userManager.ashx",url,function(data){
-                        if (data=="true") {
-                            $( this ).dialog( "close" );
-                        }
-                        else {
-                            alert(data);
-                        }
-                    });
-					
-				},
-				"取消": function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});
+//                    };
+//                    $.get("Ashx/userManager.ashx",url,function(data){
+//                        if (data=="true") {
+//                            $( this ).dialog( "close" );
+//                        }
+//                        else {
+//                            alert(data);
+//                        }
+//                    });
+//					
+//				},
+//				"取消": function() {
+//					$( this ).dialog( "close" );
+//				}
+//			}
+//		});
 
-		$( "#btnDocNew" ).click(function() {
-			$( "#AddDialog" ).dialog( "open" );
-			return false;
-		});
-	});
+//		$( "#btnDocNew" ).click(function() {
+//			$( "#AddDialog" ).dialog( "open" );
+//			return false;
+//		});
+//	});
 
 
 

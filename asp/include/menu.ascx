@@ -135,7 +135,7 @@
 <div class="dh">
     <ul>
         <% foreach (var v in this.Items1){%>
-       <li style="height:40px; line-height:40px;"><a href="yjfl.aspx?name=<%=v.Sid.ToString() %>"><%=v.Name.Length>7 ? v.Name.Substring(0,7):v.Name%></a>
+       <li style="height:40px; line-height:40px;"><a style=" width:165px; margin-left:3px;" href="yjfl.aspx?name=<%=v.Sid.ToString() %>"><%=v.Name.Length>7 ? v.Name.Substring(0,7):v.Name%></a>
             <ul style="left: -60px; width: 152px;">  
                <%int count=0;%>         
                 <%  foreach (var vr in this.Items2){				
