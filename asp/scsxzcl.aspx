@@ -118,10 +118,10 @@
     function AddValue1()
     {
         var clbm = document.getElementById("clbm").value;
-        var clm = document.getElementById("clmc").value;
+       
         var ggjxh = document.getElementById("clmcjgg").value;
         document.getElementById("gg_xh").value = ggjxh;
-        document.getElementById("mcgz").value = clm;
+       
         if (ggjxh == "" || ggjxh == undefined)
         {
             alert("请重新选择规格");
