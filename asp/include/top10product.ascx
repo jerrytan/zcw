@@ -9,7 +9,7 @@
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
-
+<script src="../Scripts/jquery-1.4.1.min.js" type="text/javascript"></script>
 <script runat="server">
 
         protected DataTable dt_Top10cp = new DataTable();//十大产品表
@@ -28,10 +28,16 @@
         <ul>
 
             <% foreach(System.Data.DataRow row in dt_Top10cp.Rows){%>
-
-            <li><a href="clxx.aspx?cl_id=<%=row["cl_id"]%> "><%=row["显示名"].ToString() %></a></li>
-
+            <%
+            string roStr=row["显示名"].ToString();
+            if (roStr.Length>12)
+            {
+                roStr = roStr.Substring(0, 12)+"...";
+            }
+             %>
+            <li><a href="clxx.aspx?cl_id=<%=row["cl_id"]%> " class="leftToptitle" title="<%=row["显示名"].ToString() %>"  ><%=roStr.ToString() %></a></li>
             <% } %>
         </ul>
     </div>
+    
 </div>
