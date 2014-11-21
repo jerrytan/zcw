@@ -29,7 +29,7 @@ public partial class asp_static_Cgsgzcl : System.Web.UI.Page
                 sSQL = @"select top 10 收藏人QQ,收藏人,材料表.cl_id,显示名,生产厂商,品牌名称,地址,规格型号,采购商关注的材料表.收藏时间 from 采购商关注的材料表   
                     left join 材料表 on 采购商关注的材料表.cl_id=材料表.cl_id  
                     left join 材料供应商信息表 on 材料供应商信息表.gys_id=材料表.gys_id 
-                    where 采购商关注的材料表.dw_id='" + dwid + "' order by 采购商关注的材料表.收藏时间 desc";          //加载材料前10条信息
+                    where isnull(材料表.cl_id,'')<>'' and isnull(采购商关注的材料表.材料名称,'')<>'' and isnull(采购商关注的材料表.材料编码,'')<>'' and 采购商关注的材料表.dw_id='" + dwid + "' order by 采购商关注的材料表.收藏时间 desc";          //加载材料前10条信息
                 dt_topcl = objConn.GetDataTable(sSQL);
                 
             }
@@ -38,7 +38,7 @@ public partial class asp_static_Cgsgzcl : System.Web.UI.Page
                 sSQL = @"select  收藏人QQ,收藏人,材料表.cl_id,显示名,生产厂商,品牌名称,地址,规格型号,采购商关注的材料表.收藏时间 from 采购商关注的材料表   
                     left join 材料表 on 采购商关注的材料表.cl_id=材料表.cl_id  
                     left join 材料供应商信息表 on 材料供应商信息表.gys_id=材料表.gys_id 
-                    where 采购商关注的材料表.dw_id='" + dwid + "' and SUBSTRING(材料表.材料编码,1," + clbm.Length + ")= " + clbm + "  order by 采购商关注的材料表.收藏时间 desc";        //加载材料前10条信息
+                    where isnull(材料表.cl_id,'')<>'' and isnull(采购商关注的材料表.材料名称,'')<>'' and isnull(采购商关注的材料表.材料编码,'')<>'' and 采购商关注的材料表.dw_id='" + dwid + "' and SUBSTRING(材料表.材料编码,1," + clbm.Length + ")= " + clbm + "  order by 采购商关注的材料表.收藏时间 desc";        //加载材料前10条信息
                 dt_topcl = objConn.GetDataTable(sSQL);
                  
             }
@@ -86,14 +86,14 @@ public partial class asp_static_Cgsgzcl : System.Web.UI.Page
             sql_js = @"select top 10 收藏人QQ,收藏人,材料表.cl_id,显示名,生产厂商,品牌名称,地址,规格型号,采购商关注的材料表.收藏时间 from 采购商关注的材料表   
                     left join 材料表 on 采购商关注的材料表.cl_id=材料表.cl_id  
                     left join 材料供应商信息表 on 材料供应商信息表.gys_id=材料表.gys_id 
-                    where 采购商关注的材料表.dw_id='" + dwid + "'";          //加载材料前10条信息            
+                    where isnull(材料表.cl_id,'')<>'' and isnull(采购商关注的材料表.材料名称,'')<>'' and isnull(采购商关注的材料表.材料编码,'')<>'' and 采购商关注的材料表.dw_id='" + dwid + "'";          //加载材料前10条信息            
         }
         else
         {
             sql_js = @"select  收藏人QQ,收藏人,材料表.cl_id,显示名,生产厂商,品牌名称,地址,规格型号,采购商关注的材料表.收藏时间 from 采购商关注的材料表   
                     left join 材料表 on 采购商关注的材料表.cl_id=材料表.cl_id  
                     left join 材料供应商信息表 on 材料供应商信息表.gys_id=材料表.gys_id 
-                    where 采购商关注的材料表.dw_id='" + dwid + "' and SUBSTRING(材料表.材料编码,1," + clbm.Length + ")= " + clbm;        //加载材料前10条信息
+                    where isnull(材料表.cl_id,'')<>'' and isnull(采购商关注的材料表.材料名称,'')<>'' and isnull(采购商关注的材料表.材料编码,'')<>'' and 采购商关注的材料表.dw_id='" + dwid + "' and SUBSTRING(材料表.材料编码,1," + clbm.Length + ")= " + clbm;        //加载材料前10条信息
 
         }
         if (sColumName == "" && sOperator == "" && sKeyWord == "")

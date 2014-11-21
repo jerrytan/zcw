@@ -27,9 +27,11 @@
     <script src="js/cgsgzl.js" type="text/javascript"></script>
     <script type="text/javascript">
 
-            
-        function setTab(name, cursel, n) {
-            for (i = 1; i <= n; i++) {
+
+        function setTab(name, cursel, n)
+        {
+            for (i = 1; i <= n; i++)
+            {
                 var menu = document.getElementById(name + i);
                 var con = document.getElementById("con_" + name + "_" + i);
                 menu.className = i == cursel ? "hover" : "";
@@ -38,13 +40,24 @@
         }
 
 
-        function xscl(obj) {
-            var flbm = obj;
+        function xscl(obj, value)
+        {
+            var h = obj.parentNode.parentNode;
+
+            var a = h.getElementsByTagName("a");
+            for (var i = 0; i < a.length; i++)
+            {
+                a[i].style.color = "#707070";
+            }
+            obj.style.color = "#4876FF";
+            var flbm = value;
+
             document.getElementById("cgsglcl_frame").src = "Cgsgzcl.aspx?s_yh_id=<%=s_yh_id %>&clbm=" + flbm;
         }
-        function ppgys(obj) {
+        function ppgys(obj)
+        {
             var ppid = obj;
-            document.getElementById("cgsglgys_iframe").src = "Cgsgzgys.aspx?s_yh_id=<%=s_yh_id %>&ppid=" +ppid;
+            document.getElementById("cgsglgys_iframe").src = "Cgsgzgys.aspx?s_yh_id=<%=s_yh_id %>&ppid=" + ppid;
         }
 
     </script>
@@ -210,7 +223,7 @@
                 s_yh_id = Session["CGS_YH_ID"].ToString();
             }
             //20141030 小张修改  取单位收藏
-            string sql_dwid = "select dw_id from 采购商关注的材料表 where yh_id='" + s_yh_id + "'";
+            string sql_dwid = "select dw_id from 用户表 where yh_id='" + s_yh_id + "'";
             string dwid = objConn.DBLook(sql_dwid);
             //根据用户ID查出分类编码和显示名字
             sSQL = "select * from (select distinct a.分类编码,a.显示名字 from 材料分类表 as a ,(select distinct c.分类编码 as flbm " +
@@ -419,8 +432,7 @@
             margin-bottom: 10px;">
             <div class="dlqqz2">
                 <div id="menu">
-                    <% 
-                        firstlevel = 0;
+                    <% firstlevel = 0;
                         foreach (DataRow dr_dl in dt_cgsgzcl_dl.Rows)
                         { %>
                     <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)">
@@ -434,28 +446,14 @@
                                 if (dr_xl["分类编码"].ToString().Substring(0, 2) == dr_dl["分类编码"].ToString())
                                 { %>
                                                     <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )">
-                                                        <a href="javascript:void(0)" onclick="xscl('<%=dr_xl["分类编码"].ToString()%>')">
+                                                        <a href="javascript:void(0)" onclick="xscl(this,'<%=dr_xl["分类编码"].ToString()%>')">
                                                             <%=dr_xl["显示名字"].ToString()%></a></h2>
-                                                    <ul class="no">
-                                                        <% 
-                                                            foreach (DataRow dr_cl in dt_clb.Rows)
-                                                            {
-                                                                if (dr_cl["分类编码"].ToString().Substring(0, 4) == dr_xl["分类编码"].ToString())
-                                                                {%>
-                                                        <%-- <input type="checkbox" name="clid" value='<%=dr_cl["cl_id"].ToString()%>' />--%>
-                                                       <%-- <li><a href='clxx.aspx?cl_id=<%=dr_cl["cl_id"].ToString() %>'>
-                                                            <%=dr_cl["显示名"].ToString().Trim()%></a></li>--%>
-                                                        <%}
-                                                                        }
-                                                                        secondlevel++;%>
+                                                    <ul class="no">                                                       
                                                     </ul>
                                                     <%}
                                             } %>
                    </span>
-                                                <% 
-                            firstlevel++;
-
-                    }%>
+                  <% firstlevel++; }%>
                 </div>
                 <div id="cgs_lb1" class="cgs_lb"  style="width:795px; margin-left:182px;" > 
                 <iframe id="cgsglcl_frame" width="100%" height="370" src="Cgsgzcl.aspx?s_yh_id=<%=s_yh_id %>" frameborder="0"></iframe>
