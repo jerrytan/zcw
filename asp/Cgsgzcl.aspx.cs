@@ -17,7 +17,7 @@ public partial class asp_static_Cgsgzcl : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
             string s_yh_id = Request["s_yh_id"];            
-            string sql_dwid = "select dw_id from 采购商关注的材料表 where yh_id='"+s_yh_id+"'";
+            string sql_dwid = "select dw_id from 用户表 where yh_id='"+s_yh_id+"'";
               dwid = objConn.DBLook(sql_dwid);
             
             if (Request["clbm"]!=null&&Request["clbm"].ToString()!="")

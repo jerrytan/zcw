@@ -15,7 +15,7 @@ public partial class asp_gysdl_2 : System.Web.UI.Page
     public string dj = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-    }  
+    }
     protected void Button1_Click(object sender, EventArgs e)
     {
         DataConn objcon = new DataConn();
@@ -34,11 +34,11 @@ public partial class asp_gysdl_2 : System.Web.UI.Page
             Session["QQ号码"] = QQ;
             if (dj == "普通用户")
             {
-                Response.Write("<script> window.open('gyszym.aspx');window.opener.close();window.close();</" + "script>");
+                Response.Write("<script> window.opener.location.href='gyszym.aspx';window.close();</" + "script>");
             }
             else
             {
-                Response.Write("<script> window.open('hyyhgl.aspx?QQ=" + this.username.Value + "&dw_id=" + gys_id + "');window.opener.close();window.close();</" + "script>");
+                Response.Write("<script> window.opener.location.href='hyyhgl.aspx?QQ=" + this.username.Value + "&dw_id=" + gys_id + "';window.close();</" + "script>");
             }
         }
         else

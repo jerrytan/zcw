@@ -14,6 +14,27 @@
 <META name="GENERATOR" content="MSHTML 11.00.9600.17239">
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="http://malsup.github.io/jquery.form.js"></script>
+
+ <style type="text/css">      
+.black_overlay {
+ display: none;
+ position: absolute;
+ background-color:#f4f4f4;
+ cursor:wait;
+ top: 0%;
+ left: 0%;
+ width:100%;
+ height:100%;
+ z-index:1001;
+ -moz-opacity: 0.8;
+ opacity:0;
+ filter: alpha(opacity=0);
+}
+#loader_container { position:absolute; top:30%; width:100%;  z-index:1002;}
+#progress {height:5px; font-size:1px; width:1px; position:relative; top:1px; left:0px; background-color:#8894a8; z-index:1002}
+#loader_bg {background-color:#f4f4f4; position:relative; top:8px; left:8px; height:7px; width:260px; font-size:1px; z-index:1002}
+</style>
+
 <script type="text/javascript">
     //列表数
     function ShowMenu(obj, n)
@@ -49,7 +70,7 @@
         }
     }
  </script>
-
+ <%--属性属性值方法--%>
 <script type="text/javascript">
     var value;
     //点击选择属性值
@@ -81,10 +102,10 @@
             {
                 document.getElementById("clmc").value = tr[i].cells[2].innerHTML;
             }
-                var tds = tr[i].cells;
-                ggxh = ggxh + tr[i].cells[2].innerHTML;           
-                clbh += tr[i].cells[3].innerHTML.toString();
-            
+            var tds = tr[i].cells;
+            ggxh = ggxh + tr[i].cells[2].innerHTML;
+            clbh += tr[i].cells[3].innerHTML.toString();
+
         }
         document.getElementById("clbm").value = clbh;
         document.getElementById("clmcjgg").value = ggxh;
@@ -108,6 +129,7 @@
             return;
         }
 
+        //添加品牌按钮 SelectPP()方法  
         if (tr.length == 0)
         {
             html = "<tr>"
@@ -115,7 +137,7 @@
 		    + " <td height='24' align='center' bgcolor='#FFFFFF'>" + clbm + "</td>"
 		    + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
 		    + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
-		    + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"   //品牌
+		    + " <td align='center' bgcolor='#FFFFFF'><input type='text' name='pp' readonly='readonly' style='width:70%;' /><input type='button' style='width:30%; ' value='选择品牌' onclick='SelectPP(this)' /></td>"   //品牌
 		    + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"
             + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked' />"
@@ -148,8 +170,8 @@
 		                + " <td height='24' align='center' bgcolor='#FFFFFF'>" + clbm + "</td>"
 		                + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
 		                + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
-                        + " <td align='center' bgcolor='#FFFFFF'>&nbsp;</td>"   //品牌
-		                + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"		              
+                        + " <td align='center' bgcolor='#FFFFFF'><input type='text' name='pp' readonly='readonly' style='width:70%; ' /><input type='button' style='width:30%; ' value='选择品牌' onclick='SelectPP(this)' /></td>"   //品牌
+		                + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"
                         + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		                + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox' checked='checked'/>"
 		                + " <label for='checkbox11'></label></td>"
@@ -159,7 +181,9 @@
         $("#tjTable").append(html);
 
     }
+   
 </script>
+<%--列表数--%>
 <script type="text/javascript">
     //点击左侧列表数
     function lbs(obj, flbm, mc, dw)
@@ -344,8 +368,8 @@
 		            + " <td align='left' bgcolor='#FFFFFF'>" + trck.cells[2].innerHTML + "</td>"
 		            + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
 		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
-		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"     
-                    + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
+		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
+                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[6].innerHTML + "</td> "        //单价
 		            + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		            + " <label for='checkbox11'></label></td>"
                     + " </tr>";
@@ -400,7 +424,7 @@
                     var trck = chks[i].parentNode.parentNode;
                     if (value.indexOf(trck.cells[1].innerHTML) >= 0 && pp.indexOf(trck.cells[5].innerHTML) >= 0)
                     {
-                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！");                        
+                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！");
                     }
                     else
                     {
@@ -415,7 +439,7 @@
 		                    + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
 		                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
 		                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
-                            + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
+                            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[6].innerHTML + "</td> "        //单价
 		                    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		                    + " <label for='checkbox11'></label></td>"
                             + " </tr>";
@@ -438,15 +462,110 @@
                 }
             }
         }
-        if (Html!=""&&Html!=undefined)
+        if (Html != "" && Html != undefined)
         {
             $("#tjTable").append(Html);
         }
-       
+
+    }
+</script>
+<%--选择品牌--%>
+<script type="text/javascript">
+    //选择品牌 确定 返回值
+    function remove_loading(value)
+    {
+        var targelem = document.getElementById('loader_container');
+        targelem.style.display = 'none';
+        var fade = document.getElementById('fade');
+        fade.style.display = 'none';
+        if (value == "1")
+        {
+
+        }
+    }
+    function SelectPP()
+    {
+        //选择品牌按钮
+        var value = "PP";
+        //   document.getElementById()
+        var targelem = document.getElementById('loader_container');
+        targelem.style.visibility = 'visible';
+        targelem.style.display = 'block';
+        var fade = document.getElementById('fade');
+        fade.style.display = 'block';
+    }
+    function updateFL(id)
+    {
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function ()
+        {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+            {
+                if (xmlhttp.responseText != "" && xmlhttp.responseText != undefined)
+                {
+                    document.getElementById("pp").innerHTML = xmlhttp.responseText;
+                }
+            }
+        }
+        var url = "Selectpp.aspx?scsid=" + id;
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
     }
 </script>
 </HEAD> 
 <BODY> <%--onsubmit="return saveReport();"--%>
+<input type="hidden" runat="server" id="ID" />
+<div id="fade" class="black_overlay" runat="server"></div>
+    <div id="loader_container" style=" visibility:hidden;z-index:1002; ">
+        <table width="260px" border="0" cellpadding="0" cellspacing="0" style="border:1px solid #6e9dff; margin-left: 312px; top: -31px;" >
+                <tr>
+                    <td height="30" align="left" style="padding:10px 0 0 20px;" bgcolor="#cadbff">
+                         <select id="gys" name="gys" style="width: 200px" onchange="updateFL(this.options[this.options.selectedIndex].value)">
+                        <option value='-1'>请选择生产厂商</option>
+                        <%string sql = "select 供应商,gys_id from 材料供应商信息表 where ISNULL(审批结果,'')='通过' and 单位类型='生产商' and ISNULL(是否启用,'')='1'"; %>
+                        <%DataTable dt_gys = Conn.GetDataTable(sql); %>
+                        <%if (dt_gys != null && dt_gys.Rows.Count > 0) %>
+                        <%{ %>
+                            <%for (int i = 0; i < dt_gys.Rows.Count; i++) %>   
+                            <%{ %>
+                                 <option value='<%=dt_gys.Rows[i]["gys_id"] %>'><%=dt_gys.Rows[i]["供应商"]%></option>
+                            <%} %>
+                        <%} %>
+                           
+                        </select>
+                        </td>
+                </tr>
+
+
+                <tr>
+                    <td height="30" align="left"  bgcolor="#cadbff" style="padding-left:20px;">
+                      <div id="pp">
+                         <select   name="gys" style="width: 200px">
+                        <option value='-1'>请选择品牌</option>                         
+                        </select>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                  <td height="30" align="left" style="padding:0 0 10px 20px;" bgcolor="#cadbff">
+                  <input type="button" value="确定"  onclick="remove_loading()"/> 
+                  <input type="button" value="取消" onclick="remove_loading()" />
+                  </td>
+                  <td></td>
+                </tr>
+          </table>
+         </div>      
+
+
 <form runat="server" id="form1"  action="creathtml.aspx" method="post" onsubmit="return saveReport();">
 <script runat="server">
 public DataTable dt_sx = new DataTable();
@@ -485,11 +604,11 @@ protected void Page_Load(object sender, EventArgs e)
         b = true;
         this.DW_ID.Value = DWID;
     }
-    if (!b)
-    {
-        //地址为超链接
-        Response.Write("<script" + ">" + "alert('贵公司未在众材网(www.zhcnet.cn)成功注册，此功能禁用！');window.location.href='http://www.zhcnet.cn';" + "</" + "script>");
-    }
+    //if (!b)
+    //{
+    //    //地址为超链接
+    //    Response.Write("<script" + ">" + "alert('贵公司未在众材网(www.zhcnet.cn)成功注册，此功能禁用！');window.location.href='http://www.zhcnet.cn';" + "</" + "script>");
+    //}
 }   
 </script>
  <div class="lib_Menubox2">
@@ -497,8 +616,7 @@ protected void Page_Load(object sender, EventArgs e)
    <li id="Li1" onclick="FL()" style=" background-color:#7dbdf2;" ><a href="javascript:void(0)" >材料类别表</a></li>
    <li id="Li2" onclick="FL1()" style=" background-color:#fff;"  ><a href="javascript:void(0)">收藏材料类别表</a></li>
 </ul>
-</div> 
-
+</div>  
 <DIV class="box" id="cllbb"><!-- 头部结束-->     
     <DIV class="dlqqz5"  style="border:1px solid #4ea6ee; padding-top:10px; margin: -2px 0 0 0;">
     <DIV class="dlqqz2">
