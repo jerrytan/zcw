@@ -102,10 +102,10 @@
             {
                 document.getElementById("clmc").value = tr[i].cells[2].innerHTML;
             }
-            var tds = tr[i].cells;
-            ggxh = ggxh + tr[i].cells[2].innerHTML;
-            clbh += tr[i].cells[3].innerHTML.toString();
-
+                var tds = tr[i].cells;
+                ggxh = ggxh + tr[i].cells[2].innerHTML;           
+                clbh += tr[i].cells[3].innerHTML.toString();
+            
         }
         document.getElementById("clbm").value = clbh;
         document.getElementById("clmcjgg").value = ggxh;
@@ -137,7 +137,7 @@
 		    + " <td height='24' align='center' bgcolor='#FFFFFF'>" + clbm + "</td>"
 		    + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
 		    + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
-		    + " <td align='center' bgcolor='#FFFFFF'><input type='text' name='pp' readonly='readonly' style='width:70%;' /><input type='button' style='width:30%; ' value='选择品牌' onclick='SelectPP(this)' /></td>"   //品牌
+		    + " <td align='center' bgcolor='#FFFFFF'><input type='text'id='PP"+bh+"' name='pp' readonly='readonly' style='width:70%;' /><input type='button' style='width:30%; ' value='选择品牌' onclick='SelectPP("+bh+")' /></td>"   //品牌
 		    + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"
             + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked' />"
@@ -170,8 +170,8 @@
 		                + " <td height='24' align='center' bgcolor='#FFFFFF'>" + clbm + "</td>"
 		                + " <td align='left' bgcolor='#FFFFFF'>" + clm + "</td>"
 		                + " <td bgcolor='#FFFFFF'>" + ggjxh + "</td>"
-                        + " <td align='center' bgcolor='#FFFFFF'><input type='text' name='pp' readonly='readonly' style='width:70%; ' /><input type='button' style='width:30%; ' value='选择品牌' onclick='SelectPP(this)' /></td>"   //品牌
-		                + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"
+                        + " <td align='center' bgcolor='#FFFFFF'><input type='text' id='PP" + bh + "' name='pp' readonly='readonly' style='width:70%; ' /><input type='button' style='width:30%; ' value='选择品牌' onclick='SelectPP("+bh+")' /></td>"   //品牌
+		                + " <td align='center' bgcolor='#FFFFFF'>" + wd + "</td>"		              
                         + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
 		                + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox' checked='checked'/>"
 		                + " <label for='checkbox11'></label></td>"
@@ -424,7 +424,7 @@
                     var trck = chks[i].parentNode.parentNode;
                     if (value.indexOf(trck.cells[1].innerHTML) >= 0 && pp.indexOf(trck.cells[5].innerHTML) >= 0)
                     {
-                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！");
+                        alert("材料编码为：" + trck.cells[1].innerHTML + " 品牌名称为：" + trck.cells[5].innerHTML + " 的材料已存在！");                        
                     }
                     else
                     {
@@ -462,32 +462,36 @@
                 }
             }
         }
-        if (Html != "" && Html != undefined)
+        if (Html!=""&&Html!=undefined)
         {
             $("#tjTable").append(Html);
         }
-
+       
     }
 </script>
 <%--选择品牌--%>
 <script type="text/javascript">
-    //选择品牌 确定 返回值
+//选择品牌 确定 返回值
     function remove_loading(value)
     {
+      
         var targelem = document.getElementById('loader_container');
         targelem.style.display = 'none';
         var fade = document.getElementById('fade');
         fade.style.display = 'none';
         if (value == "1")
         {
-
-        }
+            var a = document.getElementById("pinp").value;
+            var id = document.getElementById("ID").value;
+            document.getElementById(id).value = a;
+        }        
     }
-    function SelectPP()
+    function SelectPP(id)
     {
-        //选择品牌按钮
-        var value = "PP";
-        //   document.getElementById()
+    //选择品牌按钮
+        var value = "PP" + id;
+ 
+        document.getElementById("ID").value=value
         var targelem = document.getElementById('loader_container');
         targelem.style.visibility = 'visible';
         targelem.style.display = 'block';
@@ -548,7 +552,7 @@
                 <tr>
                     <td height="30" align="left"  bgcolor="#cadbff" style="padding-left:20px;">
                       <div id="pp">
-                         <select   name="gys" style="width: 200px">
+                         <select  id="pinp"  name="pinp" style="width: 200px">
                         <option value='-1'>请选择品牌</option>                         
                         </select>
                         </div>
@@ -557,8 +561,8 @@
                 </tr>
                 <tr>
                   <td height="30" align="left" style="padding:0 0 10px 20px;" bgcolor="#cadbff">
-                  <input type="button" value="确定"  onclick="remove_loading()"/> 
-                  <input type="button" value="取消" onclick="remove_loading()" />
+                  <input type="button" value="确定"  onclick="remove_loading(1)"/> 
+                  <input type="button" value="取消" onclick="remove_loading(0)" />
                   </td>
                   <td></td>
                 </tr>
