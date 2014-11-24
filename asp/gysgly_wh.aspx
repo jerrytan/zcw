@@ -181,7 +181,7 @@
     <div class="yhb">
         <table width="998px" border="0" cellspacing="0" style="border: 1px solid #dddddd;font-size:12px;">
             <tr>
-                <td height="34" colspan="6" bgcolor="#f7f7f7">
+                <td height="34" width="115" colspan="6" bgcolor="#f7f7f7">
                     <strong class="left_jianju">公司信息</strong>
                 </td>
             </tr>
@@ -193,7 +193,7 @@
                 <td width="50" height="40">
                     <span class="xinghao">*</span>
                 </td>
-                <td width="120">
+                <td width="130">
                     公司名称：
                 </td>
                 <td width="329">

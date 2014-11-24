@@ -22,9 +22,12 @@
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" />
     <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
+    
 <script type="text/javascript" language="javascript">
 
-        function updateFL(id) {
+    function updateFL(id) {
+        if ($("#brandname").val() != null || $("#brandname").val() != "") {
             var xmlhttp;
             if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
@@ -32,32 +35,30 @@
             else {// code for IE6, IE5
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
-            xmlhttp.onreadystatechange = function ()
-            {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-                {
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     //document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
                     $("#ej").empty();
-                    document.getElementById("ej").innerHTML = xmlhttp.responseText;                
-                   // document.getElementById("ejflname").innerHTML = xmlhttp.responseText;
+                    document.getElementById("ej").innerHTML = xmlhttp.responseText;
+                    // document.getElementById("ejflname").innerHTML = xmlhttp.responseText;
 
                 }
             }
             xmlhttp.open("GET", "xzpp2.aspx?id=" + id, true);
             xmlhttp.send();
+        } else {
+            alert("请填写品牌名称！");
         }
 
-        function ISQY(obj)
-        {
-            if (this.checked)
-            {
+        function ISQY(obj) {
+            if (this.checked) {
                 document.getElementById("Isqy").value = "1";
             }
-            else
-            {
+            else {
                 document.getElementById("Isqy").value = "0";
             }
         }
+    }
 </script>
     
 
@@ -109,6 +110,7 @@
                         this.Checkbox1.Checked = false;
                         this.Isqy.Value = "0";
                     }
+                    this.addpp.InnerText="修改品牌信息";
                 }
             }
             
@@ -123,7 +125,7 @@
         <input type="hidden" runat="server" id="bj" />        
         <input type="hidden" runat="server" id="ppid" />        
             <div style=" text-align:center;">
-            <dd  style=" text-align:center; background-color:#cadbff; line-height:24px;"><strong>增加新品牌</strong></dd>
+            <dd  style=" text-align:center; background-color:#cadbff; line-height:24px;"><strong id="addpp" runat="server">增加新品牌</strong></dd>
              <table border="0" width="400px" style=" text-align:center;">
              <br />
                <br />

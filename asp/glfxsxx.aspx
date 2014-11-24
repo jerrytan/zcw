@@ -573,11 +573,11 @@
                         <div style="font-size:14px; font-weight:bold; line-height:36px; float:left; width:100%; background-color:#f7f7f7;">&nbsp;&nbsp;贵公司分销代理的品牌如下</div>
                                 <%foreach (System.Data.DataRow row in dt_ppxx.Rows)
                                   {%>
-                                   <div class="fgstp">
-                                        <img src="images/wwwq_03.jpg" />
+                                   <div class="fgstp" style=" padding-top:15px;">
+                                        <%--<img src="images/wwwq_03.jpg" />--%>
                                         <span class="fdlpp1">
-                                            <input name="brand" type="checkbox" value="<%=row["pp_id"].ToString() %>" class="fxsfxk" />
-                                            <%=row["品牌名称"].ToString() %>
+                                            <input style=" float:left; padding-left:10px; " name="brand" type="checkbox" value="<%=row["pp_id"].ToString() %>" class="fxsfxk" />
+                                            <lable style=" float:left; padding-left:10px; padding-top: 3px;"><%=row["品牌名称"].ToString() %></lable>
                                         </span>
                                     </div>
                                  <%} %>     

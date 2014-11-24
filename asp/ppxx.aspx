@@ -350,7 +350,31 @@
                         }
                         Response.Write("<img src="+imgsrc+ " width=150px height=150px />");
 				    %>
-                    <span class="ppcp1"><%=row["显示名"].ToString() %></span>
+                    
+                    <%
+                       string strs=row["显示名"].ToString();
+                         StringBuilder sb=new StringBuilder();
+                        int temp = 0;
+                        for (int i = 0; i < strs.Length; i++)
+                        {
+                            if ((int)strs[i]>127 && temp < 18)
+                            {
+                                sb.Append(strs[i]);
+                                temp = temp + 2;
+                            }
+                            else if ((int)strs[i]<127 && temp < 18)
+                            {
+                                sb.Append(strs[i]);
+                                temp = temp + 1;
+                            }
+                            else
+                            {
+                                sb.Append("...");
+                                break;                  
+                            }
+                        }
+                     %>
+                    <span class="ppcp1" style=" width:150px; height:24px;display:block;" title="<%=row["显示名"].ToString() %>" ><%=sb.ToString() %></span>
                     <span class="ppcp2">规格：<%=row["规格型号"].ToString() %></span>
                 </div>
             </a>

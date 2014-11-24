@@ -811,7 +811,7 @@
         <!-- footer 结束-->
     </form>
     <input type="hidden" id="txt_Selected" value="" runat="server" />
-    <div id="AddDialog" title="添加会员" style="width: 280px; height: 230px;">
+    <div id="AddDialog" title="添加会员" style="width: 280px; height: 230px; display: none;">
         <table border="0" cellpadding="0" cellspacing="0" style="width: 290px; height: 150px;
             font-size: 12; color: #707070">
             <tr>

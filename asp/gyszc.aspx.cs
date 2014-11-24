@@ -109,8 +109,8 @@ public partial class asp_gyszc : System.Web.UI.Page
         + " values ('" + this.txt_gsmc.Value + "','" + this.txt_gszy.Value + "','" + this.txt_gsdz.Value + "','" + this.txt_gsdh.Value + "','" + this.txt_gscz.Value + "',"
         + "'" + this.txt_xm.Value + "','" + this.txt_sj.Value + "',1,'" + this.dwlx.Value + "','" + this.txt_gsjc.Value + "','" + qymc + "',"
         + "'" + this.txt_fddbr.Value + "','" + this.txt_zczj.Value + "','" + this.txt_gsyb.Value + "','" + this.txt_yx.Value + "',"
-        + "'" + this.txt_khyh.Value + "','" + this.txt_yhzh.Value + "','" + this.txt_zhmc.Value + "','" + this.zzdj.Value + "','" + this.jyfw.Value + "','" + this.txt_bz.Value + "',"
-        + "GETDATE(),'" + this.txt_qyrs.Value + "','" + this.txt_zcze.Value + "',"
+        + "'" + this.txt_khyh.Value + "','" + this.txt_yhzh.Value + "','" + this.txt_zhmc.Value + "','" + this.zzdj.Value + "','" + this.jyfw.Value + "','" + this.txt_bz.Value + "','"
+        + this.txt_zcrq.Value+"','" + this.txt_qyrs.Value + "','" + this.txt_zcze.Value + "',"
         + "'" + this.zcjb.Value + "','" + this.qylb.Value + "','" + this.txt_yyzzzch.Value + "',"
         + "GETDATE(),'" + this.txt_gsQQ.Value + "')";
 

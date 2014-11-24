@@ -46,12 +46,13 @@
                 }
                 else
                 {
-                    break;
+                    sb.Append("...");
+                    break;                  
                 }
             }
 
              %>
-            <li><a style="margin-left:5px; width:165px;" href="clxx.aspx?cl_id=<%=row["cl_id"]%> " class="leftToptitle" title="<%=row["显示名"].ToString() %>"  ><%=sb.ToString() %></a></li>
+            <li style=" padding-left:7px;"><a style="margin-left:8px; width:165px;" href="clxx.aspx?cl_id=<%=row["cl_id"]%> " class="leftToptitle" title="<%=row["显示名"].ToString() %>"  ><%=sb.ToString() %></a></li>
             <% } %>
         </ul>
     </div>

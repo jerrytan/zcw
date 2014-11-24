@@ -53,9 +53,9 @@ public partial class asp_gysgly_wh : System.Web.UI.Page
             this.txt_yyzzzch.Value = dr["营业执照注册号"].ToString();
             this.txt_gsQQ.Value = dr["单位QQ号"].ToString();
             this.txt_fddbr.Value = dr["法定代表人"].ToString();
-            this.txt_zcrq.Value = dr["注册日期"].ToString();
+            this.txt_zcrq.Value = dr["注册日期"].ToString().Substring(0,10); ;
             this.txt_zczj.Value = dr["注册资金"].ToString();
-            this.txt_zcze.Value = dr["资产总额"].ToString();
+            this.txt_zcze.Value = dr["资产总额"].ToString() == "0" ? "" : dr["资产总额"].ToString();
             this.zcjb.Value = dr["注册级别"].ToString();
             this.zzdj.Value = dr["资质等级"].ToString();
             this.qylb.Value = dr["企业类别"].ToString();
@@ -63,7 +63,7 @@ public partial class asp_gysgly_wh : System.Web.UI.Page
             this.dwlx.Value = dr["单位类型"].ToString();
             this.txt_zhmc.Value = dr["账户名称"].ToString();
             this.txt_yhzh.Value = dr["银行账户"].ToString();
-            this.txt_qyrs.Value = dr["企业员工人数"].ToString();
+            this.txt_qyrs.Value = dr["企业员工人数"].ToString() == "0" ? "" : dr["企业员工人数"].ToString();
             this.txt_gsdz.Value = dr["地址"].ToString();
             this.txt_gsdh.Value = dr["电话"].ToString();
             this.txt_gszy.Value = dr["主页"].ToString();

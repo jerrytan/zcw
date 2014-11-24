@@ -314,12 +314,12 @@
     <input type="hidden" id="ppmc" />
     <%if (gys_type == "生产商")
       {%>
-         <div class="fxsxx">
+         <div class="fxsxx"  style=" width:980px; height:300px;">
 <%--		   <span class="fxsxx1">
 		    </span>--%>
             <%--<span class="fxsxx1">贵公司的详细信息如下:</span>--%>
              <%--蒋，2014年8月25日，改div原有样式“fxsxx2”改为“gysgybtr”--%>
-            <div class="gysgybtr">
+            <div class="gysgybtr" style=" width:980px; height:300px;" >
             <table width="1000" border="0" align="left" cellspacing="0" style="border:1px solid #dddddd; font-size:12px; margin-top:10px;">
            <%if (sp_result == "待审核")
              { %>
@@ -431,9 +431,9 @@
     <% foreach (System.Data.DataRow row in dt_ppxx.Rows)
        {%>
         <div class="fgstp">
-    <img src="images/wwwq_03.jpg" />
-      <div class="fdlpp1"> 
-        <input type="checkbox" name="brand" id="checkbox2" value="<%=row["pp_id"].ToString() %>" onclick="ck(this,'<%=row["品牌名称"].ToString()%>','<%=row["pp_id"].ToString() %>')"  class="middle"/><%=row["品牌名称"].ToString()%></div>
+    <%--<img src="images/wwwq_03.jpg" />--%>
+      <div class="fdlpp1" style=" padding-top:10px;"> 
+        <input style=" float:left; margin-left:15px;" type="checkbox" name="brand" id="checkbox2" value="<%=row["pp_id"].ToString() %>" onclick="ck(this,'<%=row["品牌名称"].ToString()%>','<%=row["pp_id"].ToString() %>')"  class="middle"/><lable style=" float: left; margin-left:4px;"><%=row["品牌名称"].ToString()%></lable></div>
     </div>
   
   <%} %>

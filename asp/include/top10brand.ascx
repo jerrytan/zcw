@@ -29,7 +29,7 @@
         <ul>
 
             <% foreach(System.Data.DataRow row in dt_Top10ppmc.Rows){%>
-            <li><a href="ppxx.aspx?pp_id=<%=row["pp_id"]%>"><%=row["品牌名称"].ToString() %></a></li>
+            <li style=" padding-left:5px;"><a  style=" margin-left:8px;" href="ppxx.aspx?pp_id=<%=row["pp_id"]%>"><%=row["品牌名称"].ToString() %></a></li>
             <% } %>
         </ul>
     </div>
