@@ -204,10 +204,10 @@
             <tr>
               <th width="35" align="center" style="font-size:12px"><strong>选 择</strong></th>
               <th align="center" style="font-size:12px"><strong>分销商名称</strong></th>
-              <th width="60" align="center" style="font-size:12px"><strong>地 区</strong></th>
+              <th width="100" align="center" style="font-size:12px"><strong>地 区</strong></th>
               <th width="100" align="center" style="font-size:12px"><strong>公司注册日期</strong></th>
-              <th width="120" align="center" style="font-size:12px"><strong>注册资金（万元）</strong></th>
-              <th width="100" align="center" style="font-size:12px"><strong>公司电话</strong></th>
+              <th width="100" align="center" style="font-size:12px"><strong>注册资金（万元）</strong></th>
+              <th width="80" align="center" style="font-size:12px"><strong>公司电话</strong></th>
               <th width="45" align="center" style="font-size:12px"><strong>状态</strong></th>
               <th width="45" align="center" style="font-size:12px"><strong>操 作</strong></th>
             </tr>
@@ -218,12 +218,15 @@
                  foreach (System.Data.DataRow dr in dt_gxs.Rows)
                  {%>
             <tr>
+            <%
+                string zcrq = dr["注册日期"].ToString().Substring(0,10);
+                      %>
               <td align="center"><input type="checkbox" name="input"  value="<%=dr["gys_id"]%>" />
                 <label for="checkbox"></label></td>
               <td align="left" style="font-size:12px" class="style1"><%=dr["供应商"]%></td>
-              <td style="font-size:12px"><%=dr["地区名称"]%></td>
-              <td align="center" style="font-size:12px"><%=dr["注册日期"]%></td>
-              <td align="center" style="font-size:12px"><%=dr["注册资金"]%></td>
+              <td style="font-size:12px;"><%=dr["地区名称"]%></td>
+              <td align="center" style="font-size:12px"><%=zcrq%></td>
+              <td align="center" style="font-size:12px; "><%=dr["注册资金"]%></td>
               <td align="left" style="font-size:12px"><%=dr["电话"]%></td>
                <td align="left" style="font-size:12px"><%=Convert.ToString(dr["是否启用"])=="1"?"启用":"未启用"%></td>
               <td align="center"><input type="submit" name="input" value="查阅" class="filter" onclick="ChaYue('<%=dr["供应商"] %>')" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/></td>

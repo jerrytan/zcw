@@ -132,7 +132,7 @@
                 if(dt_gysxx!=null && dt_gysxx.Rows.Count>0)
                 {
                     //获得供应商的单位类型，生产商还是分销商
-                    gys_type = Convert.ToString(dt_gysxx.Rows[0]["单位类型"]);		
+                    gys_type = Convert.ToString(dt_gysxx.Rows[0]["单位类型"]);
                  }
 
                 //判断gys_type是否为空

@@ -18,7 +18,8 @@
         protected DataConn dc = new DataConn();        
         protected void Page_Load(object sender, EventArgs e)
         {		      
-            string str_Sql = "select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片' and 大小='大'";
+            <%--string str_Sql = "select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片' and 大小='大'";--%>
+            string str_Sql = "select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片'";
             DataSet ds_ClMedia = new DataSet();            
             dt_ClMedia = dc.GetDataTable(str_Sql); 
         }		
