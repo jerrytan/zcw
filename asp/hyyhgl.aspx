@@ -662,7 +662,7 @@
                             <%if (yh_lx == "生产商") %>
                             <%{ %>
                             <%powerGys = dt_js.Rows[i]["角色权限"] == "" ? "" : dt_js.Rows[i]["角色权限"].ToString(); %>
-                            <%if (!powerGys.Contains("管理生产商")) %>
+                            <%if (powerGys.Contains("管理生产商")) %>
                             <%{ %>
                             <input id="Checkbox1" type="checkbox" checked="checked" value="管理生产商" runat="server"
                                 name="cbx1" disabled="disabled" runat="server" />
@@ -674,7 +674,7 @@
                                 runat="server" />
                             管理生产商
                             <%} %>
-                            <%if (!powerGys.Contains("管理分销商")) %>
+                            <%if (powerGys.Contains("管理分销商")) %>
                             <%{ %>
                             <input id="Checkbox3" type="checkbox" checked="checked" value="管理分销商" runat="server"
                                 name="cbx2" disabled="disabled" runat="server" />
@@ -686,7 +686,7 @@
                                 runat="server" />
                             管理分销商
                             <%} %>
-                            <%if (!powerGys.Contains("管理材料信息")) %>
+                            <%if (powerGys.Contains("管理材料信息")) %>
                             <%{ %>
                             <input id="Checkbox5" type="checkbox" checked="checked" value="管理材料信息" name="cbx3"
                                 disabled="disabled" runat="server" />
@@ -701,7 +701,7 @@
                             <%} %>
                             <%else if (yh_lx == "分销商") %>
                             <%{ %>
-                            <%if (!powerGys.Contains("管理分销商")) %>
+                            <%if (powerGys.Contains("管理分销商")) %>
                             <%{ %>
                             <input id="Checkbox7" type="checkbox" checked="checked" value="管理分销商" runat="server"
                                 name="cbx2" disabled="disabled" runat="server" />
@@ -713,7 +713,7 @@
                                 runat="server" />
                             管理分销商
                             <%} %>
-                            <%if (!powerGys.Contains("管理材料信息")) %>
+                            <%if (powerGys.Contains("管理材料信息")) %>
                             <%{ %>
                             <input id="Checkbox9" type="checkbox" checked="checked" value="管理材料信息" runat="server"
                                 name="cbx3" disabled="disabled" runat="server" />
@@ -721,7 +721,7 @@
                             <%} %>
                             <%else %>
                             <%{ %>
-                            <inpu type="checkbox" value="管理材料信息" runat="server" name="cbx3" disabled="disabled"
+                            <input type="checkbox" value="管理材料信息" runat="server" name="cbx3" disabled="disabled"
                                 runat="server" />
                             管理材料信息
                             <%} %>

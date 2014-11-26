@@ -12,6 +12,8 @@
 <title>众材网-----面向建筑装饰企业的公装材料库和供应商信息库</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
     <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
+    <link href="css/imgStyle.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/imgStyle.js" type="text/javascript"></script>
 </head>
 
 <body>
