@@ -493,9 +493,9 @@
                     公司主页：
                 </td>
                 <td>
-                    
-                </td><input name="txt_gszy" maxlength="80" type="text" class="hyzhc_shrk" id="txt_gszy"
+                    <input name="txt_gszy" maxlength="80" type="text" class="hyzhc_shrk" id="txt_gszy"
                         runat="server" onblur="gszyCheck(this)" />
+                </td>
                 <td>
                     &nbsp;
                 </td>
@@ -629,13 +629,7 @@
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->
-    省
-<select id="province">
-</select>
-市
-<select id="city">
-    <option>北京市</option>
-</select>
+
 
 </body>
 </html>
