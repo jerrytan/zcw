@@ -17,15 +17,22 @@
 <script type="text/javascript" src="Scripts/ui/jquery.ui.widget.js"></script>
 <script type="text/javascript" src="Scripts/ui/jquery.ui.datepicker.js"></script>
 <script type="text/javascript" src="Scripts/ui/i18n/jquery.ui.datepicker-zh-CN.js" charset="UTF-8"></script>
-
+    <script src="Scripts/Address.js" type="text/javascript"></script>
     <!--前台数据输入验证 开始-->
     <script type="text/javascript">
+
         $(function () {
-        $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
-            $( "#txt_zcrq" ).datepicker({
-			    changeMonth: true,
-			    changeYear: true
-		    });
+            $("#s1").change(function () {
+                $("#region").val($("#s0").children('option:selected').val() + $("#s1").children('option:selected').val());
+            });
+
+
+            //日期
+            $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
+            $("#txt_zcrq").datepicker({
+                changeMonth: true,
+                changeYear: true
+            });
         });
 
 
@@ -97,9 +104,8 @@
                 alert("公司名称长度只能在4-40位字符之间");
                 document.getElementById("txt_gsmc").focus();
             }
-            if (document.getElementById("txt_gsmc").value == "") {
-                document.getElementById("txt_gsmc").value = "请填写工商局注册的全称（4-40位字符）";
-                document.getElementById("txt_gsmc").style.color = "#999";
+            else if (document.getElementById("txt_gsmc").value == "") {
+                document.getElementById("txt_gsmc").focus();
             }
         }
         function getiphone(obj)
@@ -155,11 +161,11 @@
             }
         }
         function gszyCheck(str) {
-            var reg = /^(http(s)?:\/\/)?(www\.)?[\w-]+\.\w{2,4}(\/)?$/;
-            if (!reg.test(str.value) && document.getElementById("txt_gszy").value != "") {
-                alert("公司网址格式不正确，请重新输入");
-                document.getElementById("txt_gszy").focus();
-            }
+//            var reg = /^(http(s)?:\/\/)?(www\.)?[\w-]+\.\w{2,4}(\/)?$/;
+//            if (!reg.test(str.value) && document.getElementById("txt_gszy").value != "") {
+//                alert("公司网址格式不正确，请重新输入");
+//                document.getElementById("txt_gszy").focus();
+//            }
         }
         function yhzhCheck(str) {
             var reg = /^(\d{15})|(\d{19})$/;
@@ -429,22 +435,21 @@
                 </td>
                 <td>
                     <span class="fl">
-                        <select id="s0" class="fu1" runat="server" value="<%=this.options[this.options.selectedIndex].text %>">
-                            <option></option>
+                        <select id="s0" style=" width:130px;" class="fu1" runat="server" value="">
                         </select>
-                        <select id="s1" class="fu1" runat="server" value="<%=this.options[this.options.selectedIndex].text %>">
-                            <option></option>
+                        <select id="s1" style=" width:130px;" class="fu1" runat="server" value="">
                         </select>
-                        <select id="s2" class="fu2" runat="server" value="<%=this.options[this.options.selectedIndex].text %>">
+                        <input type="hidden" id="region"  value="北京市" runat="server" />
+                        <%--<select id="s2" class="fu2" runat="server" value="<%=this.options[this.options.selectedIndex].text %>">
                             <option></option>
-                        </select>
-                        <script type="text/javascript">
+                        </select>--%>
+                       <%-- <script type="text/javascript">
                             var s = ["s0", "s1", "s2"];
                             var opt0 = ["-区域-", "-省(市)-", "-地级市、区-"];
                             for (i = 0; i < s.length - 1; i++)
                                 document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
                             change(0);
-                        </script>
+                        </script>--%>
                     </span>
                 </td>
                 <td>
@@ -488,9 +493,9 @@
                     公司主页：
                 </td>
                 <td>
-                    <input name="txt_gszy" maxlength="80" type="text" class="hyzhc_shrk" id="txt_gszy"
+                    
+                </td><input name="txt_gszy" maxlength="80" type="text" class="hyzhc_shrk" id="txt_gszy"
                         runat="server" onblur="gszyCheck(this)" />
-                </td>
                 <td>
                     &nbsp;
                 </td>
@@ -624,5 +629,13 @@
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->
+    省
+<select id="province">
+</select>
+市
+<select id="city">
+    <option>北京市</option>
+</select>
+
 </body>
 </html>

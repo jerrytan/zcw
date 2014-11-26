@@ -8,12 +8,17 @@
 <meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
     <title>公司信息维护</title>
     <script src="js/SJLD.js" type="text/javascript"></script>
-    <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all%20of.css" rel="stylesheet" type="text/css" />
-
+    <script src="Scripts/Address.js" type="text/javascript"></script>
     <!--前台数据输入验证 开始-->
     <script type="text/javascript">
+        $(function () {
+            $("#s1").change(function () {
+                $("#region").val($("#s0").children('option:selected').val() + $("#s1").children('option:selected').val());
+            });
+        });
         function gsyxCheck(str) {
             var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
             if (!reg.test(str.value) && document.getElementById("txt_gsyx").value != "") {
@@ -384,9 +389,12 @@
                 </td>
                 <td>
                     <span class="fl">
-                        <select id="s1"  class="fu1" runat="server"><option></option></select>
-                        <select id="s2" class="fu2" runat="server"><option></option></select>
-                        <select id="s3" class="fu3" runat="server"><option></option></select>
+                        <select id="s0" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>
+                        <select id="s1" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>
+                        <input type="hidden" id="region"  value="北京市" runat="server" />
+                        <%--<select id="s3" class="fu3" runat="server"><option></option></select>
                         <script type="text/javascript">
                             var s = ["s1", "s2", "s3"];
                             var opt0 = ["-省(市)-", "-地级市、区-", "-县级市、县、区-"];
@@ -397,7 +405,7 @@
 
                             }
 
-                        </script>
+                        </script>--%>
                     </span>
                 </td>
                 <td>

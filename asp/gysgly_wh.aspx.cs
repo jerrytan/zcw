@@ -92,8 +92,9 @@ public partial class asp_gysgly_wh : System.Web.UI.Page
     }
     protected void Submit1_Click(object sender, ImageClickEventArgs e)
     {
-        string gys_qqid = Session["GYS_QQ_ID"].ToString();//将Request.Cookies["GYS_QQ_ID"]更换成Session["GYS_QQ_ID"]
-        string sql_dwid = "select dw_id  from 用户表 where QQ_id='" + gys_qqid + "'";
+        //string gys_qqid = Session["GYS_QQ_ID"].ToString();//将Request.Cookies["GYS_QQ_ID"]更换成Session["GYS_QQ_ID"]
+        string gys_qqid = Session["GYS_YH_ID"].ToString();//GYS_YH_ID
+        string sql_dwid = "select dw_id  from 用户表 where yh_id='" + gys_qqid + "'";
         string dwid = dc.DBLook(sql_dwid);
         string sqlUpdate = @"update 材料供应商信息表 set 单位简称='" + this.txt_gsjc.Value + "',法定代表人='"
         + this.txt_fddbr.Value + "',资产总额='" + this.txt_zcze.Value + "',注册级别='" + this.zcjb.Value + "',资质等级='"
@@ -102,7 +103,7 @@ public partial class asp_gysgly_wh : System.Web.UI.Page
         + this.txt_gszy.Value + "',邮编='" + this.txt_gsyb.Value + "',传真='" + this.txt_gscz.Value + "',备注='"
         + this.txt_bz.Value + "',电子邮箱='" + this.txt_yx.Value + "' where gys_id='" + dwid + "'";
 
-        if (dc.RunSqlTransaction(sqlUpdate))
+        if (MySqlHelper.ExecuteNonQuery(sqlUpdate, null) > 0)
         {
             Response.Write("<script>window.alert('修改成功');</script>");
         }

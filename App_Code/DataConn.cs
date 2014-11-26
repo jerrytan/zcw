@@ -14,6 +14,7 @@ using System.Data.SqlClient;
 /// </summary>
 public class DataConn : System.Web.UI.Page
 {
+    public static string conn;
     private SqlConnection objConn = null;
     private string ABC = "admin";
     private string strConnString = "";
@@ -28,6 +29,7 @@ public class DataConn : System.Web.UI.Page
         string DBName="";
         DBName=GetWebConfigValue("DBName");
         objConn = new SqlConnection("data source=" + strServerName + ";initial catalog="+DBName+";persist security info=False;user id=mywtadmin;pwd="+ABC);
+        conn = "data source=" + strServerName + ";initial catalog=" + DBName + ";persist security info=False;user id=mywtadmin;pwd=" + ABC;
     }
 
   

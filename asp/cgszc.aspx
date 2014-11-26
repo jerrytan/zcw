@@ -16,7 +16,7 @@
     <script src="Scripts/ui/jquery.ui.widget.js" type="text/javascript"></script>
     <script src="Scripts/ui/jquery.ui.datepicker.js" type="text/javascript"></script>
     <script type="text/javascript" src="Scripts/ui/i18n/jquery.ui.datepicker-zh-CN.js" charset="UTF-8"></script>
-
+    <script src="Scripts/Address.js" type="text/javascript"></script>
     <!--前台数据输入验证 开始-->
     <script type="text/javascript">
         $(function () {
@@ -25,7 +25,9 @@
                 changeMonth: true,
                 changeYear: true
             });
-
+            $("#s1").change(function () {
+                $("#region").val($("#s0").children('option:selected').val() + $("#s1").children('option:selected').val());
+            });
         });
 
         function zczj(str) {
@@ -396,9 +398,12 @@
                 </td>
                 <td>
                     <span class="fl">
-                        <select id="s1"  class="fu1" runat="server"><option></option></select>
-                        <select id="s2" class="fu2" runat="server"><option></option></select>
-                        <select id="s3" class="fu3" runat="server"><option></option></select>
+                        <select id="s0" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>
+                        <select id="s1" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>
+                        <input type="hidden" id="region"  value="北京市" runat="server" />
+                        <%--<select id="s3" class="fu3" runat="server"><option></option></select>
                         <script type="text/javascript">
                             var s = ["s1", "s2", "s3"];
                             var opt0 = ["-省(市)-", "-地级市、区-", "-县级市、县、区-"];
@@ -409,7 +414,7 @@
 
                             }
 
-                        </script>
+                        </script>--%>
                     </span>
                 </td>
                 <td>
@@ -576,7 +581,9 @@
                                 手 机：
                             </td>
                             <td align="left">
-                                <input name="txt_sj" type="text" class="hyzhc_shrk_2" id="txt_sj" style="color: #999" onfocus="getfocus(this)"   onblur="isPhone(this)" runat="server" value="请输入手机号！" />
+                                <input name="txt_sj" type="text" class="hyzhc_shrk_2" id="txt_sj" 
+                                    style="color: #999" onfocus="getfocus(this)"   onblur="isPhone(this)" 
+                                    runat="server" />
                             </td>
                             <td width="70">
                                 &nbsp;
@@ -586,7 +593,7 @@
                             </td>
                             <td align="left">
                                 <input name="txt_yx" style="color: #999" type="text" class="hyzhc_shrk_3" id="txt_yx"
-                                    onblur="lose(this)" onfocus="getfocus(this)" runat="server" value="请注意邮箱格式" />
+                                    onblur="lose(this)" onfocus="getfocus(this)" runat="server" value="" />
                             </td>
                             <td width="48">
                                 &nbsp;
@@ -616,7 +623,6 @@
                     &nbsp;
                 </td>
             </tr>
-
         </table>
     </div>
     </form>

@@ -63,9 +63,9 @@
         }
        
     }
-    function BJCL(cl_id,flbm,flmc) {
+    function BJCL(cl_id,flbm,flmc,pp_id) {
       var gy = document.getElementById("lblgys_id").value;
-      var pp_id = document.getElementById("ppid").value;
+      //      var pp_id = document.getElementById("ppid").value;
       if (pp_id==""||pp_id==undefined)
       {
           alert("请选择品牌！");
@@ -181,12 +181,12 @@
         string sSQL = "";
         if (pp_id!="")
         {
-            sSQL = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称 from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "' order by updatetime desc";
+            sSQL = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称,pp_id from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "' order by updatetime desc";
             dt_cl = Conn.GetDataTable(sSQL);  
         }
         else
         {
-            sSQL = "select top 10 cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称 from 材料表 where gys_id='" + gys_id + "' order by updatetime desc";
+            sSQL = "select top 10 cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称,pp_id from 材料表 where gys_id='" + gys_id + "' order by updatetime desc";
             dt_cl = Conn.GetDataTable(sSQL);  
         }
        
@@ -229,11 +229,11 @@
         string sql_js = "";
         if (pp_id != "")
         {
-            sql_js = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称 from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "'"; 
+            sql_js = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称,pp_id from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "'"; 
         }
         else
         {
-            sql_js = "select top 10 cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称 from 材料表 where gys_id='" + gys_id + "'";
+            sql_js = "select top 10 cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称,pp_id from 材料表 where gys_id='" + gys_id + "'";
         }
         if (sColumName == "全部")
         {
@@ -427,7 +427,7 @@
           <td style="font-size:12px"><%=R_cl["材料编码"].ToString()%></td>
           <td align="left" style="font-size:12px"><%=R_cl["生产厂商"].ToString()%></td>
           <td align="center">
-          <input type="Button" name="input" value="编辑" id="filter" onclick="BJCL('<%=R_cl["cl_id"].ToString() %>','<%=R_cl["分类编码"].ToString()%>','<%=R_cl["分类名称"].ToString() %>')" class="filter" filter="" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/>
+          <input type="Button" name="input" value="编辑" id="filter" onclick="BJCL('<%=R_cl["cl_id"].ToString() %>','<%=R_cl["分类编码"].ToString()%>','<%=R_cl["分类名称"].ToString() %>','<%=R_cl["pp_id"].ToString() %>')" class="filter" filter="" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;"/>
           </td>
           </tr>
           <%}%>

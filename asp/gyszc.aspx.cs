@@ -18,7 +18,7 @@ public partial class asp_gyszc : System.Web.UI.Page
         DataConn dc = new DataConn();
         string sqlIsExistQQ = "select * from 用户表 where QQ号码='"+this.txt_gsQQ.Value+"' ";
         string sqlIsExistGs = "select * from 材料供应商信息表 where 供应商='" + this.txt_gsmc.Value + "' ";
-        if (string.IsNullOrEmpty(this.txt_gsmc.Value))
+        if (string.IsNullOrEmpty(this.txt_gsmc.Value) && this.txt_gsmc.Value == "请填写工商局注册的全称（4-40位字符）")
         {
             Response.Write("<script>window.alert('请输入公司名称！');</script>");
             this.txt_gsmc.Focus();
@@ -71,13 +71,13 @@ public partial class asp_gyszc : System.Web.UI.Page
             this.dwlx.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.txt_gsdz.Value))
+        if (string.IsNullOrEmpty(this.txt_gsdz.Value) && this.txt_gsdz.Value == "请填写公司地址")
         {
             Response.Write("<script>window.alert('请输入公司地址');</script>");
             this.txt_gsdz.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.txt_gsdh.Value))
+        if (string.IsNullOrEmpty(this.txt_gsdh.Value) && this.txt_gsdh.Value == "请填写区号+电话号码")
         {
             Response.Write("<script>window.alert('请输入公司电话');</script>");
             this.txt_gsdh.Focus();
@@ -100,9 +100,9 @@ public partial class asp_gyszc : System.Web.UI.Page
             Response.Write("<script>window.alert('请输入联系人手机号');</script>");
             this.txt_sj.Focus();
             return;
-        }      
+        }
 
-        qymc=this.x.Value+this.sj.Value+this.xsj.Value;
+        qymc = this.region.Value; //this.x.Value+this.sj.Value+this.xsj.Value;
         sqlAddGys = "insert into 材料供应商信息表 (供应商,主页,地址,电话,传真,联系人,联系人手机,是否启用,单位类型,"
         + "单位简称,地区名称,法定代表人,注册资金,邮编,电子邮箱,开户银行,银行账户,账户名称,资质等级,经营范围,"
         + "备注,注册日期,企业员工人数,资产总额,注册级别,企业类别,营业执照注册号,updatetime,单位QQ号)"

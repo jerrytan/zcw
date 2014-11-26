@@ -12,19 +12,16 @@ public partial class asp_cgszc : System.Web.UI.Page
     {
 
     }
-
-
-
     protected void Submit1_Click(object sender, ImageClickEventArgs e)
     {
         DataConn dc = new DataConn();
         string sqlIsExistQQ = "select * from 用户表 where QQ号码='" + this.txt_gsQQ.Value + "' ";
         string sqlIsExistGs = "select * from 采购商基本信息 where 单位名称='" + this.txt_gsmc.Value.Trim() + "' ";
 
-        qymc = this.s1.Value + this.s2.Value + this.s3.Value;
+        qymc = this.region.Value;
 
 
-        if (string.IsNullOrEmpty(this.txt_gsmc.Value))
+        if (string.IsNullOrEmpty(this.txt_gsmc.Value)&&this.txt_gsmc.Value==""&&this.txt_gsmc.Value=="请填写工商局注册的全称（4-40位字符）")
         {
             Response.Write("<script>window.alert('请输入公司名称！');</script>");
             this.txt_gsmc.Focus();
@@ -38,7 +35,7 @@ public partial class asp_cgszc : System.Web.UI.Page
                 Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
             }
         }
-        if (string.IsNullOrEmpty(this.txt_gsQQ.Value))
+        if (string.IsNullOrEmpty(this.txt_gsQQ.Value) && this.txt_gsmc.Value == "请填写工商局注册的全称（4-40位字符）")
         {
             Response.Write("<script>alert('请输入公司QQ')</script>");
             this.txt_gsQQ.Focus();
@@ -48,60 +45,60 @@ public partial class asp_cgszc : System.Web.UI.Page
         {
             if (dc.GetRowCount(sqlIsExistQQ) > 0)
             {
-                Response.Write("<script>window.alert('该用户已存在');</script>");
+                Response.Write("<script>window.alert('QQ已存在');</script>");
                 this.txt_gsQQ.Focus();
                 return;
             }
         }
-        if (string.IsNullOrEmpty(this.txt_yyzzzch.Value))
+        if (string.IsNullOrEmpty(this.txt_yyzzzch.Value) && this.txt_yyzzzch.Value == "")
         {
             Response.Write("<script>window.alert('请输入营业执照注册号');</script>");
             this.txt_yyzzzch.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.txt_zcrq.Value))
+        if (string.IsNullOrEmpty(this.txt_zcrq.Value) && this.txt_zcrq.Value == "")
         {
             Response.Write("<script>window.alert('请输入公司注册日期');</script>");
             this.txt_zcrq.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.txt_zczj.Value))
+        if (string.IsNullOrEmpty(this.txt_zczj.Value) && this.txt_zczj.Value == "")
         {
             Response.Write("<script>window.alert('请输入注册资金');</script>");
             this.txt_zczj.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.dwlx.Value))
+        if (string.IsNullOrEmpty(this.dwlx.Value) && this.dwlx.Value == "")
         {
             Response.Write("<script>window.alert('请选择单位类型');</script>");
             this.dwlx.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.txt_gsdz.Value))
+        if (string.IsNullOrEmpty(this.txt_gsdz.Value) && this.txt_gsdz.Value == "")
         {
             Response.Write("<script>window.alert('请输入公司地址');</script>");
             this.txt_gsdz.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.txt_gsdh.Value))
+        if (string.IsNullOrEmpty(this.txt_gsdh.Value) && this.txt_gsdh.Value == "")
         {
             Response.Write("<script>window.alert('请输入公司电话');</script>");
             this.txt_gsdh.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.jyfw.Value))
+        if (string.IsNullOrEmpty(this.jyfw.Value) && this.jyfw.Value == "")
         {
             Response.Write("<script>window.alert('请输入经营范围');</script>");
             this.jyfw.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.txt_xm.Value))
+        if (string.IsNullOrEmpty(this.txt_xm.Value) && this.txt_xm.Value == "")
         {
             Response.Write("<script>window.alert('请输入联系人姓名');</script>");
             this.txt_xm.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.txt_sj.Value))
+        if (string.IsNullOrEmpty(this.txt_sj.Value) && this.txt_sj.Value == "")
         {
             Response.Write("<script>window.alert('请输入联系人手机号');</script>");
             this.txt_sj.Focus();
@@ -114,34 +111,26 @@ public partial class asp_cgszc : System.Web.UI.Page
         //    return;
         //}
 
+        
 
-        string sqlAddGys = "insert into 采购商基本信息 (单位名称,主页,地址,电话,传真,联系人,联系人手机,是否启用,单位类型,"
-        + "单位简称,地区名称,法定代表人,注册资金,邮编,电子邮箱,开户银行,银行账户,账户名称,资质等级,经营范围,"
-        + "备注,注册日期,企业员工人数,资产总额,注册级别,企业类别,营业执照注册号,updatetime,单位QQ号)"
-        + " values ('" + this.txt_gsmc.Value.Trim() + "','" + this.txt_gszy.Value + "','" + this.txt_gsdz.Value + "','" + this.txt_gsdh.Value + "','" + this.txt_gscz.Value + "',"
-        + "'" + this.txt_xm.Value + "','" + this.txt_sj.Value + "',1,'" + this.dwlx.Value + "','" + this.txt_gsjc.Value + "','" + qymc + "',"
-        + "'" + this.txt_fddbr.Value + "','" + this.txt_zczj.Value + "','"  + this.txt_gsyb.Value + "','" + this.txt_yx.Value + "',"
-        + "'" + this.txt_khyh.Value + "','" + this.txt_yhzh.Value + "','" + this.txt_zhmc.Value + "','" + this.zzdj.Value + "','" + this.jyfw.Value + "','" + this.txt_bz.Value + "',"
-       + this.txt_bz.Value + "','"
-        + "','" + this.txt_qyrs.Value + "','" + this.txt_zcze.Value + "',"
-        + "'" + this.zcjb.Value + "','" + this.qylb.Value + "','" + this.txt_yyzzzch.Value + "',"
-        + "GETDATE(),'" + this.txt_gsQQ.Value + "')";
+            string sqlAddGys = "insert into 采购商基本信息 (单位名称,主页,地址,电话,传真,联系人,联系人手机,是否启用,单位类型,单位简称,地区名称,法定代表人,注册资金,邮编,电子邮箱,开户银行,银行账户,账户名称,资质等级,经营范围,备注,注册日期,企业员工人数,资产总额,注册级别,企业类别,营业执照注册号,updatetime,单位QQ号)"
+            + " values ('" + this.txt_gsmc.Value.Trim() + "','" + this.txt_gszy.Value + "','" + this.txt_gsdz.Value + "','" + this.txt_gsdh.Value + "','" + this.txt_gscz.Value + "','" + this.txt_xm.Value + "','" + this.txt_sj.Value + "',1,'" + this.dwlx.Value + "','" + this.txt_gsjc.Value + "','" + qymc + "','" + this.txt_fddbr.Value + "','" + this.txt_zczj.Value + "','" + this.txt_gsyb.Value + "','" + this.txt_yx.Value + "','" + this.txt_khyh.Value + "','" + this.txt_yhzh.Value + "','" + this.txt_zhmc.Value + "','" + this.zzdj.Value + "','" + this.jyfw.Value + "','" + this.txt_bz.Value + "','" + this.txt_bz.Value + "','" + this.txt_qyrs.Value + "','" + this.txt_zcze.Value + "','" + this.zcjb.Value + "','" + this.qylb.Value + "','" + this.txt_yyzzzch.Value + "', GETDATE(),'" + this.txt_gsQQ.Value + "')";
 
-        string sqlAddGys_id = "update 采购商基本信息 set cgs_id=myID where 单位QQ号='" + this.txt_gsQQ.Value + "';";
+            string sqlAddGys_id = "update 采购商基本信息 set cgs_id=myID where 单位QQ号='" + this.txt_gsQQ.Value + "';";
 
-        string sqlAll = sqlAddGys + sqlAddGys_id;
+            string sqlAll = sqlAddGys + sqlAddGys_id;
 
-
-        if (dc.RunSqlTransaction(sqlAll))
-        {
-            Response.Write("<script>window.alert('注册信息已提交,请等待审核');</script>");
-            Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
-        }
-        else
-        {
-            Response.Write("<script>window.alert('注册失败');</script>");
-            return;
-        }
+            bool a = dc.RunSqlTransaction(sqlAll);
+            if (a)
+            {
+                Response.Write("<script>alert('注册信息已提交,请等待审核');</script>");
+                Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
+            }
+            else
+            {
+                Response.Write("<script>alert('注册失败');</script>");
+                return;
+            } 
 
 
     }
