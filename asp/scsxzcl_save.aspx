@@ -93,6 +93,7 @@
                                  {
                                      string[] arrTotal = new string[3];
                                      arrTotal = arrPath[i].Split(',');
+                                     
                                      sSQL += "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,分类,存放地址,updatetime) values(" +
                                       clid + " ,'" + clbm + "','" + cpmc + "','是','" + arrTotal[0] + "','" + arrTotal[1] + "','" + arrTotal[2] + "',(select getdate()))  ";
                                  }

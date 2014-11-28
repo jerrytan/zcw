@@ -19,19 +19,23 @@ public partial class asp_gysdl_2 : System.Web.UI.Page
     protected void Button1_Click(object sender, EventArgs e)
     {
         DataConn objcon = new DataConn();
-        string SQL = "select dw_id,QQ号码,QQ_id,等级,yh_id from 用户表 where QQ号码='" + this.username.Value + "'";
+        string SQL = "select dw_id,QQ号码,QQ_id,等级,yh_id,类型 from 用户表 where QQ号码='" + this.username.Value + "'";
         DataTable dt_yh = new DataTable();
         dt_yh = objcon.GetDataTable(SQL);
         if (dt_yh != null && dt_yh.Rows.Count > 0)
         {
             string yh_id = "";
+            
             yh_id = dt_yh.Rows[0]["yh_id"].ToString();
             dj = dt_yh.Rows[0]["等级"].ToString();
             QQ = dt_yh.Rows[0]["QQ号码"].ToString();
             gys_id = dt_yh.Rows[0]["dw_id"].ToString();
+            string lx = dt_yh.Rows[0]["类型"].ToString();
+
             Session["GYS_QQ_ID"] = dt_yh.Rows[0]["QQ_id"].ToString();
             Session["GYS_YH_ID"] = yh_id;//蒋，11月07号添加
             Session["QQ号码"] = QQ;
+            Session["类型"] = lx;
             if (dj == "普通用户")
             {
                 Response.Write("<script> window.opener.location.href='gyszym.aspx';window.close();</" + "script>");

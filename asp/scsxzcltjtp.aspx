@@ -45,7 +45,7 @@
         }
 
         file1.PostedFile.SaveAs(FilePath + "\\" + name);
-
+        //外网图片路径
         if (System.IO.File.Exists(FilePath + "\\" + name))
         {
             string ip = "";
@@ -93,7 +93,12 @@
             {
                 s_fl = "产品图片";
             }
-            string dmt = s_mtlx + "," + s_fl + "," + FilePath;
+            //最后生成的图片路径
+            string imgPathB=Server.MapPath("..\\asp\\temp\\vedio\\"+name);//大图
+            string imgPathS = "temp/vedio/icon/" + name;//小图
+            //ImgHelper.resize_pic(imgPathB, 150, 150);//压缩小图
+            ImgHelper.ToSmile(imgPathB, 150, 150);
+            string dmt = s_mtlx + "," + s_fl + "," +imgPathS ;//FilePath;
             if (this.cldmtz.Value!="")
             {
                 this.cldmtz.Value = this.cldmtz.Value + "◥" + dmt;

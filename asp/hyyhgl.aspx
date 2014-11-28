@@ -175,9 +175,14 @@
             var email = Trim(tds[5].innerHTML);
             var scs;var fxs;var cl;
            <%if (Request.Cookies["GYS_QQ_ID"]!=null||Session["GYS_YH_ID"] != null){ %>//Request.Cookies["GYS_QQ_ID"]改成Session["GYS_QQ_ID"]
-                scs = tds[6].childNodes[1].checked;
-                fxs = tds[6].childNodes[3].checked;
-                cl = tds[6].childNodes[5].checked;
+                <%if (Session["类型"] == "生产商") { %>
+                    scs = tds[6].childNodes[0].checked;
+                    fxs = tds[6].childNodes[1].checked;
+                    cl = tds[6].childNodes[2].checked;
+               <% }else{ %>
+                        scs = tds[6].childNodes[0].checked;
+                    fxs = tds[6].childNodes[1].checked;
+                    <%} %>
            <%} else{%>
                 scs=false;fxs=false;cl=false;
            <%} %>
@@ -659,9 +664,9 @@
                         <%if (gys_yh_id1 != "" || GYS_QQ_ID != null)
                           { %>
                         <td>
+                            <%powerGys = dt_js.Rows[i]["角色权限"] == "" ? "" : dt_js.Rows[i]["角色权限"].ToString(); %>
                             <%if (yh_lx == "生产商") %>
                             <%{ %>
-                            <%powerGys = dt_js.Rows[i]["角色权限"] == "" ? "" : dt_js.Rows[i]["角色权限"].ToString(); %>
                             <%if (powerGys.Contains("管理生产商")) %>
                             <%{ %>
                             <input id="Checkbox1" type="checkbox" checked="checked" value="管理生产商" runat="server"
@@ -700,7 +705,8 @@
                             <%} %>
                             <%} %>
                             <%else if (yh_lx == "分销商") %>
-                            <%{ %>
+                            <%{
+                                  %>
                             <%if (powerGys.Contains("管理分销商")) %>
                             <%{ %>
                             <input id="Checkbox7" type="checkbox" checked="checked" value="管理分销商" runat="server"

@@ -18,7 +18,7 @@ public partial class asp_gyszc : System.Web.UI.Page
         DataConn dc = new DataConn();
         string sqlIsExistQQ = "select * from 用户表 where QQ号码='"+this.txt_gsQQ.Value+"' ";
         string sqlIsExistGs = "select * from 材料供应商信息表 where 供应商='" + this.txt_gsmc.Value + "' ";
-        if (string.IsNullOrEmpty(this.txt_gsmc.Value) && this.txt_gsmc.Value == "请填写工商局注册的全称（4-40位字符）")
+        if (string.IsNullOrEmpty(this.txt_gsmc.Value) || this.txt_gsmc.Value == "请填写工商局注册的全称（4-40位字符）")
         {
             Response.Write("<script>window.alert('请输入公司名称！');</script>");
             this.txt_gsmc.Focus();
@@ -32,7 +32,7 @@ public partial class asp_gyszc : System.Web.UI.Page
                 Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
             }
         }
-        if (string.IsNullOrEmpty(this.txt_gsQQ.Value))
+        if (string.IsNullOrEmpty(this.txt_gsQQ.Value) && this.txt_gsQQ.Value=="")
         {
             Response.Write("<script>alert('请输入公司QQ')</script>");
             this.txt_gsQQ.Focus();
@@ -47,7 +47,7 @@ public partial class asp_gyszc : System.Web.UI.Page
                 return;
             }
         }
-        if (string.IsNullOrEmpty(this.txt_yyzzzch.Value))
+        if (string.IsNullOrEmpty(this.txt_yyzzzch.Value) && this.txt_yyzzzch.Value=="")
         {
             Response.Write("<script>window.alert('请输入营业执照注册号');</script>");
             this.txt_yyzzzch.Focus();
@@ -71,13 +71,13 @@ public partial class asp_gyszc : System.Web.UI.Page
             this.dwlx.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.txt_gsdz.Value) && this.txt_gsdz.Value == "请填写公司地址")
+        if (string.IsNullOrEmpty(this.txt_gsdz.Value) || this.txt_gsdz.Value == "请填写公司地址")
         {
             Response.Write("<script>window.alert('请输入公司地址');</script>");
             this.txt_gsdz.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.txt_gsdh.Value) && this.txt_gsdh.Value == "请填写区号+电话号码")
+        if (string.IsNullOrEmpty(this.txt_gsdh.Value) || this.txt_gsdh.Value == "请填写区号+电话号码")
         {
             Response.Write("<script>window.alert('请输入公司电话');</script>");
             this.txt_gsdh.Focus();
