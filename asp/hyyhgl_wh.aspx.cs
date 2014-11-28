@@ -166,7 +166,7 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
         string power = "";
         if (lx == "生产商")
         {
-            if (this.cbx1.Checked == false || this.cbx3.Checked == false)
+            if (this.cbx1.Checked == false && this.cbx3.Checked == false && this.cbx2.Checked == false)
             {
                 Response.Write("<script>alert('请选择相应的角色权限！');</script>");
             }

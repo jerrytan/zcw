@@ -5,6 +5,12 @@ using System.Web;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Web.UI;
+using System.Drawing.Drawing2D;
+
+/// <summary>
+/// 改变图片像素和大小
+/// </summary>
 public class ImgHelper
 {
     /// <summary>
@@ -32,35 +38,8 @@ public class ImgHelper
         //string newPath = Directory.CreateDirectory(str+ "\\icon\\").FullName.ToString();
         bmcpy.Save(ss);
         return true;
-            //if (imgNames[imgNames.Length - 1] == "jpg")
-            //{
-            //    bmcpy.Save(newPath + imgName + ".jpg", ImageFormat.Jpeg);
-            //}
-            //else if (imgNames[imgNames.Length - 1] == "png")
-            //{
-            //    bmcpy.Save(newPath + imgName + ".png" , ImageFormat.Png);
-            //}
-            //else if (imgNames[imgNames.Length - 1] == "gif")
-            //{
-            //    bmcpy.Save(newPath + imgName + ".gif" , ImageFormat.Gif);
-            //}
-            //else if (imgNames[imgNames.Length - 1] == "bmp")
-            //{
-            //    bmcpy.Save(newPath + imgName + ".bmp", ImageFormat.Bmp);
-            //}
-            gh.Dispose();
-            bmcpy.Dispose();
-            img.Dispose();
-            return true;
-        
+
     }
-    /// <summary>
-    /// 把文件夹下的图片都压缩成小图到当前文件夹下的icon文件夹下
-    /// </summary>
-    /// <param name="szdir">文件夹路径</param>
-    /// <param name="width">压缩以后的图片宽度</param>
-    /// <param name="height">压缩以后的图片高度</param>
-    /// <returns></returns>
     public static bool resize_pic(string szdir, int width, int height)
     {
         int i = 0;
@@ -161,4 +140,154 @@ public class ImgHelper
         Console.WriteLine("{0} pictures have been resized", i);
     }
 
+
 }
+
+/// <summary>
+/// 图片压缩
+/// </summary>
+public class ImgThumbnail
+{
+    /// <summary>
+    /// 指定缩放类型
+    /// </summary>
+    public enum ImgThumbnailType
+    {
+        /// <summary>
+        /// 指定高宽缩放（可能变形）
+        /// </summary>
+        WH = 0,
+        /// <summary>
+        /// 指定宽，高按比例
+        /// </summary>
+        W = 1,
+        /// <summary>
+        /// 指定高，宽按比例
+        /// </summary>
+        H = 2,
+        /// <summary>
+        /// 指定高宽裁减（不变形）
+        /// </summary>
+        Cut = 3
+    }
+    #region Thumbnail
+    /// <summary>
+    /// 无损压缩图片
+    /// </summary>
+    /// <param name="sFile">原图片</param>
+    /// <param name="dFile">压缩后保存位置</param>
+    /// <param name="height">高度</param>
+    /// <param name="width"></param>
+    /// <param name="flag">压缩质量 1-100</param>
+    /// <param name="type">压缩缩放类型</param>
+    /// <returns></returns>
+    public bool Thumbnail(string sFile, string dFile, int height, int width, int flag, ImgThumbnailType type)
+    {
+        System.Drawing.Image iSource = System.Drawing.Image.FromFile(sFile);
+        ImageFormat tFormat = iSource.RawFormat;
+
+        //缩放后的宽度和高度
+        int towidth = width;
+        int toheight = height;
+        //
+        int x = 0;
+        int y = 0;
+        int ow = iSource.Width;
+        int oh = iSource.Height;
+
+        switch (type)
+        {
+            case ImgThumbnailType.WH://指定高宽缩放（可能变形）           
+                {
+                    break;
+                }
+            case ImgThumbnailType.W://指定宽，高按比例     
+                {
+                    toheight = iSource.Height * width / iSource.Width;
+                    break;
+                }
+            case ImgThumbnailType.H://指定高，宽按比例
+                {
+                    towidth = iSource.Width * height / iSource.Height;
+                    break;
+                }
+            case ImgThumbnailType.Cut://指定高宽裁减（不变形）     
+                {
+                    if ((double)iSource.Width / (double)iSource.Height > (double)towidth / (double)toheight)
+                    {
+                        oh = iSource.Height;
+                        ow = iSource.Height * towidth / toheight;
+                        y = 0;
+                        x = (iSource.Width - ow) / 2;
+                    }
+                    else
+                    {
+                        ow = iSource.Width;
+                        oh = iSource.Width * height / towidth;
+                        x = 0;
+                        y = (iSource.Height - oh) / 2;
+                    }
+                    break;
+                }
+            default:
+                break;
+        }
+
+        Bitmap ob = new Bitmap(towidth, toheight);
+        Graphics g = Graphics.FromImage(ob);
+        g.Clear(System.Drawing.Color.WhiteSmoke);
+        g.CompositingQuality = CompositingQuality.HighQuality;
+        g.SmoothingMode = SmoothingMode.HighQuality;
+        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+        g.DrawImage(iSource
+          , new Rectangle(x, y, towidth, toheight)
+          , new Rectangle(0, 0, iSource.Width, iSource.Height)
+          , GraphicsUnit.Pixel);
+        g.Dispose();
+        //以下代码为保存图片时，设置压缩质量
+        EncoderParameters ep = new EncoderParameters();
+        long[] qy = new long[1];
+        qy[0] = flag;//设置压缩的比例1-100
+        EncoderParameter eParam = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, qy);
+        ep.Param[0] = eParam;
+        try
+        {
+            ImageCodecInfo[] arrayICI = ImageCodecInfo.GetImageEncoders();
+            ImageCodecInfo jpegICIinfo = null;
+            for (int i = 0; i < arrayICI.Length; i++)
+            {
+                if (arrayICI[i].FormatDescription.Equals("JPEG"))
+                {
+                    jpegICIinfo = arrayICI[i];
+                    break;
+                }
+            }
+            if (jpegICIinfo != null)
+            {
+                ob.Save(dFile, jpegICIinfo, ep);//dFile是压缩后的新路径
+            }
+            else
+            {
+                ob.Save(dFile, tFormat);
+            }
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+        finally
+        {
+            iSource.Dispose();
+
+            ob.Dispose();
+
+        }
+    }
+    #endregion
+}
+
+
+
+
+

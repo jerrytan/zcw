@@ -76,7 +76,8 @@
             dt_ejflmc = dc_obj.GetDataTable(str_sqlclmz);
             //从品牌字典取值 是否判断品牌是否启用  目前是没有判断的    判断加 isnull(是否启用,'')='1'
             string str_sqlppmc = "select 品牌名称,pp_id from 品牌字典  where  pp_id in(select distinct pp_id from 材料表 where fl_id in(select fl_id from 材料分类表 where 分类编码='" + name + "')) ";
-            //string str_sqlppmc = "select 品牌名称,pp_id from 品牌字典  where  fl_id in(select fl_id from 材料分类表 where 分类编码='"+name+"') "; 
+            //string str_sqlppmc = "select 品牌名称,pp_id from 品牌字典  where  fl_id in(select fl_id from 材料分类表 where 分类编码='"+name+"') ";          
+            Response.Write(str_sqlppmc);
             dt_ejflpp = dc_obj.GetDataTable(str_sqlppmc);
            		
 			

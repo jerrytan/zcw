@@ -281,9 +281,12 @@
                 <div style="position: relative">
                             <%
 	                    if(dt_images.Rows[0]["存放地址"].ToString()!="")
-	                    {%>
+	                    {
+                            %>
                             <a>
-                                <img src="<%=dt_images.Rows[0]["存放地址"].ToString()%>" width="320" height="300" id="Img1"></a>
+                                <script type="text/javascript">
+                                </script>
+                                <img src="<%=dt_images.Rows[0]["存放地址"].ToString()%>" width="320" height="300" id="Img1" /></a>
                             <%}%>
                         </div>
                 <%} %>
@@ -533,7 +536,13 @@
         <%foreach(System.Data.DataRow row in dt_image.Rows){%>
         <div class="xx10">
             <div class="xx11">
-                <img alt="存放地址" src="<%=row["存放地址"].ToString()%>" />
+            <%
+                string paths=SubStrings.SubImgPath(row["存放地址"].ToString());
+                Response.Write(paths);
+                
+               %>
+                <%--<img alt="存放地址" src="<%=row["存放地址"].ToString()%>" />--%>
+                <img alt="存放地址" style=" width:1024px; height:auto;" src="<%=paths.ToString()%>" />
             </div>
         </div>
         <%}%>
