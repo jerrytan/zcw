@@ -20,9 +20,16 @@
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="js/lrtk.js"></script>
+    <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="js/SJLD.js"></script>
+    <script src="Scripts/Address.js" type="text/javascript"></script>
     <script type="text/javascript" language="javascript">
+        $(function () {
+            $("#s1").change(function () {
+                $("#region").val($("#s0").children('option:selected').val() + $("#s1").children('option:selected').val());
+            });
+         });
         var $j = jQuery.noConflict();
         $j(document).ready(function () {
             var url = "clxx_ajax.aspx";
@@ -38,7 +45,7 @@
                         var str_fxs = msg.split('@'); //进行分割
                         var fxs_list = str_fxs[0];  //供应商信息
                         var fxs_fy = str_fxs[1];    //分页信息
-                        $j("#clfxs_list").html(fxs_list); //替换筛选的内容
+                        //$j("#clfxs_list").html(fxs_list); //替换筛选的内容
                         $j("#fy_list").html(fxs_fy);      //替换筛选的内容
                     }
                 }, "text");
@@ -496,7 +503,12 @@
         <div class="xx8">
             <div class="xx9">
                 <div class="fxs1">
-                    <select id="s1" class="fu1">
+                    <select id="s0" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>省（市）
+                        <select id="s1" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>地级市
+                        <input type="hidden" id="region"  value="北京市" runat="server" />
+                    <%--<select id="s1" class="fu1">
                         <option></option>
                     </select>
                     省（市）
@@ -518,7 +530,7 @@
                             document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
                         change(0);
                     //--> 
-                    </script>
+                    </script>--%>
                 </div>
                 <!-- 存放传值数据-->
                 <input type="hidden" id="fxsid_msg" name="fxsid_msg" value="<%=cl_id %>" />
@@ -538,7 +550,7 @@
             <div class="xx11">
             <%
                 string paths=SubStrings.SubImgPath(row["存放地址"].ToString());
-                Response.Write(paths);
+                //Response.Write(paths);
                 
                %>
                 <%--<img alt="存放地址" src="<%=row["存放地址"].ToString()%>" />--%>

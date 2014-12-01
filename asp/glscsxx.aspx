@@ -413,9 +413,10 @@
     </tr>
     <tr>
       <td height="40">&nbsp;</td>
-      <td>经验范围：</td>
+      <td>经营范围：</td>
       <td colspan="4" height="90px"><label for="textfield21"></label>
-          <input name="Business_Scope" readonly style="height:70px; width:805px;" type="text" id="Text18" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" /></td>
+          <textarea name="Business_Scope" readonly style="height:70px; width:805px;"  id="Text18" class="fxsxx3" value="<%=dt_gysxx.Rows[0]["经营范围"] %>" ><%=dt_gysxx.Rows[0]["经营范围"] %></textarea>
+          
     </tr>
 
            <%} %>	

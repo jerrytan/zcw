@@ -101,7 +101,7 @@ runImg.prototype = {
             $this.index++;
             if ($this.index > $this.imglist.length - 1) { $this.index = 0 };
             $this.imgshow($this.index, $this.numlist, $this.imglist);
-        }, 2000)
+        }, 4000)
     },
     //处理鼠标事件
     mouseoverout: function (box, numlist) {

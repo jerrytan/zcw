@@ -515,7 +515,7 @@
             </tr>
             <tr>
                 <td height="34" colspan="6" bgcolor="#f7f7f7">
-                    <strong class="left_jianju">联系人信息</strong>
+                    <strong class="left_jianju">管理员信息</strong>
                 </td>
             </tr>
             <tr>

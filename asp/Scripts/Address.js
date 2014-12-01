@@ -8,7 +8,6 @@ $(function () {
             var html = "<option pro='" + json[i].省市地区编号 + "'>" + json[i].省市地区名称 + "</option>";
             $("#s0").prepend(html);
         }
-        //$("#region").val($("#s0").children('option:selected').val() + $("#s1").children(':last').val());
         $("#s0").children(":last").attr("selected", "selected");
     });
     $("#s0").change(function () {
@@ -24,10 +23,10 @@ $(function () {
                     $("#s1").prepend(html);
                 }
                 $("#region").val($("#s0").children('option:selected').val() + $("#s1").children(':last').val());
+                $("#s1").children(":last").attr("selected", "selected");
             } else {
                 $("#s1").children().remove();
                 $("#region").val($("#s0").children('option:selected').val());
-                //                $("#s1").prepend("<option pro='10'>北京市</option>");
             }
         });
     });

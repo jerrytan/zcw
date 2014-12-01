@@ -284,6 +284,11 @@
             }
 
         }
+        /// <summary>
+        /// 删除选中会员
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "描述性词语", "getDelete();", true);
@@ -301,7 +306,6 @@
                 {
                     sqlDelete += "delete from 用户表 where QQ号码 = '" + arrSelected[i] + "'; ";
                 }
-
                 if (dc.RunSqlTransaction(sqlDelete))
                 {
                     Response.Write("<script>window.alert('删除成功')</" + "script>");

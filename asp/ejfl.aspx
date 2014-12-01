@@ -77,7 +77,7 @@
             //从品牌字典取值 是否判断品牌是否启用  目前是没有判断的    判断加 isnull(是否启用,'')='1'
             string str_sqlppmc = "select 品牌名称,pp_id from 品牌字典  where  pp_id in(select distinct pp_id from 材料表 where fl_id in(select fl_id from 材料分类表 where 分类编码='" + name + "')) ";
             //string str_sqlppmc = "select 品牌名称,pp_id from 品牌字典  where  fl_id in(select fl_id from 材料分类表 where 分类编码='"+name+"') ";          
-            Response.Write(str_sqlppmc);
+            //Response.Write(str_sqlppmc);
             dt_ejflpp = dc_obj.GetDataTable(str_sqlppmc);
            		
 			
@@ -379,14 +379,14 @@
                     <li val="1" class="dlspx3" ><span class="pl14px">人气<img src="images/qweqw_03.jpg" /></span></li>
                     <li val="2" class="dlspx3" ><span>最新<img src="images/qweqw_03.jpg" /></span></li>
                 </ul>              
-               <span class="dlspx3"><input type="checkbox" value="" id="ckAll" class="fx" />全选</span>
-                <span class="dlspx4"><a id="collect">请收藏，便于查找</a></span>
+               <%--<span class="dlspx3"><input type="checkbox" value="" id="ckAll" class="fx" />全选</span>
+                <span class="dlspx4"><a id="collect">请收藏，便于查找</a></span>--%>
             </div>
           <%if(dt_clxx.Rows.Count>0){ %>
             <% foreach(System.Data.DataRow row in dt_clxx.Rows){
                 String  mc = row["显示名"].ToString();
-               if (mc.Length > 6) {
-                    mc = mc.Substring(0,6)+"..";
+               if (mc.Length > 12) {
+                    mc = mc.Substring(0,12)+"..";
                } 
             
             %>
@@ -405,13 +405,13 @@
 				    %>
                     </a>
                     <div class="dlspxt1" >
-                        <span class="dlsl"><%=mc%></span> 
-                        <span class="dlspx3">
+                        <span class="dlsl" style=" width:156px; height:60px;"><%=mc%></span> 
+                        <%--<span class="dlspx3">
                             <%string parm="";
                               parm=row["材料编码"].ToString()+"|"+row["pp_id"].ToString();
                              %>
                             <input name="item" type="checkbox" value="<%=parm%>" class="ck" />收藏
-                        </span>
+                        </span>--%>
                         <span class="dlsgg" >规格：<%=row["规格型号"].ToString() %></span>
                     </div>              
             </div>

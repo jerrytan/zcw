@@ -117,7 +117,10 @@
             <div class="xwright1">
                 <ul>
                     <%foreach(System.Data.DataRow row in dt_Wzhcs.Rows){%>
-                    <li><a href="gysxx.aspx?gys_id=<%=row["gys_id"]%>"><%=row["厂商名称"].ToString()%></a></li>
+                    <li>
+                        <%--<a href="gysxx.aspx?gys_id=<%=row["gys_id"]%>"><%=row["厂商名称"].ToString()%></a>--%>
+                        <a href="#"><%=row["厂商名称"].ToString()%></a>
+                    </li>
                     <%}%>
                 </ul>
             </div>

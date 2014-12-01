@@ -119,18 +119,18 @@ public partial class asp_gyszc : System.Web.UI.Page
         {
             if (dc.ExecuteSQL(sqlAddGys_id, true))
             {
-                Response.Write("<script>window.alert('注册信息已提交,请等待审核');</script>");
+                Response.Write("<script>alert('注册信息已提交,请等待审核');</script>");
                 Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
             }
             else
             {
-                Response.Write("<script>window.alert('注册失败');</script>");
+                Response.Write("<script>alert('注册失败');</script>");
                 return;
             }
         }
         else
         {
-            Response.Write("<script>window.alert('注册失败');</script>");
+            Response.Write("<script>alert('注册失败');</script>");
             return;
         }
         //20141120小张注释  执行事务报错
