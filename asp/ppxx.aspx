@@ -14,14 +14,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
+<meta content="IE=8.000" http-equiv="X-UA-Compatible"/>
     <%--<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />--%>
     <title>品牌信息页</title>
+    <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <script src="js/SJLD.js" type="text/javascript"></script>
-    <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <script src="Scripts/Address.js" type="text/javascript"></script>
     <script type="text/javascript" language="javascript">
+        $(function () {
+            $("#s1").change(function () {
+                $("#region").val($("#s0").children('option:selected').val() + $("#s1").children('option:selected').val());
+            });
+        });
         var $j = jQuery.noConflict();
         $j(document).ready(function () {
             $j("#ppxfxs").show();
@@ -305,7 +311,14 @@
         <div class="gydl2" id="con_two_1">
             <div class="dlpp">该品牌分销商</div>
             <div class="fxs1" style="margin-left:10px;">
-                <select id="s1" class="fu1"><option></option></select> 省（市）
+            <select id="s0" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>
+                        <select id="s1" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>
+                        <input type="hidden" id="region"  value="北京市" runat="server" /><script src="Scripts/jquery-1.8.3.js"
+                            type="text/javascript"></script>
+                            <script src="Scripts/Address.js" type="text/javascript"></script>
+                <%--<select id="s1" class="fu1"><option></option></select> 省（市）
                 <select id="s2" class="fu2"><option></option></select> 地级市
                 <select id="s3" class="fu3"><option></option></select> 市、县级市、县
                 <script type="text/javascript"  language ="javascript" > 
@@ -318,7 +331,7 @@
                         document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
                     change(0);
                     //--> 
-                </script>
+                </script>--%>
                 <div id="ppfxs_list">
                     <%=content %>
                 </div>

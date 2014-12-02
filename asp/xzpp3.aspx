@@ -47,10 +47,19 @@
             {
                 if (bj == "1")
                 {
-                    string sql = "";
-                    sql = "update 品牌字典 set 品牌名称='" + brandname + "',是否启用='" + isqy + "',等级='" + grade + "',范围='" + scope + "' where pp_id='" + ppid + "'";
+                    string sSQL = "select count(*) from 品牌字典 where 品牌名称='" + brandname + "' and scs_id='" + gys_id + "'";
+                    string count = objConn.DBLook(sSQL);
+                    if (count=="0")
+                    {
+                        string sql = "";
+                        sql = "update 品牌字典 set 品牌名称='" + brandname + "',是否启用='" + isqy + "',等级='" + grade + "',范围='" + scope + "' where pp_id='" + ppid + "'";
 
-                    ret = objConn.ExecuteSQLForCount(sql, true);
+                        ret = objConn.ExecuteSQLForCount(sql, true);
+                    }
+                    else
+                    {
+                        ret = 2;
+                    }
                 }
                 else
                 {
@@ -80,7 +89,6 @@
                     else
                     {
                         ret = 2;
-                        //Response.Write("该品牌已经存在，请重新填写!");
                     }
                 }        
             }

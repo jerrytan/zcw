@@ -80,12 +80,16 @@
             if(this.user_email.Value=="")
             {
                sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "', 邮箱=''  where yh_id='" + s_yh_id + "'";
+               string sSQLs = "update 材料供应商信息表 set 联系人手机='" + this.user_phone.Value + "', 电子邮箱=''  where gys_id='" + Session["dwid"] + "'";
+                objConn.ExecuteSQLForCount(sSQLs, true);
                 objConn.ExecuteSQLForCount(sSQL, true);
                 Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx?QQ= "+ QQ +" &GYS_ID= + gys_id'</"+"script>"); 
             }
             else
             {
                 sSQL = "update 用户表 set 手机='" + this.user_phone.Value + "', 邮箱='"+ this.user_email.Value +"'  where yh_id='" + s_yh_id + "'";
+                 string sSQLs = "update 材料供应商信息表 set 联系人手机='" + this.user_phone.Value + "', 电子邮箱=''  where gys_id='" + Session["dwid"] + "'";
+                objConn.ExecuteSQLForCount(sSQLs, true);
                 objConn.ExecuteSQLForCount(sSQL, true);
                 Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx?QQ=" + QQ + "&GYS_ID="+s_yh_id+"'</" + "script>");
             }

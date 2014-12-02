@@ -14,11 +14,12 @@
 <%@ Import Namespace="System.Web" %>
 <%@ Import Namespace="System.IO" %>
 
-<%@ PAGE Language="C#"%>
+<%@ Page Language="C#" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
+    <meta content="IE=10.000" http-equiv="X-UA-Compatible" />
     <title>供应商收藏页面</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
@@ -41,27 +42,25 @@
             }
         }
         return str;
-    } 
+    }
     function Add(obj) {
         var tr = obj.parentNode.parentNode;
         var tds = tr.cells;
         var cl_mc = Trim(tds[1].innerHTML);
         document.getElementById("cl_mc").value = cl_mc;
     }
-    function lbs(obj,ppid)
-    {
+    function lbs(obj, ppid) {
         var h = obj.parentNode.parentNode;
         var a = h.getElementsByTagName("a");
-        for (var i = 0; i < a.length; i++)
-        {
+        for (var i = 0; i < a.length; i++) {
             a[i].style.color = "#707070";
         }
         obj.style.color = "#4876FF";
-    var g;
-    g = document.getElementById("lblgys_id").value;
-    var url = "gysglcl_2.aspx?gys_id=" + g + "&ppid=" + ppid;
-    document.getElementById("frame1").src = url;
-}
+        var g;
+        g = document.getElementById("lblgys_id").value;
+        var url = "gysglcl_2.aspx?gys_id=" + g + "&ppid=" + ppid;
+        document.getElementById("frame1").src = url;
+    }
 </script>
 <body>
     <!-- 头部开始-->
@@ -289,14 +288,44 @@
     {
         Response.Redirect("xzclym.aspx?gys_id=" + gys_id);
     }
-</script>
+    </script>
     <form id="form1" runat="server">
- <div class="dlqqz5"  style="border:1px solid #ddd; padding-top:10px; margin: 10px 0 0 0;">
-    <div class="dlqqz2">
-        <input type="hidden" id="lblgys_id" runat="server" />
-<div id="menu">
-<div class="dlqqz1">您的品牌列表</div>
- <% int firstlevel = 0; %>
+    <div class="dlqqz5" style="border: 1px solid #ddd; padding-top: 10px; margin: 10px 0 0 0;">
+        <div class="dlqqz2">
+            <input type="hidden" id="lblgys_id" runat="server" />
+            <div id="menu">
+                <div class="dlqqz1">
+                    您的品牌列表</div>
+                <%
+                    string sSQL="";
+                    string leixing=Session["类型"].ToString();
+                    if (leixing == "分销商")
+	                {
+                        sSQL = "select pp_id,品牌名称 from dbo.分销商和品牌对应关系表 where fxs_id='" + gys_id + "' and 是否启用='1'";
+                    }
+                    else if (leixing == "生产商")
+                    {
+                        sSQL = "select pp_id,品牌名称 from 品牌字典 where scs_id=" + gys_id;
+                    }
+                    else {
+                        sSQL = "fuck";
+                    }
+                    int firstlevel = 0; 
+                //sSQL="select pp_id,品牌名称 from 品牌字典 where scs_id="+gys_id; 
+                 DataTable dt_pp=new DataTable(); 
+                 dt_pp=objConn.GetDataTable(sSQL); 
+                 if(dt_pp!=null&&dt_pp.Rows.Count>0) 
+                { 
+                        foreach (DataRow drpp in dt_pp.Rows)
+                                {%>
+                                <h1>
+                                    <a href="javascript:void(0)" onclick="lbs(this,'<%=drpp["pp_id"]%>')">
+                                        <%=drpp["品牌名称"]%></a></h1>
+                                <span class="no"></span>
+                                <%  firstlevel++;
+                        } 
+                } %>
+                <%--<% int firstlevel = 0; %>
  <%string sSQL=""; %>
  <%sSQL="select pp_id,品牌名称 from 品牌字典 where scs_id="+gys_id; %>
  <%DataTable dt_pp=new DataTable(); %>
@@ -309,22 +338,22 @@
                                 <span class="no"></span>
                 <%  firstlevel++;%>
         <%  } %>
-<%} %>
-    <span class="no"></span>
-</div>
-
-<div id="cgs_lb" style="width:795px; margin-left:182px;">
-<div id="divtable" runat="server">
-<iframe id="frame1" src="gysglcl_2.aspx?gys_id=<%=gys_id %>" frameborder="0" marginheight="0"  style=" width:100%;  height:400px; padding:0px; margin:0px; border:0px; " > 
- </iframe> 
-</div>
-</div>
- </div>                
- </div>
- 
-   <div class="cgdlqq"></div>
-  <%-- 蒋，2014年8月18日注释该表单，在会员注册时审核过了，不需要再有表单显示信息--%>
-		   <%-- <div class="cgdlex">
+<%} %>--%>
+                <span class="no"></span>
+            </div>
+            <div id="cgs_lb" style="width: 795px; margin-left: 182px;">
+                <div id="divtable" runat="server">
+                    <iframe id="frame1" src="gysglcl_2.aspx?gys_id=<%=gys_id %>" frameborder="0" marginheight="0"
+                        style="width: 100%; height: 400px; padding: 0px; margin: 0px; border: 0px;">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cgdlqq">
+    </div>
+    <%-- 蒋，2014年8月18日注释该表单，在会员注册时审核过了，不需要再有表单显示信息--%>
+    <%-- <div class="cgdlex">
 			    <div class="cgdlex2">
 				    <span class="cgdlex3">您的信息如下，如需更改请单击更改按钮</span>
 				    <dl>						

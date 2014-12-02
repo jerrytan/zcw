@@ -14,11 +14,13 @@
 <%@ Page Language="C#" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head></head>
+<head>
+</head>
 <body>
  <script runat="server">
     public DataConn objConn=new DataConn(); 
     public int ret=0;
+    public string  aa;
     protected void Page_Load(object sender, EventArgs e)
     {
         string yh_id = "";
@@ -49,6 +51,7 @@
             ppid_str = ppid_str.Substring(0, ppid_str.Length - 1);
         }
         string[] ppid_list = new string[ppid_str.Length];
+        
         string ppid = "";
         if (lx == "1")  //lx=1为生产商  2分销商为
         {
@@ -63,13 +66,20 @@
         }
         else
         {
-            while (ppid.EndsWith(","))
+            string[] ppidStr = ppid_str.Split(',');
+            for (int i = 0; i < ppidStr.Length; i++)
             {
-                ppid = ppid.Substring(0, ppid.Length - 1);
+                sSQL = "update 分销商和品牌对应关系表 set 是否启用='0' where fxs_id='" + fxs_id + "' and pp_id ='"+ppidStr[i]+"'" ;
+                ret+=objConn.ExecuteSQLForCount(sSQL, true);
             }
+           
+            //while (ppid.EndsWith(","))
+            //{
+            //    ppid = ppid.Substring(0, ppid.Length - 1);
+            //}
 
-            sSQL = "delete 分销商和品牌对应关系表 where fxs_id='" + fxs_id + "' and pp_id in（" + ppid + ")";
-            ret = objConn.ExecuteSQLForCount(sSQL, true);
+            //sSQL = "delete 分销商和品牌对应关系表 where fxs_id='" + fxs_id + "' and pp_id in（" + ppid + ")";
+            
 
         }
     }

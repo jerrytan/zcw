@@ -407,8 +407,22 @@
             {
         %>
         <div class="dlex1">
+         
             您也可以把您收藏的材料数据和供应商数据导出为excel，供线下使用
             <asp:Button runat="server" ID="button2" Text="全部导出为EXCEL" OnClick="dumpFollowCLs" />
+        </div>
+        <div  class="anniu11">
+                尊敬的
+                <%
+                    DataConn dc = new DataConn();
+                    string sql = "select 姓名,yh_id,dw_id,类型 from 用户表 where yh_id='" + s_yh_id + "'";
+                    DataTable dt_Yh = dc.GetDataTable(sql);
+                foreach (System.Data.DataRow row in dt_Yh.Rows)
+                  {%>
+                <span>
+                    <%=row["姓名"].ToString() %></span>
+                <%}%>
+                ，欢迎来到众材网！
         </div>
         <%
             }	

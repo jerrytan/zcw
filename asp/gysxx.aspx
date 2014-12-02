@@ -27,6 +27,11 @@
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript" language="javascript">
+        $(function () {
+            $("#s1").change(function () {
+                $("#region").val($("#s0").children('option:selected').val() + $("#s1").children('option:selected').val());
+            });
+        });
         var $j = jQuery.noConflict();
         $j(document).ready(function () {
             var url = "gysxx_ajax.aspx";
@@ -454,7 +459,14 @@ else
          <div class="gydl2">
             <div class="dlpp">公司旗下分销商</div>
             <div class="fxs1" style="margin-left:20px;">
-                <select id="s1" class="fu1"><option></option></select> 省（市）
+            <select id="s0" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>省（市）
+                        <select id="s1" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>地级市
+                        <input type="hidden" id="region"  value="北京市" runat="server" />
+                        <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
+                            <script src="Scripts/Address.js" type="text/javascript"></script>
+                <%--<select id="s1" class="fu1"><option></option></select> 省（市）
                 <select id="s2" class="fu2"><option></option></select> 地级市
                 <select id="s3" class="fu3"><option></option></select> 市、县级市、县
                 <script type="text/javascript"  language ="javascript"> 
@@ -467,7 +479,7 @@ else
                         document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
                     change(0);
                     //--> 
-                </script> 
+                </script> --%>
             </div>
                <!-- 动态显示 开始-->
                 <!-- 存放传值数据-->

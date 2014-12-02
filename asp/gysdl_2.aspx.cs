@@ -36,6 +36,7 @@ public partial class asp_gysdl_2 : System.Web.UI.Page
             Session["GYS_YH_ID"] = yh_id;//蒋，11月07号添加
             Session["QQ号码"] = QQ;
             Session["类型"] = lx;
+            Session["dwid"] = gys_id;
             if (dj == "普通用户")
             {
                 Response.Write("<script> window.opener.location.href='gyszym.aspx';window.close();</" + "script>");
