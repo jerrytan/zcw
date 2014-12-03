@@ -95,7 +95,7 @@ public partial class asp_gyszc : System.Web.UI.Page
             this.txt_xm.Focus();
             return;
         }
-        if (string.IsNullOrEmpty(this.txt_sj.Value))
+        if (string.IsNullOrEmpty(this.txt_sj.Value) || this.txt_sj.Value == "请输入手机号！")
         {
             Response.Write("<script>window.alert('请输入联系人手机号');</script>");
             this.txt_sj.Focus();

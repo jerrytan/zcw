@@ -447,7 +447,7 @@
     <td><div id="scope2"  runat="server">  </div></td>    
   </tr>
 </table>
-  <div id="jiansuoxzfxs"> 
+  <div id="jiansuoxzfxs" style="text-align:center;"> 
        <asp:Label ID="shaixu" runat="server"><font style="FONT-SIZE: 9pt">&nbsp;&nbsp;检索条件：</font></asp:Label>
                     <asp:DropDownList ID="lieming" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
                         font-size: 9pt; border-left: #808080 1px solid; border-bottom: #808080 1px solid"

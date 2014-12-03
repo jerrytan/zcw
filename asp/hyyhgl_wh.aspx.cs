@@ -13,8 +13,8 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         State = Convert.ToInt32(Request.QueryString["state"]);
-     
-        lx = Request["lx"];       
+
+        lx = Request["lx"];
         if (State == 1)
         {
             if (!IsPostBack)
@@ -40,7 +40,8 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                     //this.Checkbox2.Checked = Convert.ToBoolean(Request.QueryString["cl"].Trim());
                     this.txt_QQ.Disabled = true;
                 }
-                else {
+                else
+                {
                     this.txt_QQ.Value = Request.QueryString["qq"].Trim();
                     this.txt_name.Value = Request.QueryString["name"].Trim();
                     this.txt_phone.Value = Request.QueryString["phone"].Trim();
@@ -75,7 +76,12 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
         //string cgs_QQ_id;
         string sql_Add;
         string power = "";
-        if(lx=="生产商")
+        if (txt_QQ.Value == "" || txt_QQ.Value == "")
+        {
+            Response.Write("<script>alert('请输入qq号码；')</script>");
+            return;
+        }
+        else if (lx == "生产商")
         {
             if (cbx1.Checked == false && cbx2.Checked == false && cbx3.Checked == false)
             {
@@ -104,9 +110,14 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                 power = power.TrimEnd(',');
             }
         }
-        else if(lx=="分销商")
+        else if (lx == "分销商")
         {
-            if (Checkbox1.Checked == false && Checkbox2.Checked == false)
+            if (txt_QQ.Value == "" || txt_QQ.Value == "")
+            {
+                Response.Write("<script>alert('请输入qq号码；')</script>");
+                return;
+            }
+            else if (Checkbox1.Checked == false && Checkbox2.Checked == false)
             {
                 Response.Write("<script>alert('请选择角色权限')</script>");
                 return;
@@ -129,32 +140,32 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                 power = power.TrimEnd(',');
             }
         }
-         
-            string sqlIsExistQQ = "select * from 用户表 where QQ号码='" + this.txt_QQ.Value + "' "; //查询QQ是否存在
-            string dw_id = Request.QueryString["gys_dw_id"];
-             
-                sql_Add = "insert into 用户表 (QQ号码,姓名,手机,邮箱,等级,角色权限,dw_id,类型,注册时间,updatetime) values ('" + this.txt_QQ.Value + "'"
-                + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','" + this.txt_Email.Value + "','普通用户','" + power + "',"
-                + "'"+dw_id+"','"+lx+"',getdate(),getdate())";
+
+        string sqlIsExistQQ = "select * from 用户表 where QQ号码='" + this.txt_QQ.Value + "' "; //查询QQ是否存在
+        string dw_id = Request.QueryString["gys_dw_id"];
+
+        sql_Add = "insert into 用户表 (QQ号码,姓名,手机,邮箱,等级,角色权限,dw_id,类型,注册时间,updatetime) values ('" + this.txt_QQ.Value + "'"
+        + ",'" + this.txt_name.Value + "','" + this.txt_phone.Value + "','" + this.txt_Email.Value + "','普通用户','" + power + "',"
+        + "'" + dw_id + "','" + lx + "',getdate(),getdate())";
 
 
-                  sql_Add += "update 用户表 set yh_id=myID where QQ号码='" + this.txt_QQ.Value + "';";
-             
+        sql_Add += "update 用户表 set yh_id=myID where QQ号码='" + this.txt_QQ.Value + "';";
 
-            if (dc.GetRowCount(sqlIsExistQQ) > 0)
-            {
-                Response.Write("<script>window.alert('该QQ已注册');</script>");
-                return;
-            }
-            if (dc.RunSqlTransaction(sql_Add))
-            {
-                Response.Write("<script>window.alert('添加成功');</script>");
-                Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
-            }
-            else
-            {
-                Response.Write("添加失败");
-            }
+
+        if (dc.GetRowCount(sqlIsExistQQ) > 0)
+        {
+            Response.Write("<script>alert('该QQ已注册');</script>");
+            return;
+        }
+        if (dc.RunSqlTransaction(sql_Add))
+        {
+            Response.Write("<script>alert('添加成功');</script>");
+            Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
+        }
+        else
+        {
+            Response.Write("添加失败");
+        }
     }
 
     /// <summary>
@@ -190,7 +201,7 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
 
                 if (dc.RunSqlTransaction(sql_Update))
                 {
-                    Response.Write("<script>window.alert('修改成功');</script>");
+                    Response.Write("<script>alert('修改成功');</script>");
                     Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
                 }
                 else
@@ -199,7 +210,7 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                 }
             }
         }
-        else if(lx=="分销商")
+        else if (lx == "分销商")
         {
             if (this.Checkbox1.Checked == false && this.Checkbox2.Checked == false)
             {
@@ -221,7 +232,7 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
 
                 if (dc.RunSqlTransaction(sql_Update))
                 {
-                    Response.Write("<script>window.alert('修改成功');</script>");
+                    Response.Write("<script>alert('修改成功');</script>");
                     Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
                 }
                 else
@@ -229,6 +240,40 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                     Response.Write("修改失败");
                 }
             }
-        } 
+        }
+
+
+
+
+
+
+
+
+
+        else if (lx == "采购商")
+        {
+            if (this.Checkbox1.Checked == true)
+            {
+                power += this.Checkbox1.Value + ",";
+            }
+            if (this.Checkbox2.Checked == true)
+            {
+                power += this.Checkbox2.Value + ",";
+            }
+            power = power.TrimEnd(',');
+            string sql_Update = "update 用户表 set 姓名='" + this.txt_name.Value + "',"
+   + "手机='" + this.txt_phone.Value + "',邮箱 = '" + this.txt_Email.Value + "' where QQ号码='" + this.txt_QQ.Value + "'";
+
+            if (dc.RunSqlTransaction(sql_Update))
+            {
+                Response.Write("<script>alert('修改成功');</script>");
+                Response.Write("<script>window.opener.refresh();window.focus();window.opener=null;window.close();</script>");
+            }
+            else
+            {
+                Response.Write("修改失败");
+            }
+        }
+
     }
 }

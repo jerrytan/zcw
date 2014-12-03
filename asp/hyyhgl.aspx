@@ -191,12 +191,15 @@
         }
 
          function Checked(obj) {
-            if (!obj.checked) {
-                        return;
-             }
-              var tr = obj.parentNode.parentNode;
-              var tds = tr.cells;
-              document.getElementById("txt_Selected").value += Trim(tds[2].innerHTML) + ",";
+            if (!obj.checked) { 
+                var tr = obj.parentNode.parentNode; 
+                var tds = tr.cells; 
+                document.getElementById("txt_Selected").value=document.getElementById("txt_Selected").value.replace(Trim(tds[2].innerHTML) + ",", "");
+             }else{
+                  var tr = obj.parentNode.parentNode;
+                  var tds = tr.cells;
+                  document.getElementById("txt_Selected").value += Trim(tds[2].innerHTML) + ",";
+              }
           }
 
 //          function getDelete() {
@@ -296,7 +299,7 @@
             string strSelected = this.txt_Selected.Value.ToString();
             if (string.IsNullOrEmpty(strSelected))
             {
-                Response.Write("<script>window.alert('请选中要删除的行')</" + "script>");
+                Response.Write("<script>alert('请选中要删除的行')</" + "script>");
             }
             else
             {
@@ -308,14 +311,14 @@
                 }
                 if (dc.RunSqlTransaction(sqlDelete))
                 {
-                    Response.Write("<script>window.alert('删除成功')</" + "script>");
+                    Response.Write("<script>alert('删除成功')</" + "script>");
                     this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "script", "<script>window.alert('删除成功')</" + "script>", true);
                     Response.Write("<script>window.location.href=document.URL;</" + "script>");  //刷新页面
 
                 }
                 else
                 {
-                    Response.Write("<script>window.alert('删除失败')</" + "script>");
+                    Response.Write("<script>alert('删除失败')</" + "script>");
                 }
 
             }
@@ -559,7 +562,7 @@
                 ，欢迎来到众材网！
                 <div style="float: right">
                     <span style="font-weight: bold;">
-                        <%if (((CGS_QQ_ID == null) || (cgs_yh_id1 == null)) && ((GYS_QQ_ID != null) || (gys_yh_id1 != null)))
+                        <%if (Session["CGS_QQ_ID"] == null && Session["CGS_YH_ID"]==null)
                           { %>
                         <a href="gysgly_wh.aspx">[修改完善公司信息]</a>
                         <%}

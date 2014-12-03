@@ -148,7 +148,7 @@
         else {
             url = "xzfxpp.aspx?gys_id=" + id;
         }
-        window.open(url, "", "height=400,width=500,status=no,location=no,toolbar=no,directories=no,menubar=yes");
+        window.open(url, "", "height=180,width=315,status=no,location=no,toolbar=no,directories=no,menubar=yes");
     }
     function DeleteBrand(id) {
         var lx = '<%=s_gys_type %>';

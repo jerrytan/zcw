@@ -83,7 +83,7 @@
             }
 
         }
-        if (cl_id == "" && cl_id == undefined)
+        if (cl_id == "" || cl_id == undefined || cl_id==null )
         {
             alert("请先勾选需要删除的材料！");
             return;

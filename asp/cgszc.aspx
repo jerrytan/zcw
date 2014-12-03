@@ -91,6 +91,10 @@
                 obj.value = "";
                 obj.style.color = "#000";
 
+            } else if (obj.value == "请填写公司地址") {
+                obj.value = "";
+                obj.style.color = "#000";
+
             }
             else {
                 obj.style.color = "#000";
@@ -175,6 +179,12 @@
             if (!reg.test(str.value) && document.getElementById("txt_zcze").value != "") {
                 alert("资产总额填写格式不正确，请重新输入");
                 document.getElementById("txt_zcze").focus();
+            }
+        }
+        function losefocus(obj) {
+            if (document.getElementById("txt_gsdz").value == "") {
+                document.getElementById("txt_gsdz").value = "请填写公司地址";
+                document.getElementById("txt_gsdz").style.color = "#999";
             }
         }
     </script>
@@ -435,7 +445,7 @@
                     公司地址：
                 </td>
                 <td>
-                    <input name="txt_gsdz" type="text" class="hyzhc_shrk" id="txt_gsdz" runat="server"/>
+                    <input name="txt_gsdz" type="text" style="color: #999" class="hyzhc_shrk" id="txt_gsdz" runat="server"  value="请填写公司地址"  onblur="losefocus()" onfocus="getfocus(this)"/>
                 </td>
                 <td>
                     <span class="xinghao">*</span>
@@ -444,7 +454,7 @@
                     公司电话：
                 </td>
                 <td>
-                      <input name="txt_gsdh" type="text" class="hyzhc_shrk" id="txt_gsdh" runat="server" onblur="isTelePhone(this);"/>
+                      <input name="txt_gsdh" type="text" class="hyzhc_shrk" id="txt_gsdh" style="color: #999" runat="server" onblur="isTelePhone(this);" value="请填写区号+电话号码" onfocus="getfocus(this)"/>
                 </td>
             </tr>
             <tr>
@@ -583,7 +593,7 @@
                             <td align="left">
                                 <input name="txt_sj" type="text" class="hyzhc_shrk_2" id="txt_sj" 
                                     style="color: #999" onfocus="getfocus(this)"   onblur="isPhone(this)" 
-                                    runat="server" />
+                                    runat="server" value="请输入手机号！" />
                             </td>
                             <td width="70">
                                 &nbsp;
@@ -593,7 +603,7 @@
                             </td>
                             <td align="left">
                                 <input name="txt_yx" style="color: #999" type="text" class="hyzhc_shrk_3" id="txt_yx"
-                                    onblur="lose(this)" onfocus="getfocus(this)" runat="server" value="" />
+                                    onblur="lose(this)" onfocus="getfocus(this)" runat="server" value="请注意邮箱格式" />
                             </td>
                             <td width="48">
                                 &nbsp;

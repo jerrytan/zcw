@@ -26,6 +26,7 @@ public partial class asp_cgsdl_2 : System.Web.UI.Page
             dj=dt_yh.Rows[0]["等级"].ToString();
             Session["CGS_QQ_ID"] = dt_yh.Rows[0]["QQ_id"].ToString();
             Session["CGS_YH_ID"] = yh_id;
+            //GYS_YH_ID
             if (dj == "普通用户")
             {
                 Response.Write("<script> window.opener.location.href='cgsgl_2.aspx';window.close();</" + "script>");

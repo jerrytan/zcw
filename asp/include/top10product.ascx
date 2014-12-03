@@ -34,12 +34,12 @@
             int temp = 0;
             for (int i = 0; i < strs.Length; i++)
             {
-                if ((int)strs[i]>127 && temp < 22)
+                if ((int)strs[i]>127 && temp < 21)
                 {
                     sb.Append(strs[i]);
                     temp = temp + 2;
                 }
-                else if ((int)strs[i]<127 && temp < 22)
+                else if ((int)strs[i]<127 && temp < 21)
                 {
                     sb.Append(strs[i]);
                     temp = temp + 1;
@@ -52,7 +52,7 @@
             }
 
              %>
-            <li style=" padding-left:7px;"><a style="margin-left:8px; width:165px;" href="clxx.aspx?cl_id=<%=row["cl_id"]%> " class="leftToptitle" title="<%=row["显示名"].ToString() %>"  ><%=sb.ToString() %></a></li>
+            <li style=" padding-left:7px;"><a style="margin-left:8px; width:165px; display:inline;" href="clxx.aspx?cl_id=<%=row["cl_id"]%> " class="leftToptitle" title="<%=row["显示名"].ToString() %>"  ><%=sb.ToString() %></a></li>
             <% } %>
         </ul>
     </div>

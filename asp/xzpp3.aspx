@@ -22,6 +22,7 @@
         DataConn objConn = new DataConn();
         public string gys_id = "";
         public int ret;
+        public string aa;
         protected void Page_Load(object sender, EventArgs e)
         {
             string yh_id = "";          
@@ -38,7 +39,8 @@
             //string ejflname = Request.Form["ejflname"];              //二级分类名称
             string grade = Request.Form["grade"];               //等级
             string scope = Request.Form["scope"];                    //范围      
-            string isqy = Request.Form["Isqy"];                    //范围      
+            string isqy = Request.Form["Isqy"];                    //范围    
+            aa = isqy;
             //string flname = Request.Form["ejflname"];
             //if (flname.Equals("0"))  flname = Request.Form["yjflname"];
             string bj = Request["bj"];
@@ -47,13 +49,12 @@
             {
                 if (bj == "1")
                 {
-                    string sSQL = "select count(*) from 品牌字典 where 品牌名称='" + brandname + "' and scs_id='" + gys_id + "'";
+                    string sSQL = "select count(*) from 品牌字典 where 品牌名称='" + brandname + "' and scs_id<>'" + gys_id + "'";
                     string count = objConn.DBLook(sSQL);
-                    if (count=="0")
+                    if (count=="0" )
                     {
                         string sql = "";
                         sql = "update 品牌字典 set 品牌名称='" + brandname + "',是否启用='" + isqy + "',等级='" + grade + "',范围='" + scope + "' where pp_id='" + ppid + "'";
-
                         ret = objConn.ExecuteSQLForCount(sql, true);
                     }
                     else

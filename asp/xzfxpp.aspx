@@ -98,23 +98,23 @@
 
     <center>
 
-        <form action="xzfxpp2.aspx" method="post">
+        <form action="xzfxpp2.aspx" method="post" style=" width:300px; height:240px; float:left;" >
         <input type="hidden" id="scsid"  runat="server"/>
            <input type="hidden" id="pp_id" runat="server" />
            <input type="hidden"  runat="server" id="fxs_id" />
               <input type="hidden" id="pp_name" runat="server"/>
             <div id="myDiv"></div>
-            <table border="0" width="600px">
+            <table border="0" width="300px" align="center">
             <tr>
-               <td height="34" colspan="2" align="center" bgcolor="#cadbff"><strong>增加新分销品牌</strong></td>
+               <td height="24" colspan="2" align="center" bgcolor="#cadbff"><strong style=" font-size:13px; color:#707070;">增加新分销品牌</strong></td>
                   </tr>
                      
                 <tr>
-                    <td style="width: 120px; color:Black">品牌名称：
+                    <td style="width: 120px; color:Black; font-size:13px;">品牌名称：
                     </td>
                     <td align="left">
                         <select id="yjflname" name="yjflname" style="width: 200px" onchange="updateFL(this,this.options[this.options.selectedIndex].value)">
-                        <option value='-1'>请选择品牌</option>
+                        <option value='-1' style="font-size:13px;">请选择品牌</option>
                             <% for (int i=0;i< dt_ppxx.Rows.Count;i++) {
                                 Response.Write("<option value='"+dt_ppxx.Rows[i]["pp_id"]+"|"+dt_ppxx.Rows[i]["品牌名称"]+"'>"+dt_ppxx.Rows[i]["品牌名称"]+"</option>");
                             }%>
@@ -123,7 +123,7 @@
                 </tr>
 
                  <tr>
-                    <td style="width: 120px; color: Black">生产商：
+                    <td style="width: 120px; color: Black ;font-size:13px;">生产商：
                     </td>
                     <td align="left">
                         <div id="scs"> </div>
@@ -131,14 +131,14 @@
                 </tr>
             
                 <tr>
-                    <td style="width: 120px; color: Black">等级：
+                    <td style="width: 120px; color: Black;font-size:13px;">等级：
                     </td>
                     <td align="left">
                         <div id="grade"></div>
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 120px; color: Black">范围：
+                    <td style="width: 120px; color: Black;font-size:13px;">范围：
                     </td>
                     <td align="left">
                         <div id="scope"></div>
@@ -150,9 +150,9 @@
                         <input type="hidden" id="lx" name="lx" value="<%=s_dwlx %>"  />
                     </td>
                     <td align="left">
-                    <input type="submit" id="send" value="保存"style="width:86px; background-color:#cadbff" />&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="submit" id="send" value="保存"style="width:65px; background-color:#cadbff" />&nbsp;&nbsp
                         <input type="button" id="close" value="关闭" onclick="window.close();" 
-                            style="width: 80px;background-color:#cadbff" />
+                            style="width: 65px;background-color:#cadbff" />
                     </td>
                 </tr>
             </table>

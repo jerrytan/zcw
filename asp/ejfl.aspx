@@ -294,9 +294,34 @@
                if (resume.Length > 40) {
                     resume = resume.Substring(0,40)+"...";
                }
+
+               string strs = row["标题"].ToString();
+               StringBuilder sb = new StringBuilder();
+               int temp = 0;
+               for (int i = 0; i < strs.Length; i++)
+               {
+                   if ((int)strs[i] > 127 && temp < 22)
+                   {
+                       sb.Append(strs[i]);
+                       temp = temp + 2;
+                   }
+                   else if ((int)strs[i] < 127 && temp < 22)
+                   {
+                       sb.Append(strs[i]);
+                       temp = temp + 1;
+                   }
+                   else
+                   {
+                       sb.Append("...");
+                       break;
+                   }
+               }
+                  
+                  
+                  
             %>
             <div class="rh">
-                <div class="rh1" style="overflow"><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>"><%=row["标题"].ToString() %></a></div>
+                <div class="rh1" style="overflow"><a href="wzxq.aspx?wz_id=<%=row["wz_id"]%>" title=<%= row["标题"].ToString() %>><%=sb.ToString() %></a></div>
                 <div class="rh2" style="overflow"><%=resume %></div>
             </div>
 			<%}%>		   

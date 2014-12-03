@@ -181,7 +181,7 @@ line-height:30px;
 .gydl{ width:998px; height:auto; float:left;border:#ddd solid 1px; padding:10px 0 20px 0;}
 .gydl2{ width:1000px; height:auto; float:left; margin:0 0 10px 0; border:1px solid #ddd;}
 .dlpp{ width:980px; height:34px; line-height:34px;float:left; display:inline; font-size:14px; color:#707070; font-weight: bold; padding-left:20px; background-color:#f7f7f7;}
-.gydl1{ width:166px; height:auto; float:left; margin:10px 10px 5px 10px; display:inline; line-height:30px; text-align:center; }
+.gydl1{ width:166px; height:auto; float:left; margin:10px 10px 5px 10px; display:inline; line-height:30px; text-align:center; padding-left:12px; }
 .gydl1 img{ padding:2px; border:#a1a1a1 solid 1px;}
 
 .ditu{ width:400px; height:auto; float:right; margin-top:20px;}

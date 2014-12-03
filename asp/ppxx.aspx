@@ -355,13 +355,13 @@
             <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">
                 <div class="ppcp">
                     <%	    
-                        string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"+row["cl_id"]+"' and 大小='小'";
+                        string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"+row["cl_id"]+"' ";
                         string imgsrc= "images/222_03.jpg";
                         object result = objdc.DBLook(str_sqltop1);
                         if (result != null) {
                             imgsrc = result.ToString();
                         }
-                        Response.Write("<img src="+imgsrc+ " width=150px height=150px />");
+                        Response.Write("<img src='"+imgsrc+"' style=' width:150px; height:150px;' />");
 				    %>
                     
                     <%

@@ -279,7 +279,7 @@ protected void Page_Load(object sender, EventArgs e)
             dwzlsjk = Convert.ToString(dt_cl.Rows[0]["单位重量"]);
             dwtjsjk = Convert.ToString(dt_cl.Rows[0]["单位体积"]);
             smsjk = Convert.ToString(dt_cl.Rows[0]["说明"]);
-            pricesjk = Convert.ToString(dt_cl.Rows[0]["price"]);
+            pricesjk = Convert.ToString(dt_cl.Rows[0]["price"]) == "0" ? "" : Convert.ToString(dt_cl.Rows[0]["price"]);
             ggjxh = Convert.ToString(dt_cl.Rows[0]["规格型号"]);
             this.gg_xh.Value = Convert.ToString(dt_cl.Rows[0]["规格型号"]);       
             this.cpbh.Value = cpbhsjk;

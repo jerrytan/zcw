@@ -420,7 +420,7 @@ else
         <!-- 代理品牌 结束-->
         
         <!-- 现货供应 开始-->
-        <div class="gydl">
+        <div class="gydl2">
             <div class="dlpp">现货供应</div>
             <%foreach(System.Data.DataRow row in dt_clxx.Rows){%>
                 <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">			
@@ -432,9 +432,32 @@ else
                     if (result != null) {
                         imgsrc = result.ToString();
                     }
+                  
+                    string strs = row["显示名"].ToString();
+                    StringBuilder sb = new StringBuilder();
+                    int temp = 0;
+                    for (int i = 0; i < strs.Length; i++)
+                    {
+                        if ((int)strs[i] > 127 && temp < 21)
+                        {
+                            sb.Append(strs[i]);
+                            temp = temp + 2;
+                        }
+                        else if ((int)strs[i] < 127 && temp < 21)
+                        {
+                            sb.Append(strs[i]);
+                            temp = temp + 1;
+                        }
+                        else
+                        {
+                            sb.Append("...");
+                            break;
+                        }
+                    }
+                  
                     Response.Write("<img src="+imgsrc+ " width=150px height=150px />");			
 			    %>
-			    <%=row["显示名"].ToString() %>
+			    <%=sb.ToString() %>
 			    </div>
                 </a>
             <%}%>

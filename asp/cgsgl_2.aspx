@@ -40,8 +40,7 @@
         }
 
 
-        function xscl(obj, value)
-        {
+        function xscl(obj, value) {
             var h = obj.parentNode.parentNode;
 
             var a = h.getElementsByTagName("a");
@@ -57,6 +56,15 @@
         function ppgys(obj)
         {
             var ppid = obj;
+            var h = obj.parentNode.parentNode;
+
+            var a = h.getElementsByTagName("a");
+            for (var i = 0; i < a.length; i++) {
+                a[i].style.color = "#707070";
+            }
+            obj.style.color = "#4876FF";
+            var flbm = value;
+
             document.getElementById("cgsglgys_iframe").src = "Cgsgzgys.aspx?s_yh_id=<%=s_yh_id %>&ppid=" + ppid;
         }
 
@@ -460,7 +468,7 @@
                                 if (dr_xl["分类编码"].ToString().Substring(0, 2) == dr_dl["分类编码"].ToString())
                                 { %>
                                                     <h2 onclick="javascript:ShowMenu(this,<%=secondlevel %> )">
-                                                        <a href="javascript:void(0)" onclick="xscl(this,'<%=dr_xl["分类编码"].ToString()%>')">
+                                                        <a  href="javascript:void(0)" onclick="xscl(this,'<%=dr_xl["分类编码"].ToString()%>')">
                                                             <%=dr_xl["显示名字"].ToString()%></a></h2>
                                                     <ul class="no">                                                       
                                                     </ul>
@@ -489,7 +497,7 @@
                        
              <span class="no">
                      <% string gys_Id = dr_gys["gys_id"].ToString();
-                        string sql_ppxx = "select * from 品牌字典 where scs_id='" + gys_Id + "'";
+                        string sql_ppxx = "select * from 品牌字典 where scs_id='" + gys_Id + "' and 是否启用='1'";
                         dt_ppxx = objConn.GetDataTable(sql_ppxx);
                             %>
                     <%      int secondlevel = 0;
