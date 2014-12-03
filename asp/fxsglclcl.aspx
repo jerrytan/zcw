@@ -141,19 +141,16 @@
                       {
                           xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
                       }
-                      xmlhttp.onreadystatechange = function ()
-                      {
-                          if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-                          {
+                      xmlhttp.onreadystatechange = function () {
+                          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                               var text = xmlhttp.responseText;
-                              if (text == 1)
-                              {
+                              if (text == 1) {
                                   alert('删除成功');
                                   location.reload();
                               }
-                              else
-                              {
+                              else {
                                   alert('删除失败');
+                                  alert(text);
                                   location.reload();
                               }
                           }
@@ -234,7 +231,8 @@
                 <td align="left"><%=dtcl.Rows[i]["材料名称"]%></td>
                 <td class="gridtable"><%=dtcl.Rows[i]["规格型号"]%></td>
                 <td align="left"><%=dtcl.Rows[i]["生产厂商"]%></td>
-                <td class="gridtable"><%=ppmc1%></td>
+                <%--<td class="gridtable"><%=ppmc1%></td>--%>
+                <td class="gridtable"><%=dtcl.Rows[i]["品牌名称"]%></td>
                 <td align="center"><%=dtcl.Rows[i]["计量单位"]%></td>
                 <td align="center"><%=dtcl.Rows[i]["price"]%></td>  
                 <td align="center">
@@ -252,7 +250,8 @@
                 <td align="left"><%=dtcl.Rows[i]["材料名称"]%></td>
                 <td class="gridtable"><%=dtcl.Rows[i]["规格型号"]%></td>
                 <td align="left"><%=dtcl.Rows[i]["生产厂商"]%></td>
-                <td class="gridtable"><%=ppmc1%></td>
+                <%--<td class="gridtable"><%=ppmc1%></td>--%>
+                <td class="gridtable"><%=dtcl.Rows[i]["品牌名称"]%></td>
                 <td align="center"><%=dtcl.Rows[i]["计量单位"]%></td>
                 <td align="center"><%=dtcl.Rows[i]["price"]%></td>  
                 <td align="center">

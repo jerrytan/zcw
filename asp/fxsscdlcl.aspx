@@ -11,6 +11,7 @@ public string ppmc = "";
 public DataTable dt = new DataTable();
 protected void Page_Load(object sender, EventArgs e)
 {
+    string temp;
     string cl_id="";
     if (Request["scsid"] != null && Request["scsid"].ToString() != "")
     {
@@ -40,17 +41,18 @@ protected void Page_Load(object sender, EventArgs e)
         {
             cl_id = cl_id.Substring(0, cl_id.Length - 1);
         }
-       
-        sql = "delete 供应商材料表 where fxs_id='" + fxsid + "' and gys_id='" + scsid + "' and pp_id='" + ppid +
-            "' and 品牌名称='" + ppmc + "' and cl_id in(" + cl_id + ")";
-        
+        //string ppsql = "select A.pp_id from dbo.供应商材料表 A inner join dbo.品牌字典 B on A.pp_id=B.pp_id where A.cl_id='" + cl_id + "'";
+        //ppid=MySqlHelper.ExecuteScalar(ppsql).ToString();
+        //sql = "delete 供应商材料表 where fxs_id='" + fxsid + "' and gys_id='" + scsid + "' and pp_id='" + ppid +"' and 品牌名称='" + ppmc + "' and cl_id in(" + cl_id + ")";
+        sql = "delete 供应商材料表 where fxs_id='" + fxsid + "'  and cl_id in(" + cl_id + ")";
+        temp = sql;
         if (Conn.ExecuteSQLForCount(sql, true)>0)
         {
             sValue = "1";
         }
         else
         {
-            sValue = "删除失败！";
+            sValue = sql;
         }
     }
     else
@@ -58,7 +60,6 @@ protected void Page_Load(object sender, EventArgs e)
         sValue = "未选中材料";
     }
     Response.Write(sValue);
- //   Response.Write(sValue);
 }
 </script>
  

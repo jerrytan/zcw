@@ -109,7 +109,7 @@
                <td height="24" colspan="2" align="center" bgcolor="#cadbff"><strong style=" font-size:13px; color:#707070;">增加新分销品牌</strong></td>
                   </tr>
                      
-                <tr>
+                <tr style=" height:25px;" >
                     <td style="width: 120px; color:Black; font-size:13px;">品牌名称：
                     </td>
                     <td align="left">
@@ -122,29 +122,29 @@
                     </td>
                 </tr>
 
-                 <tr>
+                 <tr style=" height:25px;">
                     <td style="width: 120px; color: Black ;font-size:13px;">生产商：
                     </td>
                     <td align="left">
-                        <div id="scs"> </div>
+                        <div id="scs" style=" font:13;"> </div>
                     </td>
                 </tr>
             
-                <tr>
+                <tr style=" height:25px;">
                     <td style="width: 120px; color: Black;font-size:13px;">等级：
                     </td>
                     <td align="left">
-                        <div id="grade"></div>
+                        <div id="grade"  style=" font:13;"></div>
                     </td>
                 </tr>
-                <tr>
+                <tr style=" height:25px;">
                     <td style="width: 120px; color: Black;font-size:13px;">范围：
                     </td>
                     <td align="left">
-                        <div id="scope"></div>
+                        <div id="scope"  style=" font:13;"></div>
                     </td>
                 </tr>              
-                <tr>
+                <tr style=" height:25px;">
                     <td>
                     <input  type="hidden" runat="server" id="source"/>
                         <input type="hidden" id="lx" name="lx" value="<%=s_dwlx %>"  />

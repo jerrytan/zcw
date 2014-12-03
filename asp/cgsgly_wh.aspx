@@ -11,9 +11,14 @@
     <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all%20of.css" rel="stylesheet" type="text/css" />
-
+    <script src="Scripts/Address.js" type="text/javascript"></script>
     <!--前台数据输入验证 开始-->
     <script type="text/javascript">
+        $(function () {
+            $("#s1").change(function () {
+                $("#region").val($("#s0").children('option:selected').val() + $("#s1").children('option:selected').val());
+            });
+        });
         function gsyxCheck(str) {
             var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
             if (!reg.test(str.value) && document.getElementById("txt_gsyx").value != "") {
@@ -299,6 +304,7 @@
                         <option value="个体">个体</option>
                         <option value="集体">集体</option>
                         <option value="三资">三资</option>
+                        <option value="三资">外资</option>
                         <option value="其他">其他</option>
                     </select>
                 </td>
@@ -354,7 +360,14 @@
                 </td>
                 <td>
                     <span class="fl">
-                        <select id="s1"  class="fu1" runat="server"><option></option></select>
+                    <select id="s0" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>
+                        <select id="s1" style=" width:130px;" class="fu1" runat="server" value="">
+                        </select>
+                        <input type="hidden" id="region"  value="北京市" runat="server" />
+                        <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
+                        <script src="Scripts/Address.js" type="text/javascript"></script>
+                        <%--<select id="s1"  class="fu1" runat="server"><option></option></select>
                         <select id="s2" class="fu2" runat="server"><option></option></select>
                         <select id="s3" class="fu3" runat="server"><option></option></select>
                         <script type="text/javascript">
@@ -367,7 +380,7 @@
 
                             }
 
-                        </script>
+                        </script>--%>
                     </span>
                 </td>
                 <td>

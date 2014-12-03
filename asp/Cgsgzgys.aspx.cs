@@ -57,15 +57,15 @@ public partial class asp_Cgsgzgys : System.Web.UI.Page
         string sSQL = "";
         if (ppid=="")
         {
-            sSQL = "select top 10 gys_id,供应商,主页,联系地址 from 材料供应商信息表 where gys_id in(select gys_id from 采购商关注供应商表 where dw_id='" + dwid1 + "')";
+            sSQL = "select top 10 gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in(select gys_id from 采购商关注供应商表 where dw_id='" + dwid1 + "')";
             
-            //sSQL = "select top 10 gys_id,供应商,主页,联系地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where yh_id='"+s_yh_id+"')";
+            //sSQL = "select top 10 gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where yh_id='"+s_yh_id+"')";
             dt_topfxs = objConn.GetDataTable(sSQL);
         }
         else
         {
-            sSQL = " select gys_id,供应商,主页,联系地址 from 材料供应商信息表 where gys_id in (select gys_id from 采购商关注供应商表 where gys_id in(select scs_id from 品牌字典 where pp_id='" + ppid + "') and dw_id='" + dwid1 + "' ) ";
-           // sSQL = "select gys_id,供应商,主页,联系地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id='" + ppid + "')";
+            sSQL = " select gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in (select gys_id from 采购商关注供应商表 where gys_id in(select scs_id from 品牌字典 where pp_id='" + ppid + "') and dw_id='" + dwid1 + "' ) ";
+           // sSQL = "select gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id='" + ppid + "')";
           //  Response.Write(sSQL);
             dt_topfxs = objConn.GetDataTable(sSQL);
         }
@@ -97,7 +97,7 @@ public partial class asp_Cgsgzgys : System.Web.UI.Page
         }
         if (sColumName=="地区")
         {
-            sColumName = "联系地址";
+            sColumName = "地区名称";
         }
         if (sColumName == "分销商")
         {
@@ -106,11 +106,11 @@ public partial class asp_Cgsgzgys : System.Web.UI.Page
         string sql_js = "";
         if (ppid == "")
         {
-            sql_js = "select top 10 gys_id,供应商,主页,联系地址 from 材料供应商信息表 where gys_id in(select gys_id from 采购商关注供应商表 where dw_id='" + dwid1 + "')";
+            sql_js = "select top 10 gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in(select gys_id from 采购商关注供应商表 where dw_id='" + dwid1 + "')";
         }
         else
         {
-            sql_js = " select gys_id,供应商,主页,联系地址 from 材料供应商信息表 where gys_id in (select gys_id from 采购商关注供应商表 where gys_id in(select scs_id from 品牌字典 where pp_id='" + ppid + "') and dw_id='" + dwid1 + "' ) ";
+            sql_js = " select gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in (select gys_id from 采购商关注供应商表 where gys_id in(select scs_id from 品牌字典 where pp_id='" + ppid + "') and dw_id='" + dwid1 + "' ) ";
         }
         if (sColumName == "" && sOperator == "" && sKeyWord == "")
         {
@@ -217,7 +217,7 @@ public partial class asp_Cgsgzgys : System.Web.UI.Page
                 {
                     case "gys_id":
                         break;
-                    case "联系地址":
+                    case "地区名称":
                          objItem = null;
                         objItem = new ListItem();
                         objItem.Text ="地区";

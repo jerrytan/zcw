@@ -39,12 +39,12 @@ public partial class asp_fxsglclcl : System.Web.UI.Page
         string sSQL = "";
         if (ppid1=="")
         {
-            sSQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price from  供应商材料表 where fxs_id=" + fxs_id;
+            sSQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where fxs_id=" + fxs_id;
             dtcl = objConn.GetDataTable(sSQL);
         }
         else
         {
-            sSQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price from  供应商材料表 where pp_id='" + ppid1 + "' and fxs_id=" + fxs_id;
+            sSQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where pp_id='" + ppid1 + "' and fxs_id=" + fxs_id;
             dtcl = objConn.GetDataTable(sSQL);
         }
         if (!IsPostBack)
@@ -73,11 +73,11 @@ public partial class asp_fxsglclcl : System.Web.UI.Page
         string SQL = "";
         if (ppid1 == "")
         {
-            SQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price from  供应商材料表 where fxs_id=" + fxs_id;
+            SQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where fxs_id=" + fxs_id;
         }
         else
         {
-            SQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price from  供应商材料表 where pp_id='" + ppid1 + "' and fxs_id=" + fxs_id;
+            SQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where pp_id='" + ppid1 + "' and fxs_id=" + fxs_id;
         }
        sSQL = "select * from (" + SQL + ")#temp where 1=0";
         objDt = objConn.GetDataTable(sSQL);
