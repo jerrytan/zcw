@@ -191,7 +191,7 @@
                         &nbsp;            
                     <asp:Button ID="filter" runat="server" Text="检索" OnClick="filter_Click" CssClass="filter"
                         BorderStyle="None" Width="37px" Height="20px" ForeColor="Black" Font-Size="12px"
-                        filter Font-Names="宋体"></asp:Button>
+                        filter Font-Names="宋体"></asp:Button> 
                         &nbsp;
                          <input type="button" class="btnDelete1" value="新增分销商" onclick="btnFilter_Click()" style="height: 20px;width: 72px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" />&nbsp;
                          <input type="button" class="btnDelete1" value="删除分销商" onclick="Delete_gs()" style="height: 20px;width: 72px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" />

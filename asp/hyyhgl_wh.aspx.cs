@@ -25,9 +25,9 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                     this.txt_name.Value = Request.QueryString["name"].Trim();
                     this.txt_phone.Value = Request.QueryString["phone"].Trim();
                     this.txt_Email.Value = Request.QueryString["email"].Trim();
-                    //this.cbx1.Checked = Convert.ToBoolean(Request.QueryString["scs"].Trim());
-                    //this.cbx2.Checked = Convert.ToBoolean(Request.QueryString["fxs"].Trim());
-                    //this.cbx3.Checked = Convert.ToBoolean(Request.QueryString["cl"].Trim());
+                    this.cbx1.Checked = Convert.ToBoolean(Request.QueryString["scs"].Trim());
+                    this.cbx2.Checked = Convert.ToBoolean(Request.QueryString["fxs"].Trim());
+                    this.cbx3.Checked = Convert.ToBoolean(Request.QueryString["cl"].Trim());
                     this.txt_QQ.Disabled = true;
                 }
                 else if (lx == "分销商")
@@ -36,8 +36,8 @@ public partial class asp_hyyhgl_wh : System.Web.UI.Page
                     this.txt_name.Value = Request.QueryString["name"].Trim();
                     this.txt_phone.Value = Request.QueryString["phone"].Trim();
                     this.txt_Email.Value = Request.QueryString["email"].Trim();
-                    //this.Checkbox1.Checked = Convert.ToBoolean(Request.QueryString["fxs"].Trim());
-                    //this.Checkbox2.Checked = Convert.ToBoolean(Request.QueryString["cl"].Trim());
+                    this.Checkbox1.Checked = Convert.ToBoolean(Request.QueryString["scs"].Trim());
+                    this.Checkbox2.Checked = Convert.ToBoolean(Request.QueryString["fxs"].Trim());
                     this.txt_QQ.Disabled = true;
                 }
                 else

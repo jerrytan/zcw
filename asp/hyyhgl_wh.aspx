@@ -97,6 +97,7 @@
                          <%}
                   else
                   {%>
+                  <label>
                    <input type="checkbox" name="CheckboxGroup1" value="管理分销商" id="Checkbox1" runat="server"/>
                         管理分销商</label>
                     <label>

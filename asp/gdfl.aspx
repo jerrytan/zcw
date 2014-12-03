@@ -65,7 +65,8 @@
         protected void Page_Load(object sender, EventArgs e)
         {
             //sql语句集合
-            string sql_TopGys = "select top 10 供应商 ,gys_id,单位类型 from 材料供应商信息表 where 是否启用=1 order by updatetime desc";
+            //string sql_TopGys = "select top 10 供应商 ,gys_id,单位类型 from 材料供应商信息表 where 是否启用='1' order by updatetime desc";
+            string sql_TopGys = "select top 10 A.dw_id as gys_id,A.类型 as 单位类型,B.供应商 as 供应商  from 用户表 A inner join 材料供应商信息表 B on A.dw_id=B.gys_id where A.等级='企业用户'order by A.updatetime desc";
             string sql_NewBrand = "select top 10 品牌名称,pp_id from 品牌字典 where 是否启用=1 order by updatetime desc";
             string sql_Yjfl = "select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 ";
             string sql_Ejfl = "select distinct  显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=4 ";

@@ -22,7 +22,7 @@
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <link href="css/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
-    <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
+    <script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>
     <script src="Scripts/external/jquery.bgiframe-2.1.2.js" type="text/javascript"></script>
     <script src="Scripts/ui/jquery.ui.core.js" type="text/javascript"></script>
     <script src="Scripts/ui/jquery.ui.widget.js" type="text/javascript"></script>
@@ -167,21 +167,28 @@
         }
         //修改
         function changePage(obj) {
-            var tr = obj.parentNode.parentNode;
-            var tds = tr.cells;
-            var qq = Trim(tds[2].innerHTML);
-            var name = Trim(tds[3].innerHTML);
-            var phone = Trim(tds[4].innerHTML);
-            var email = Trim(tds[5].innerHTML);
+//            var tr = obj.parentNode.parentNode;
+//            var tds = tr.cells;
+//            var qq = Trim(tds[2].innerHTML);
+//            var name = Trim(tds[3].innerHTML);
+//            var phone = Trim(tds[4].innerHTML);
+//            var email = Trim(tds[5].innerHTML);
+
+
+            var qq = $(obj).parent().parent().children().eq(2).text();
+            var name = $(obj).parent().parent().children().eq(3).text();
+            var phone = $(obj).parent().parent().children().eq(4).text();
+            var email = $(obj).parent().parent().children().eq(5).text();
             var scs;var fxs;var cl;
-           <%if (Request.Cookies["GYS_QQ_ID"]!=null||Session["GYS_YH_ID"] != null){ %>//Request.Cookies["GYS_QQ_ID"]改成Session["GYS_QQ_ID"]
-                <%if (Session["类型"] == "生产商") { %>
-                    scs = tds[6].childNodes[0].checked;
-                    fxs = tds[6].childNodes[1].checked;
-                    cl = tds[6].childNodes[2].checked;
+           <%if (Session["GYS_QQ_ID"]!=null||Session["GYS_YH_ID"] != null){ %>//Request.Cookies["GYS_QQ_ID"]改成Session["GYS_QQ_ID"]
+                <%if (Session["类型"] != "生产商") { 
+                    %>
+                    scs =$(obj).parent().parent().children().eq(6).children().eq(0).is(':checked');
+                    fxs = $(obj).parent().parent().children().eq(6).children().eq(1).is(':checked');
+                    cl = $(obj).parent().parent().children().eq(6).children().eq(2).is(':checked');
                <% }else{ %>
-                        scs = tds[6].childNodes[0].checked;
-                    fxs = tds[6].childNodes[1].checked;
+                        fxs = $(obj).parent().parent().children().eq(6).children().eq(0).is(':checked');
+                        cl = $(obj).parent().parent().children().eq(6).children().eq(1).is(':checked');
                     <%} %>
            <%} else{%>
                 scs=false;fxs=false;cl=false;

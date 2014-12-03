@@ -455,9 +455,9 @@ else
                         }
                     }
                   
-                    Response.Write("<img src="+imgsrc+ " width=150px height=150px />");			
+                    Response.Write("<img src="+imgsrc+ " width=156px height=156px />");			
 			    %>
-			    <%=sb.ToString() %>
+			    <lable style=" width:156px;"><%=sb.ToString() %></lable>
 			    </div>
                 </a>
             <%}%>
