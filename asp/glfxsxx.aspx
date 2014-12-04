@@ -44,7 +44,31 @@
         }
     </style>
 </head>
-
+<script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnPrev_Click").click(function () {
+                var pageI = parseInt($("#pageI").val());
+                var pageS = parseInt($("#pageS").val());
+                if (pageI > 1) {
+                    pageI--;
+                    $("#pageI").val(pageI)
+                } else {
+                    return;
+                }
+            });
+            $("#btnNext").click(function () {
+                var pageI = parseInt($("#pageI").val());
+                var pageC = parseInt($("#lblPageCount").val());
+                if (pageI < pageC) {
+                    pageI++;
+                    $("#pageI").val(pageI)
+                } else {
+                    return;
+                }
+            });
+        });
+    </script>
 <script type="text/javascript" language="javascript">
     function Update_CS(id, pp_name) {
         document.getElementById("pp_name").value = pp_name;
