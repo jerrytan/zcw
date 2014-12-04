@@ -18,7 +18,7 @@
 <%--<script src="http://malsup.github.io/jquery.form.js"></script>--%>
 
     <link href="Scripts/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
-    <script src="Scripts/uploadify/jquery.uploadify3.1.js" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Javascript("Scripts/uploadify/jquery.uploadify3.1.js?r=" + new Random().Next())"></script>
     <script src="Scripts/zcwUpload.js" type="text/javascript"></script>
 
 <script type="text/javascript">
