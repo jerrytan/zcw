@@ -51,7 +51,7 @@ public partial class asp_cgsgly_wh : System.Web.UI.Page
             this.txt_yyzzzch.Value = dr["营业执照注册号"].ToString();
             this.txt_gsQQ.Value = dr["单位QQ号"].ToString();
             this.txt_fddbr.Value = dr["法定代表人"].ToString();
-            this.txt_zcrq.Value = dr["注册日期"].ToString();
+            this.txt_zcrq.Value = dr["注册日期"].ToString().Substring(0,10);
             this.txt_zczj.Value = dr["注册资金"].ToString();
             this.txt_zcze.Value = dr["资产总额"].ToString() == "0" ? "" : dr["资产总额"].ToString();
             this.zcjb.Value = dr["注册级别"].ToString();

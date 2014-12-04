@@ -5,17 +5,28 @@
  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  <HTML xmlns="http://www.w3.org/1999/xhtml">
 <HEAD>
-<META content="IE=11.0000" http-equiv="X-UA-Compatible">     
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"  />
+<META content="IE=9.0000" http-equiv="X-UA-Compatible">     
 <META http-equiv="Content-Type" content="text/html; charset=utf-8">     
 <TITLE>供应商产品列表</TITLE>     
 <LINK href="css/css.css" rel="stylesheet" type="text/css">   
 <LINK href="css/all of.css" rel="stylesheet" type="text/css">  
 <link href="css/cllb.css" rel="stylesheet" type="text/css" />  
 <META name="GENERATOR" content="MSHTML 11.00.9600.17239">
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="http://malsup.github.io/jquery.form.js"></script>
-   
+<script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="js/jquery.form.js" type="text/javascript"></script>
+<%--<script src="http://malsup.github.io/jquery.form.js"></script>--%>
+
+    <link href="Scripts/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/uploadify/jquery.uploadify3.1.js" type="text/javascript"></script>
+    <script src="Scripts/zcwUpload.js" type="text/javascript"></script>
+
 <script type="text/javascript">
+//    $(document).ready(function () {
+//        //$("#uoloadAll").showLoading();
+//        //去除遮罩
+//                   // $(".add_test_img").hideLoading();
+//    }); 
     //列表数
     function ShowMenu(obj, n)
     {
@@ -185,18 +196,18 @@
         //   document.getElementById("dmt").value = document.frames['frame1'].document.getElementById("dmtz").value;
         var scsid = document.getElementById("scsid").value;
         // jquery 表单提交
-        $("#form1").ajaxSubmit(function (message)
-        {
+        $("#form1").ajaxSubmit(function (message) {
             // 对于表单提交成功后处理，message为提交页面saveReport.htm的返回内容 
-            if (message == "1")
-            {
-                alert("提交成功");
-                window.opener.location.reload();
-                window.close();
+            
+            var ccid = message.split(',')[1];
+            if (message.split(',')[0] == "1") {
+                alert("提交成功!现在您能可以添加该材料的多媒体信息！");
+                //window.opener.location.reload();
+                $("#ceng").fadeOut(200);
+//                window.close();
                 //   window.location.href = "gysglcl.aspx?gys_id=" + scsid; 
             }
-            else
-            {
+            else {
                 alert(message);
             }
         });
@@ -487,11 +498,66 @@ protected void Addsx(string flbm, string flmc, string clid,string ggxh)
         </tr>
     </tbody>
 </table>
-
+<dd style=" text-align:center"> <input type="submit" class="filter" style="color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;" value="保存" /></dd>
 <div class="cpdt_2" style="width: 740px; float: left;">
- <iframe id="frame1" src="scsxzcltjtp.aspx" frameborder="0" marginheight="0"  style=" width:100%;  height:200px; padding:0px; margin:0px; border:0px; " > 
- </iframe> 
- <dd style=" text-align:center"> <input type="submit" value="保存" /></dd>
+
+    
+ <!------------------------------------------------------------------------图片上传 高度240px; 宽度：740px；--------------------------------------------------------------------------------------------------------------------->
+ <!--position:absolute; width:100%; height:100%; background:#000; opacity:0.7; z-index:99;-->
+  <div id="uoloadAll" style="width: 744px; height: 240px; float: left; ">
+      <div id="ceng" style="width: 744px; height: 240px; float: left;position:absolute;  background:#000; opacity:0.2; z-index:99; font-size:15px; text-align:center; line-height:240px;filter:alpha(opacity=20); color:White;">
+        请先保存资料！
+      </div>
+        <div style="width: 280px; height: 240px; float: left; ">
+            <table style="width: 280px; height: 200px; font-size: 13px; margin-top:20px; margin-bottom:20px;" border="0" cellpadding="0"
+                cellspacing="0">
+                <tr>
+                    <td style=" width:100px;" align="center">
+                        多媒体类型：
+                    </td>
+                    <td>
+                        <select style=" width:100px;">
+                            <option value="图片">图片</option>
+                            <option value="视频">视频</option>
+                            <option value="文档">文档</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr style=" width:100px;">
+                    <td align="center">
+                        分类：
+                    </td>
+                    <td>
+                        <input type="radio" name="r1" value="1" /><label name="r1">使用说明</label>
+                        <input type="radio" name="r2" value="2" /><label name="r2">成功案例</label><br />
+                        <input type="radio" name="r3" value="3" /><label name="r3">演示</label>
+                        <input type="radio" name="r4" value="4" style="margin-left: 30px;" /><label name="r4">图片</label>
+                    </td>
+                </tr>
+                <tr style=" width:100px;">
+                    <td align="center">
+                        选择图片：
+                    </td>
+                    <td>
+                        <input type="file" name="uploadify" id="uploadify" style="width: 200px; float: left;" />
+                    </td>
+                </tr>
+                <tr style=" width:100px;">
+                    <td align="center">
+                        开始上传：
+                    </td>
+                    <td>
+                       <input type="button" name="uploadfy" id="btnUploadfy" value="上传" style="width:80px; height:25px; font-size:13px;" />
+    <input type="button" name="uploadfy" id="btnClear" value="取消上传" style="width:80px; height:25px; font-size:13px;" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="fileQueue" style="width: 460px; height: 240px; float: left; line-height:10px;" align="center">
+        </div>
+    </div>
+       
+    </script> <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
 </div>
 </div>
 </div>
