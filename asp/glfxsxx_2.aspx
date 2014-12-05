@@ -238,7 +238,7 @@
                         </label>
                     </td>
                     <td align="left" style="font-size: 12px" class="style1">
-                        <%=dr["供应商"]%>
+                        <%=SubStrings.GetWidth(11,dr["供应商"].ToString(),dr["供应商"].ToString())%>
                     </td>
                     <td style="font-size: 12px;">
                         <%=dr["地区名称"]%>

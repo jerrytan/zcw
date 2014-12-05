@@ -6,7 +6,7 @@
 <%@ Import Namespace="System.Web" %>
 <%@ Import Namespace="System.IO" %>
 
-<%@ Page Language="C#" AutoEventWireup="true" CodeFile="fxsglclcl.aspx.cs" Inherits="asp_fxsglclcl" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="fxsglclcl.aspx.cs" Inherits="asp_fxsglclcl" validateRequest="false" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -16,9 +16,17 @@
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <script src="js/gysglcl.js" type="text/javascript"></script>
-    <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>
     <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <link href="css/Paging.css" rel="stylesheet" type="text/css" />
     <script language="javascript" type="text/javascript">
+        $(function () {
+            $("#pageDiv a").click(function () {
+                var hrefStr = $(this).attr("href");
+                var hrStr = hrefStr + "&fxs_id=" + $("#fxsid").val() + "&ppid=" + $("#ppid").val();
+                $(this).attr("href", hrStr);
+            });
+        });
         function selectall1(obj, cl_id) {
             if (obj.checked) {
                 var Table = document.getElementById("table4");
@@ -91,7 +99,6 @@
             var ppid = document.getElementById("ppid").value;
             var ppmc = document.getElementById("ppmc").value;
             var scs = document.getElementById("scsid").value;
-
             var table = document.getElementById("table4");
             var input = table.getElementsByTagName("input");
             var cl_id = "";
@@ -106,30 +113,42 @@
                 return;
             }
             else {
+                alert(cl_id);
                 if (confirm("是否删除选中材料？")) {
-                    var xmlhttp;
-                    if (window.XMLHttpRequest) {
-                        xmlhttp = new XMLHttpRequest();
-                    }
-                    else {
-                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                    }
-                    xmlhttp.onreadystatechange = function () {
-                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                            var text = xmlhttp.responseText;
-                            if (text == 1) {
-                                alert('删除成功');
-                                location.reload();
-                            }
-                            else {
-                                alert('删除失败');
-                                alert(text);
-                                location.reload();
-                            }
+                    $.get("fxsscdlcl.aspx", { "cl_id": cl_id, "ppid": ppid, "ppmc": ppmc, "scsid": scs, "fxsid": fxs_id }, function (data) {
+                        
+                        if (data == "1") {
+                            alert("删除成功");
+                            location.reload();
+                        } else {
+                            alert("删除失败");
+                            location.reload();
                         }
-                    }
-                    xmlhttp.open("GET", "fxsscdlcl.aspx?cl_id=" + cl_id + "&ppid=" + ppid + "&ppmc=" + ppmc + "&scsid=" + scs + "&fxsid=" + fxs_id, true);
-                    xmlhttp.send();
+                    });
+
+//                    var xmlhttp;
+//                    if (window.XMLHttpRequest) {
+//                        xmlhttp = new XMLHttpRequest();
+//                    }
+//                    else {
+//                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+//                    }
+//                    xmlhttp.onreadystatechange = function () {
+//                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+//                            var text = xmlhttp.responseText;
+//                            if (text == 1) {
+//                                alert('删除成功');
+//                                location.reload();
+//                            }
+//                            else {
+//                                alert('删除失败');
+//                                alert(text);
+//                                location.reload();
+//                            }
+//                        }
+//                    }
+//                    xmlhttp.open("GET", "fxsscdlcl.aspx?cl_id=" + cl_id + "&ppid=" + ppid + "&ppmc=" + ppmc + "&scsid=" + scs + "&fxsid=" + fxs_id, true);
+//                    xmlhttp.send();
                 }
                 else {
                     return;
@@ -233,7 +252,7 @@
                     <%=dtcl.Rows[i]["材料编码"]%>
                 </td>
                 <td align="left">
-                    <%=dtcl.Rows[i]["材料名称"]%>
+                    <%=SubStrings.GetWidth(4,dtcl.Rows[i]["材料名称"].ToString(),dtcl.Rows[i]["材料名称"].ToString())%>
                 </td>
                 <td class="gridtable">
                     <%=dtcl.Rows[i]["规格型号"]%>
@@ -273,7 +292,7 @@
                     <%=dtcl.Rows[i]["材料编码"]%>
                 </td>
                 <td align="left">
-                    <%=dtcl.Rows[i]["材料名称"]%>
+                    <%=SubStrings.GetWidth(4,dtcl.Rows[i]["材料名称"].ToString(),dtcl.Rows[i]["材料名称"].ToString())%>
                 </td>
                 <td class="gridtable">
                     <%=dtcl.Rows[i]["规格型号"]%>
@@ -302,6 +321,8 @@
             <%} %>
         </tbody>
     </table>
+    <div id="pageDiv" class="paginator" runat="server">   
+    </div>
     </form>
 </body>
 </html>

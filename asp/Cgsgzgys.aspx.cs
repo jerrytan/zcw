@@ -57,16 +57,14 @@ public partial class asp_Cgsgzgys : System.Web.UI.Page
         string sSQL = "";
         if (ppid=="")
         {
-            sSQL = "select top 10 gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in(select gys_id from 采购商关注供应商表 where dw_id='" + dwid1 + "')";
+            sSQL = "select top 10 gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where yh_id='"+s_yh_id+"')";
             
-            //sSQL = "select top 10 gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where yh_id='"+s_yh_id+"')";
             dt_topfxs = objConn.GetDataTable(sSQL);
         }
         else
         {
-            sSQL = " select gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in (select gys_id from 采购商关注供应商表 where gys_id in(select scs_id from 品牌字典 where pp_id='" + ppid + "') and dw_id='" + dwid1 + "' ) ";
-           // sSQL = "select gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id='" + ppid + "')";
-          //  Response.Write(sSQL);
+            sSQL = "select gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id='" + ppid + "')";
+           
             dt_topfxs = objConn.GetDataTable(sSQL);
         }
         if (!IsPostBack)

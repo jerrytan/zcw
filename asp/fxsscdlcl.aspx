@@ -52,7 +52,7 @@ protected void Page_Load(object sender, EventArgs e)
         }
         else
         {
-            sValue = sql;
+            sValue = "删除失败";
         }
     }
     else

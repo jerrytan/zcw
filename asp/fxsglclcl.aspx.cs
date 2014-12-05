@@ -39,12 +39,39 @@ public partial class asp_fxsglclcl : System.Web.UI.Page
         string sSQL = "";
         if (ppid1=="")
         {
-            sSQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where fxs_id=" + fxs_id;
+            //--------------李宗鹏分页开始--------------------------------------------------------------------------------------------------------------------------------------------------------
+            //获取当前页和每页多少条
+            int pageIndex = Request["pageIndex"] == null ? 1 : int.Parse(Request["pageIndex"]);
+            int pageSize = Request["pageSize"] == null ? 10 : int.Parse(Request["pageSize"]);
+            //总条数
+            int total = Convert.ToInt32(MySqlHelper.ExecuteScalar("select count(*) from  供应商材料表 where fxs_id='" + fxs_id + "'"));
+
+            string pageHtml = PagingHelper.ShowPageNavigate(pageIndex, pageSize, total);
+            sSQL = "select top " + pageSize + " cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where  fxs_id='" + fxs_id + "' and myID not in(select top " + (pageIndex - 1) * pageSize + " myID from 供应商材料表 where  fxs_id='" + fxs_id + "' order by myID asc)order by myID asc";
+            this.pageDiv.InnerHtml = pageHtml;
+            this.fxsid.Value = fxs_id;
+            this.ppid.Value = ppid1;
+            //--------------李宗鹏分页结束--------------------------------------------------------------------------------------------------------------------------------------------------------
+            //老不分页
+            //sSQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where fxs_id=" + fxs_id;
             dtcl = objConn.GetDataTable(sSQL);
         }
         else
         {
-            sSQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where pp_id='" + ppid1 + "' and fxs_id=" + fxs_id;
+            //--------------李宗鹏分页开始--------------------------------------------------------------------------------------------------------------------------------------------------------
+            //获取当前页和每页多少条
+            int pageIndex = Request["pageIndex"] == null ? 1 : int.Parse(Request["pageIndex"]);
+            int pageSize = Request["pageSize"] == null ? 10 : int.Parse(Request["pageSize"]);
+            //总条数
+            int total = Convert.ToInt32(MySqlHelper.ExecuteScalar("select count(*) from  供应商材料表 where pp_id='" + ppid1 + "' and fxs_id='" + fxs_id+"'"));
+
+            string pageHtml=PagingHelper.ShowPageNavigate(pageIndex,pageSize,total);
+            sSQL = "select top "+pageSize+" cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where pp_id='" + ppid1 + "'and fxs_id='" + fxs_id+"' and myID not in(select top "+(pageIndex-1)*pageSize+" myID from 供应商材料表 where pp_id='" + ppid1 + "' and fxs_id='" + fxs_id+"' order by myID asc)order by myID asc";
+            this.pageDiv.InnerHtml=pageHtml;
+            this.fxsid.Value = fxs_id;
+            this.ppid.Value = ppid1;
+            //--------------李宗鹏分页结束--------------------------------------------------------------------------------------------------------------------------------------------------------
+            //sSQL = "select cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where pp_id='" + ppid1 + "' and fxs_id=" + fxs_id;
             dtcl = objConn.GetDataTable(sSQL);
         }
         if (!IsPostBack)

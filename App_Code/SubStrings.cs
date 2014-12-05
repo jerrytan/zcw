@@ -35,5 +35,35 @@ public class SubStrings
         }
         return sb.ToString();
     }
-    
+    /// <summary>
+    /// 把字符串截取成固定长度，多余的用...
+    /// </summary>
+    /// <param name="width">要截取的宽度（多少个汉子的宽度）</param>
+    /// <param name="strs">要截取的字符串</param>
+    /// <param name="strs">鼠标放到"..."中显示的全称（title属性）</param>
+    /// <returns></returns>
+    public static string GetWidth( int width, string strs,string title)
+    {
+        StringBuilder sb = new StringBuilder();
+        int temp = 0;
+        for (int i = 0; i < strs.Length; i++)
+        {
+            if ((int)strs[i] > 127 && temp < width*2)
+            {
+                sb.Append(strs[i]);
+                temp = temp + 2;
+            }
+            else if ((int)strs[i] < 127 && temp < width*2)
+            {
+                sb.Append(strs[i]);
+                temp = temp + 1;
+            }
+            else
+            {
+                sb.Append("<a href='javascript:;' onclick='return false;' style='font-weight:bold' title='"+title+"'>...</a>");
+                break;
+            }
+        }
+        return sb.ToString();
+    }
 }
