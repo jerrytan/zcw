@@ -56,15 +56,17 @@
         function ppgys(obj)
         {
             var ppid = obj;
-            var h = obj.parentNode.parentNode;
+//            var h = obj.parentNode.parentNode;
 
-            var a = h.getElementsByTagName("a");
-            for (var i = 0; i < a.length; i++) {
-                a[i].style.color = "#707070";
-            }
-            obj.style.color = "#4876FF";
-            var flbm = value;
-
+//            alert("3");
+//            var a = h.getElementsByTagName("a");
+//            alert("4");
+//            for (var i = 0; i < a.length; i++) {
+//                a[i].style.color = "#707070";
+//            }
+//            alert("5");
+//            obj.style.color = "#4876FF";
+//            var flbm = value;
             document.getElementById("cgsglgys_iframe").src = "Cgsgzgys.aspx?s_yh_id=<%=s_yh_id %>&ppid=" + ppid;
         }
 

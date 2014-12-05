@@ -149,7 +149,7 @@
             <%}%>
             欢迎来到众材网！
               <div style="float:right"><span style="font-weight:bold;">
-    <a href="hyyhgl.aspx">[会员用户管理主页面]</a></span>&nbsp;&nbsp;&nbsp;&nbsp;[<a href="index.aspx">退出登录</a>]
+    <a href="hyyhgl.aspx">[会员用户管理主页面]</a></span><%--&nbsp;&nbsp;&nbsp;&nbsp;[<a href="index.aspx">退出登录</a>]--%>
         </div>
         </div>
     </div>
@@ -253,7 +253,7 @@
                 <td height="40">
                     &nbsp;
                 </td>
-                <td>
+                <td style=' width:130px;'>
                     资产总额（万元）：
                 </td>
                 <td>
