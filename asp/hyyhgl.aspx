@@ -222,6 +222,7 @@
     </script>
 </head>
 <body>
+    <link href="css/Paging.css" rel="stylesheet" type="text/css" />
     <script runat="server">
     
         protected DataTable dtGys = new DataTable();
@@ -240,7 +241,7 @@
         public string yh_lx = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-            //*******************两种登录方式后的值
+            //*******************两种登录方式后的值****************************************************************************************
             if (Request.Cookies["GYS_QQ_ID"] != null || Request.Cookies["CGS_QQ_ID"] != null)
             {
                 HttpCookie QQ_id = null;
@@ -273,7 +274,7 @@
                 string sql = "select 姓名,yh_id,dw_id,类型 from 用户表 where yh_id='" + s_yh_id + "'";
                 dt_Yh = dc.GetDataTable(sql);
             }
-            //*********************************************
+            //***********************************************************************************************************************************
             string sql_dwid = "0";
             if (dt_Yh != null && dt_Yh.Rows.Count > 0)
             {
@@ -284,14 +285,30 @@
             }
             dwid = Convert.ToInt32(sql_dwid);
 
-
-            string sql_js = "";
-            sql_js = "select QQ号码,姓名,手机,邮箱,角色权限,yh_id from 用户表 where dw_id='" + dwid + "' and 等级<>'企业用户'";
-            dt_js = dc.GetDataTable(sql_js);
+            //***************************小李分页开始**************************************************************************************************
+            //List<BranchModel> list = new List<BranchModel>();
+            int pageIndex = Request["pageIndex"] == null ? 1 : int.Parse(Request["pageIndex"]);
+            int pageSize = Request["pageSize"] == null ? 5 : int.Parse(Request["pageSize"]);
+            //总条数
+            int total = Convert.ToInt32(MySqlHelper.ExecuteScalar("select count(*) from 用户表 where dw_id='" + dwid + "' and 等级<>'企业用户'"));
+            string PageHtml = PagingHelper.ShowPageNavigate(pageIndex, pageSize, total);
+            this.pageHtmls.InnerHtml = PageHtml;
+            string sqlVIP = "select top "+pageSize+" QQ号码,姓名,手机,邮箱,角色权限,yh_id from 用户表 where dw_id='" + dwid + "' and 等级<>'企业用户' and myID not in(select top "+((pageIndex-1)*pageSize)+" myID from 用户表 where dw_id='" + dwid + "' and 等级<>'企业用户' order by myID asc) order by myID asc";
+            
+            dt_js = dc.GetDataTable(sqlVIP);
             if (!IsPostBack)
             {
                 createlm(dt_js);
             }
+            //***************************小李分页结束**************************************************************************************************
+            //老不分页
+            //string sql_js = "";
+            //sql_js = "select QQ号码,姓名,手机,邮箱,角色权限,yh_id from 用户表 where dw_id='" + dwid + "' and 等级<>'企业用户'";
+            //dt_js = dc.GetDataTable(sql_js);
+            //if (!IsPostBack)
+            //{
+            //    createlm(dt_js);
+            //}
 
         }
         /// <summary>
@@ -445,7 +462,7 @@
             }
 
         }
-
+        //----------------------旧版的检索------------------------
         private void createlm(DataTable objDt)
         {
             ListItem objItem = null;
@@ -783,22 +800,27 @@
             <div style="text-align: center">
                 <!--加入div控制分页居中-->
                 <div class="fy2">
-                    <div class="fy3">
-                        <% if (current_page <= 1 && pageCount_page > 1)
+                    <%--<div class="fy3" runat="server" id="pageHtmls" >--%>
+                    <div runat="server" id="pageHtmls" class="paginator">
+                       <%-- <% if (current_page <= 1 && pageCount_page > 1)
                            {%>
-                        <font class="p" style="color: Gray">首页</font> <a href="hyyhgl.aspx?p=<%=current_page+1 %>"
-                            class="p" style="color: Black">下一页</a> <a href="hyyhgl.aspx?p=<%=pageCount_page %>"
-                                class="p" style="color: Black">末页</a>
+                        <font class="p" style="color: Gray">首页</font> 
+                        <input type="button" id="btnShouye" name="btnShouye" value="首页" />
+                        <input type="button" name="btnPre" id="btnPre" value="上一页" />
+                        <input type="button" name="btnNext" id="btnNext" value="上一页" />
+                        <input type="button" name="btnMoye" id="btnMoye" value="末页" />
+                        <a href="hyyhgl.aspx?p=<%=current_page+1 %>" class="p" style="color: Black">下一页</a> 
+                        <a href="hyyhgl.aspx?p=<%=pageCount_page %>" class="p" style="color: Black">末页</a>
                         <%} %>
                         <% else if (current_page <= 1 && pageCount_page <= 1)
                             {%>
                         <% }%>
                         <% else if (!(current_page <= 1) && !(current_page == pageCount_page))
                             { %>
-                        <a href="hyyhgl.aspx?p=<%=1 %>" class="p" style="color: Black">首页</a> <a href="hyyhgl.aspx?p=<%=current_page-1 %>"
-                            class="p" style="color: Black">上一页</a> <a href="hyyhgl.aspx?p=<%=current_page+1 %>"
-                                class="p" style="color: Black">下一页</a> <a href="hyyhgl.aspx?p=<%=pageCount_page %>"
-                                    class="p" style="color: Black">末页</a>
+                        <a href="hyyhgl.aspx?p=<%=1 %>" class="p" style="color: Black">首页</a>
+                         <a href="hyyhgl.aspx?p=<%=current_page-1 %>" class="p" style="color: Black">上一页</a>
+                         <a href="hyyhgl.aspx?p=<%=current_page+1 %>"class="p" style="color: Black">下一页</a> 
+                         <a href="hyyhgl.aspx?p=<%=pageCount_page %>"class="p" style="color: Black">末页</a>
                         <%}%>
                         <% else if (current_page == pageCount_page)
                             { %>
@@ -810,13 +832,13 @@
                             <%--   <% foreach (var v in this.Items)
                 { %>
                     <option value="<%=v.Value %>" <%=v.SelectedString %>><%=v.Text %></option>
-                <%} %>--%>
+                <%} %>--
                         </select>
                         <font style="color: Black">页&nbsp;&nbsp;&nbsp;第
                             <%=current_page %>
                             页/共
                             <%=pageCount_page %>
-                            页</font>
+                            页</font>--%>
                     </div>
                 </div>
             </div>

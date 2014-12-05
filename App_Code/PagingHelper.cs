@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Text;
 /// <summary>
@@ -16,10 +17,10 @@ public class PagingHelper
     /// <returns></returns>
     public static string ShowPageNavigate(int currentPage, int pageSize, int totalCount)
     {
-        var redirectTo = "";
+        string redirectTo = "";
         pageSize = pageSize == 0 ? 3 : pageSize;
-        var totalPages = Math.Max((totalCount + pageSize - 1) / pageSize, 1); //总页数
-        var output = new StringBuilder();
+        int totalPages = Math.Max((totalCount + pageSize - 1) / pageSize, 1); //总页数
+        StringBuilder output = new StringBuilder();
         if (totalPages > 1)
         {
             //if (currentPage != 1)
@@ -70,19 +71,6 @@ public class PagingHelper
         }
         output.AppendFormat("第{0}页 / 共{1}页", currentPage, totalPages);//这个统计加不加都行
 
-        string outStr = "";
-        if (pageSize == 10)
-        {
-            outStr = "<lable style='float:left;'>每页</lable><select class='sltPage' style='width: 100px; float:left;'><option value='10' selected='selected'>10</option><option value='20'>20</option><option value='30'>30</option></select><lable style='float:left;'>条</lable>" + output.ToString();
-        }
-        else if (pageSize == 20)
-        {
-            outStr = "<lable style='float:left;'>每页</lable><select class='sltPage' style='width: 100px; float:left;'><option value='10'>10</option><option value='20' selected='selected'>20</option><option value='30'>30</option></select><lable style='float:left;'>条</lable>" + output.ToString();
-        }
-        else if (pageSize == 30)
-        {
-            outStr = "<lable style='float:left;'>每页</lable><select class='sltPage' style='width: 100px; float:left;'><option value='10'>10</option><option value='20' selected='selected'>20</option><option value='30' selected='selected'>30</option></select><lable style='float:left;'>条</lable>" + output.ToString();
-        }
-        return outStr;
+        return output.ToString();
     }
 }
