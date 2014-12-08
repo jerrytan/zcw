@@ -12,40 +12,55 @@ public partial class asp_static_Cgsgzcl : System.Web.UI.Page
     public DataConn objConn = new DataConn();           //DataHelper类
     public string sSQL = "";                            //Sql语句
     //public string s_yh_id = "";                         //用户ID
-   public string clbm = "";
-   public string dwid = "";
+    public string clbm = "";
+    public string dwid = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-            string s_yh_id = Request["s_yh_id"];            
-            string sql_dwid = "select dw_id from 用户表 where yh_id='"+s_yh_id+"'";
-              dwid = objConn.DBLook(sql_dwid);
-            
-            if (Request["clbm"]!=null&&Request["clbm"].ToString()!="")
-            {
-                clbm = Request["clbm"].ToString();
-            }
-            if (string.IsNullOrEmpty(clbm))
-            {
-                sSQL = @"select top 10 收藏人QQ,收藏人,材料表.cl_id,显示名,生产厂商,品牌名称,地区名称,地址,规格型号,采购商关注的材料表.收藏时间 from 采购商关注的材料表   
+        string s_yh_id = Request["s_yh_id"];
+        string sql_dwid = "select dw_id from 用户表 where yh_id='" + s_yh_id + "'";
+
+        dwid = objConn.DBLook(sql_dwid);
+        if (Request["clbm"] != null && Request["clbm"].ToString() != "")
+        {
+            clbm = Request["clbm"].ToString();
+        }
+        if (string.IsNullOrEmpty(clbm))
+        {
+            sSQL = @"select top 10 收藏人QQ,收藏人,材料表.cl_id,显示名,生产厂商,品牌名称,地区名称,地址,规格型号,采购商关注的材料表.收藏时间 from 采购商关注的材料表   
                     left join 材料表 on 采购商关注的材料表.cl_id=材料表.cl_id  
                     left join 材料供应商信息表 on 材料供应商信息表.gys_id=材料表.gys_id 
                     where isnull(材料表.cl_id,'')<>'' and isnull(采购商关注的材料表.材料名称,'')<>'' and isnull(采购商关注的材料表.材料编码,'')<>'' and 采购商关注的材料表.dw_id='" + dwid + "' order by 采购商关注的材料表.收藏时间 desc";          //加载材料前10条信息
-                dt_topcl = objConn.GetDataTable(sSQL);
-                
-            }
-            else
-            {
-                sSQL = @"select  收藏人QQ,收藏人,材料表.cl_id,显示名,生产厂商,地区名称,品牌名称,地址,规格型号,采购商关注的材料表.收藏时间 from 采购商关注的材料表   
-                    left join 材料表 on 采购商关注的材料表.cl_id=材料表.cl_id  
-                    left join 材料供应商信息表 on 材料供应商信息表.gys_id=材料表.gys_id 
-                    where isnull(材料表.cl_id,'')<>'' and isnull(采购商关注的材料表.材料名称,'')<>'' and isnull(采购商关注的材料表.材料编码,'')<>'' and 采购商关注的材料表.dw_id='" + dwid + "' and SUBSTRING(材料表.材料编码,1," + clbm.Length + ")= " + clbm + "  order by 采购商关注的材料表.收藏时间 desc";        //加载材料前10条信息
-                dt_topcl = objConn.GetDataTable(sSQL);
-                 
-            }
-            if (!IsPostBack)
-            {
-                createlm(dt_topcl);
-            }
+            dt_topcl = objConn.GetDataTable(sSQL);
+
+        }
+        else
+        {
+            //-----------------李宗鹏分页开始----------------------------------------------------------------------------------------------------------------------------------------------------------
+            //获取当前页和每页多少条
+            int pageIndex = Request["pageIndex"] == null ? 1 : int.Parse(Request["pageIndex"]);
+            int pageSize = Request["pageSize"] == null ? 10 : int.Parse(Request["pageSize"]);
+            //总条数
+            int total = Convert.ToInt32(MySqlHelper.ExecuteScalar("select count(*) from Viewcgsglcl where dw_id='" + dwid + "' and SUBSTRING(材料编码,1," + clbm.Length + ")= " + clbm + "  "));
+
+            string pageHtml = PagingHelper.ShowPageNavigate(pageIndex, pageSize, total);
+            sSQL = "select top " + pageSize + " * from Viewcgsglcl where dw_id='" + dwid + "' and SUBSTRING(材料编码,1," + clbm.Length + ")= " + clbm + " and cl_id not in (select top " + (pageIndex - 1) * pageSize + " cl_id from Viewcgsglcl where dw_id='" + dwid + "' and SUBSTRING(材料编码,1," + clbm.Length + ")= " + clbm + "  order by 收藏时间 desc)  order by 收藏时间 desc";
+
+            this.pageDiv.InnerHtml = pageHtml;
+            this.s_yh_idT.Value = s_yh_id;
+            this.clbmT.Value = clbm;
+
+            //-----------------李宗鹏分页结束----------------------------------------------------------------------------------------------------------------------------------------------------------
+            //                sSQL = @"select  收藏人QQ,收藏人,材料表.cl_id,显示名,生产厂商,地区名称,品牌名称,地址,规格型号,采购商关注的材料表.收藏时间 from 采购商关注的材料表   
+            //                    left join 材料表 on 采购商关注的材料表.cl_id=材料表.cl_id  
+            //                    left join 材料供应商信息表 on 材料供应商信息表.gys_id=材料表.gys_id 
+            //                    where isnull(材料表.cl_id,'')<>'' and isnull(采购商关注的材料表.材料名称,'')<>'' and isnull(采购商关注的材料表.材料编码,'')<>'' and 采购商关注的材料表.dw_id='" + dwid + "' and SUBSTRING(材料表.材料编码,1," + clbm.Length + ")= " + clbm + "  order by 采购商关注的材料表.收藏时间 desc";        //加载材料前10条信息
+            dt_topcl = objConn.GetDataTable(sSQL);
+
+        }
+        if (!IsPostBack)
+        {
+            createlm(dt_topcl);
+        }
     }
     //*****************************小张新增检索功能开始*********************************
     protected void filter_Click(object sender, System.EventArgs e)
@@ -175,13 +190,13 @@ public partial class asp_static_Cgsgzcl : System.Web.UI.Page
         }
         if (strCondition == "")
         {
-            string sql ="select * from ("+ sql_js+")#temp order by 收藏时间";
+            string sql = "select * from (" + sql_js + ")#temp order by 收藏时间";
             dt_topcl = objConn.GetDataTable(sql);
         }
         else
         {
             string sql = sql_js;
-            sql = "select * from (" + sql + ")#temp where " + strCondition+" order by 收藏时间";
+            sql = "select * from (" + sql + ")#temp where " + strCondition + " order by 收藏时间";
             dt_topcl = objConn.GetDataTable(sql);
         }
     }
@@ -190,7 +205,7 @@ public partial class asp_static_Cgsgzcl : System.Web.UI.Page
     {
         ListItem objItem = null;
         if (objDt != null)
-        {            
+        {
             for (int i = 0; i < objDt.Columns.Count; i++)
             {
                 switch (objDt.Columns[i].ColumnName)

@@ -11,8 +11,17 @@
     <script src="js/cgsgl2.js" type="text/javascript"></script>
     <script src="js/cgsgzl.js" type="text/javascript"></script>
     <script src="js/SJLD.js" type="text/javascript"></script>
-    <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <link href="css/Paging.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
+        $(function () {
+            $("#pageDiv a").click(function () {
+                var hrefStr = $(this).attr("href");
+                var hrStr = hrefStr + "&ppid=" + $("#ppidT").val();
+                $(this).attr("href", hrStr);
+            });
+        });
+
+
         function readGysxx(obj) {
             //            window.parent.location.href = "clxx.aspx?cl_id=" + obj;
             window.open("gysxx.aspx?gys_id=" + obj);
@@ -120,6 +129,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+    <input type="hidden" name="ppidT" id="ppidT" value="" runat="server" />
     <input runat="server" type="hidden" id="dwid" />
     <div>
         <div class="jiansuo3">
@@ -192,7 +202,7 @@
                         <%=dr["供应商"]%>
                     </td>
                     <td align="left">
-                        <%=dr["地区名称"]%>
+                        <%=SubStrings.GetWidth(5, dr["地区名称"].ToString(), dr["地区名称"].ToString())%>
                     </td>
                     <td>
                         <%=dr["主页"]%>
@@ -237,24 +247,9 @@
                               }%>
             </tbody>
         </table>
-        <table width="100%" align="left" cellpadding="0" cellspacing="0">
-            <tr>
-                <td width="200" height="40" align="left" valign="middle">
-                    共页/当前第页
-                </td>
-                <td align="right" valign="middle">
-                    <a href="#">首页</a> <a href="#">上一页</a> <a href="#">下一页</a> <a href="#">尾页</a> 转到第
-                    <input name="textfield244" type="text" class="queding_bk" size="3" />
-                    页
-                    <input type="submit" name="btnDocNew" value="确定" onclick="return VerifyMyIMP();"
-                        class="filter" style="color: Black; border-style: None; font-family: 宋体; font-size: 12px;
-                        height: 20px; width: 37px; cursor: pointer;" />
-                </td>
-                <td width="40" align="right" valign="middle">
-                    &nbsp;
-                </td>
-            </tr>
-        </table>
+         <!--分页-->
+    <div id="pageDiv" class="paginator" runat="server">   
+    </div>
     </div>
     </form>
 </body>

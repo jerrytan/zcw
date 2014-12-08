@@ -63,7 +63,26 @@ public partial class asp_Cgsgzgys : System.Web.UI.Page
         }
         else
         {
-            sSQL = "select gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id='" + ppid + "')";
+            //sSQL = "select gys_id,供应商,主页,地区名称 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id='" + ppid + "')";
+            //----------------------李宗鹏分页开始-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            string msgSql = "select * from dbo.品牌字典 where pp_id='"+ppid+"'";
+
+            DataTable dt = MySqlHelper.GetTable(msgSql);
+            string scsid=dt.Rows[0]["scs_id"].ToString();
+            string ppmc = dt.Rows[0]["品牌名称"].ToString();
+
+            //获取当前页和每页多少条
+            int pageIndex = Request["pageIndex"] == null ? 1 : int.Parse(Request["pageIndex"]);
+            int pageSize = Request["pageSize"] == null ? 10 : int.Parse(Request["pageSize"]);
+            //总条数
+            int total = Convert.ToInt32(MySqlHelper.ExecuteScalar("select count(*) from Viewglfxsxx where  品牌名称='" + ppmc + "' and pp_id='" + ppid + "' and 生产厂商ID='" + scsid + "'  "));
+
+            string pageHtml = PagingHelper.ShowPageNavigate(pageIndex, pageSize, total);
+
+            sSQL = " select top " + pageSize + " gys_id,供应商,地区名称,注册日期,注册资金,电话,是否启用,主页 from dbo.Viewglfxsxx where gys_id not in (select top " + ((pageIndex - 1) * pageSize) + " gys_id from dbo.Viewglfxsxx where  品牌名称='" + ppmc + "' and pp_id='" + ppid + "' and 生产厂商ID='" + scsid + "'  order by updatetime desc) and 品牌名称='" + ppmc + "' and pp_id='" + ppid + "' and 生产厂商ID='" + scsid + "'  order by updatetime desc ";
+            this.ppidT.Value = ppid;
+            this.pageDiv.InnerHtml = pageHtml;
+            //----------------------李宗鹏分页结束-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
            
             dt_topfxs = objConn.GetDataTable(sSQL);
         }

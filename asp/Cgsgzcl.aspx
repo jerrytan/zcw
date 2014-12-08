@@ -17,7 +17,15 @@
     <script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>
     <script src="js/cgsgl2.js" type="text/javascript"></script>
     <script src="js/cgsgzl.js" type="text/javascript"></script>
+    <link href="css/Paging.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
+        $(function () {
+            $("#pageDiv a").click(function () {
+                var hrefStr = $(this).attr("href");
+                var hrStr = hrefStr + "&s_yh_id=" + $("#s_yh_idT").val() + "&clbm=" + $("#clbmT").val();
+                $(this).attr("href", hrStr);
+            });
+        });
         function readClxx(obj) {
 //            window.parent.location.href = "clxx.aspx?cl_id=" + obj;
             window.open("clxx.aspx?cl_id=" + obj);
@@ -126,7 +134,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-          
+    <input type="hidden" name="s_yh_idT" id="s_yh_idT" value="" runat="server" />
+    <input type="hidden" name="clbmT" id="clbmT" value="" runat="server" />
     <div>
                     <div id="jiansuo2" >
                             <asp:Label ID="shaixu" runat="server"><font style="FONT-SIZE: 9pt">&nbsp;&nbsp;检索条件：</font></asp:Label>
@@ -238,7 +247,10 @@
                              }%>
                         </tbody>
                     </table>
-                     <table width="100%" align="left" cellpadding="0" cellspacing="0">
+                     <!--分页-->
+    <div id="pageDiv" class="paginator" runat="server">   
+    </div>
+                   <%--  <table width="100%" align="left" cellpadding="0" cellspacing="0">
                         <tr>
                             <td width="200" height="40" align="left" valign="middle">
                                 共7页/当前第1页
@@ -255,7 +267,7 @@
                                 &nbsp;
                             </td>
                         </tr>
-                    </table>
+                    </table>--%>
     </div>
     </form>
 </body>

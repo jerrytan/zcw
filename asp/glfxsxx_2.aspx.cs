@@ -58,7 +58,7 @@ public partial class asp_glfxsxx_2 : System.Web.UI.Page
             string pageIndex = this.pageI.Value == "" ? "1" : this.pageI.Value;
             //获取每页多少条数据
             string pageSize = this.pageS.Value == "" ? "10" : this.pageS.Value;
-            sSQL = " select top " + Convert.ToInt32(pageSize) + " gys_id,供应商,地区名称,注册日期,注册资金,电话,是否启用 from dbo.Viewglfxsxx where gys_id not in (select top " + (((Convert.ToInt32(pageIndex) - 1) * Convert.ToInt32(pageSize)) + 1) + " gys_id from dbo.Viewglfxsxx where  品牌名称='" + pp_mc + "' and pp_id='" + pp_id + "' and 生产厂商ID='" + gys_id + "'  order by updatetime desc) and 品牌名称='" + pp_mc + "' and pp_id='" + pp_id + "' and 生产厂商ID='" + gys_id + "'  order by updatetime desc ";
+            sSQL = " select top " + Convert.ToInt32(pageSize) + " gys_id,供应商,地区名称,注册日期,注册资金,电话,是否启用 from dbo.Viewglfxsxx where gys_id not in (select top " + (((Convert.ToInt32(pageIndex) - 1) * Convert.ToInt32(pageSize)) ) + " gys_id from dbo.Viewglfxsxx where  品牌名称='" + pp_mc + "' and pp_id='" + pp_id + "' and 生产厂商ID='" + gys_id + "'  order by updatetime desc) and 品牌名称='" + pp_mc + "' and pp_id='" + pp_id + "' and 生产厂商ID='" + gys_id + "'  order by updatetime desc ";
             dt_gxs = objConn.GetDataTable(sSQL);
             //数据总条数
             string totalsql = "select count(*) from Viewglfxsxx where  品牌名称='" + pp_mc + "' and pp_id='" + pp_id + "' and 生产厂商ID='" + gys_id + "'  ";
