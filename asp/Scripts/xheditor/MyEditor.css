@@ -1,0 +1,122 @@
+/*====== Stylesheet for MyEditor ==*\
+     Object: MyEditor.css
+     Author: meizz
+Last Update: 2007-02-28
+\*======================================*/
+
+div.MyEditorMenubar
+{
+    margin: 0px;
+    padding: 3px;
+    border: solid 1px #9B9B9B;
+    background: #FFFFFF url(MyEditor/bgMenubar.gif) repeat-x bottom;
+}
+/*
+div.MyEditorMenubar .layer1{background: url(MyEditor/vline.gif) repeat-y left;}
+div.MyEditorMenubar .layer2{background: url(MyEditor/vline.gif) repeat-y right;}
+*/
+div.MyEditorMenubar input.menuitem
+{
+  border: 0px;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  margin-right: 2px;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+div.MyEditorMenubar input, div.MyEditorMenubar a, div.MyEditorMenubar select{vertical-align: middle;}
+div.MyEditorMenubar input.space
+{
+  width: 8px;
+  font-size: 1px;
+  background-position: center 2px;
+}
+div.MyEditorStatusbar{font-size: 12px;}
+div.MyEditorStatusbar span{float: right;margin: 3px 3px 0 0; color: #666666}
+
+/******* textarea ******/
+textarea.MyEditor{border: solid 1px #9B9B9B;}
+
+/**** MyEditorMenubar input ****/
+div.MyEditorMenubar input.bold{background-image: url(MyEditor/bold.gif);}
+div.MyEditorMenubar input.italic{background-image: url(MyEditor/italic.gif);}
+div.MyEditorMenubar input.underline{background-image: url(MyEditor/underline.gif);}
+div.MyEditorMenubar input.strikethrough{background-image: url(MyEditor/strikethrough.gif);}
+div.MyEditorMenubar input.swf{background-image: url(MyEditor/swf.gif);}
+div.MyEditorMenubar input.code{background-image: url(MyEditor/code.gif);}
+div.MyEditorMenubar input.color{background-image: url(MyEditor/color.gif);}
+div.MyEditorMenubar input.movie{background-image: url(MyEditor/movie.gif);}
+div.MyEditorMenubar input.left{background-image: url(MyEditor/left.gif);}
+div.MyEditorMenubar input.right{background-image: url(MyEditor/right.gif);}
+div.MyEditorMenubar input.center{background-image: url(MyEditor/center.gif);}
+div.MyEditorMenubar input.url{background-image: url(MyEditor/url.gif);}
+div.MyEditorMenubar input.email{background-image: url(MyEditor/email.gif);}
+div.MyEditorMenubar input.image{background-image: url(MyEditor/image.gif);}
+div.MyEditorMenubar input.space{background-image: url(MyEditor/space.gif);}
+div.MyEditorMenubar input.increase{background-image: url(MyEditor/increase.gif);}
+div.MyEditorMenubar input.decrease{background-image: url(MyEditor/decrease.gif);}
+div.MyEditorMenubar input.fontsize{background-image: url(MyEditor/fontsize.gif);}
+div.MyEditorMenubar input.help{background-image: url(MyEditor/help.gif);}
+
+
+.MyEditorColorLayer
+{
+    z-index: 1;
+    position: absolute;
+    border: solid 1px #808080;
+}
+
+.MyEditorColorLayer table{background-color: #F5F5F5;}
+.MyEditorColorLayer td
+{
+    width: 10px;
+    height: 10px;
+    font-size: 1px;
+    line-height: 10px;
+    border: solid 1px #808080;
+}
+.MyEditorColorLayer td input.text{border: inset 1px #808080; height: 18px; margin: 1px;}
+.MyEditorColorLayer td input.button{border: outset 1px #808080; height: 18px; margin: 1px;}
+
+/**/
+.MyEditorCodeLayer
+{
+    z-index: 1;
+    width: 100px;
+    font-size: 12px;
+    position: absolute;
+    background-color: #FFFFFF;
+    border: solid 1px #808080;
+}
+.MyEditorCodeLayer div
+{
+    height: 20px;
+    padding: 0 5px;
+    cursor: default;
+    line-height: 20px;
+    border-bottom: solid 1px #EEEEEE;
+}
+
+
+
+/**/
+.MyEditorFontsizeLayer
+{
+    z-index: 1;
+    font-size: 12px;
+    position: absolute;
+    background-color: #F5F5F5;
+    border: solid 1px #808080;
+}
+.MyEditorFontsizeLayer td
+{
+    height: 14px;
+    font-size: 12px;
+    cursor: default;
+    text-align: center;
+    background-color: #FFFFFF;
+    border: solid 1px #D4D0C8;
+}
+

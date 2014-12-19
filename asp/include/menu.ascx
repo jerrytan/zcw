@@ -54,7 +54,7 @@
             str_Sql1Top7 = "select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 in (08,07,02,04,05,01,06) order by 分类编码 desc";
            } 
             //暂时只显示人工挑选的7个，12-10 add by 谭中意         
-			string str_Sql2All = "select distinct  显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=4 ";
+			string str_Sql2All = "select distinct  显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=4 order by 分类编码 ";
 			string str_1After7 = "select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 not in(08,07,02,04,05,01,06 )";
             
             dt_1Top7 = dc.GetDataTable(str_Sql1Top7);
@@ -81,7 +81,7 @@
 
             if(this.Items1.Count<7)//如果用户关注的类别少于7个
             {
-              string sqlOther="select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 not in(" + typeStr + ") and 分类编码 in(08,07,02,04,05,01,06) order by 分类编码 desc";
+              string sqlOther="select 显示名字,分类编码 from 材料分类表 where 是否启用=1 and len(分类编码)=2 and 分类编码 not in(" + typeStr + ") and 分类编码 in(08,07,02,04,05,01,06) order by 分类编码";
               DataTable dt_sqlOther=dc.GetDataTable(sqlOther);
               for(int x=0;x<dt_sqlOther.Rows.Count;x++)
                 {

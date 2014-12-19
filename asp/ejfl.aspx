@@ -91,7 +91,7 @@
        
             dt_flsx=dc_obj.GetDataTable(str_sqlflsx);
 
-            string str_sqlflsxz="select flsxz_id,属性值,flsx_id from dbo.材料分类属性值表";
+            string str_sqlflsxz="select flsxz_id,属性值,flsx_id from dbo.材料分类属性值表 order by 编号";
   
             dt_flsxz=dc_obj.GetDataTable(str_sqlflsxz);
              

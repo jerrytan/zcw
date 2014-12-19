@@ -66,4 +66,50 @@ public class SubStrings
         }
         return sb.ToString();
     }
+    /// <summary>
+    /// UTF8转换GB2312
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    public static string UTF8ToGB2312(string str)
+    {
+        try
+        {
+            Encoding utf8 = Encoding.UTF8;
+            Encoding gb2312 = Encoding.GetEncoding("gb2312");//Encoding.Default ,936
+            byte[] temp = utf8.GetBytes(str);
+            byte[] temp1 = Encoding.Convert(utf8, gb2312, temp);
+            string result = gb2312.GetString(temp1);
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// GB2312转换UTF8
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    public static string GB2312ToUTF8(string str)
+    {
+        try
+        {
+            Encoding utf8 = Encoding.UTF8;
+            Encoding gb2312 = Encoding.GetEncoding("GB2312");
+            byte[] unicodeBytes = gb2312.GetBytes(str);
+            byte[] asciiBytes = Encoding.Convert(gb2312, utf8, unicodeBytes);
+            char[] asciiChars = new char[utf8.GetCharCount(asciiBytes, 0, asciiBytes.Length)];
+            utf8.GetChars(asciiBytes, 0, asciiBytes.Length, asciiChars, 0);
+            string result = new string(asciiChars);
+            return result;
+        }
+        catch
+        {
+            return "";
+        }
+    }
+    
 }

@@ -1,0 +1,142 @@
+/* CSS Document */
+/* 后台页面样式*/
+.houtai{ width:1000px;}
+.dlqqz_ht{ width:815px; height:auto; float:left; border:1 solid #95c9e1; padding-top:10px;}
+.ht_dq {height:30px; line-height:30px; margin-top:10px; border-bottom:#ddd solid 1px;}
+.ht_top {
+	height:70px;
+	width:1000px;
+	text-align:right;
+	padding:0;
+	background-image:url(../images/ht_top.jpg);
+	line-height:30px;
+}
+.ht_top img { float:left;}
+.ht_left {width:170px; float:left; margin-right:10px;}
+.ht_right {width:820px; float:left;}
+/* 后台页面样式*/
+
+/* 新增材料页面样式*/
+.yeqian{
+	width:700px;
+	height:195px;
+	float:left;
+	padding:10px;
+	margin-left:10px;
+}
+.yeqian_cont{ width:700px; height:195px; border:#ddd 1px solid;}
+.yeqian1{ width:700px; height:195px;}
+.yq_img { width:335px; height:120px; margin-left:10px; float:left;}
+.yq_img2 {width:355px; height:auto; text-align:center; float:left; margin-top:20px;}
+.yq_img1 { width:60px; height:60px; background-image:url(../images/sccptp.jpg); float:left; margin-right:5px; margin-top:10px; border:#ddd 1px solid;}
+.guanbi {float:right;}
+.chp_wz {
+	width:62px;
+	height:20px;
+	line-height:20px;
+	text-align:center;
+	float:left;
+	top:52px;
+	position: relative;
+}
+.anniu_sc {
+	margin-left:10px; margin-top:40px; width:335px; float:left;
+	}
+.lib_yeqian {
+	BORDER-TOP: #ddd 0px solid; HEIGHT: 28px; POSITION: relative; FLOAT: left; PADDING-TOP: 2px; MARGIN-TOP: 5px; LINE-HEIGHT: 28px; WIDTH: 700px; BACKGROUND-COLOR: #fff
+}
+.lib_yeqian UL {
+	LIST-STYLE-TYPE: none; MARGIN-BOTTOM: 0px; HEIGHT: 20px; POSITION: absolute; LIST-STYLE-IMAGE: none; COLOR: #070707; TEXT-ALIGN: center; PADDING-TOP: 5px; PADDING-LEFT: 30px; LEFT: 0px; MARGIN-TOP: 0px; MARGIN-RIGHT: 0px
+}
+.lib_yeqian LI {
+	CURSOR: pointer; FONT-SIZE: 12px; HEIGHT: 20px; FLOAT: left; DISPLAY: block; LINE-HEIGHT: 20px; WIDTH: 80px; MARGIN-RIGHT: 0px
+}
+.lib_yeqian LI.hover {
+	FONT-SIZE: 12px; BORDER-TOP: #4ea6ee 3px solid; HEIGHT: 20px; BORDER-RIGHT: #4ea6ee 1px solid; BORDER-BOTTOM: #fff 1px solid; FONT-WEIGHT: bold; COLOR: #4ea6ee; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; BORDER-LEFT: #4ea6ee 1px solid; LINE-HEIGHT: 20px; PADDING-RIGHT: 0px; WIDTH: 80px; BACKGROUND-COLOR: #fff
+}
+.shr_wenzi80 { width:80px; height:20px; border:#ddd 1px solid;  line-height:20px;}
+.shr_wenzi400 { width:400px; height:20px;line-height:20px; border:#ddd 1px solid;}
+
+.shr_wenzi590 {
+ border: 1px solid #ddd; width: 620px; height: 40px; line-height: 20px; display: inline;
+}
+.shc_jindu {float:right; height:33px; margin-top:15px; }
+/* 新增材料页面样式*/
+
+/* 商品详情样式*/
+.spxq {
+	border:#4ea6ee 1px solid;
+}
+.bianqian {width:1000px; height:auto; float:left; margin-top:10px;}
+.lib_spxq {height:36px;line-height:36px;position:relative;width:800px; background-color:#fff;
+float:left;
+padding-top:2px;
+border-top:0px solid #ddd;
+}
+
+.lib_spxq ul{
+	padding-top:5px;
+	padding-left:30px;
+	list-style:none;
+	position:absolute;
+	left:0;
+	height:28px;
+	text-align:center;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	color: #070707;
+}
+.lib_spxq li{
+	float:left;
+	display:block;
+	cursor:pointer;
+	width:100px;
+	font-size:14px;
+	margin-right:0px;
+	height:28px;
+	line-height:28px;
+}
+.lib_spxq li.hover{
+	padding:0px;
+	width:100px;
+	font-size:14px;
+	border-top:3px solid #4ea6ee;
+	border-left:1px solid #4ea6ee;
+	border-bottom:1px solid #fff;
+	border-right:1px solid #4ea6ee;
+	color:#4ea6ee;
+	background-color:#fff;
+	height:28px;
+	line-height:28px;
+	font-weight: bold;
+}
+.bq_cont{ width:978px; height:auto; float:left;border:#4ea6ee solid 1px; padding:10px;
+};
+.spxq_lib { width:978px; height:auto;float:left; display: block;;
+	}
+.spxq_lib ul {
+ width: 978px;  float: left; white-space: nowrap; -ms-text-overflow: ellipsis; 
+}
+.spxq_lib ul li {
+	width:316px;
+	line-height:24px;
+	display: block;
+	float: left;
+	overflow: hidden;
+	padding-left: 10px;
+
+}
+.spxq_cont {width:958px; height:auto; border-top:#ddd 1px solid; margin-top:10px; float:left; padding:10px;}
+
+.wendang_cont { width:968px; height:auto; float:left; margin:10px 0;}
+.wendang_cont ul { width: 968px;  float: left; white-space: nowrap; -ms-text-overflow: ellipsis; text-align:center;}
+.wendang_cont  ul li {	width:459px;
+	line-height:30px;
+	display: block;
+	float: left;
+	overflow: hidden;
+	padding-left: 10px;}
+.wendang_cont img {vertical-align:middle;}
+.wendang_zs {width:976px; height:auto; float:left; border:#ddd 1px solid;}
+/* 商品详情样式*/

@@ -12,7 +12,7 @@ using System.Data.SqlClient;
 public class MySqlHelper
 {
     //DataConn dc = new DataConn();
-    private static string connStr = DataConn.conn; //"Data Source=192.168.1.32;Initial Catalog=mywt_mis_ZhongCaiWang02;User ID=mywtadmin; pwd=admin";// 
+    private static string connStr ; //"Data Source=192.168.1.32;Initial Catalog=mywt_mis_ZhongCaiWang02;User ID=mywtadmin; pwd=admin";// 
     /// <summary>
     /// 执行查询返回DataTable
     /// </summary>
@@ -21,6 +21,7 @@ public class MySqlHelper
     /// <returns></returns>
     public static DataTable GetTable(string sql, params SqlParameter[] param)
     {
+        connStr = DataConn.conn;
         using (SqlConnection conn = new SqlConnection(connStr))
         {
             DataTable dt = new DataTable();
@@ -43,6 +44,7 @@ public class MySqlHelper
     /// <returns></returns>
     public static int ExecuteNonQuery(string sql, params SqlParameter[] param)
     {
+        connStr = DataConn.conn;
         using (SqlConnection conn = new SqlConnection(connStr))
         {
             using (SqlCommand cmd = new SqlCommand(sql, conn))
@@ -64,6 +66,7 @@ public class MySqlHelper
     /// <returns></returns>
     public static object ExecuteScalar(string sql, params SqlParameter[] param)
     {
+        connStr = DataConn.conn;
         using (SqlConnection conn = new SqlConnection(connStr))
         {
             using (SqlCommand cmd = new SqlCommand(sql, conn))
@@ -79,6 +82,7 @@ public class MySqlHelper
     }
     public static SqlDataReader ExecuteReader(string sql, params SqlParameter[] param)
     {
+        connStr = DataConn.conn;
         using (SqlConnection conn = new SqlConnection(connStr))
         {
             using (SqlCommand cmd = new SqlCommand(sql, conn))
