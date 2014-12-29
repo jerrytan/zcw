@@ -270,14 +270,14 @@ where t.RowId between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize ";
                     <a href="clxx.aspx?cl_id=<%=row["cl_id"]%>">
 				    <%
 					    string str_sqltop1dz = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"
-                                                            +row["cl_id"]+"' and 大小='小'";
+                                                            +row["cl_id"]+"'"; //and 大小='小'";
                         string imgsrc= "images/222_03.jpg";
                         object result = dc_obj.DBLook(str_sqltop1dz);
                         if (result != null) 
                         {
                             imgsrc = result.ToString();
                         }
-                        Response.Write("<img src="+imgsrc+ " width=150px height=150px />") ;  
+                        Response.Write(@"<img src='http://192.168.1.22/"+imgsrc+ "' width=150px height=150px />") ;  
 				    %>
                     </a>
                 <span class="pxtu1" style="overflow:hidden"><%=row["显示名"].ToString()%></span>

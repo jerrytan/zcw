@@ -17,39 +17,59 @@
     <meta name="GENERATOR" content="MSHTML 11.00.9600.17239" />
     <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
+    <!--!+ MyControl 加载-->
+    <script src="Scripts/MyControl/MyControl.js" type="text/javascript"></script>
+
     <script src="js/jquery.form.js" type="text/javascript"></script>
     <%--<script src="http://malsup.github.io/jquery.form.js"></script>--%>
 
-    <link href="Scripts/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
     <!--+upload引用-->
+    <link href="Scripts/xheditor/xheditor_skin/default/ui.css" rel="stylesheet" type="text/css" />
+    <link href="Scripts/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
     <link href="css/houtai.css" rel="stylesheet" />
+    <script src="Scripts/ui/jquery-ui.custom.js" type="text/javascript"></script>
+
     <script src="Scripts/xheditor/xheditor-1.2.1.min.js" type="text/javascript"></script>
     <script src="Scripts/xheditor/xheditor_lang/zh-cn.js" charset="utf-8" type="text/javascript"></script>
-    <script src="Scripts/ui/jquery-ui.custom.js" type="text/javascript"></script>
     <script src="Scripts/XheditorUpload.js" type="text/javascript"></script>
+    <script src="Scripts/uploadify/jquery.uploadify3.1.js?ver=<%=(new Random()).Next(0, 99999).ToString() %>" type="text/javascript"></script>
+    <script src="Scripts/zcwUpload.js" type="text/javascript"></script>
     <script src="Scripts/DomUpload.js" type="text/javascript"></script>
     <style type="text/css">
-        .save {
+        .save
+        {
             background: transparent url(Scripts/xheditor/save.gif) no-repeat 18px 50px;
             background-position: 1px 1px;
             width: 50px;
             height: 18px;
             border: 0px;
         }
-
-        .close {
-            background: transparent url(Scripts/xheditor/small.gif) no-repeat 18px 50px;
+        
+        .close
+        {
+            background: transparent url(Scripts/xheditor/big.gif) no-repeat 18px 50px;
             background-position: 1px 1px;
             width: 50px;
             height: 18px;
             border: 0px;
         }
+        .imgUploadfy
+        {
+            background:transparent url(Scripts/xheditor/xheditor_skin/default/img/icons.gif) no-repeat 20px 20px;
+            background-position: -440px 0px;
+            width: 50px;
+            height: 18px;
+            border: 0px;
+        }
     </style>
-    <script src="Scripts/uploadify/jquery.uploadify3.1.js?ver=<%=(new Random()).Next(0, 99999).ToString() %>" type="text/javascript"></script>
-    <script src="Scripts/zcwUpload.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+
+
+
+
         function setTab(name, cursel, n) {
+            SetBtn();
             for (i = 1; i <= n; i++) {
                 var menu = document.getElementById(name + i);
                 var con = document.getElementById("con_" + name + "_" + i);
@@ -57,38 +77,38 @@
                 con.style.display = i == cursel ? "block" : "none";
             }
         }
-        //    $(document).ready(function () {
-        //        //$("#uoloadAll").showLoading();
-        //        //去除遮罩
-        //                   // $(".add_test_img").hideLoading();
-        //    }); 
-        //列表数
-        function ShowMenu(obj, n) {
-            var Nav = obj.parentNode;
-            if (!Nav.id) {
-                var BName = Nav.getElementsByTagName("ul");
-                var HName = Nav.getElementsByTagName("h2");
-                var t = 2;
-            } else {
-                var BName = document.getElementById(Nav.id).getElementsByTagName("span");
-                var HName = document.getElementById(Nav.id).getElementsByTagName("h1");
-                var t = 1;
+            //    $(document).ready(function () {
+            //        //$("#uoloadAll").showLoading();
+            //        //去除遮罩
+            //                   // $(".add_test_img").hideLoading();
+            //    }); 
+            //列表数
+            function ShowMenu(obj, n) {
+                var Nav = obj.parentNode;
+                if (!Nav.id) {
+                    var BName = Nav.getElementsByTagName("ul");
+                    var HName = Nav.getElementsByTagName("h2");
+                    var t = 2;
+                } else {
+                    var BName = document.getElementById(Nav.id).getElementsByTagName("span");
+                    var HName = document.getElementById(Nav.id).getElementsByTagName("h1");
+                    var t = 1;
+                }
+                for (var i = 0; i < HName.length; i++) {
+                    HName[i].innerHTML = HName[i].innerHTML.replace("-", "+");
+                    HName[i].className = "";
+                }
+                obj.className = "h" + t;
+                for (var i = 0; i < BName.length; i++) { if (i != n) { BName[i].className = "no"; } }
+                if (BName[n].className == "no") {
+                    BName[n].className = "";
+                    obj.innerHTML = obj.innerHTML.replace("+", "-");
+                } else {
+                    BName[n].className = "no";
+                    obj.className = "";
+                    obj.innerHTML = obj.innerHTML.replace("-", "+");
+                }
             }
-            for (var i = 0; i < HName.length; i++) {
-                HName[i].innerHTML = HName[i].innerHTML.replace("-", "+");
-                HName[i].className = "";
-            }
-            obj.className = "h" + t;
-            for (var i = 0; i < BName.length; i++) { if (i != n) { BName[i].className = "no"; } }
-            if (BName[n].className == "no") {
-                BName[n].className = "";
-                obj.innerHTML = obj.innerHTML.replace("+", "-");
-            } else {
-                BName[n].className = "no";
-                obj.className = "";
-                obj.innerHTML = obj.innerHTML.replace("-", "+");
-            }
-        }
     </script>
 
     <script type="text/javascript">
@@ -106,10 +126,11 @@
             var flbm_cl = document.getElementById("flbm").value;
             var tr = obj.parentNode.parentNode;
             var tds = tr.cells;
-            tds[2].innerHTML = sxz;         //属性值
+            tds[2].children[0].value = sxz;//.innerHTML = sxz;         //属性值
             // tds[3].innerHTML = sxbm + bh;   //属性编码+编号
             tds[3].innerHTML = bh;   //编号
             tds[4].innerHTML = sql;  //SQL语句
+            tds[5].innerHTML = sxz;  //SQL语句
             var table = document.getElementById("sx");
             var tr = table.getElementsByTagName("tr");
             var ggxh = "";
@@ -117,10 +138,10 @@
             var sxmc;
             for (var i = 0; i < tr.length; i++) {
                 if (tr[i].cells[0].innerHTML == "品种") {
-                    document.getElementById("clmc").value = tr[i].cells[2].innerHTML;
+                    document.getElementById("clmc").value = tr[i].cells[2].children[0].value;//.innerHTML;
                 }
                 var tds = tr[i];
-                ggxh = ggxh + tr[i].cells[2].innerHTML;
+                ggxh = ggxh + tr[i].cells[2].children[0].value//.innerHTML;
                 clbh += tr[i].cells[3].innerHTML.toString();
             }
             document.getElementById("clbm").value = clbh;
@@ -129,6 +150,18 @@
         }
         //将组合的属性属性值 和对应材料信息 添加到材料列表中
         function AddValue() {
+            //var length = document.getElementById("edClfl").children.length;//$("#edClfl").children().length;
+            //var children = document.getElementById("edClfl").children[1].children; //("#edClfl").children();
+            //for (var i = 0; i < children.length; i++) {
+            //    //children是tr，每个tr有6个属性
+            //    if (children[i].children[5].innerHTML==children.children[2].children[0].value) {
+            //        alert("true");
+            //    } else {
+            //        alert("false");
+            //    }
+            //}
+
+            //李宗鹏添加增加材料分类属性值结束----------------------------------------------------------------------
             var clbm = document.getElementById("clbm").value;
             var clm = document.getElementById("clmc").value;
             document.getElementById("mcgz").value = clm;
@@ -215,13 +248,20 @@
                     alert("提交成功!现在您能可以添加该材料的多媒体信息！");
                     //window.opener.location.reload();
                     $("#myclid").val(clid);
+                    $("#uploadFrame").attr("src", "http://192.168.1.22?clid=" + $("#myclid").val());
+                    $("#ceng").fadeOut(200);
+                    DomUpload();
                     $("#ceng").fadeOut(200);
                     getXheditor();
-                    $("#xhe0_iframearea").attr("style", "height:100%");
-                    $("#xhe0_container").children().attr("style", "height:100%");
-                    SetBtn();//设置设置保存按钮
-                    Draggable();//拖动
-                    DomUpload();
+                    Draggable(); //拖动
+                    $("#drag").fadeOut();
+                    SetBtn(); //设置设置保存按钮
+                    //                    getXheditor();
+                    //                    $("#xhe0_iframearea").attr("style", "height:100%");
+                    //                    $("#xhe0_container").children().attr("style", "height:100%");
+                    //                    SetBtn();//设置设置保存按钮
+                    //                    Draggable();//拖动
+                    //                    DomUpload();
                     //                window.close();
                     //   window.location.href = "gysglcl.aspx?gys_id=" + scsid; 
                 }
@@ -235,6 +275,8 @@
 
 </head>
 <body>
+    <input type="hidden" name="show" value="0" id="show" />
+    <input type="hidden" name="changeFrame" id="changeFrame" value="false" />
     <input type="hidden" name="mySecc" id="mySecc" value="" />
     <input type="hidden" name="myclid" id="myclid" value="" runat="server" />
     <input type="hidden" name="myTypeExts" id="myTypeExts" value="*.jpg;*.jpeg;*.png;*.gif" runat="server" />
@@ -273,8 +315,8 @@
                 if (Request["scs_id"] != null && Request["scs_id"].ToString() != "")
                 {
                     scs_id = Request["scs_id"].ToString();
-                    
-                    
+
+
                 }
 
 
@@ -544,177 +586,210 @@
                                 </tbody>
                             </table>
 
-                            <div class="cpdt_2" style="width: 740px; float: left;">
-
+                            <div class="cpdt_2" style="width: 748px; height:260px; float: left;">
+                            
 
                                 <!--+图片上传 高度240px; 宽度：740px；--------------------------------------------------------------------------------------------------------------------->
                                 <!--position:absolute; width:100%; height:100%; background:#000; opacity:0.7; z-index:99;-->
-                                <div id="ceng" style="width: 744px; height: 240px; float: left; position: absolute; background: #000; opacity: 0.2; z-index: 99; font-size: 15px; text-align: center; line-height: 240px; filter: alpha(opacity=20); color: White;">
-                                    请先保存资料！
-                                </div>
-                                <div class="lib_yeqian">
-                                    <ul>
-                                        <li id="two1" onclick="setTab('two',1,4)" class="hover">产品图片</li>
-                                        <li id="two2" onclick="setTab('two',2,4)">商品详情</li>
-                                        <li id="two3" onclick="setTab('two',3,4)">相关文档</li>
-                                        <li id="two4" onclick="setTab('two',4,4)">相关视频</li>
-                                    </ul>
-                                </div>
-                                <div class="yeqian" id="con_two_1" style="border: #4ea6ee 1px solid;">
-                                    <div class="yeqian1">
-                                        <div class="yq_img">
-
-                                            <div id="imgQ" style="float: left; width: 322px; height: 90px; border: 1px solid #DDDDDD;">
-                                               <%-- <div style="width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;">
-                                                    <div style="background-image: url(Images/1.jpg); background-size: 60px 60px; width: 60px; height: 60px; float: left;">
-                                                        <a href="#" style="background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;"></a>
-                                                    </div>
-                                                    <div style="width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;">图片1</div>
-                                                </div>
-                                                <div style="width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;">
-                                                    <div style="background-image: url(Images/1.jpg); background-size: 60px 60px; width: 60px; height: 60px; float: left;">
-                                                        <a href="#" style="background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;"></a>
-                                                    </div>
-                                                    <div style="width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;">图片1</div>
-                                                </div>
-                                                <div style="width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;">
-                                                    <div style="background-image: url(Images/1.jpg); background-size: 60px 60px; width: 60px; height: 60px; float: left;">
-                                                        <a href="#" style="background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;"></a>
-                                                    </div>
-                                                    <div style="width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;">图片1</div>
-                                                </div>
-                                                <div style="width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;">
-                                                    <div style="background-image: url(Images/1.jpg); background-size: 60px 60px; width: 60px; height: 60px; float: left;">
-                                                        <a href="#" style="background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;"></a>
-                                                    </div>
-                                                    <div style="width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;">图片1</div>
-                                                </div>
-                                                <div style="width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;">
-                                                    <div style="background-image: url(Images/1.jpg); background-size: 60px 60px; width: 60px; height: 60px; float: left;">
-                                                        <a href="#" style="background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;"></a>
-                                                    </div>
-                                                    <div style="width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;">图片1</div>
-                                                </div>--%>
-                                            </div>
-
-                                            <div class="anniu_sc">
-                                                <table border="0" cellspacing="0" cellpadding="0">
-                                                    <tbody>
-                                                        <tr style="width: 100px">
-                                                            <td height="30" align="center">请选择图片： </td>
-                                                            <td align="left">
-                                                                <input name="imgUploadify" id="imgUploadify" type="button" />
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="width: 100px">
-                                                            <td height="20" align="center"></td>
-                                                            <td align="left">
-                                                                <input id="btnImgUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px; border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none; color: black; border-right-style: none; width: 72px" type="button" value="上传图片" />
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div id="imgQueue" class="yq_img2">
-                                            <%--<img src="images/schjd_pic.jpg" width="354" height="157" />--%>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="yeqian" id="con_two_2" style="border: 1px solid #4ea6ee; padding-top: 10px; display: none;">
-                                    <div class="yeqian_cont">
-                                        <!--+编辑器开始------------------------------------------------------------------>
-                                        <input type="hidden" name="show" value="0" id="show" />
-                                        <div id="divXh" style="width: 700px; height: 195px;">
-                                            <textarea id="elm" name="elm" rows="12" cols="80" style="height: 100%; width: 100%;"></textarea>
-                                            <div id="drag" style="width: 405px; height: 25px; position: absolute; top: 0px; left: 489px;"></div>
-                                        </div>
-                                        <!--+编辑器结束------------------------------------------------------------------>
-                                    </div>
-                                </div>
-                                <div class="yeqian" id="con_two_3" style="border: 1px solid #4ea6ee; padding-top: 10px; display: none;">
-
-                                    <table width="700" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
-                                        <tr>
-                                            <td width="90" height="30" align="center">标 题：</td>
-                                            <td colspan="5" align="left">
-                                                <input name="domName" type="text" class="shr_wenzi400" id="domName" style="border: 1px solid #ddd;" value="" maxlength="200"></td>
-                                            <td width="80" align="center">上传人：</td>
-                                            <td width="70" align="left">谭刚</td>
-                                        </tr>
-                                        <tr>
-                                            <td height="54" width="90" align="center">说 明：</td>
-                                            <td colspan="7" align="left">
-                                                <input name="domMsg" type="text" class="shr_wenzi590" id="domMsg" style="border: 1px solid #ddd;" value=""></td>
-                                        </tr>
-                                    </table>
-                                    <table width="700" border="0" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td height="30" align="right">请选择文档： </td>
-                                            <td align="left">
-                                                <input type="button" name="domUploadify" id="domUploadify" value="" />
-                                            </td>
-                                            <td width="355" align="left">
-                                                <div id="domQueue" class="shc_jindu">
-                                                    <%--<img src="images/schjd_pic2.jpg" width="354" height="33">--%>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td height="15">&nbsp;</td>
-                                            <td align="left">
-                                                <input id="btnDomUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px; border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none; color: black; border-right-style: none; width: 72px" type="button" value="上传文档"></td>
-                                            <td align="left">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td height="40" align="right">已上传文档：</td>
-                                            <td colspan="2"><label id="domDelName" style=" width:auto; height:auto;">您还未上传文档！</label>
-              <input id="btnDelNewDom" class="filter" style="border-top-style: none; cursor: pointer; font-size: 12px; border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none; color: black; border-right-style: none; width: 37px" type="button" value="删除" /></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="yeqian" id="con_two_4" style="border: 1px solid #4ea6ee; padding-top: 10px; display: none;">
-                                    <table width="700" border="0" cellspacing="0" cellpadding="0" style="margin_top: 10px; padding-top: 10px;">
-                                        <tr>
-                                            <td width="90" height="30" align="center">标 题：</td>
-                                            <td colspan="5" align="left">
-                                                <input name="videoName" type="text" class="shr_wenzi400" id="videoName" style="border: 1px solid #ddd;" value="" maxlength="200" /></td>
-                                            <td width="80" align="center">上传人：</td>
-                                            <td width="70" align="left">谭刚</td>
-                                        </tr>
-                                        <tr>
-                                            <td height="54" align="center">说 明：</td>
-                                            <td colspan="7" align="left">
-                                                <input name="videoMsg" type="text" class="shr_wenzi590" id="videoMsg" style="border: 1px solid #ddd;" value="" /></td>
-                                        </tr>
-                                    </table>
-                                    <table width="700" border="0" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td height="30" align="right">请选择视频： </td>
-                                            <td align="left">
-                                                <input name="videoUploadify" id="videoUploadify" style="float: left; width: 200px"
-                                                    type="file">
-                                            </td>
-                                            <td width="355" align="left">
-                                                <div id="videoQueue" class="shc_jindu">
-                                                    <%--<img src="images/schjd_pic2.jpg" width="354" height="33">--%>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td height="15">&nbsp;</td>
-                                            <td align="left">
-                                                <input id="btnVideoUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px; border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none; color: black; border-right-style: none; width: 72px" type="button" value="上传视频"></td>
-                                            <td align="left">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td height="40" align="right">已上传视频：</td>
-                                            <td colspan="2"><label id="videoDelName" style="width:auto; height:auto;">您还未上传视频</label>
-              <input id="btnDelNewVideo" class="filter" style="border-top-style: none; cursor: pointer; font-size: 12px; border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none; color: black; border-right-style: none; width: 37px" type="button" value="删除" /></td>
-                                        </tr>
-                                    </table>
-                                </div>
-
+                                <div id="ceng" style="width: 754px; height: 260px; float: left; position: absolute;
+        background: #000; opacity: 0.2; z-index: 99; font-size: 15px; text-align: center;
+        line-height: 240px; filter: alpha(opacity=20); color: White;">
+        请先保存资料！
+    </div>
+    <div class="lib_yeqian" >
+        <ul>
+            <li id="two1" onclick="setTab('two',1,4)" class="hover">产品图片</li>
+            <li id="two2" onclick="setTab('two',2,4)">商品详情</li>
+            <li id="two3" onclick="setTab('two',3,4)">相关文档</li>
+            <li id="two4" onclick="setTab('two',4,4)">相关视频</li>
+        </ul>
+    </div>
+    <div class="yeqian" id="con_two_1" style="border: #4ea6ee 1px solid;">
+        <div class="yeqian1">
+            <div class="yq_img">
+                <div id="imgQ" style="float: left; width: 322px; height: 90px; border: 1px solid #DDDDDD;">
+                </div>
+                <div class="anniu_sc">
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr style="width: 100px">
+                                <td height="30" align="center">
+                                    请选择图片：
+                                </td>
+                                <td align="left">
+                                    <input name="imgUploadify" id="imgUploadify" type="button" />
+                                </td>
+                            </tr>
+                            <tr style="width: 100px">
+                                <td height="20" align="center">
+                                </td>
+                                <td align="left">
+                                    <input id="btnImgUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px;
+                                        border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
+                                        color: black; border-right-style: none; width: 72px" type="button" value="上传图片" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="imgQueue" class="yq_img2">
+                <%--<img src="images/schjd_pic.jpg" width="354" height="157" />--%>
+            </div>
+        </div>
+    </div>
+    <div class="yeqian" id="con_two_2" style="border: 1px solid #4ea6ee; padding-top: 10px;
+        display: none;">
+        <div class="yeqian_cont">
+            <!--+编辑器开始------------------------------------------------------------------>
+            <div id="divXh" style="width: 700px; height: 195px;">
+                <textarea id="elm" name="elm" rows="12" cols="80" style="height: 100%; width: 100%;"></textarea>
+                <div id="drag" style="width: 383px; height: 28px; position: absolute; top: 0px; left: 511px;">
+                </div>
+            </div>
+            <!--+编辑器结束------------------------------------------------------------------>
+        </div>
+    </div>
+    <div class="yeqian" id="con_two_3" style="border: 1px solid #4ea6ee; padding-top: 10px;
+        display: none;">
+        <table width="700" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
+            <tr>
+                <td width="90" height="30" align="center">
+                    标 题：
+                </td>
+                <td colspan="5" align="left">
+                    <input name="domName" type="text" class="shr_wenzi400" id="domName" style="border: 1px solid #ddd;"
+                        value="" maxlength="200">
+                </td>
+                <td width="80" align="center">
+                    上传人：
+                </td>
+                <td width="70" align="left">
+                    谭刚
+                </td>
+            </tr>
+            <tr>
+                <td height="54" width="90" align="center">
+                    说 明：
+                </td>
+                <td colspan="7" align="left">
+                    <input name="domMsg" type="text" class="shr_wenzi590" id="domMsg" style="border: 1px solid #ddd;"
+                        value="">
+                </td>
+            </tr>
+        </table>
+        <table width="700" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td height="30" align="right">
+                    请选择文档：
+                </td>
+                <td align="left">
+                    <input type="button" name="domUploadify" id="domUploadify" value="" />
+                </td>
+                <td width="355" align="left">
+                    <div id="domQueue" class="shc_jindu">
+                        <%--<img src="images/schjd_pic2.jpg" width="354" height="33">--%>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td height="15">
+                    &nbsp;
+                </td>
+                <td align="left">
+                    <input id="btnDomUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px;
+                        border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
+                        color: black; border-right-style: none; width: 72px" type="button" value="上传文档">
+                </td>
+                <td align="left">
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td height="40" align="right">
+                    已上传文档：
+                </td>
+                <td colspan="2">
+                    <label id="domDelName" style="width: auto; height: auto;">
+                        您还未上传文档！</label>
+                    <input id="btnDelNewDom" class="filter" style="border-top-style: none; cursor: pointer;
+                        font-size: 12px; border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
+                        color: black; border-right-style: none; width: 37px" type="button" value="删除" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="yeqian" id="con_two_4" style="border: 1px solid #4ea6ee; padding-top: 10px;
+        display: none;">
+        <table width="700" border="0" cellspacing="0" cellpadding="0" style="margin_top: 10px;
+            padding-top: 10px;">
+            <tr>
+                <td width="90" height="30" align="center">
+                    标 题：
+                </td>
+                <td colspan="5" align="left">
+                    <input name="videoName" type="text" class="shr_wenzi400" id="videoName" style="border: 1px solid #ddd;"
+                        value="" maxlength="200" />
+                </td>
+                <td width="80" align="center">
+                    上传人：
+                </td>
+                <td width="70" align="left">
+                    谭刚
+                </td>
+            </tr>
+            <tr>
+                <td height="54" align="center">
+                    说 明：
+                </td>
+                <td colspan="7" align="left">
+                    <input name="videoMsg" type="text" class="shr_wenzi590" id="videoMsg" style="border: 1px solid #ddd;"
+                        value="" />
+                </td>
+            </tr>
+        </table>
+        <table width="700" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td height="30" align="right">
+                    请选择视频：
+                </td>
+                <td align="left">
+                    <input name="videoUploadify" id="videoUploadify" style="float: left; width: 200px"
+                        type="file">
+                </td>
+                <td width="355" align="left">
+                    <div id="videoQueue" class="shc_jindu">
+                        <%--<img src="images/schjd_pic2.jpg" width="354" height="33">--%>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td height="15">
+                    &nbsp;
+                </td>
+                <td align="left">
+                    <input id="btnVideoUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px;
+                        border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
+                        color: black; border-right-style: none; width: 72px" type="button" value="上传视频">
+                </td>
+                <td align="left">
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td height="40" align="right">
+                    已上传视频：
+                </td>
+                <td colspan="2">
+                    <label id="videoDelName" style="width: auto; height: auto;">
+                        您还未上传视频</label>
+                    <input id="btnDelNewVideo" class="filter" style="border-top-style: none; cursor: pointer;
+                        font-size: 12px; border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
+                        color: black; border-right-style: none; width: 37px" type="button" value="删除" />
+                </td>
+            </tr>
+        </table>
+    </div>
 
                                 <!-- <div id="uoloadAll" style="width: 744px; height: 240px; float: left;">
                                     <div id="ceng" style="width: 744px; height: 240px; float: left; position: absolute; background: #000; opacity: 0.2; z-index: 99; font-size: 15px; text-align: center; line-height: 240px; filter: alpha(opacity=20); color: White;">

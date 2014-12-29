@@ -1,102 +1,87 @@
-<%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
+ï»¿<%@ Register Src="include/menu.ascx" TagName="Menu1" TagPrefix="uc1" %>
 <%@ Register Src="include/Top10manu.ascx" TagName="Top10manu" TagPrefix="uc2" %>
 <%@ Register Src="include/top10product.ascx" TagName="top10product" TagPrefix="uc3" %>
 <%@ Register Src="include/top10brand.ascx" TagName="top10brand" TagPrefix="uc4" %>
 <%@ Register Src="include/clfx.ascx" TagName="clfx" TagPrefix="uc5" %>
 <%@ Register Src="include/rxcp.ascx" TagName="rxcp" TagPrefix="uc6" %>
+<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
-<title>ÖÚ²ÄÍø-----ÃæÏò½¨Öş×°ÊÎÆóÒµµÄ¹«×°²ÄÁÏ¿âºÍ¹©Ó¦ÉÌĞÅÏ¢¿â</title>
-<link href="css/css.css" rel="stylesheet" type="text/css" />
+<head runat="server">
+    <meta content="IE=10.000" http-equiv="X-UA-Compatible" />
+    <title>ä¼—æç½‘-----é¢å‘å»ºç­‘è£…é¥°ä¼ä¸šçš„å…¬è£…ææ–™åº“å’Œä¾›åº”å•†ä¿¡æ¯åº“</title>
+    <link href="css/css.css" rel="stylesheet" type="text/css" />
     <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
     <link href="css/imgStyle.css" rel="stylesheet" type="text/css" />
     <script src="Scripts/imgStyle.js" type="text/javascript"></script>
 </head>
-
 <body>
- 
-    <!-- Í·²¿ ¿ªÊ¼-->
+    <!-- å¤´éƒ¨ å¼€å§‹-->
     <!-- #include file="static/header.aspx" -->
-    <!-- Í·²¿ ½áÊø-->
-     
-
-    <!-- Í·²¿µ¼º½ include menu.ascx ¿ªÊ¼-->
+    <!-- å¤´éƒ¨ ç»“æŸ-->
+    <!-- å¤´éƒ¨å¯¼èˆª include menu.ascx å¼€å§‹-->
     <uc1:Menu1 ID="Menu1" runat="server" />
-    <!-- Í·²¿µ¼º½ include menu.ascx ½áÊø-->
-
-    <!-- Í·²¿¹ã¸æ static bannder.aspx ¿ªÊ¼-->
+    <!-- å¤´éƒ¨å¯¼èˆª include menu.ascx ç»“æŸ-->
+    <!-- å¤´éƒ¨å¹¿å‘Š static bannder.aspx å¼€å§‹-->
     <!-- #include file="static/banner.aspx" -->
-    <!-- Í·²¿¹ã¸æ static bannder.aspx ½áÊø-->
-
-<!-- ×ó±ß ¿ªÊ¼-->
-<div class="left">
-    <!-- ×ó±ß Ê®´ó²úÆ· top10product.ascx ¿ªÊ¼-->
-    <uc3:top10product ID="top10product" runat="server" />
-    <!-- ×ó±ß Ê®´ó²úÆ· top10product.ascx ½áÊø-->
-
-    <!-- ×ó±ß Ê®´ó³§ÉÌ top10manu.ascx ¿ªÊ¼ -->
-    <uc2:Top10manu ID="Top10manu" runat="server" />
-    <!-- ×ó±ß Ê®´ó³§ÉÌ top10manu.ascx ½áÊø -->
-</div>
-<!-- ×ó±ß ½áÊø-->
-
-<div class="center">
-    <!-- ÖĞ¼ä ĞÂ²ÄÁÏ newproducts.aspx  ¿ªÊ¼-->
-    <!-- #include file="static/newproducts.aspx" -->
-    <!-- ÖĞ¼ä ĞÂ²ÄÁÏ newproducts.aspx  ½áÊø-->
-
-    <!-- ÖĞ¼ä ²ÄÁÏÎÄÕÂ clfx.ascx ¿ªÊ¼ -->
-    <uc5:clfx ID="clfx" runat="server" />
-    <!-- ÖĞ¼ä ²ÄÁÏÎÄÕÂ clfx.ascx ¿ªÊ¼ -->
-</div>
-
-<div class="right">
-    <!-- ÓÒ±ß Ê®´óÆ·ÅÆ top10brand.ascx ¿ªÊ¼ -->
-    <uc4:top10brand ID="top10brand" runat="server" />
-    <!-- ÓÒ±ß Ê®´óÆ·ÅÆ top10brand.ascx ½áÊø -->
-
-    <!-- ÓÒ±ß ¹ã¸æ static/ads.aspx ¿ªÊ¼-->
-    <div class="right1">
-        <!-- #include file="static/ads.aspx" -->
+    <!-- å¤´éƒ¨å¹¿å‘Š static bannder.aspx ç»“æŸ-->
+    <!-- å·¦è¾¹ å¼€å§‹-->
+    <div class="left">
+        <!-- å·¦è¾¹ åå¤§äº§å“ top10product.ascx å¼€å§‹-->
+        <uc3:top10product ID="top10product" runat="server" />
+        <!-- å·¦è¾¹ åå¤§äº§å“ top10product.ascx ç»“æŸ-->
+        <!-- å·¦è¾¹ åå¤§å‚å•† top10manu.ascx å¼€å§‹ -->
+        <uc2:Top10manu ID="Top10manu" runat="server" />
+        <!-- å·¦è¾¹ åå¤§å‚å•† top10manu.ascx ç»“æŸ -->
     </div>
-    <!-- ÓÒ±ß ¹ã¸æ static/ads.aspx ½áÊø-->
-</div>
-
-    <!-- ÖĞÏÂ ÈÈÏú²úÆ·rxcp.ascx ¿ªÊ¼ -->
+    <!-- å·¦è¾¹ ç»“æŸ-->
+    <div class="center">
+        <!-- ä¸­é—´ æ–°ææ–™ newproducts.aspx  å¼€å§‹-->
+        <!-- #include file="static/newproducts.aspx" -->
+        <!-- ä¸­é—´ æ–°ææ–™ newproducts.aspx  ç»“æŸ-->
+        <!-- ä¸­é—´ ææ–™æ–‡ç«  clfx.ascx å¼€å§‹ -->
+        <uc5:clfx ID="clfx" runat="server" />
+        <!-- ä¸­é—´ ææ–™æ–‡ç«  clfx.ascx å¼€å§‹ -->
+    </div>
+    <div class="right">
+        <!-- å³è¾¹ åå¤§å“ç‰Œ top10brand.ascx å¼€å§‹ -->
+        <uc4:top10brand ID="top10brand" runat="server" />
+        <!-- å³è¾¹ åå¤§å“ç‰Œ top10brand.ascx ç»“æŸ -->
+        <!-- å³è¾¹ å¹¿å‘Š static/ads.aspx å¼€å§‹-->
+        <div class="right1">
+            <!-- #include file="static/ads.aspx" -->
+        </div>
+        <!-- å³è¾¹ å¹¿å‘Š static/ads.aspx ç»“æŸ-->
+    </div>
+    <!-- ä¸­ä¸‹ çƒ­é”€äº§å“rxcp.ascx å¼€å§‹ -->
     <uc6:rxcp ID="rxcp" runat="server" />
-    <!-- ÖĞÏÂ ÈÈÏú²úÆ·rxcp.ascx ½áÊø -->
-
-    <!-- ÖĞÏÂ ¹ØÓÚÎÒÃÇ aboutus.aspx ¿ªÊ¼-->
+    <!-- ä¸­ä¸‹ çƒ­é”€äº§å“rxcp.ascx ç»“æŸ -->
+    <!-- ä¸­ä¸‹ å…³äºæˆ‘ä»¬ aboutus.aspx å¼€å§‹-->
     <!-- #include file="static/aboutus.aspx" -->
-    <!-- ÖĞÏÂ ¹ØÓÚÎÒÃÇ aboutus.aspx ½áÊø-->
-
-    <!-- Î²²¿ footer.aspx ¿ªÊ¼-->
+    <!-- ä¸­ä¸‹ å…³äºæˆ‘ä»¬ aboutus.aspx ç»“æŸ-->
+    <!-- å°¾éƒ¨ footer.aspx å¼€å§‹-->
     <!-- #include file="static/footer.aspx" -->
-    <!-- Î²²¿ footer.aspx ½áÊø-->
-
-
-
-<script type="text/javascript">
-    var speed = 9//ËÙ¶ÈÊıÖµÔ½´óËÙ¶ÈÔ½Âı
-    var demo = document.getElementById("demo");
-    var demo2 = document.getElementById("demo2");
-    var demo1 = document.getElementById("demo1");
-    demo2.innerHTML = demo1.innerHTML
-    function Marquee() {
-        if (demo2.offsetWidth - demo.scrollLeft <= 0)
-            demo.scrollLeft -= demo1.offsetWidth
-        else {
-            demo.scrollLeft++
+    <!-- å°¾éƒ¨ footer.aspx ç»“æŸ-->
+    <script type="text/javascript">
+        var speed = 9//é€Ÿåº¦æ•°å€¼è¶Šå¤§é€Ÿåº¦è¶Šæ…¢
+        var demo = document.getElementById("demo");
+        var demo2 = document.getElementById("demo2");
+        var demo1 = document.getElementById("demo1");
+        demo2.innerHTML = demo1.innerHTML
+        function Marquee() {
+            if (demo2.offsetWidth - demo.scrollLeft <= 0)
+                demo.scrollLeft -= demo1.offsetWidth
+            else {
+                demo.scrollLeft++
+            }
         }
-    }
-    var MyMar = setInterval(Marquee, speed)
-    demo.onmouseover = function () { clearInterval(MyMar) }
-    demo.onmouseout = function () { MyMar = setInterval(Marquee, speed) }
-</script>
-<%--<script type=text/javascript><!--    //--><![CDATA[//><!--
+        var MyMar = setInterval(Marquee, speed)
+        demo.onmouseover = function () { clearInterval(MyMar) }
+        demo.onmouseout = function () { MyMar = setInterval(Marquee, speed) }
+    </script>
+    <%--<script type=text/javascript><!--    //--><![CDATA[//><!--
     function menuFix() {
         var sfEls = document.getElementById("nav").getElementsByTagName("li");
         for (var i = 0; i < sfEls.length; i++) {

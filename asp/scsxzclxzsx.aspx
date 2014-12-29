@@ -33,7 +33,7 @@
         if (dt_sx != null && dt_sx.Rows.Count > 0)
         {
             string html = "";
-            html = "<table width='740' border='0' cellpadding='0' cellspacing='1' bgcolor='#dddddd' style='table-layout：fixed ;word-wrap：break-word'>"
+            html = "<table width='740' border='0' cellpadding='0' cellspacing='1' bgcolor='#dddddd' style='table-layout：fixed ;word-wrap：break-word' id='edClfl'>"
                 + " <thead>"
                 + "   <tr>"
                 + "    <th width='70' height='30' align='center' bgcolor='#E3ECFF'><strong>属性名称</strong></th>"
@@ -77,7 +77,8 @@
                     }
                 }
                 html += "</td>"
-                    + " <td align='center' bgcolor='#FFFFFF'></td>"
+                    + " <td align='center' bgcolor='#FFFFFF' class='myEdCl'><input  type='text' style=' border:0px; width:80px;height:24px; margin:2px;'  /></td>"
+                    + " <td style='display:none;'></td>"
                     + " <td style='display:none;'></td>"
                     + " <td style='display:none;'></td>"
                     + "</tr>";

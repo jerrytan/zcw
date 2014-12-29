@@ -24,10 +24,17 @@
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="js/lrtk.js"></script>
     <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
+
+    <script src="Scripts/flexpaper/js/flexpaper.js" type="text/javascript"></script>
+    
     <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="js/SJLD.js"></script>
     <script src="Scripts/Address.js" type="text/javascript"></script>
     <script src="Scripts/clxxScript.js" type="text/javascript"></script>
+
+
+
+
     <script type="text/javascript" language="javascript">
         function setTab(name, cursel, n) {
             for (i = 1; i <= n; i++) {
@@ -36,7 +43,8 @@
                 menu.className = i == cursel ? "hover" : "";
                 con.style.display = i == cursel ? "block" : "none";
             }
-        }
+        }
+
 
 
         $(function () {
@@ -155,7 +163,7 @@
                 //dt_image = dc_obj.GetDataTable(str_sqltop3);
 
                 string str_sqlfcdz = "select 存放地址,材料名称 from 材料多媒体信息表 where cl_id='" + cl_id + "' and 媒体类型 = '图片'";
-                dt_images = dc_obj.GetDataTable(str_sqlfcdz);
+                dt_images =dc_obj.GetDataTable(str_sqlfcdz);
 
                 string str_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='" + cl_id + "'))";
                 dt_fxsxx = dc_obj.GetDataTable(str_fxsxx);
@@ -316,7 +324,7 @@
                         <a>
                             <script type="text/javascript">
                             </script>
-                            <img src="<%=dt_images.Rows[0]["存放地址"].ToString()%>" width="320" height="300" id="Img1" /></a>
+                            <img src="<%=@"http://192.168.1.22/"+dt_images.Rows[0]["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="Img1" /></a>
                         <%}%>
                     </div>
                     <%} %>
@@ -331,7 +339,7 @@
                               if (row["存放地址"].ToString() != "")
                               {%>
                             <a>
-                                <img src="<%=row["存放地址"].ToString()%>" width="320" height="300" id="bigImage"></a>
+                                <img src="<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="bigImage"></a>
                             <%}%>
                         </div>
                         <%}%>
@@ -345,7 +353,7 @@
                                System.Data.DataRow row = dt_images.Rows[i];
                         %>
                         <li>
-                            <img src='<%=row["存放地址"].ToString()%>' width="61px" height="45px" click="changeImage('<%=row["存放地址"].ToString()%>')">
+                            <img src='<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>' width="61px" height="45px" click="changeImage('<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>')">
                         </li>
                         <%}%>
                     </ul>
@@ -550,7 +558,13 @@
                         <li id="domTime">上传时间：2014-12-12</li>
                     </ul>
                 </div>
-                <div class="wendang_zs">文档内容</div>
+                <div class="wendang_zs" align="center">
+                <!--+文档展示开始-->
+                    <div  id="domShow" style="width:940px; height:500px; margin-top:20px; margin-bottom:20px;">
+                    </div>
+                <!--+文档展示结束-->
+                文档内容
+                </div>
             </div>
             <div class="bq_cont" id="con_two_3" style="display: none;">
                 <div class="wendang_cont">

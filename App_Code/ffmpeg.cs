@@ -76,7 +76,7 @@ namespace CmdDemo
     /// </summary>
     private static bool RunCmd(string args)
     {
-        string cmdFile = Path.GetFullPath(@"C:\ffmpeg\ffmpeg.exe");
+        string cmdFile = HttpContext.Current.Server.MapPath("../Scripts/ffmpeg/ffmpeg.exe");
         System.Diagnostics.ProcessStartInfo processInfo = new System.Diagnostics.ProcessStartInfo(cmdFile);
 
         processInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;

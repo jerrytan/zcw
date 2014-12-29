@@ -21,7 +21,6 @@ public class UploadifyHandler : IHttpHandler
         string clbm = dt.Rows[0]["材料编码"].ToString();
         string cpmc = dt.Rows[0]["显示名"].ToString();
 
-
         //uploadify上传
         //+-----------------------------------上传图片开始------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -149,7 +148,7 @@ public class UploadifyHandler : IHttpHandler
                         //插入数据库
                         string cfdz = "..//..//Upload//Material//" + clid + "//video//" + Path.ChangeExtension(newName, ".flv");
                         //生成xml播放文件
-                        CreateXML("..\\Upload\\Material\\" + clid + "\\video", Path.ChangeExtension(newName, "flv"));
+                        //CreateXML("..\\Upload\\Material\\" + clid + "\\video", Path.ChangeExtension(newName, "flv"));
                         string inSql = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,存放地址,updatetime,标题,说明) values('" + clid + "' ,'" + clbm + "','" + cpmc + "','是','视频','" + cfdz + "',(select getdate()),'" + videoName + "','" + videoMsg + "') ";
                         if (MySqlHelper.ExecuteNonQuery(inSql) >= 1)
                         {
@@ -189,7 +188,7 @@ public class UploadifyHandler : IHttpHandler
                     //插入数据库
                     string cfdz = "..//..//Upload//Material//" + clid + "//video//" + Path.ChangeExtension(newName, "flv");
                     //生成xml播放文件
-                    CreateXML("..\\Upload\\Material\\" + clid + "\\video", Path.ChangeExtension(newName, "flv"));
+                    //CreateXML("..\\Upload\\Material\\" + clid + "\\video", Path.ChangeExtension(newName, "flv"));
                     string inSql = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,存放地址,updatetime,标题,说明) values('" + clid + "' ,'" + clbm + "','" + cpmc + "','是','视频','" + cfdz + "',(select getdate()),'" + videoName + "','" + videoMsg + "') ";
                     if (MySqlHelper.ExecuteNonQuery(inSql) >= 1)
                     {
@@ -224,7 +223,7 @@ public class UploadifyHandler : IHttpHandler
                 else
                 {
                     HttpPostedFile file = context.Request.Files["Filedata"];//uploadify上传
-                    string newName = getNameFiles() + Path.GetExtension(file.FileName);
+                    string newName = getNameFiles() + HttpContext.Current.Server.UrlDecode(Path.GetExtension(file.FileName.Replace("?", ".")));
                     string uploadPath = HttpContext.Current.Server.MapPath("..\\Upload\\Material\\" + clid + "\\dom") + "\\";
                     if (!Directory.Exists(uploadPath))
                     {
@@ -232,21 +231,32 @@ public class UploadifyHandler : IHttpHandler
                     }
                     file.SaveAs(uploadPath + newName);//保存文档
                     string cfdz = "Upload//Material//" + clid + "//dom//" + newName;
-                    ////++转换PDF开始
-                    //if (Path.GetExtension(newName)==".doc"||Path.GetExtension(newName)==".docx")
-                    //{
-                    //    OfficeToPDF.WordToPDF(HttpContext.Current.Server.MapPath(cfdz), HttpContext.Current.Server.MapPath("Upload//Material//" + clid + "//dom//") + Path.ChangeExtension(newName, ".pdf"), Microsoft.Office.Interop.Word.WdExportFormat.wdExportFormatPDF);
-                    //}
-                    ////++转换PDF结束
+                    //++转换PDF开始
+                    if (Path.GetExtension(cfdz) == ".doc" || Path.GetExtension(cfdz) == ".docx" || Path.GetExtension(cfdz) == ".txt")
+                    {
+                        OfficeToPdf.WordToPDF(HttpContext.Current.Server.MapPath("..\\" + cfdz), HttpContext.Current.Server.MapPath("..\\" + Path.ChangeExtension(cfdz, ".pdf")));
+                    }
+                    else if (Path.GetExtension(cfdz) == ".ppt" || Path.GetExtension(cfdz) == ".pptx")
+                    {
+                        OfficeToPdf.PPTToPDF(HttpContext.Current.Server.MapPath("..\\" + cfdz), HttpContext.Current.Server.MapPath("..\\" + Path.ChangeExtension(cfdz, ".pdf")));
+                    }
+                    else if (Path.GetExtension(cfdz) == ".xls" || Path.GetExtension(cfdz) == ".xlsx")
+                    {
+                        OfficeToPdf.XLSToPDF(HttpContext.Current.Server.MapPath("..\\" + cfdz), HttpContext.Current.Server.MapPath("..\\" + Path.ChangeExtension(cfdz, ".pdf")));
+                    }
+                    //++转换PDF结束
+                    //++转为PDF文件为SWF开始
+                    PdfToSwf(HttpContext.Current.Server.MapPath("..\\" + Path.ChangeExtension(cfdz, ".pdf")), HttpContext.Current.Server.MapPath("..\\" + Path.ChangeExtension(cfdz, ".swf")));
+                    //++转为PDF文件为SWF结束
                     //插入数据库
                     string inSql;
                     if (domMsg == "")
                     {
-                        inSql = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,存放地址,updatetime,标题) values('" + clid + "' ,'" + clbm + "','" + cpmc + "','是','文档','" + cfdz + "',(select getdate()),'" + domName + "') ";
+                        inSql = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,存放地址,updatetime,标题) values('" + clid + "' ,'" + clbm + "','" + cpmc + "','是','文档','" + Path.ChangeExtension(cfdz,"swf") + "',(select getdate()),'" + domName + "') ";
                     }
                     else
                     {
-                        inSql = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,存放地址,updatetime,标题,说明) values('" + clid + "' ,'" + clbm + "','" + cpmc + "','是','文档','" + cfdz + "',(select getdate()),'" + domName + "','" + domMsg + "') ";
+                        inSql = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,存放地址,updatetime,标题,说明) values('" + clid + "' ,'" + clbm + "','" + cpmc + "','是','文档','" + Path.ChangeExtension(cfdz, "swf") + "',(select getdate()),'" + domName + "','" + domMsg + "') ";
                     }
                     //context.Response.Write(inSql);
                     int i = MySqlHelper.ExecuteNonQuery(inSql, null);
@@ -265,7 +275,7 @@ public class UploadifyHandler : IHttpHandler
             else
             {
                 HttpPostedFile file = context.Request.Files["Filedata"];//uploadify上传
-                string newName = getNameFiles() + Path.GetExtension(file.FileName);
+                string newName = getNameFiles() + HttpContext.Current.Server.UrlDecode(Path.GetExtension(file.FileName.Replace("?",".")));
                 string uploadPath = HttpContext.Current.Server.MapPath("..\\Upload\\Material\\" + clid + "\\dom") + "\\";
                 if (!Directory.Exists(uploadPath))
                 {
@@ -279,22 +289,33 @@ public class UploadifyHandler : IHttpHandler
 
                 //插入数据库
                 string cfdz = "Upload//Material//" + clid + "//dom//" + newName;
-                ////++转换PDF开始
-                //if (Path.GetExtension(newName) == ".doc" || Path.GetExtension(newName) == ".docx")
-                //{
-                //    OfficeToPDF.WordToPDF(HttpContext.Current.Server.MapPath(cfdz), HttpContext.Current.Server.MapPath("Upload//Material//" + clid + "//dom//") + Path.ChangeExtension(newName, ".pdf"), Microsoft.Office.Interop.Word.WdExportFormat.wdExportFormatPDF);
-                //}
-                ////++转换PDF结束
+                //++转换PDF开始
+                if (Path.GetExtension(cfdz) == ".doc" || Path.GetExtension(cfdz) == ".docx" || Path.GetExtension(cfdz) == ".txt")
+                {
+                    OfficeToPdf.WordToPDF(HttpContext.Current.Server.MapPath("..\\" + cfdz), HttpContext.Current.Server.MapPath("..\\" + Path.ChangeExtension(cfdz, ".pdf")));
+                }
+                else if (Path.GetExtension(cfdz) == ".ppt" || Path.GetExtension(cfdz) == ".pptx")
+                {
+                    OfficeToPdf.PPTToPDF(HttpContext.Current.Server.MapPath("..\\" + cfdz), HttpContext.Current.Server.MapPath("..\\" + Path.ChangeExtension(cfdz, ".pdf")));
+                }
+                else if (Path.GetExtension(cfdz) == ".xls" || Path.GetExtension(cfdz) == ".xlsx")
+                {
+                    OfficeToPdf.XLSToPDF(HttpContext.Current.Server.MapPath("..\\" + cfdz), HttpContext.Current.Server.MapPath("..\\"+Path.ChangeExtension(cfdz, ".pdf")));
+                }
+                //++转换PDF结束
+                //++转为PDF文件为SWF开始
+                PdfToSwf(HttpContext.Current.Server.MapPath("..\\" + Path.ChangeExtension(cfdz, ".pdf")), HttpContext.Current.Server.MapPath("..\\" + Path.ChangeExtension(cfdz, ".swf")));
+                //++转为PDF文件为SWF结束
 
                 string inSql;
 
                 if (domMsg == "")
                 {
-                    inSql = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,存放地址,updatetime,标题) values('" + clid + "' ,'" + clbm + "','" + cpmc + "','是','文档','" + cfdz + "',(select getdate()),'" + domName + "') ";
+                    inSql = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,存放地址,updatetime,标题) values('" + clid + "' ,'" + clbm + "','" + cpmc + "','是','文档','" + Path.ChangeExtension(cfdz, "swf") + "',(select getdate()),'" + domName + "') ";
                 }
                 else
                 {
-                    inSql = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,存放地址,updatetime,标题,说明) values('" + clid + "' ,'" + clbm + "','" + cpmc + "','是','文档','" + cfdz + "',(select getdate()),'" + domName + "','" + domMsg + "') ";
+                    inSql = "insert into 材料多媒体信息表(cl_id,材料编码,材料名称,是否启用,媒体类型,存放地址,updatetime,标题,说明) values('" + clid + "' ,'" + clbm + "','" + cpmc + "','是','文档','" + Path.ChangeExtension(cfdz, "swf") + "',(select getdate()),'" + domName + "','" + domMsg + "') ";
                 }
                 int i = MySqlHelper.ExecuteNonQuery(inSql, null);
                 if (i >= 1)
@@ -443,22 +464,63 @@ public class UploadifyHandler : IHttpHandler
     /// <param name="path"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public bool CreateXML(string path, string name)
+    //public bool CreateXML(string path, string name)
+    //{
+    //    StringBuilder xml = new StringBuilder();
+    //    xml.Append("<?xml version='1.0' encoding='utf-8'?>\n");
+    //    xml.Append("<vcaster>\n");
+    //    xml.Append("<itm item_url='" + path + "\\" + name + "' item_title='" + name + "' />\n");
+    //    xml.Append("</vcaster>");
+    //    if (!Directory.Exists(HttpContext.Current.Server.MapPath(path) + "vcastr.xml"))
+    //    {
+    //        using (StreamWriter f = new StreamWriter(HttpContext.Current.Server.MapPath(path) + "\\vcastr.xml"))
+    //        {
+    //            f.Write(xml.ToString());
+    //        }
+    //    }
+    //    return true;
+    //}
+
+    /// <summary>
+    /// 转为PDF文件为SWF
+    /// </summary>
+    /// <param name="pdfPath">PDF文件的虚拟路径</param>
+    /// <param name="swfPath">SWF文件的保存路径</param>
+    public void PdfToSwf(string pdfPath, string swfPath)
     {
-        StringBuilder xml = new StringBuilder();
-        xml.Append("<?xml version='1.0' encoding='utf-8'?>\n");
-        xml.Append("<vcaster>\n");
-        xml.Append("<itm item_url='" + path + "\\" + name + "' item_title='" + name + "' />\n");
-        xml.Append("</vcaster>");
-        if (!Directory.Exists(HttpContext.Current.Server.MapPath(path) + "vcastr.xml"))
+        try
         {
-            using (StreamWriter f = new StreamWriter(HttpContext.Current.Server.MapPath(path) + "\\vcastr.xml"))
+            //string exe = HttpContext.Current.Server.MapPath("PDF2SWF/pdf2swf.exe");
+            //string exe = @"d:\SWFTools\pdf2swf.exe ";
+            string exe = HttpContext.Current.Server.MapPath(@"..\Scripts\pdf2swf\pdf2swf.exe");//获取转换工具的安装路径
+            if (!File.Exists(exe))
             {
-                f.Write(xml.ToString());
+                throw new ApplicationException("Can not find: " + exe);
             }
+            StringBuilder sb = new StringBuilder();
+            sb.Append(" -o \"" + swfPath + "\"");//output  
+            sb.Append(" -z");
+            sb.Append(" -s flashversion=9");//flash version  
+            sb.Append(" -s disablelinks");//禁止PDF里面的链接  
+            //sb.Append(" -p " + "1" + "-" + page);//page range  
+            sb.Append(" -j 100");//Set quality of embedded jpeg pictures to quality. 0 is worst (small), 100 is best (big). (default:85)  
+            sb.Append(" \"" + pdfPath + "\"");//input  
+            System.Diagnostics.Process proc = new System.Diagnostics.Process();
+            proc.StartInfo.FileName = exe;
+            proc.StartInfo.Arguments = sb.ToString();
+            proc.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            proc.Start();
+            proc.WaitForExit();
+            proc.Close();
         }
-        return true;
+
+        catch (Exception ex)
+        {
+            throw ex;
+
+        }
     }
+    
     public bool IsReusable
     {
         get

@@ -1,0 +1,58 @@
+﻿#divMsg {
+    width: 184px;
+    height: 39px;
+    float: left;
+}
+
+.msgIcon {
+    width: 184px;
+    height: 47px;
+    background-color: #5B5D62;
+    float: left;
+    border-radius: 12px 12px;
+    filter: alpha(opacity=20);
+    opacity: 0.2;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.msgShow {
+    width: 170px;
+    height: 33px;
+    background-color: White;
+    float: left;
+    border-radius: 8px 8px;
+    margin: 7px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.stateFalse {
+    width: 33px;
+    height: 33px;
+    float: left;
+    margin-left: 11px;
+    background-image: url(../Images/false.png);
+}
+.stateTrue {
+    width: 33px;
+    height: 33px;
+    float: left;
+    margin-left: 11px;
+    background-image: url(../Images/true.png);
+}
+
+.msg {
+    width: 113px;
+    height: 33px;
+    float: left;
+    line-height: 33px;
+    padding-left: 5px;
+    font-family: 楷体;
+    font-size: 17px;
+    font-weight: bold;
+    color: #5B5D62;
+    text-align: center;
+}
