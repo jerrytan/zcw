@@ -324,7 +324,7 @@
                         <a>
                             <script type="text/javascript">
                             </script>
-                            <img src="<%=@"http://192.168.1.22:88/"+dt_images.Rows[0]["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="Img1" /></a>
+                            <img src="<%=@"http://192.168.1.22/"+dt_images.Rows[0]["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="Img1" /></a>
                         <%}%>
                     </div>
                     <%} %>
@@ -339,7 +339,7 @@
                               if (row["存放地址"].ToString() != "")
                               {%>
                             <a>
-                                <img src="<%=@"http://192.168.1.22:88/"+row["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="bigImage"></a>
+                                <img src="<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="bigImage"></a>
                             <%}%>
                         </div>
                         <%}%>
@@ -353,7 +353,7 @@
                                System.Data.DataRow row = dt_images.Rows[i];
                         %>
                         <li>
-                            <img src='<%=@"http://192.168.1.22:88/"+row["存放地址"].ToString().Replace("//","/")%>' width="61px" height="45px" click="changeImage('<%=@"http://192.168.1.22:88/"+row["存放地址"].ToString().Replace("//","/")%>')">
+                            <img src='<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>' width="61px" height="45px" click="changeImage('<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>')">
                         </li>
                         <%}%>
                     </ul>

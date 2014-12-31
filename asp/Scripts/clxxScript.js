@@ -10,7 +10,7 @@ function GetDomVdoDom() {
         type: 'get',
         async: true, //是否同步
         data: { 'action': 'dv', 'clid': $("#myclid").val() },
-        url: "http://192.168.1.22:88/Ashx/clxxJsonHandler.ashx",
+        url: "http://192.168.1.22/Ashx/clxxJsonHandler.ashx",
         dataType: "jsonp", //数据类型为jsonp  
         jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
         success: function (data) {
@@ -28,7 +28,7 @@ function GetDomVdoDom() {
                 $('#domShow').FlexPaperViewer({
                     config: {
 
-                        SWFFile: "http://192.168.1.22:88/" + data.domFile, //swf路径
+                        SWFFile: "http://192.168.1.22/" + data.domFile, //swf路径
 
                         jsDirectory: "Scripts/flexpaper/FlexPaperViewer.swf", //设置FlexPaperViewer.swf的路径
                         Scale: 0.6, //初始化缩放比例，参数值应该是大于零的整数
@@ -69,7 +69,7 @@ function GetDomVdoDom() {
             } else {
                 $("#videoName").text(data.videoName);
                 $("#videoTime").text(data.videoTime);
-                $("#videoDetails").html("<object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0' width='900' height='500'><param name='movie' value='Scripts/flv/vcastr.swf'><param name='quality' value='high'><param name='allowFullScreen' value='true' /><param name='FlashVars' value='vcastr_file=" + "http://192.168.1.22:88/" + data.videoFile + "&vcastr_title=" + data.videoName + "&BarColor=0x9F79EE&BarPosition=0' /><param value='transparent' name='wmode'><embed src='Scripts/flv/vcastr.swf' wmode='transparent' allowFullScreen='true' FlashVars='vcastr_file=" + "http://192.168.1.22:88/" + data.videoFile + "&vcastr_title=" + data.videoName + "&BarColor=0x9F79EE&BarPosition=0' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width='900' height='500'></embed></object>");
+                $("#videoDetails").html("<object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0' width='900' height='500'><param name='movie' value='Scripts/flv/vcastr.swf'><param name='quality' value='high'><param name='allowFullScreen' value='true' /><param name='FlashVars' value='vcastr_file=" + "http://192.168.1.22/" + data.videoFile + "&vcastr_title=" + data.videoName + "&BarColor=0x9F79EE&BarPosition=0' /><param value='transparent' name='wmode'><embed src='Scripts/flv/vcastr.swf' wmode='transparent' allowFullScreen='true' FlashVars='vcastr_file=" + "http://192.168.1.22/" + data.videoFile + "&vcastr_title=" + data.videoName + "&BarColor=0x9F79EE&BarPosition=0' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width='900' height='500'></embed></object>");
             }
         }
     });
@@ -85,7 +85,7 @@ function GetDetails() {
         type: 'get',
         async: true, //是否同步
         data:  { 'action': 'des', 'clid': $("#myclid").val() },
-        url: "http://192.168.1.22:88/Ashx/clxxsHandler.ashx",
+        url: "http://192.168.1.22/Ashx/clxxsHandler.ashx",
         dataType: "jsonp", //数据类型为jsonp  
         jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
         success: function (data) { 

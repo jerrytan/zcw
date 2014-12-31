@@ -175,6 +175,16 @@
                     });
                 }
             }
+            //            var length = document.getElementById("edClfl").children.length;//$("#edClfl").children().length;
+            //            var children = document.getElementById("edClfl").children[1].children; //("#edClfl").children();
+            //            for (var i = 0; i < children.length; i++) {
+            //                //children是tr，每个tr有6个属性
+            //                if (children[i].children[5].innerHTML==children.children[2].children[0].value) {
+            //                    alert("true");
+            //                } else {
+            //                    alert("false");
+            //                }
+            //            }
 
             //李宗鹏添加增加材料分类属性值结束----------------------------------------------------------------------
 
@@ -636,7 +646,7 @@
                                         </td>
                                         <td height="80" colspan="7" align="center" bgcolor="#FFFFFF">
                                             <textarea class="hyzhc_shrk2_2" runat="server" cols="40" id="yyfw" name="yyfw" rows="6"
-                                                style="100%"> </textarea>
+                                                style="100%"></textarea>
                                         </td>
                                     </tr>
                                     <tr>

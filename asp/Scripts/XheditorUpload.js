@@ -49,7 +49,7 @@ function getXheditor() {
                             type: 'get',
                             async: true, //是否同步
                             data: { 'clid': $("#myclid").val(), 'filedata': editor.getSource() },
-                            url: "http://192.168.1.22:88/Ashx/DetailsHandler.ashx",
+                            url: "http://192.168.1.22/Ashx/DetailsHandler.ashx",
                             dataType: "jsonp", //数据类型为jsonp  
                             jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
                             success: function (data) {
@@ -145,7 +145,7 @@ function getXheditor() {
             plugins: allPlugin,
             //skin: 'o2007blue',
             tools: 'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,SelectAll,Align,List,Outdent,Indent,Link,Unlink,ImgUploadfy,Hr,Emot,Table,Preview,Print,Removeformat,Source,Close,Save'
-            //upImgUrl: '{editorRoot}http://192.168.1.22:88/Ashx/XheditorHandler.ashx?clid=' + $("#myclid").val() + '&uploadurl={editorRoot}http://192.168.1.22:88/Ashx/XheditorHandler.ashx%3Fimmediate%3D1&ext=图片文件(*.jpg;*.jpeg;*.gif;*.png'
+            //upImgUrl: '{editorRoot}http://192.168.1.22/Ashx/XheditorHandler.ashx?clid=' + $("#myclid").val() + '&uploadurl={editorRoot}http://192.168.1.22/Ashx/XheditorHandler.ashx%3Fimmediate%3D1&ext=图片文件(*.jpg;*.jpeg;*.gif;*.png'
         });
     }
 
@@ -193,7 +193,7 @@ function GetUploadfyImg() {
     $("#imgNewuploadify").uploadify({
         'height': '13',
         'width': '50',
-        'uploader': 'http://192.168.1.22:88/Ashx/UploadifyHandler.ashx',
+        'uploader': 'http://192.168.1.22/Ashx/UploadifyHandler.ashx',
         'swf': 'Scripts/uploadify/uploadify.swf',
         'fileTypeExts': '*.jpg;*.jpeg;*.png;*.gif;',
         'fileTypeDesc': 'Image',

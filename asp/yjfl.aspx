@@ -277,7 +277,7 @@ where t.RowId between (@pageIndex-1)*@pageSize+1 and @pageIndex*@pageSize ";
                         {
                             imgsrc = result.ToString();
                         }
-                        Response.Write(@"<img src='http://192.168.1.22:88/"+imgsrc+ "' width=150px height=150px />") ;  
+                        Response.Write(@"<img src='http://192.168.1.22/"+imgsrc+ "' width=150px height=150px />") ;  
 				    %>
                     </a>
                 <span class="pxtu1" style="overflow:hidden"><%=row["ÏÔÊ¾Ãû"].ToString()%></span>
