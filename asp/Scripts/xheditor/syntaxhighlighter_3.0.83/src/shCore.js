@@ -646,7 +646,7 @@ function attachEvent(obj, type, func, scope)
  */
 function alert(str)
 {
-	window.alert(sh.config.strings.alert + str);
+	alert(sh.config.strings.alert + str);
 };
 
 /**

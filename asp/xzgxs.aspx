@@ -627,7 +627,7 @@
             }
             else
             {
-                Response.Write("<script>window.alert('信息录入失败！');window.location.href='gyszym.aspx'</" + "script>");
+                Response.Write("<script>alert('信息录入失败！');window.location.href='gyszym.aspx'</" + "script>");
             }
         }
         //public bool xzpp(string gys_id)

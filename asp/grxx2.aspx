@@ -101,7 +101,7 @@
                 //Response.Redirect("gysdl.aspx");
                 Response.Write("<script>window.location.href='gysdl.aspx';</"+"script>");
             }
-            Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx';</" + "script>");
+            Response.Write("<script>alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx';</" + "script>");
             ////Response.Write("请耐心等待,我方工作人员会尽快给您回复!");
             //Response.Redirect("gyszym.aspx");			
         }

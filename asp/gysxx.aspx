@@ -406,7 +406,17 @@ else
         <% if (gys_type.Equals("分销商")) {%>
         <!-- 代理品牌 开始-->
         <div class="gydl2">
-            <div class="dlpp">公司旗下品牌</div>
+            
+            <%
+                if (dt_gysxx.Rows[0]["单位类型"].ToString()=="分销商")
+                {
+                    Response.Write("<div class='dlpp'>公司代理的品牌</div>");
+                }
+                else if (dt_gysxx.Rows[0]["单位类型"].ToString()=="生产商")
+                {
+                    Response.Write("<div class='dlpp'>公司旗下品牌</div>");
+                }
+                %>
             <%foreach(System.Data.DataRow row in dt_ppxx.Rows)
               {%>
                     <a href="ppxx.aspx?pp_id=<%=row["pp_id"] %>">

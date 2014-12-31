@@ -329,8 +329,8 @@ protected void Add_Click(object sender, System.EventArgs e)
     {
         value = "添加材料失败！错误信息：" + ee.ToString();
     }
-    //Response.Write("<script>window.alert('" + value + "');window.opener.reload()location.href = 'fxsglcl.aspx?gys_id=" + fxs_id1 + "'; </" + "script>");
-    Response.Write("<script>window.alert('" + value + "');window.opener.location.reload();window.close(); </" + "script>");
+    //Response.Write("<script>alert('" + value + "');window.opener.reload()location.href = 'fxsglcl.aspx?gys_id=" + fxs_id1 + "'; </" + "script>");
+    Response.Write("<script>alert('" + value + "');window.opener.location.reload();window.close(); </" + "script>");
 }
 protected void filter_Click(object sender, System.EventArgs e)
 {

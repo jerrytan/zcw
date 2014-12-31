@@ -83,7 +83,7 @@
                string sSQLs = "update 材料供应商信息表 set 联系人手机='" + this.user_phone.Value + "', 电子邮箱=''  where gys_id='" + Session["dwid"] + "'";
                 objConn.ExecuteSQLForCount(sSQLs, true);
                 objConn.ExecuteSQLForCount(sSQL, true);
-                Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx?QQ= "+ QQ +" &GYS_ID= + gys_id'</"+"script>"); 
+                Response.Write("<script>alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx?QQ= "+ QQ +" &GYS_ID= + gys_id'</"+"script>"); 
             }
             else
             {
@@ -91,13 +91,13 @@
                  string sSQLs = "update 材料供应商信息表 set 联系人手机='" + this.user_phone.Value + "', 电子邮箱=''  where gys_id='" + Session["dwid"] + "'";
                 objConn.ExecuteSQLForCount(sSQLs, true);
                 objConn.ExecuteSQLForCount(sSQL, true);
-                Response.Write("<script>window.alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx?QQ=" + QQ + "&GYS_ID="+s_yh_id+"'</" + "script>");
+                Response.Write("<script>alert('信息已保存成功,请返回！');window.location.href='gyszym.aspx?QQ=" + QQ + "&GYS_ID="+s_yh_id+"'</" + "script>");
             }
             <%--Response.Redirect("gyszym.aspx?QQ=" + QQ + "&GYS_ID=" + gys_id);--%>
         }
        else
        {
-           Response.Write("<script>window.alert('请输入手机号码！');</"+"script>"); 
+           Response.Write("<script>alert('请输入手机号码！');</"+"script>"); 
        }
      }
 </script>

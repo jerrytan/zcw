@@ -20,7 +20,7 @@ public partial class asp_gyszc : System.Web.UI.Page
         string sqlIsExistGs = "select * from 材料供应商信息表 where 供应商='" + this.txt_gsmc.Value + "' ";
         if (string.IsNullOrEmpty(this.txt_gsmc.Value) || this.txt_gsmc.Value == "请填写工商局注册的全称（4-40位字符）")
         {
-            Response.Write("<script>window.alert('请输入公司名称！');</script>");
+            Response.Write("<script>alert('请输入公司名称！');</script>");
             this.txt_gsmc.Focus();
             return;
         }
@@ -28,7 +28,7 @@ public partial class asp_gyszc : System.Web.UI.Page
         {
             if (dc.GetRowCount(sqlIsExistGs) > 0)
             {
-                Response.Write("<script>window.alert('该公司已注册，请联系公司管理员');</script>");
+                Response.Write("<script>alert('该公司已注册，请联系公司管理员');</script>");
                 Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
             }
         }
@@ -42,62 +42,62 @@ public partial class asp_gyszc : System.Web.UI.Page
         {
             if (dc.GetRowCount(sqlIsExistQQ) > 0)
             {
-                Response.Write("<script>window.alert('该用户已存在');</script>");
+                Response.Write("<script>alert('该用户已存在');</script>");
                 this.txt_gsQQ.Focus();
                 return;
             }
         }
         if (string.IsNullOrEmpty(this.txt_yyzzzch.Value) && this.txt_yyzzzch.Value=="")
         {
-            Response.Write("<script>window.alert('请输入营业执照注册号');</script>");
+            Response.Write("<script>alert('请输入营业执照注册号');</script>");
             this.txt_yyzzzch.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_zcrq.Value))
         {
-            Response.Write("<script>window.alert('请输入公司注册日期');</script>");
+            Response.Write("<script>alert('请输入公司注册日期');</script>");
             this.txt_zcrq.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_zczj.Value))
         {
-            Response.Write("<script>window.alert('请输入注册资金');</script>");
+            Response.Write("<script>alert('请输入注册资金');</script>");
             this.txt_zczj.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.dwlx.Value))
         {
-            Response.Write("<script>window.alert('请选择单位类型');</script>");
+            Response.Write("<script>alert('请选择单位类型');</script>");
             this.dwlx.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_gsdz.Value) || this.txt_gsdz.Value == "请填写公司地址")
         {
-            Response.Write("<script>window.alert('请输入公司地址');</script>");
+            Response.Write("<script>alert('请输入公司地址');</script>");
             this.txt_gsdz.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_gsdh.Value) || this.txt_gsdh.Value == "请填写区号+电话号码")
         {
-            Response.Write("<script>window.alert('请输入公司电话');</script>");
+            Response.Write("<script>alert('请输入公司电话');</script>");
             this.txt_gsdh.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.jyfw.Value))
         {
-            Response.Write("<script>window.alert('请输入经营范围');</script>");
+            Response.Write("<script>alert('请输入经营范围');</script>");
             this.jyfw.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_xm.Value))
         {
-            Response.Write("<script>window.alert('请输入联系人姓名');</script>");
+            Response.Write("<script>alert('请输入联系人姓名');</script>");
             this.txt_xm.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_sj.Value) || this.txt_sj.Value == "请输入手机号！")
         {
-            Response.Write("<script>window.alert('请输入联系人手机号');</script>");
+            Response.Write("<script>alert('请输入联系人手机号');</script>");
             this.txt_sj.Focus();
             return;
         }
@@ -137,12 +137,12 @@ public partial class asp_gyszc : System.Web.UI.Page
         //string sqlAll = sqlAddGys + sqlAddGys_id;       
         //if (dc.RunSqlTransaction(sqlAll))
         //{
-        //    Response.Write("<script>window.alert('注册信息已提交,请等待审核');</script>");
+        //    Response.Write("<script>alert('注册信息已提交,请等待审核');</script>");
         //    Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
         //}
         //else
         //{
-        //    Response.Write("<script>window.alert('注册失败');</script>");
+        //    Response.Write("<script>alert('注册失败');</script>");
         //    return;
         //}
     }

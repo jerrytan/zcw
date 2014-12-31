@@ -33,7 +33,7 @@
         if (dt_sx != null && dt_sx.Rows.Count > 0)
         {
             string html = "";
-            html = "<table width='740' border='0' cellpadding='0' cellspacing='1' bgcolor='#dddddd' style='table-layout：fixed ;word-wrap：break-word' id='edClfl'>"
+            html = "<table width='95%'  border='0' cellpadding='0' cellspacing='1' bgcolor='#dddddd' style='table-layout：fixed ;display:table' id='edClfl; '>"
                 + " <thead>"
                 + "   <tr>"
                 + "    <th width='70' height='30' align='center' bgcolor='#E3ECFF'><strong>属性名称</strong></th>"
@@ -43,7 +43,7 @@
                   + " <th  style='display:none;' width='80' align='center' bgcolor='#E3ECFF'><strong>SQL语句</strong></th>"
                 + " </tr>"
                 + " </thead>"
-                + " <tbody id='sx'>";
+                + " <tbody id='sx' >";
 
             foreach (DataRow drsx in dt_sx.Rows)
             {
@@ -53,8 +53,8 @@
                 sxmc = sxmc.Replace("\r", " ");
                 sxmc = sxmc.Replace("\n", " ");
                 html += " <tr style='line-height:24px;'>"
-               + " <td align='center' bgcolor='#FFFFFF'>" + sxmc + "</td>"
-                + " <td align='left' bgcolor='#FFFFFF'> ";
+               + " <td align='center' bgcolor='#FFFFFF' style=' width:120px;height:auto;'>" + sxmc + "</td>"
+                + " <td  bgcolor='#FFFFFF'  style=' width:523px;height:auto;'> ";
                 if (dt_sxz != null && dt_sxz.Rows.Count > 0)
                 {
                     foreach (DataRow drsxz in dt_sxz.Rows)
@@ -73,11 +73,11 @@
                         bh = bh.Replace("\n", " ");
               
                         html += "<a href='javascript:void(0)' onclick=\"AddSXZ(this,'" + sxbm +
-                            "','" + bh + "','" + sxz + "','"+value+"')\">" + sxz + "&nbsp;&nbsp;</a>";
+                            "','" + bh + "','" + sxz + "','"+value+"') \">" + sxz + "&nbsp;&nbsp;</a>";
                     }
                 }
                 html += "</td>"
-                    + " <td align='center' bgcolor='#FFFFFF' class='myEdCl'><input  type='text' style=' border:0px; width:80px;height:24px; margin:2px;'  /></td>"
+                    + " <td align='center' bgcolor='#FFFFFF'  style=' width:80px;height:auto;' class='myEdCl'><input  type='text' style=' border:0px; width:80px;height:24px; margin:2px;'  /></td>"
                     + " <td style='display:none;'></td>"
                     + " <td style='display:none;'></td>"
                     + " <td style='display:none;'></td>"

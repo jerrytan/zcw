@@ -277,16 +277,16 @@
                  bool b = objConn.ExecuteSQL(sSQL, true);
                  if (b)
                  {
-                    Response.Write("<script>window.alert('上传成功！')</" + "script>");
+                    Response.Write("<script>alert('上传成功！')</" + "script>");
                  }
                  else
                  {
-                     Response.Write("<script>window.alert('保存到数据库中失败，请重新上传！')</" + "script>");
+                     Response.Write("<script>alert('保存到数据库中失败，请重新上传！')</" + "script>");
                  }
              }
              else
              {
-                 Response.Write("<script>window.alert('上传失败！')</" + "script>");
+                 Response.Write("<script>alert('上传失败！')</" + "script>");
              }           
          }
 

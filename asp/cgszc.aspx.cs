@@ -23,7 +23,7 @@ public partial class asp_cgszc : System.Web.UI.Page
 
         if (string.IsNullOrEmpty(this.txt_gsmc.Value)&&this.txt_gsmc.Value==""&&this.txt_gsmc.Value=="请填写工商局注册的全称（4-40位字符）")
         {
-            Response.Write("<script>window.alert('请输入公司名称！');</script>");
+            Response.Write("<script>alert('请输入公司名称！');</script>");
             this.txt_gsmc.Focus();
             return;
         }
@@ -31,7 +31,7 @@ public partial class asp_cgszc : System.Web.UI.Page
         {
             if (dc.GetRowCount(sqlIsExistGs) > 0)
             {
-                Response.Write("<script>window.alert('该公司已注册，请联系公司管理员');</script>");
+                Response.Write("<script>alert('该公司已注册，请联系公司管理员');</script>");
                 Response.Write("<script>javascript:window.location.href='index.aspx'</script>");
             }
         }
@@ -45,68 +45,68 @@ public partial class asp_cgszc : System.Web.UI.Page
         {
             if (dc.GetRowCount(sqlIsExistQQ) > 0)
             {
-                Response.Write("<script>window.alert('QQ已存在');</script>");
+                Response.Write("<script>alert('QQ已存在');</script>");
                 this.txt_gsQQ.Focus();
                 return;
             }
         }
         if (string.IsNullOrEmpty(this.txt_yyzzzch.Value) && this.txt_yyzzzch.Value == "")
         {
-            Response.Write("<script>window.alert('请输入营业执照注册号');</script>");
+            Response.Write("<script>alert('请输入营业执照注册号');</script>");
             this.txt_yyzzzch.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_zcrq.Value) && this.txt_zcrq.Value == "")
         {
-            Response.Write("<script>window.alert('请输入公司注册日期');</script>");
+            Response.Write("<script>alert('请输入公司注册日期');</script>");
             this.txt_zcrq.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_zczj.Value) && this.txt_zczj.Value == "")
         {
-            Response.Write("<script>window.alert('请输入注册资金');</script>");
+            Response.Write("<script>alert('请输入注册资金');</script>");
             this.txt_zczj.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.dwlx.Value) && this.dwlx.Value == "")
         {
-            Response.Write("<script>window.alert('请选择单位类型');</script>");
+            Response.Write("<script>alert('请选择单位类型');</script>");
             this.dwlx.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_gsdz.Value) && this.txt_gsdz.Value == "")
         {
-            Response.Write("<script>window.alert('请输入公司地址');</script>");
+            Response.Write("<script>alert('请输入公司地址');</script>");
             this.txt_gsdz.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_gsdh.Value) && this.txt_gsdh.Value == "")
         {
-            Response.Write("<script>window.alert('请输入公司电话');</script>");
+            Response.Write("<script>alert('请输入公司电话');</script>");
             this.txt_gsdh.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.jyfw.Value) && this.jyfw.Value == "")
         {
-            Response.Write("<script>window.alert('请输入经营范围');</script>");
+            Response.Write("<script>alert('请输入经营范围');</script>");
             this.jyfw.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_xm.Value) && this.txt_xm.Value == "")
         {
-            Response.Write("<script>window.alert('请输入联系人姓名');</script>");
+            Response.Write("<script>alert('请输入联系人姓名');</script>");
             this.txt_xm.Focus();
             return;
         }
         if (string.IsNullOrEmpty(this.txt_sj.Value) && this.txt_sj.Value == "")
         {
-            Response.Write("<script>window.alert('请输入联系人手机号');</script>");
+            Response.Write("<script>alert('请输入联系人手机号');</script>");
             this.txt_sj.Focus();
             return;
         }
         //if (string.IsNullOrEmpty(this.txt_lxdz.Value))
         //{
-        //    Response.Write("<script>window.alert('请输入联系人地址');</script>");
+        //    Response.Write("<script>alert('请输入联系人地址');</script>");
         //    this.txt_lxdz.Focus();
         //    return;
         //}

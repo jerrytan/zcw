@@ -175,7 +175,7 @@
                     //    myCookie.Expires = DateTime.Now.AddDays(-10d);
                     //    Response.Cookies.Add(myCookie);   //如果用户ID不为空，将用户ID写入Cookie
                     //}
-                    Response.Write("<script>window.alert('您不是采购商，不能用采购商身份登录！');window.location.href='index.aspx';</" + "script>");
+                    Response.Write("<script>alert('您不是采购商，不能用采购商身份登录！');window.location.href='index.aspx';</" + "script>");
                 }
                 Session["CGS_YH_ID"] = s_yh_id;  //将用户ID保存到session
 

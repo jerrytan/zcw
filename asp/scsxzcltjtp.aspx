@@ -141,11 +141,11 @@
                 {
                     this.cldmtz.Value = dmt;
                 }
-                Response.Write("<script>window.alert('上传" + s_mtlx + "成功！')</" + "script>");
+                Response.Write("<script>alert('上传" + s_mtlx + "成功！')</" + "script>");
             }
             else
             {
-                Response.Write("<script>window.alert('上传失败！')</" + "script>");
+                Response.Write("<script>alert('上传失败！')</" + "script>");
             }
         }
     </script>

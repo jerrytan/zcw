@@ -104,11 +104,11 @@ public partial class asp_cgsgly_wh : System.Web.UI.Page
 
         if (dc.RunSqlTransaction(sqlUpdate))
         {
-            Response.Write("<script>window.alert('修改成功');</script>");
+            Response.Write("<script>alert('修改成功');</script>");
         }
         else
         {
-            Response.Write("<script>window.alert('修改失败');</script>");
+            Response.Write("<script>alert('修改失败');</script>");
             return;
         }
     }

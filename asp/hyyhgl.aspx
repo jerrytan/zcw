@@ -336,7 +336,7 @@
                 if (dc.RunSqlTransaction(sqlDelete))
                 {
                     Response.Write("<script>alert('删除成功')</" + "script>");
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "script", "<script>window.alert('删除成功')</" + "script>", true);
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "script", "<script>alert('删除成功')</" + "script>", true);
                     Response.Write("<script>window.location.href=document.URL;</" + "script>");  //刷新页面
 
                 }

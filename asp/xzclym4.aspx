@@ -82,15 +82,15 @@
 				}
                 if(sx_names=="" &&sx_codes=="")
                 {
-                    Response.Write("<script>window.alert('请选择对应的属性！');</" + "script>");
+                    Response.Write("<script>alert('请选择对应的属性！');</" + "script>");
                 }
                 else if(sx_id==""&&cl_value=="")
                 {
-                    Response.Write("<script>window.alert('请选择对应的属性！');</" + "script>");
+                    Response.Write("<script>alert('请选择对应的属性！');</" + "script>");
                 }
                 else if(cl_number==""&&cl_ids=="")
                 {
-                    Response.Write("<script>window.alert('请选择对应的属性！');</" + "script>");
+                    Response.Write("<script>alert('请选择对应的属性！');</" + "script>");
                 }
                 else{
 				sSQL = "insert into  材料属性表(分类属性名称,分类属性编码,flsx_id,分类属性值,分类属性值编号,flsxz_id) "
@@ -108,11 +108,11 @@
 				+"and flsx_id='"+sx_id+"'and flsxz_id='"+cl_ids+"' ";
 				if(objConn.ExecuteSQL(sSQL,true))
                 {  
-                    Response.Write("<script>window.alert('新增材料成功，请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id="+gys_id+"';</" + "script>");
+                    Response.Write("<script>alert('新增材料成功，请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id="+gys_id+"';</" + "script>");
                 } 
                 else
                 {
-                    Response.Write("<script>window.alert('新增材料失败，请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id="+gys_id+"';</" + "script>");
+                    Response.Write("<script>alert('新增材料失败，请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id="+gys_id+"';</" + "script>");
                 }         
      %>
 

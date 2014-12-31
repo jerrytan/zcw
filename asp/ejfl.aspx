@@ -426,7 +426,7 @@
                     if (result != null) {
                         imgsrc = result.ToString();
                     }
-                    Response.Write("<img src='"+"http://192.168.1.22/"+imgsrc.Replace("//","/")+ "' width=150px height=150px />");
+                    Response.Write("<img src='"+"http://192.168.1.22:88/"+imgsrc.Replace("//","/")+ "' width=150px height=150px />");
 				    %>
                     </a>
                     <div class="dlspxt1" >

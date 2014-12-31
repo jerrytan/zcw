@@ -685,7 +685,7 @@ public class DataConn : System.Web.UI.Page
         if (!webform.IsStartupScriptRegistered("msg"))
         {
             string strScript;
-            strScript = "<SCRIPT LANGUAGE='JScript'>window.alert('" + msg + "')</SCRIPT>";
+            strScript = "<SCRIPT LANGUAGE='JScript'>alert('" + msg + "')</SCRIPT>";
             webform.RegisterStartupScript("msg", strScript);
         }
     }

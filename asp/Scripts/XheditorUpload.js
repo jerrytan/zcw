@@ -49,7 +49,7 @@ function getXheditor() {
                             type: 'get',
                             async: true, //是否同步
                             data: { 'clid': $("#myclid").val(), 'filedata': editor.getSource() },
-                            url: "http://192.168.1.22/Ashx/DetailsHandler.ashx",
+                            url: "http://192.168.1.22:88/Ashx/DetailsHandler.ashx",
                             dataType: "jsonp", //数据类型为jsonp  
                             jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
                             success: function (data) {
@@ -89,9 +89,10 @@ function getXheditor() {
             ImgUploadfy: {
                 c: 'imgUploadfy',
                 t: '',
+                h:1,
                 e: function () {
                     var _this = this;
-                    var jTest = $('<div><label for="xheImgUrl" style=" float:left;"> 图片文件：</label> <input id="imgUrl" type="text" style="width: 105px;" tabindex="-1" value="http://" /> <input type="button" class="xheBtn" id="imgNewuploadify" tabindex="-1" style="float:left;"/></div><div style="padding: 0px;"><div style="margin: 1px 0px 2px 0px"><label for="xheImgAlt"> 替换文本:</label> <input type="text" id="xheImgAlt" style="width:169px;" value="" /></div><div style="margin: 1px 0px 2px 0px"><label for="xheImgWidth">&nbsp;宽&nbsp;&nbsp;度&nbsp;:</label><input type="text" id="xheImgWidth" style="width: 50px;" value=""><label for="xheImgHeight">&nbsp;高&nbsp;&nbsp;度&nbsp;:</label><input type="text" id="xheImgHeight" style="width: 50px;" value=""></div><div style="margin: 1px 0px 2px 0px"><label for="xheImgAlign">对齐方式:</label><select id="xheImgAlign" style=" width:54px; height:22px; font-size:5px;"><option selected="selected" value="">默认</option><option value="left">左对齐</option><option value="right">右对齐</option><option value="top">顶端</option><option value="middle">居中</option><option value="baseline">基线</option><option value="bottom">底边</option> </select><label for="xheImgBorder">&nbsp;边&nbsp;&nbsp;框&nbsp;:</label><input type="text" id="xheImgBorder" style="width: 50px;"></div><div style="text-align: right; margin: 2px 0px 0px 0px"><input type="button" id="imgSave" value="确定"><input type="button" id="imgCancel" value="取消"></div></div>');
+                    var jTest = $('<div><label for="xheImgUrl" style=" float:left;"> 图片文件：</label> <input id="imgUrl" type="text" style="width: 105px;" tabindex="-1" value="http://" /> <input type="button" class="xheBtn" id="imgNewuploadify" tabindex="-1" style="float:left;"/></div><div style="padding: 0px;"><div style="margin: 1px 0px 2px 0px"><label for="xheImgAlt"> 替换文本:</label> <input type="text" id="xheImgAlt" style="width:169px;" value="" /></div><div style="margin: 1px 0px 2px 0px"><label for="xheImgWidth">&nbsp;宽&nbsp;&nbsp;度&nbsp;:</label><input type="text" id="xheImgWidth" style="width: 50px;" value=""><label for="xheImgHeight">&nbsp;高&nbsp;&nbsp;度&nbsp;:</label><input type="text" id="xheImgHeight" style="width: 50px;" value=""></div><div style="margin: 1px 0px 2px 0px"><label for="xheImgAlign">对齐方式:</label><select id="xheImgAlign" style=" width:54px; height:22px;"><option selected="selected" value="">默认</option><option value="left">左对齐</option><option value="right">右对齐</option><option value="top">顶端</option><option value="middle">居中</option><option value="baseline">基线</option><option value="bottom">底边</option> </select><label for="xheImgBorder">&nbsp;边&nbsp;&nbsp;框&nbsp;:</label><input type="text" id="xheImgBorder" style="width: 50px;"></div><div style="text-align: right; margin: 2px 0px 0px 0px"><input type="button" id="imgSave" value="确定"><input type="button" id="imgCancel" value="取消"></div></div>');
                     var jTestInput = $('#xheTestInput', jTest),
                      jSave = $('#imgSave', jTest);
                     jCancel = $("#imgCancel", jTest);
@@ -144,7 +145,7 @@ function getXheditor() {
             plugins: allPlugin,
             //skin: 'o2007blue',
             tools: 'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,SelectAll,Align,List,Outdent,Indent,Link,Unlink,ImgUploadfy,Hr,Emot,Table,Preview,Print,Removeformat,Source,Close,Save'
-            //upImgUrl: '{editorRoot}http://192.168.1.22/Ashx/XheditorHandler.ashx?clid=' + $("#myclid").val() + '&uploadurl={editorRoot}http://192.168.1.22/Ashx/XheditorHandler.ashx%3Fimmediate%3D1&ext=图片文件(*.jpg;*.jpeg;*.gif;*.png'
+            //upImgUrl: '{editorRoot}http://192.168.1.22:88/Ashx/XheditorHandler.ashx?clid=' + $("#myclid").val() + '&uploadurl={editorRoot}http://192.168.1.22:88/Ashx/XheditorHandler.ashx%3Fimmediate%3D1&ext=图片文件(*.jpg;*.jpeg;*.gif;*.png'
         });
     }
 
@@ -192,7 +193,7 @@ function GetUploadfyImg() {
     $("#imgNewuploadify").uploadify({
         'height': '13',
         'width': '50',
-        'uploader': 'http://192.168.1.22/Ashx/UploadifyHandler.ashx',
+        'uploader': 'http://192.168.1.22:88/Ashx/UploadifyHandler.ashx',
         'swf': 'Scripts/uploadify/uploadify.swf',
         'fileTypeExts': '*.jpg;*.jpeg;*.png;*.gif;',
         'fileTypeDesc': 'Image',

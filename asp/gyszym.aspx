@@ -90,7 +90,7 @@
                         Request.Cookies.Remove(cookiename);
                     }
                 }    
-				Response.Write("<script>window.alert('您是采购商，不能用供销商身份登录！');window.location.href='index.aspx';</" + "script>");
+				Response.Write("<script>alert('您是采购商，不能用供销商身份登录！');window.location.href='index.aspx';</" + "script>");
             }
             Session["GYS_YH_ID"] = s_yh_id;         
      
@@ -131,7 +131,7 @@
                {%>
                         <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?gys_id=<%=gys_id %>">管理生产商信息</a></span>
                              <%if(ppname=="") {%>
-                        <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?ppmc=&gys_id=<%=gys_id %>" onclick="window.alert('为了您的操作方便，请在管理生产商信息中添加品牌信息！')">管理分销商信息</a></span>
+                        <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?ppmc=&gys_id=<%=gys_id %>" onclick="alert('为了您的操作方便，请在管理生产商信息中添加品牌信息！')">管理分销商信息</a></span>
                         <%}else{ %>
                             <span class="zyy1" style="margin-left:100px;"><a href="glfxsxx.aspx?ppmc=&gys_id=<%=gys_id %>" >管理分销商信息</a></span>
                         <%} %>
@@ -148,7 +148,7 @@
      <%else if (!power.Contains("管理生产商") && power.Contains("管理分销商") && !power.Contains("管理材料信息") && lx == "生产商")
                 {%>
             <%if(ppname=="") {%>
-                        <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?ppmc=&gys_id=<%=gys_id %>" onclick="window.alert('为了您的操作方便，请在管理生产商信息中添加品牌信息！')">管理分销商信息</a></span>
+                        <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?ppmc=&gys_id=<%=gys_id %>" onclick="alert('为了您的操作方便，请在管理生产商信息中添加品牌信息！')">管理分销商信息</a></span>
                         <%}else{ %>
                             <span class="zyy1" style="margin-left:100px;"><a href="glfxsxx.aspx?ppmc=&gys_id=<%=gys_id %>" >管理分销商信息</a></span>
                         <%} %>
@@ -162,7 +162,7 @@
                 {%>
                 <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?gys_id=<%=gys_id %>">管理生产商信息</a></span>
                         <%if(ppname=="") {%>
-                        <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?ppmc=&gys_id=<%=gys_id %>" onclick="window.alert('为了您的操作方便，请在管理生产商信息中添加品牌信息！')">管理分销商信息</a></span>
+                        <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?ppmc=&gys_id=<%=gys_id %>" onclick="alert('为了您的操作方便，请在管理生产商信息中添加品牌信息！')">管理分销商信息</a></span>
                         <%}else{ %>
                             <span class="zyy1" style="margin-left:100px;"><a href="glfxsxx.aspx?ppmc=&gys_id=<%=gys_id %>" >管理分销商信息</a></span>
                         <%} %>
@@ -172,7 +172,7 @@
                 {%>
                 <%if (ppname == "" && lx != "分销商")
                   {%>
-                        <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?ppmc=&gys_id=<%=gys_id %>" onclick="window.alert('为了您的操作方便，请在管理生产商信息中添加品牌信息！')">管理分销商信息</a></span>
+                        <span class="zyy1" style="margin-left:100px;"><a href="glscsxx.aspx?ppmc=&gys_id=<%=gys_id %>" onclick="alert('为了您的操作方便，请在管理生产商信息中添加品牌信息！')">管理分销商信息</a></span>
                         <%}else{ %>
                             <span class="zyy1" style="margin-left:100px;"><a href="glfxsxx.aspx?ppmc=&gys_id=<%=gys_id %>" >管理分销商信息</a></span>
                         <%} %>

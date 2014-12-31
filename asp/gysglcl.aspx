@@ -275,11 +275,11 @@
                 dt_cl=objConn.GetDataTable(sSQL);
             }
             //Products_gys_cl();
-            Response.Write("<script>window.alert('删除成功！')</" + "script>");
+            Response.Write("<script>alert('删除成功！')</" + "script>");
         }
         else
         {
-            Response.Write("<script>window.alert('您没有选中任何材料！')</" + "script>");
+            Response.Write("<script>alert('您没有选中任何材料！')</" + "script>");
         }
     }
 

@@ -153,7 +153,7 @@
                 string str_sqlxsmz = "select 显示名字,分类编码 from 材料分类表 where fl_id='" + fl_id + "' ";
                 dt_flxx = dc_obj.GetDataTable(str_sqlxsmz);
 
-                string str_sqlppmc = "select pp_id,品牌名称,规格型号,材料编码 from 材料表 where cl_id='" + cl_id + "' ";
+                string str_sqlppmc = "select pp_id,品牌名称,规格型号,材料编码,显示名,材料编码,计量单位,单位重量,单位体积,说明 from 材料表 where cl_id='" + cl_id + "' ";
                 dt_ppxx = dc_obj.GetDataTable(str_sqlppmc);
 
                 string str_sqlgysxx = "select 供应商,联系人,电话,传真,主页,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='" + cl_id + "') ";
@@ -324,7 +324,7 @@
                         <a>
                             <script type="text/javascript">
                             </script>
-                            <img src="<%=@"http://192.168.1.22/"+dt_images.Rows[0]["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="Img1" /></a>
+                            <img src="<%=@"http://192.168.1.22:88/"+dt_images.Rows[0]["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="Img1" /></a>
                         <%}%>
                     </div>
                     <%} %>
@@ -339,7 +339,7 @@
                               if (row["存放地址"].ToString() != "")
                               {%>
                             <a>
-                                <img src="<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="bigImage"></a>
+                                <img src="<%=@"http://192.168.1.22:88/"+row["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="bigImage"></a>
                             <%}%>
                         </div>
                         <%}%>
@@ -353,7 +353,7 @@
                                System.Data.DataRow row = dt_images.Rows[i];
                         %>
                         <li>
-                            <img src='<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>' width="61px" height="45px" click="changeImage('<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>')">
+                            <img src='<%=@"http://192.168.1.22:88/"+row["存放地址"].ToString().Replace("//","/")%>' width="61px" height="45px" click="changeImage('<%=@"http://192.168.1.22:88/"+row["存放地址"].ToString().Replace("//","/")%>')">
                         </li>
                         <%}%>
                     </ul>
@@ -536,15 +536,38 @@
             </div>
             <div class="bq_cont" id="con_two_1">
                 <div class="spxq_lib">
+                <!--dt_ppxx-->
                     <ul>
-                        <li>产品名称：西班牙米黄老矿（800*800） 西班牙米黄老矿（800*800） 西班牙米黄老矿（800*800） </li>
-                        <li>品牌名称：塔星</li>
-                        <li>产品编号：080101</li>
-                        <li>计量单位：平米</li>
-                        <li>单位重量：g</li>
-                        <li>单位体积：m</li>
-                        <li>产品价格：120元</li>
-                        <li>产品说明：</li>
+                        <li>产品名称：<%=dt_ppxx.Rows[0]["显示名"] %> </li>
+                        <li>品牌名称：<%=dt_ppxx.Rows[0]["品牌名称"] %> </li>
+                        <li>产品编号：<%=dt_ppxx.Rows[0]["材料编码"]%></li>
+                        <%
+                            if (dt_ppxx.Rows[0]["计量单位"]!=null&&dt_ppxx.Rows[0]["计量单位"]!="")
+                            {
+                                Response.Write("<li>计量单位："+dt_ppxx.Rows[0]["计量单位"]+"</li>");
+                            }
+                            if (dt_ppxx.Rows[0]["单位重量"] != null && dt_ppxx.Rows[0]["单位重量"] != "")
+                            {
+                                Response.Write("<li>单位重量：" + dt_ppxx.Rows[0]["单位重量"] + "</li>");
+                            }
+                            if (dt_ppxx.Rows[0]["单位体积"] != null && dt_ppxx.Rows[0]["单位体积"] != "")
+                            {
+                                Response.Write("<li>单位体积：" + dt_ppxx.Rows[0]["单位体积"] + "</li>");
+                            }
+                            //if (dt_ppxx.Rows[0]["产品价格"] != null && dt_ppxx.Rows[0]["产品价格"] != "")
+                            //{
+                            //    Response.Write("<li>产品价格：" + dt_ppxx.Rows[0]["产品价格"] + "</li>");
+                            //}
+                            if (dt_ppxx.Rows[0]["说明"] != null && dt_ppxx.Rows[0]["说明"] != "" && dt_ppxx.Rows[0]["说明"] != " ")
+                            {
+                                Response.Write("<li>说明：" + dt_ppxx.Rows[0]["说明"] + "</li>");
+                            }
+                             %>
+                        
+                      <%--  <li>单位重量：g</li>--%>
+                      <%--  <li>单位体积：m</li>--%>
+                        <%--<li>产品价格：120元</li>
+                        <li>产品说明：</li>--%>
                     </ul>
                 </div>
                 <div class="spxq_cont" id="domDetails" align="center"></div>

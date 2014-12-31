@@ -69,11 +69,11 @@
         + "and flsx_id='" + sx_id + "'and flsxz_id='" + cl_ids + "' ";
         if (objConn.ExecuteSQL(sSQL, true))
         {
-            Response.Write("<script>window.alert('更改材料成功!请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id=" + gys_id + "';</" + "script>");
+            Response.Write("<script>alert('更改材料成功!请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id=" + gys_id + "';</" + "script>");
         }
         else
         {
-            Response.Write("<script>window.alert('更改材料失败!请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id=" + gys_id + "';</" + "script>");
+            Response.Write("<script>alert('更改材料失败!请返回！');window.location.href='gysglcl.aspx?ejfl=&gys_id=" + gys_id + "';</" + "script>");
         }
     }
 </script>

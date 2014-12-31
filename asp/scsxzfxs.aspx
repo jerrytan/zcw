@@ -425,7 +425,7 @@
                 //Response.Write("<script>alert('添加失败！');window.localtion.reload();</" + "script>");
             }
         }
-        Response.Write("<script>window.alert('" + value + "');window.opener.location.reload();window.close(); </" + "script>");
+        Response.Write("<script>alert('" + value + "');window.opener.location.reload();window.close(); </" + "script>");
     }
 </script>
     <form id="form1" runat="server">
