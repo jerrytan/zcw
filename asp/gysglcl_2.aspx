@@ -19,7 +19,6 @@
     <link href="css/gl.css" rel="stylesheet" type="text/css" />
     <script src="js/gysglcl.js" type="text/javascript"></script>
     <script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>
-
     <link href="css/Paging.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         .style1
@@ -37,7 +36,7 @@
         $("#pageDiv a").click(function () {
             var hrefStr = $(this).attr("href");
             var hrStr = hrefStr + "&gys_id=" + $("#gysid").val() + "&ppid=" + $("#ppid").val();
-            $(this).attr("href",hrStr); 
+            $(this).attr("href", hrStr);
         });
     });
     function Add(obj) {
@@ -65,9 +64,9 @@
             alert("请先选择品牌！");
         }
         else {
-            var url = 'scsxzcl.aspx?scs_id=' + gy + "&ppid=" + pp_id;
-            window.open(url);
-            //  window.parent.location.href = 'scsxzcl.aspx?scs_id=' + gy + "&ppid=" + pp_id;
+//            var url = 'scsxzcl.aspx?scs_id=' + gy + "&ppid=" + pp_id;
+            //window.open(url);
+              window.parent.location.href = 'scsxzcl.aspx?scs_id=' + gy + "&ppid=" + pp_id;
         }
 
     }
@@ -80,6 +79,7 @@
         }
         window.open('scsxzcl.aspx?scs_id=' + gy + "&ppid=" + pp_id + "&cl_id=" + cl_id + "&flmc=" + flmc + "&flbm=" + flbm);
     }
+    //删除材料
     function delete_cl() {
         var table = document.getElementById("table2");
         var input = table.getElementsByTagName("input");
@@ -184,7 +184,7 @@
             string sSQL = "";
             if (pp_id != "")//Post进来
             {
-                
+
                 //---------------------------小李分页开始--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 //List<BranchModel> list = new List<BranchModel>();
                 this.ppid.Value = pp_id;
@@ -195,7 +195,7 @@
                 int total = Convert.ToInt32(MySqlHelper.ExecuteScalar("select count(*) from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "'"));
                 string pageHtml = PagingHelper.ShowPageNavigate(pageIndex, pageSize, total);
                 this.pageDiv.InnerHtml = pageHtml;
-                sSQL = "select top "+pageSize+" cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称,pp_id from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "' and cl_id not in(select top "+(pageIndex-1)*pageSize+" cl_id from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "' order by updatetime desc)order by updatetime desc";
+                sSQL = "select top " + pageSize + " cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称,pp_id,gys_id from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "' and cl_id not in(select top " + (pageIndex - 1) * pageSize + " cl_id from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "' order by updatetime desc)order by updatetime desc";
                 //---------------------------小李分页结束--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 //老不分页
                 //sSQL = "select cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称,pp_id from 材料表 where gys_id='" + gys_id + "' and pp_id='" + pp_id + "' order by updatetime desc";
@@ -204,7 +204,7 @@
             }
             else//第一次进来
             {
-                sSQL = "select top 10 cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称,pp_id from 材料表 where gys_id='" + gys_id + "' order by updatetime desc";
+                sSQL = "select top 10 cl_id,显示名,品牌名称,规格型号,材料编码,生产厂商,分类编码,分类名称,pp_id,gys_id from 材料表 where gys_id='" + gys_id + "' order by updatetime desc";
                 dt_cl = Conn.GetDataTable(sSQL);
             }
 
@@ -387,10 +387,9 @@
         //*****************************小张新增检索功能结束*********************************
     </script>
     <form id="form1" runat="server">
-    <input  type="hidden" name="ppid" id="ppid" value=""  runat="server"/>
-    <input  type="hidden" name="gysid" id="gysid" value=""  runat="server"/>
+    <input type="hidden" name="ppid" id="ppid" value="" runat="server" />
+    <input type="hidden" name="gysid" id="gysid" value="" runat="server" />
     <input type="hidden" id="lblgys_id" runat="server" />
-
     <div id="jiansuo2">
         <asp:Label ID="shaixu" runat="server"><font style="FONT-SIZE: 9pt">检索条件：</font></asp:Label>
         <asp:DropDownList ID="lieming" Style="border-right: #808080 1px solid; border-top: #808080 1px solid;
@@ -461,11 +460,14 @@
                         </label>
                     </td>
                     <td align="left" style="font-size: 12px">
-                        
-                        <%=SubStrings.GetWidth(8, R_cl["显示名"].ToString(), R_cl["显示名"].ToString())%>
+                        <a href="<%=MyHelper.GetCrossDomainClient("../App_Code/config.xml") %>/asp/clxx.aspx?cl_id=<%=R_cl["cl_id"].ToString() %>" target="_blank">
+                            <%=SubStrings.GetWidth(8, R_cl["显示名"].ToString(), R_cl["显示名"].ToString())%>
+                        </a>
                     </td>
                     <td class="style1" style="font-size: 12px">
-                        <%=R_cl["品牌名称"].ToString()%>
+                        <a href="<%=MyHelper.GetCrossDomainClient("../App_Code/config.xml") %>/asp/ppxx.aspx?pp_id=<%=R_cl["pp_id"].ToString()%>" target="_blank">
+                            <%=R_cl["品牌名称"].ToString()%>
+                        </a>
                     </td>
                     <td style="font-size: 12px">
                         <%=SubStrings.GetWidth(5, R_cl["规格型号"].ToString(), R_cl["规格型号"].ToString())%>
@@ -474,7 +476,9 @@
                         <%=R_cl["材料编码"].ToString()%>
                     </td>
                     <td align="left" style="font-size: 12px">
-                        <%=R_cl["生产厂商"].ToString()%>
+                        <a href="<%=MyHelper.GetCrossDomainClient("../App_Code/config.xml") %>/asp/gysxx.aspx?gys_id=<%=R_cl["gys_id"].ToString() %>"
+                            target="_blank">
+                            <%=R_cl["生产厂商"].ToString()%></a>
                     </td>
                     <td align="center">
                         <input type="Button" name="input" value="编辑" id="filter" onclick="BJCL('<%=R_cl["cl_id"].ToString() %>','<%=R_cl["分类编码"].ToString()%>','<%=R_cl["分类名称"].ToString() %>','<%=R_cl["pp_id"].ToString() %>')"
@@ -504,12 +508,12 @@
                     </td>
                 </tr>
                 <%}
-            }%>
+                  }%>
             </tbody>
         </table>
     </div>
     <!--分页按钮-->
-    <div id="pageDiv" class="paginator" runat="server">   
+    <div id="pageDiv" class="paginator" runat="server">
     </div>
     </form>
 </body>

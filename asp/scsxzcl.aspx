@@ -10,7 +10,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
     <meta content="IE=9.0000" http-equiv="X-UA-Compatible" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>供应商产品列表</title>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>供应商新增材料</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <link href="css/cllb.css" rel="stylesheet" type="text/css" />
@@ -19,6 +22,7 @@
     <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
     <!--!+ MyControl 加载-->
     <script src="Scripts/MyControl/MyControl.js" type="text/javascript"></script>
+    <script src="Scripts/AddSXZ.js" type="text/javascript"></script>
     <script src="js/jquery.form.js" type="text/javascript"></script>
     <%--<script src="http://malsup.github.io/jquery.form.js"></script>--%>
     <!--+upload引用-->
@@ -72,6 +76,7 @@
                 var con = document.getElementById("con_" + name + "_" + i);
                 menu.className = i == cursel ? "hover" : "";
                 con.style.display = i == cursel ? "block" : "none";
+                $(".uploadify").attr("style", "");
             }
         }
         //    $(document).ready(function () {
@@ -111,6 +116,13 @@
         var value;
         //点击选择属性值
         function AddSXZ(obj, sxbm, bh, sxz, sql) {
+            //获取分类属性id
+            //begin
+            var strs = sql.split(',');
+            $(obj).parent().parent().children().eq(6).html(strs[2]);
+            $(obj).parent().parent().children().eq(7).html(strs[7]);
+            //end
+
             var td = obj.parentNode;
             var a = td.getElementsByTagName("a");
             for (var i = 0; i < a.length; i++) {
@@ -149,44 +161,14 @@
 
             var clbm = document.getElementById("clbm").value;
             var clm = document.getElementById("clmc").value;
-            document.getElementById("mcgz").value = clm;
+            //document.getElementById("mcgz").value = clm;
             var ggjxh = document.getElementById("clmcjgg").value;
             document.getElementById("gg_xh").value = ggjxh;
             if (ggjxh == "" || ggjxh == undefined) {
                 alert("请重新选择规格");
                 return;
             }
-            //李宗鹏添加增加材料分类属性值开始----------------------------------------------------------------------
-            var tbody = $("#sx").children();
-            var length = $("#sx").children().length;
-            for (var i = 0; i < length; i++) {
-                var newz = tbody.eq(i).children().eq(2).children().eq(0).val();
-                var oldz = tbody.eq(i).children().eq(5).text();
-                if (newz != oldz) {
-                    $.ajax({
-                        url: "Ashx/AddclsxzHandler.ashx",
-                        type: "post",
-                        dataType: "text",
-                        //async: true,
-                        data: { "flbm": $("#flbm").val(), "sxmc": tbody.eq(i).children().eq(0).text(),"flsxz":newz},
-                        success: function (data) {
-                            alert(data);
-                        }
-                    });
-                }
-            }
-            //            var length = document.getElementById("edClfl").children.length;//$("#edClfl").children().length;
-            //            var children = document.getElementById("edClfl").children[1].children; //("#edClfl").children();
-            //            for (var i = 0; i < children.length; i++) {
-            //                //children是tr，每个tr有6个属性
-            //                if (children[i].children[5].innerHTML==children.children[2].children[0].value) {
-            //                    alert("true");
-            //                } else {
-            //                    alert("false");
-            //                }
-            //            }
 
-            //李宗鹏添加增加材料分类属性值结束----------------------------------------------------------------------
 
 
             document.getElementById("cpbh").value = clbm;
@@ -232,7 +214,14 @@
             $("#SQL").val("");
             $("#flmc").val("");
 
-            
+            $("#jldw").val("");
+            $("#dwzl").val("");
+            $("#dwtj").val("");
+            $("#cpjg").val("");
+            $("#yyfw").text("");
+            $("#yyfw").val("");
+
+            document.getElementById("mcgz").value = $(obj).text().replace(" ","");
             //end
             var h = obj.parentNode.parentNode;
             var a = h.getElementsByTagName("a");
@@ -457,7 +446,7 @@
                             bh = bh.Replace("\r", " ");
                             bh = bh.Replace("\n", " ");
 
-                            html += "<a href='javascript:void(0)' onclick=\"AddSXZ(this,'" + sxbm +
+                            html += "<a href='javascript:void(0)' style='float:left;' onclick=\"AddSXZ(this,'" + sxbm +
                                 "','" + bh + "','" + sxz + "','" + value + "')\">" + sxz + "&nbsp;&nbsp;</a>";
                         }
                     }
@@ -470,7 +459,7 @@
                 html += " </tbody> "
                         + " <tfoot>"
                         + "        <tr>"
-                        + "        <td width='120' height='32' align='right' bgcolor='#FFFFFF'>名称及规则：</td>"
+                        + "        <td width='120' height='32' align='right' bgcolor='#FFFFFF'>名称及规格</td>"
                         + "        <td align='left' bgcolor='#FFFFFF'><input type='text' runat='server'  value='" + ggxh + "' id='clmcjgg' name='clmcjgg' style=' width: 293px; '/></td>"
                         + "        <td width='80' align='center' bgcolor='#FFFFFF'>"
                         + "        <input type='Button' name='btnDocNew' value='确定' onClick='AddValue1()'  class='filter' style='color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;' /></td>"
@@ -487,9 +476,19 @@
         }
     </script>
     <div class="box" id="cllbb">
+        <div class="cl_top">
+            <div class="cl_wenzi">
+                <a href="index.aspx">首页</a> > <a href="gysglcl.aspx">产品列表页</a> > 新增产品页</div>
+            <div class="help_anniu">
+                <a href="#">帮助</a></div>
+            <div class="anniu">
+                <a href="QQ_out.aspx" target="_self">供应商登出</a></div>
+            <div class="anniu">
+                <a href="gyszym.aspx" target="_self">供应商主页面</a></div>
+        </div>
         <!-- 头部结束-->
-        <div class="dlqqz5" style="border: 1px solid #4ea6ee; padding-top: 10px; margin: -2px 0 0 0;">
-            <div class="dlqqz2">
+        <div class="dlqqz5" style=" padding:0px;">
+            <div class="dlqqz2" style=" width:200px; float:left; height:100%">
                 <!--  列表数开始-->
                 <div id="menu_lb">
                     <%string sSQL = ""; %>
@@ -510,8 +509,8 @@
                     <% int secondlevel = 0; %>
                     <h1 onclick="javascript:ShowMenu(this,<%=firstlevel %>)">
                         <a href="javascript:void(0)">
-                            <img src="images/biao2.jpg" alt="" />
-                            <%=dryj["显示名字"]%></a></h1>
+                            <img style="float:left;" src="images/biao2.jpg" alt="" />
+                            <%=SubStrings.GetWidth(9,dryj["显示名字"].ToString(),dryj["显示名字"].ToString())%></a></h1>
                     <span class="no">
                         <%foreach (DataRow drej in dt2.Rows)%>
                         <%{%>
@@ -557,310 +556,335 @@
                 </div>
                 <!--列表数结束-->
             </div>
-                <div id="Div3" style="width: 775px; min-height: 400px; margin-left: 227px; height:auto;">
-                    <div style=" width:770px;border:0px; height:auto;">
-                        <div id="allcl" runat="server" style="width: 770px; height: auto;">
-                            <table width="740" border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" style="table-layout：fixed;
-                                word-wrap：break-word">
-                                <thead>
-                                    <tr>
-                                        <th width="70" height="30" align="center" bgcolor="#E3ECFF">
-                                            <strong>属性名称</strong>
-                                        </th>
-                                        <th align="center" bgcolor="#E3ECFF">
-                                            <strong>规格\型号</strong>
-                                        </th>
-                                        <th width="80" align="center" bgcolor="#E3ECFF">
-                                            <strong>选中项</strong>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody id="sx">
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td width="120" height="32" align="right" bgcolor="#FFFFFF">
-                                            名称及规则：
-                                        </td>
-                                        <td align="left" bgcolor="#FFFFFF">
-                                            <input type="text" runat="server" id="clmcjgg" name="clmcjgg" style="width: 293px;" />
-                                        </td>
-                                        <td width="80" align="center" bgcolor="#FFFFFF">
-                                            <input type="Button" name="btnDocNew" value="确定" onclick="AddValue()" class="filter"
-                                                style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
-                                                width: 37px; cursor: pointer;" />
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <div id="Div1" style="width: 770px; height: auto;">
-                            <table id="Table1" width="730" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;
-                                word-wrap：break-word; margin-top: 10px; border: 1px solid #ddd; padding: 10px 0;">
-                                <tbody id="Tbody1">
-                                    <tr>
-                                        <td width="100" height="36" align="right" bgcolor="#FFFFFF">
-                                            产品编号：
-                                        </td>
-                                        <td height="24" colspan="3" align="left" bgcolor="#FFFFFF">
-                                            <label for="textfield">
-                                            </label>
-                                            <input name="cl_name4" type="text" runat="server" id="cpbh" class="hyzhc_shrk9" readonly="readonly" />
-                                        </td>
-                                        <td width="100" align="right" bgcolor="#FFFFFF">
-                                            产品名称：
-                                        </td>
-                                        <td colspan="3" align="left" bgcolor="#FFFFFF">
-                                            <input type="text" runat="server" id="mcgz" name="mcgz" class="hyzhc_shrk9" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="100" height="36" align="right" bgcolor="#FFFFFF">
-                                            计量单位：
-                                        </td>
-                                        <td width="80" height="24" align="center" bgcolor="#FFFFFF">
-                                            <input type="text" runat="server" name="jldw" id="jldw" class="hyzhc_shrk8" />
-                                        </td>
-                                        <td width="80" align="right" bgcolor="#FFFFFF">
-                                            单位重量：
-                                        </td>
-                                        <td width="80" align="left" bgcolor="#FFFFFF">
-                                            <input type="text" name="dwzl" runat="server" id="dwzl" class="hyzhc_shrk8" />
-                                        </td>
-                                        <td width="100" align="right" bgcolor="#FFFFFF">
-                                            单位体积：
-                                        </td>
-                                        <td width="80" align="left" bgcolor="#FFFFFF">
-                                            <input type="text" id="dwtj" runat="server" name="dwtj" class="hyzhc_shrk8" />
-                                        </td>
-                                        <td width="80" align="right" bgcolor="#FFFFFF">
-                                            产品价格：
-                                        </td>
-                                        <td align="left" bgcolor="#FFFFFF">
-                                            <input type="text" id="cpjg" name="cpjg" runat="server" class="hyzhc_shrk8" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td height="80" align="right" bgcolor="#FFFFFF">
-                                            产品说明：
-                                        </td>
-                                        <td height="80" colspan="7" align="center" bgcolor="#FFFFFF">
-                                            <textarea class="hyzhc_shrk2_2" runat="server" cols="40" id="yyfw" name="yyfw" rows="6"
-                                                style="100%"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height: 20px; background: #FFFFFF" colspan="8">
-                                            <dd style="text-align: center; float: right; margin-right: 20px;">
-                                                <input type="submit" class="filter" style="color: Black; border-style: None; font-family: 宋体;
-                                                    font-size: 12px; height: 20px; width: 37px; cursor: pointer;" value="保存" /></dd>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="cpdt_2" style="width: 730px; height: 260px;">
-                                <!--+图片上传 高度240px; 宽度：740px；--------------------------------------------------------------------------------------------------------------------->
-                                <!--position:absolute; width:100%; height:100%; background:#000; opacity:0.7; z-index:99;-->
-                                 <div id="ceng" style="width: 754px; height: 260px; float: left; position: absolute;
+            <div id="Div3" style="width: 775px; min-height: 400px; margin-left: 227px; height: auto;">
+                <div style="width: 770px; border: 0px; height: auto;">
+                    <div id="allcl" runat="server" style="width: 770px; height: auto;">
+                        <table width="740" border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" style="table-layout：fixed;
+                            word-wrap：break-word">
+                            <thead>
+                                <tr>
+                                    <th width="70" height="30" align="center" bgcolor="#E3ECFF">
+                                        <strong>属性名称</strong>
+                                    </th>
+                                    <th align="center" bgcolor="#E3ECFF">
+                                        <strong>规格\型号</strong>
+                                    </th>
+                                    <th width="80" align="center" bgcolor="#E3ECFF">
+                                        <strong>选中项</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="sx">
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td width="120" height="32" align="right" bgcolor="#FFFFFF" style="text-align: center;">
+                                        名称及规格
+                                    </td>
+                                    <td align="left" bgcolor="#FFFFFF">
+                                        <input type="text" runat="server" id="clmcjgg" name="clmcjgg" style="width: 293px;" />
+                                    </td>
+                                    <td width="80" align="center" bgcolor="#FFFFFF">
+                                        <input type="Button" name="btnDocNew" value="确定" onclick="AddValue()" class="filter"
+                                            style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
+                                            width: 37px; cursor: pointer;" />
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div id="Div1" style="width: 770px; height: auto;">
+                        <table id="Table1" width="730" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;
+                            word-wrap：break-word; margin-top: 10px; border: 1px solid #ddd; padding: 10px 0;">
+                            <tbody id="Tbody1">
+                                <tr>
+                                    <td width="100" height="36" align="right" bgcolor="#FFFFFF">
+                                        产品编号：
+                                    </td>
+                                    <td height="24" colspan="3" align="left" bgcolor="#FFFFFF">
+                                        <label for="textfield">
+                                        </label>
+                                        <input name="cl_name4" type="text" runat="server" id="cpbh" class="hyzhc_shrk9" readonly="readonly" />
+                                    </td>
+                                    <td width="100" align="right" bgcolor="#FFFFFF">
+                                        产品名称：
+                                    </td>
+                                    <td colspan="3" align="left" bgcolor="#FFFFFF">
+                                        <input type="text" runat="server" id="mcgz" name="mcgz" class="hyzhc_shrk9" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="100" height="36" align="right" bgcolor="#FFFFFF">
+                                        计量单位：
+                                    </td>
+                                    <td width="80" height="24" align="center" bgcolor="#FFFFFF">
+                                        <input type="text" runat="server" name="jldw" id="jldw" class="hyzhc_shrk8" />
+                                    </td>
+                                    <td width="80" align="right" bgcolor="#FFFFFF">
+                                        单位重量：
+                                    </td>
+                                    <td width="80" align="left" bgcolor="#FFFFFF">
+                                        <input type="text" name="dwzl" runat="server" id="dwzl" class="hyzhc_shrk8" />
+                                    </td>
+                                    <td width="100" align="right" bgcolor="#FFFFFF">
+                                        单位体积：
+                                    </td>
+                                    <td width="80" align="left" bgcolor="#FFFFFF">
+                                        <input type="text" id="dwtj" runat="server" name="dwtj" class="hyzhc_shrk8" />
+                                    </td>
+                                    <td width="80" align="right" bgcolor="#FFFFFF">
+                                        指导价格：
+                                    </td>
+                                    <td align="left" bgcolor="#FFFFFF">
+                                        <input type="text" id="cpjg" name="cpjg" runat="server" class="hyzhc_shrk8" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="80" align="right" bgcolor="#FFFFFF">
+                                        产品说明：
+                                    </td>
+                                    <td height="80" colspan="7" align="center" bgcolor="#FFFFFF">
+                                        <textarea class="hyzhc_shrk2_2" runat="server" cols="40" id="yyfw" name="yyfw" rows="6"
+                                            style="100%"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 20px; background: #FFFFFF" colspan="8">
+                                        <dd style="text-align: center; float: right; margin-right: 20px;">
+                                            <input type="submit" class="filter" style="color: Black; border-style: None; font-family: 宋体;
+                                                font-size: 12px; height: 20px; width: 37px; cursor: pointer;" value="保存" /></dd>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="cpdt_2" style="width: 740px; height: 260px;">
+                            <!--+图片上传 高度240px; 宽度：740px；--------------------------------------------------------------------------------------------------------------------->
+                            <!--position:absolute; width:100%; height:100%; background:#000; opacity:0.7; z-index:99;-->
+                            <div id="ceng" style="width: 740px; height: 270px; float: left; position: absolute;
                                 background: #000; opacity: 0.2; z-index: 99; font-size: 15px; text-align: center;
                                 line-height: 240px; filter: alpha(opacity=20); color: White;">
                                 请先保存资料！
                             </div>
-                                <div class="lib_yeqian">
-                                    <ul>
-                                        <li id="two1" onclick="setTab('two',1,4)" class="hover">产品图片</li>
-                                        <li id="two2" onclick="setTab('two',2,4)">商品详情</li>
-                                        <li id="two3" onclick="setTab('two',3,4)">相关文档</li>
-                                        <li id="two4" onclick="setTab('two',4,4)">相关视频</li>
-                                    </ul>
-                                </div>
-                                <div class="yeqian" id="con_two_1" style="border: #4ea6ee 1px solid; width: 700px;">
-                                    <div class="yeqian1">
-                                        <div class="yq_img">
-                                            <div id="imgQ" style="float: left; width: 322px; height: 90px; border: 1px solid #DDDDDD;">
+                            <div class="lib_yeqian">
+                                <ul>
+                                    <li id="two1" onclick="setTab('two',1,4)" class="hover">产品图片</li>
+                                    <li id="two2" onclick="setTab('two',2,4)">商品详情</li>
+                                    <li id="two3" onclick="setTab('two',3,4)">相关文档</li>
+                                    <li id="two4" onclick="setTab('two',4,4)">相关视频</li>
+                                </ul>
+                            </div>
+                            <div class="yeqian" id="con_two_1" style="border: #4ea6ee 1px solid; width: 700px;">
+                                <div class="yeqian1">
+                                    <div class="yq_img">
+                                        <div id="imgQ" style="float: left; width: 322px; height: 90px; border: 1px solid #DDDDDD;">
+                                            <!--图1begin-->
+                                            <div style='width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left: 2px;
+                                                margin-top: 2px;'>
+                                                <div style='background-image: url(images/sccptp.jpg); background-size: 60px 60px;
+                                                    width: 60px; height: 60px; float: left;'>
+                                                    <a class='imgDel' href='javascript:void(0);' style='background-image: url(images/shanchu.gif);
+                                                        width: 11px; height: 10px; float: right;'></a>
+                                                </div>
+                                                <div style='width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;'>
+                                                    图片名称</div>
                                             </div>
-                                            <div class="anniu_sc">
-                                                <table border="0" cellspacing="0" cellpadding="0">
-                                                    <tbody>
-                                                        <tr style="width: 100px">
-                                                            <td height="30" align="center">
-                                                                请选择图片：
-                                                            </td>
-                                                            <td align="left">
-                                                                <input name="imgUploadify" id="imgUploadify" type="button" />
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="width: 100px">
-                                                            <td height="20" align="center">
-                                                            </td>
-                                                            <td align="left">
-                                                                <input id="btnImgUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px;
-                                                                    border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
-                                                                    color: black; border-right-style: none; width: 72px" type="button" value="上传图片" />
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                            <!--图1end-->
+                                            <!--图1begin-->
+                                            <!--图1end-->
+                                            <!--图1begin-->
+                                            <!--图1end-->
+                                            <!--图1begin-->
+                                            <!--图1end-->
+                                            <!--图1begin-->
+                                            <!--图1end-->
                                         </div>
-                                        <div id="imgQueue" class="yq_img2">
-                                            <%--<img src="images/schjd_pic.jpg" width="354" height="157" />--%>
+                                        <div class="anniu_sc">
+                                            <table border="0" cellspacing="0" cellpadding="0">
+                                                <tbody>
+                                                    <tr style="width: 100px">
+                                                        <td height="30" align="center">
+                                                            请选择图片：
+                                                        </td>
+                                                        <td align="left">
+                                                            <input name="imgUploadify" id="imgUploadify" type="button" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="width: 100px">
+                                                        <td height="20" align="center">
+                                                        </td>
+                                                        <td align="left">
+                                                            <input id="btnImgUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px;
+                                                                border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
+                                                                color: black; border-right-style: none; width: 72px" type="button" value="上传图片" />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="yeqian" id="con_two_2" style="border: 1px solid #4ea6ee; padding-top: 10px;
-                                    display: none;">
-                                    <div class="yeqian_cont">
-                                        <!--+编辑器开始------------------------------------------------------------------>
-                                        <div id="divXh" style="width: 700px; height: 195px;">
-                                            <textarea id="elm" name="elm" rows="12" cols="80" style="height: 100%; width: 100%;"></textarea>
-                                            <div id="drag" style="width: 383px; height: 28px; position: absolute; top: 0px; left: 511px;">
-                                            </div>
-                                        </div>
-                                        <!--+编辑器结束------------------------------------------------------------------>
+                                    <div id="imgQueue" class="yq_img2">
+                                        <%--<img src="images/schjd_pic.jpg" width="354" height="157" />--%>
                                     </div>
                                 </div>
-                                <div class="yeqian" id="con_two_3" style="border: 1px solid #4ea6ee; padding-top: 10px;
-                                    display: none;">
-                                    <table width="700" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
-                                        <tr>
-                                            <td width="90" height="30" align="center">
-                                                标 题：
-                                            </td>
-                                            <td colspan="5" align="left">
-                                                <input name="domName" type="text" class="shr_wenzi400" id="domName" style="border: 1px solid #ddd;"
-                                                    value="" maxlength="200">
-                                            </td>
-                                            <td width="80" align="center">
-                                                上传人：
-                                            </td>
-                                            <td width="70" align="left">
-                                                谭刚
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td height="54" width="90" align="center">
-                                                说 明：
-                                            </td>
-                                            <td colspan="7" align="left">
-                                                <input name="domMsg" type="text" class="shr_wenzi590" id="domMsg" style="border: 1px solid #ddd;"
-                                                    value="">
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <table width="700" border="0" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td height="30" align="right">
-                                                请选择文档：
-                                            </td>
-                                            <td align="left">
-                                                <input type="button" name="domUploadify" id="domUploadify" value="" />
-                                            </td>
-                                            <td width="355" align="left">
-                                                <div id="domQueue" class="shc_jindu">
-                                                    <%--<img src="images/schjd_pic2.jpg" width="354" height="33">--%>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td height="15">
-                                                &nbsp;
-                                            </td>
-                                            <td align="left">
-                                                <input id="btnDomUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px;
-                                                    border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
-                                                    color: black; border-right-style: none; width: 72px" type="button" value="上传文档">
-                                            </td>
-                                            <td align="left">
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td height="40" align="right">
-                                                已上传文档：
-                                            </td>
-                                            <td colspan="2">
-                                                <label id="domDelName" style="width: auto; height: auto;">
-                                                    您还未上传文档！</label>
-                                                <input id="btnDelNewDom" class="filter" style="border-top-style: none; cursor: pointer;
-                                                    font-size: 12px; border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
-                                                    color: black; border-right-style: none; width: 37px" type="button" value="删除" />
-                                            </td>
-                                        </tr>
-                                    </table>
+                            </div>
+                            <div class="yeqian" id="con_two_2" style="border: 1px solid #4ea6ee; padding-top: 10px;
+                                display: none; height: auto;">
+                                <div class="yeqian_cont">
+                                    <!--+编辑器开始------------------------------------------------------------------>
+                                    <div id="divXh" style="width: 700px; height: 195px;">
+                                        <textarea id="elm" name="elm" rows="12" cols="80" style="height: 100%; width: 100%;
+                                            background: 'url(http://xheditor.com/img/demobg.jpg) no-repeat right bottom fixed;';"></textarea>
+                                        <div id="drag" style="width: 383px; height: 28px; position: absolute; top: 0px; left: 511px;">
+                                        </div>
+                                    </div>
+                                    <!--+编辑器结束------------------------------------------------------------------>
                                 </div>
-                                <div class="yeqian" id="con_two_4" style="border: 1px solid #4ea6ee; padding-top: 10px;
-                                    display: none;">
-                                    <table width="700" border="0" cellspacing="0" cellpadding="0" style="margin_top: 10px;
-                                        padding-top: 10px;">
-                                        <tr>
-                                            <td width="90" height="30" align="center">
-                                                标 题：
-                                            </td>
-                                            <td colspan="5" align="left">
-                                                <input name="videoName" type="text" class="shr_wenzi400" id="videoName" style="border: 1px solid #ddd;"
-                                                    value="" maxlength="200" />
-                                            </td>
-                                            <td width="80" align="center">
-                                                上传人：
-                                            </td>
-                                            <td width="70" align="left">
-                                                谭刚
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td height="54" align="center">
-                                                说 明：
-                                            </td>
-                                            <td colspan="7" align="left">
-                                                <input name="videoMsg" type="text" class="shr_wenzi590" id="videoMsg" style="border: 1px solid #ddd;"
-                                                    value="" />
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <table width="700" border="0" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td height="30" align="right">
-                                                请选择视频：
-                                            </td>
-                                            <td align="left">
-                                                <input name="videoUploadify" id="videoUploadify" style="float: left; width: 200px"
-                                                    type="file">
-                                            </td>
-                                            <td width="355" align="left">
-                                                <div id="videoQueue" class="shc_jindu">
-                                                    <%--<img src="images/schjd_pic2.jpg" width="354" height="33">--%>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td height="15">
-                                                &nbsp;
-                                            </td>
-                                            <td align="left">
-                                                <input id="btnVideoUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px;
-                                                    border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
-                                                    color: black; border-right-style: none; width: 72px" type="button" value="上传视频">
-                                            </td>
-                                            <td align="left">
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td height="40" align="right">
-                                                已上传视频：
-                                            </td>
-                                            <td colspan="2">
-                                                <label id="videoDelName" style="width: auto; height: auto;">
-                                                    您还未上传视频</label>
-                                                <input id="btnDelNewVideo" class="filter" style="border-top-style: none; cursor: pointer;
-                                                    font-size: 12px; border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
-                                                    color: black; border-right-style: none; width: 37px" type="button" value="删除" />
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <!-- <div id="uoloadAll" style="width: 744px; height: 240px; float: left;">
+                            </div>
+                            <div class="yeqian" id="con_two_3" style="border: 1px solid #4ea6ee; padding-top: 10px;
+                                display: none;">
+                                <table width="700" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
+                                    <tr>
+                                        <td width="90" height="30" align="center">
+                                            标 题：
+                                        </td>
+                                        <td colspan="5" align="left">
+                                            <input name="domName" type="text" class="shr_wenzi400" id="domName" style="border: 1px solid #ddd;"
+                                                value="" maxlength="200">
+                                        </td>
+                                        <td width="150" colspan="2" align="center">
+                                            <input type="button" id="btnSaveDomTitleAndMsg" style="background-image: url(images/ZYM_lb_an8.gif);
+                                                background-repeat: no-repeat; display: none; width: 110px; height: 20px;" name="name"
+                                                value="修改标题和说明" />
+                                            <%-- </td>
+                                        <td width="70" align="left">--%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="54" width="90" align="center">
+                                            说 明：
+                                        </td>
+                                        <td colspan="7" align="left">
+                                            <input name="domMsg" type="text" class="shr_wenzi590" id="domMsg" style="border: 1px solid #ddd;"
+                                                value="">
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table width="700" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td height="30" align="right">
+                                            请选择文档：
+                                        </td>
+                                        <td align="left">
+                                            <input type="button" name="domUploadify" id="domUploadify" value="" />
+                                        </td>
+                                        <td width="355" align="left">
+                                            <div id="domQueue" class="shc_jindu">
+                                                <%--<img src="images/schjd_pic2.jpg" width="354" height="33">--%>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="15">
+                                            &nbsp;
+                                        </td>
+                                        <td align="left">
+                                            <input id="btnDomUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px;
+                                                border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
+                                                color: black; border-right-style: none; width: 72px" type="button" value="上传文档">
+                                        </td>
+                                        <td align="left">
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="40" align="right">
+                                            已上传文档：
+                                        </td>
+                                        <td colspan="2">
+                                            <label id="domDelName" style="width: auto; height: auto;">
+                                                您还未上传文档！</label>
+                                            <input id="btnDelNewDom" class="filter" style="border-top-style: none; cursor: pointer;
+                                                font-size: 12px; border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
+                                                color: black; border-right-style: none; width: 37px" type="button" value="删除" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="yeqian" id="con_two_4" style="border: 1px solid #4ea6ee; padding-top: 10px;
+                                display: none;">
+                                <table width="700" border="0" cellspacing="0" cellpadding="0" style="margin_top: 10px;
+                                    padding-top: 10px;">
+                                    <tr>
+                                        <td width="90" height="30" align="center">
+                                            标 题：
+                                        </td>
+                                        <td colspan="5" align="left">
+                                            <input name="videoName" type="text" class="shr_wenzi400" id="videoName" style="border: 1px solid #ddd;"
+                                                value="" maxlength="200" />
+                                        </td>
+                                        <td width="150" colspan="2" align="center">
+                                            <input type="button" class="filter" id="btnSaveVideoTitleAndMsg" style="background-image: url(images/ZYM_lb_an8.gif);
+                                                background-repeat: no-repeat; display: none; width: 110px; height: 20px;" name="name"
+                                                value="修改标题和说明" />
+                                            <%--上传人：
+                                        </td>
+                                        <td width="70" align="left">
+                                            谭刚--%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="54" align="center">
+                                            说 明：
+                                        </td>
+                                        <td colspan="7" align="left">
+                                            <input name="videoMsg" type="text" class="shr_wenzi590" id="videoMsg" style="border: 1px solid #ddd;"
+                                                value="" />
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table width="700" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td height="30" align="right">
+                                            请选择视频：
+                                        </td>
+                                        <td align="left">
+                                            <input name="videoUploadify" id="videoUploadify" style="float: left; width: 200px"
+                                                type="file">
+                                        </td>
+                                        <td width="355" align="left">
+                                            <div id="videoQueue" class="shc_jindu">
+                                                <%--<img src="images/schjd_pic2.jpg" width="354" height="33">--%>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="15">
+                                            &nbsp;
+                                        </td>
+                                        <td align="left">
+                                            <input id="btnVideoUploadfy" style="border-top-style: none; cursor: pointer; font-size: 12px;
+                                                border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
+                                                color: black; border-right-style: none; width: 72px" type="button" value="上传视频">
+                                        </td>
+                                        <td align="left">
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="40" align="right">
+                                            已上传视频：
+                                        </td>
+                                        <td colspan="2">
+                                            <label id="videoDelName" style="width: auto; height: auto;">
+                                                您还未上传视频</label>
+                                            <input id="btnDelNewVideo" class="filter" style="border-top-style: none; cursor: pointer;
+                                                font-size: 12px; border-left-style: none; height: 20px; font-family: 宋体; border-bottom-style: none;
+                                                color: black; border-right-style: none; width: 37px" type="button" value="删除" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- <div id="uoloadAll" style="width: 744px; height: 240px; float: left;">
                                     <div id="ceng" style="width: 744px; height: 240px; float: left; position: absolute; background: #000; opacity: 0.2; z-index: 99; font-size: 15px; text-align: center; line-height: 240px; filter: alpha(opacity=20); color: White;">
                                         请先保存资料！
                                     </div>
@@ -908,12 +932,12 @@
                                     <div id="fileQueue" style="width: 460px; height: 240px; float: left; line-height: 10px;" align="center">
                                     </div>
                                 </div>-->
-                                <!--+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-                                </script>
-                            </div>
+                            <!--+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+                            </script>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
         <div class="cgdlqq">
         </div>

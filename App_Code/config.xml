@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="gb2312"?>
+<cross-domain>
+  <serverIp serverAddress="http://192.168.1.11:88" />
+  <clientIp clientAddress="http://192.168.1.11:80" />
+</cross-domain>

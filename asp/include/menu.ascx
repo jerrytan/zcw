@@ -135,7 +135,7 @@
 <div class="dh">
     <ul>
         <% foreach (var v in this.Items1){%>
-       <li style="height:40px; line-height:40px;"><a style=" width:95px; margin-left:0px;" href="yjfl.aspx?name=<%=v.Sid.ToString() %>"><%=v.Name.Length>7 ? v.Name.Substring(0,7):v.Name%></a>
+       <li style="height:40px; line-height:40px;"><a class="levelone" style=" width:95px; margin-left:0px;" href="Levelone.aspx?flbm=<%=v.Sid.ToString() %>&flmc=<%= v.Name.Length>7 ? v.Name.Substring(0,7):v.Name%>"><%=SubStrings.GetWidth(7,v.Name,v.Name)%></a>
             <ul style="left: -60px; width: 152px;">  
                <%int count=0;%>         
                 <%  foreach (var vr in this.Items2){				
@@ -143,7 +143,7 @@
                 <%if (vr.Sid.ToString().Substring(0, 2) == v.Sid.ToString()) {%>
                 <%count=count+1; %>
                 <%if(count<=10){ %>
-                  <li><a href="ejfl.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a></li>
+                  <li><a class="leveltwo" href="leveltwo.aspx?flbm=<%=vr.Sid %>&flmc=<%=vr.Name %>"><%=vr.Name%></a></li>
                 <%} %>
                <% else{
                 break;
@@ -153,7 +153,27 @@
 
         <% } %>
         <li style="height:40px; line-height:40px; width:60px"><a href="gdfl.aspx">更多</a>
-            <%--<ul style="left: -677px;">
+            <script src="../Scripts/jquery-1.4.1.min.js" type="text/javascript"></script>
+            <script type="text/javascript">
+                function GetOneName(obj) {
+                    return $(obj).parent().prev().text();
+                }
+                $(".leveltwo").click(function () {
+                    var href = $(this).attr("href");
+                    $(this).attr("href",href+"&levelone="+$(this).parent().parent().prev().text());
+                });
+            </script>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    
+</script>
+
+
+
+
+  <%--<ul style="left: -677px;">
                 <li></li>
                 <li></li>
                 <% foreach (var v1 in this.Items3){%>
@@ -170,16 +190,6 @@
                 </li>
                 <% } %>
             </ul>--%>
-
-        </li>
-    </ul>
-</div>
-
-
-
-
-
-
 
 
 

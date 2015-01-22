@@ -10,11 +10,10 @@
 <%@ Import Namespace="System" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="IE=8.000" http-equiv="X-UA-Compatible"/>
+    <meta content="IE=8.000" http-equiv="X-UA-Compatible" />
     <%--<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />--%>
     <title>品牌信息页</title>
     <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
@@ -47,7 +46,7 @@
             var ppfxs_count = $j("#ppfcount_msg").val();
             $j("#s1").change(function () {
                 var item1 = $j("#s1 option:selected").text();
-                var data = { address: item1, pp_id: pp_id};
+                var data = { address: item1, pp_id: pp_id };
                 $j.post(url, data, function (msg) {
                     var content = msg;
                     if (content.indexOf("@") >= 0) {
@@ -72,7 +71,7 @@
                         $j("#fy_list").html(pp_fy);      //替换筛选的内容
                     }
                 }, "text");
-                
+
             });
             $j("#s3").change(function () {
                 var item3 = $j("#s3 option:selected").text();
@@ -90,31 +89,28 @@
             });
         });
     </script>
-<script  type="text/javascript">
-    function setTab(name, cursel, n) {
-        for (i = 1; i <= n; i++) {
-            var menu = document.getElementById(name + i);
-            var con = document.getElementById("con_" + name + "_" + i);
-            menu.className = i == cursel ? "hover" : "";
-            con.style.display = i == cursel ? "block" : "none";
+    <script type="text/javascript">
+        function setTab(name, cursel, n) {
+            for (i = 1; i <= n; i++) {
+                var menu = document.getElementById(name + i);
+                var con = document.getElementById("con_" + name + "_" + i);
+                menu.className = i == cursel ? "hover" : "";
+                con.style.display = i == cursel ? "block" : "none";
+            }
         }
-    }
 
-</script>
+    </script>
 </head>
 <body>
     <!-- 头部开始-->
     <!-- #include file="static/header.aspx" -->
     <!-- 头部结束-->
-
     <!-- 导航开始-->
     <uc1:Menu1 ID="Menu1" runat="server" />
     <!-- 导航结束-->
-
     <!-- banner开始-->
     <!-- #include file="static/banner.aspx" -->
     <!-- banner 结束-->
-
     <script runat="server">  
         protected DataTable dt_ppxx = new DataTable(); //品牌名称(品牌字典表)
 		protected DataTable dt_scsxx = new DataTable(); //供应商信息(材料供应商信息表)
@@ -144,14 +140,14 @@
                 string str_updatecounter = "update 品牌字典 set 访问计数 = (select 访问计数 from 品牌字典 where pp_id = '"+ pp_id +"')+1 where pp_id = '"+ pp_id +"'";
                 objdc.ExecuteSQL(str_updatecounter,true);
 
-                string str_sqlscsxx = "select 供应商,联系人,电话,传真,主页,联系地址,gys_id from 材料供应商信息表 where gys_id in (select scs_id from 品牌字典 where pp_id='"+pp_id+"' )";   
+                string str_sqlscsxx = "select 供应商,联系人,电话,传真,主页,地址,gys_id from 材料供应商信息表 where gys_id in (select scs_id from 品牌字典 where pp_id='"+pp_id+"' )";   
                 dt_scsxx = objdc.GetDataTable(str_sqlscsxx);			
 			
                 //获得该品牌的分销信息
-                string str_sqlfxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='"+pp_id+"')";           
+                string str_sqlfxsxx = "select 供应商,联系人,联系人手机,地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='"+pp_id+"')";           
                 dt_fxsxx = objdc.GetDataTable(str_sqlfxsxx);
 			
-			    string str_sqlclxx = "select 显示名 ,规格型号,cl_id from 材料表 where pp_id='"+pp_id+"'  ";        
+			    string str_sqlclxx = "select 显示名 ,规格型号,pp_id,品牌名称,cl_id from 材料表 where pp_id='"+pp_id+"'  ";        
                 dt_clxx = objdc.GetDataTable(str_sqlclxx);
 
 
@@ -200,7 +196,7 @@
                             + row["供应商"].ToString() + "</li><li>联系人："
                             + row["联系人"].ToString() + "</li><li>电话："
                             + row["联系人手机"].ToString() + "</li><li>地址："
-                            + row["联系地址"].ToString() + "</li></ul></a></div>";
+                            + row["地址"].ToString() + "</li></ul></a></div>";
                     }
                     //分页显示信息
 					 if((CurrentPage <= 1) && (PageCount <=1)) { //一页
@@ -236,7 +232,7 @@
             try
             {
                 string ppxx_id = Request["ppxx_id"];   //获取品牌id
-                string str_sql_ppfxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='"+pp_id+"')"; 
+                string str_sql_ppfxsxx = "select 供应商,联系人,联系人手机,地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='"+pp_id+"')"; 
                 i_count = objdc.GetRowCount(str_sql_ppfxsxx);
             }
             catch (Exception e)
@@ -250,7 +246,7 @@
         protected DataTable GetPageList(string pp_id, int begin, int end)
         {
             //执行分页的sql语句
-            string str_sqlpage = @"select 供应商,联系人,联系人手机,联系地址,gys_id from(select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id=@pp_id))t where t.RowId between @begin and @end ";
+            string str_sqlpage = @"select 供应商,联系人,联系人手机,地址,gys_id from(select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id=@pp_id))t where t.RowId between @begin and @end ";
             //添加相应参数值
             SqlParameter[] parms = new SqlParameter[] 
             {      
@@ -270,7 +266,8 @@
             <a href="index.aspx">首页 ></a>&nbsp
             <% foreach(System.Data.DataRow row in dt_ppxx.Rows)
             {%>
-                <a href="#"><%=row["品牌名称"].ToString() %></a>
+            <a href="#">
+                <%=row["品牌名称"].ToString() %></a>
             <%}%>
         </div>
         <div class="gysxx2">
@@ -279,18 +276,19 @@
             <div class="gycs">
                 <% foreach(System.Data.DataRow row in dt_scsxx.Rows)
                 {%>
-                 <ul><li>生产商名称：<A href="gysxx.aspx?gys_id=<%=row["gys_id"] %>" class="fxsa"><%=row["供应商"].ToString() %></A></li>
-                     <li>联系人：<%=row["联系人"].ToString() %></li>
-                     <li>传真：<%=row["传真"].ToString() %></li>      
-                     <li>主页：<%=row["主页"].ToString() %></li>
-                     <li>地址：<%=row["联系地址"].ToString() %></li>
-                     <%--<li style="margin-top:5px;"><img src="images/shoucang.gif" width="56" height="22" />--%>
-                   </ul> 
+                <ul>
+                    <li>生产商名称：<a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>" class="fxsa"><%=row["供应商"].ToString() %></a></li>
+                    <li>联系人：<%=row["联系人"].ToString() %></li>
+                    <li>传真：<%=row["传真"].ToString() %></li>
+                    <li>主页：<%=row["主页"].ToString() %></li>
+                    <li>地址：<%=row["地址"].ToString() %></li>
+                    <%--<li style="margin-top:5px;"><img src="images/shoucang.gif" width="56" height="22" />--%>
+                </ul>
                 <%}%>
             </div>
         </div>
-         <!-- 首页 品牌信息 结束-->
-<%--        <div class="gydl">
+        <!-- 首页 品牌信息 结束-->
+        <%--        <div class="gydl">
             <ul style="padding-left:20px; margin-top:4px;">
                 <li style="float:left; height:28px; line-height:28px; margin-right:2px;">
                     <a href="javascript:void(0)" class="tab1"  style="border:1px solid Gray; font-size:14px;display:block">该品牌下分销商</a>
@@ -301,23 +299,23 @@
             </ul>
         </div>--%>
         <div class="lib_Menubox">
-       <ul>
-   <li id="two1" onClick="setTab('two',1,2)" class="hover" >该品牌下分销商</li>
-   <li id="two2" onClick="setTab('two',2,2)">该品牌下产品</li>
-      </ul>
-</div>
-
+            <ul>
+                <li id="two1" onclick="setTab('two',1,2)" class="hover">该品牌下分销商</li>
+                <li id="two2" onclick="setTab('two',2,2)">该品牌下产品</li>
+            </ul>
+        </div>
         <!-- 该品牌分销商 开始-->
         <div class="gydl2" id="con_two_1">
-            <div class="dlpp">该品牌分销商</div>
-            <div class="fxs1" style="margin-left:10px;">
-            <select id="s0" style=" width:130px;" class="fu1" runat="server" value="">
-                        </select>
-                        <select id="s1" style=" width:130px;" class="fu1" runat="server" value="">
-                        </select>
-                        <input type="hidden" id="region"  value="北京市" runat="server" /><script src="Scripts/jquery-1.8.3.js"
-                            type="text/javascript"></script>
-                            <script src="Scripts/Address.js" type="text/javascript"></script>
+            <div class="dlpp">
+                该品牌分销商</div>
+            <div class="fxs1" style="margin-left: 10px;">
+                <select id="s0" style="width: 130px;" class="fu1" runat="server" value="">
+                </select>
+                <select id="s1" style="width: 130px;" class="fu1" runat="server" value="">
+                </select>
+                <input type="hidden" id="region" value="北京市" runat="server" /><script src="Scripts/jquery-1.8.3.js"
+                    type="text/javascript"></script>
+                <script src="Scripts/Address.js" type="text/javascript"></script>
                 <%--<select id="s1" class="fu1"><option></option></select> 省（市）
                 <select id="s2" class="fu2"><option></option></select> 地级市
                 <select id="s3" class="fu3"><option></option></select> 市、县级市、县
@@ -335,24 +333,43 @@
                 <div id="ppfxs_list">
                     <%=content %>
                 </div>
-           </div>
+            </div>
             <!-- 存放传值数据-->
-                <input type="hidden" id="ppfid_msg" name="ppfid_msg" value="<%=pp_id %>"/>
-
+            <input type="hidden" id="ppfid_msg" name="ppfid_msg" value="<%=pp_id %>" />
             <!-- 品牌分销商 显示开始-->
-             <div id="fy_list" style=" margin-left:34%;margin-top:10px;float:left;height:auto;width:400px; margin-bottom:10px">
-                    <%=fy_list %>
-             </div>
+            <div id="fy_list" style="margin-left: 34%; margin-top: 10px; float: left; height: auto;
+                width: 400px; margin-bottom: 10px">
+                <%=fy_list %>
+            </div>
             <!-- 品牌分销商 显示结束-->
         </div>
         <!-- 该品牌分销商 结束-->
-
         <!-- 该品牌下产品 开始-->
-        <div class="gydl2" id="con_two_2" style="display:none">
-            <div class="dlpp">该品牌下产品</div>
+        <div class="gydl2" id="con_two_2" style="display: none">
+            <div class="dlpp">
+                该品牌下产品</div>
             <%foreach(System.Data.DataRow row in dt_clxx.Rows)
-            {%>
-            <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">
+            {
+                string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"+row["cl_id"]+"' ";
+                string imgsrc= "images/222_03.jpg";
+                object result = objdc.DBLook(str_sqltop1);
+                if (result != null) {
+                    imgsrc = result.ToString();
+                }
+                imgsrc=MyHelper.GetCrossDomainServer("../App_Code/config.xml")+"/"+imgsrc;
+            %>
+            <div class='dlspxt'>
+                <a href='clxx.aspx?cl_id=<%=row["cl_id"] %>' target='_blanck'>
+                    <img class='dlspxtimg' width='150' height='150' src='<%=imgsrc %>' /></a><div
+                        class='dlspxt1'>
+                        <span class='dlsl'><a href='clxx.aspx?cl_id=" + item.clid + "' target='_blanck'>
+                            <%=row["显示名"] %> </a></span> <span class='dlsgg'><% =SubStrings.GetWidth(7,"规格:"+row["规格型号"].ToString(),"规格:"+row["规格型号"].ToString()) %> </span> <span class='dlsgg'>品牌:<a href='ppxx.aspx?pp_id=" + item.ppid + "'>
+                                    <%=row["品牌名称"] %> </a></span> <span class='dlsgg2'>
+                                        <img src='images/yanzheng_1.gif' width='16' height='16' /><img src='images/yanzheng_2.gif'
+                                            width='16' height='16' /><img src='images/yanzheng_3.gif' alt='' width='16' height='16' /></span>
+                    </div>
+            </div>
+            <%--<a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">
                 <div class="ppcp">
                     <%	    
                         string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"+row["cl_id"]+"' ";
@@ -361,7 +378,7 @@
                         if (result != null) {
                             imgsrc = result.ToString();
                         }
-                        Response.Write("<img src='"+imgsrc+"' style=' width:150px; height:150px;' />");
+                        Response.Write("<img src='"+MyHelper.GetCrossDomainServer("../App_Code/config.xml")+"/"+imgsrc+"' style=' width:150px; height:150px;' />");
 				    %>
                     
                     <%
@@ -390,21 +407,18 @@
                     <span class="ppcp1" style=" width:150px; height:24px;display:block;" title="<%=row["显示名"].ToString() %>" ><%=sb.ToString() %></span>
                     <span class="ppcp2">规格：<%=row["规格型号"].ToString() %></span>
                 </div>
-            </a>
+            </a>--%>
             <%}%>
         </div>
         <!-- 该品牌下产品 结束-->
     </div>
-
     <div>
         <!-- 关于我们 广告服务 投诉建议 开始-->
         <!-- #include file="static/aboutus.aspx" -->
         <!-- 关于我们 广告服务 投诉建议 结束-->
     </div>
-
     <!--  footer 开始-->
     <!-- #include file="static/footer.aspx" -->
     <!-- footer 结束-->
-
 </body>
 </html>

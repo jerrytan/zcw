@@ -116,8 +116,12 @@ border-top:0px solid #ddd;
 .spxq_lib { width:978px; height:auto;float:left; display: block;;
 	}
 .spxq_lib ul {
- width: 978px;  float: left; white-space: nowrap; -ms-text-overflow: ellipsis; 
+  width: 978px;  float: left; white-space: nowrap; -ms-text-overflow: ellipsis; margin-top:16px; 
+
 }
+.spxq_cont2 {width:958px; height:auto; margin-top:10px; float:left; padding:10px; line-height:24px;}
+
+
 .spxq_lib ul li {
 	width:316px;
 	line-height:24px;
@@ -138,5 +142,5 @@ border-top:0px solid #ddd;
 	overflow: hidden;
 	padding-left: 10px;}
 .wendang_cont img {vertical-align:middle;}
-.wendang_zs {width:976px; height:auto; float:left; border:#ddd 1px solid;}
+.wendang_zs {width:956px; height:auto; float:left; border:#ddd 1px solid; margin-left:10px;}
 /* 商品详情样式*/

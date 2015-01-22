@@ -126,7 +126,7 @@
             {
                 gys_id = Request["gys_id"];   //获取供应商id 
 
-			    string str_sqlclgys = "select 供应商,单位类型,联系人,联系人手机,联系地址,传真,主页 from 材料供应商信息表 where  gys_id='"+gys_id+"'";            
+			    string str_sqlclgys = "select 供应商,单位类型,联系人,联系人手机,地址,传真,主页 from 材料供应商信息表 where  gys_id='"+gys_id+"'";            
                 dt_gysxx = dc.GetDataTable(str_sqlclgys);
 
                 //访问计数加1
@@ -162,7 +162,7 @@
 			
                         //获取分销商信息
                         //子查询嵌套 先根据传过来的gys_id查品牌名称  再从品牌字典里查复合条件的gys_id 最后根据复合条件的gys_id查分销商信息
-			            string str_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )";          
+			            string str_fxsxx = "select 供应商,联系人,联系人手机,地址,gys_id from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )";          
                         dt_fxsxx = dc.GetDataTable(str_fxsxx);
 
                         //生产商旗下分销商 分页显示
@@ -212,8 +212,8 @@
                                         + row["gys_id"].ToString() + "'><ul><li class='fxsa'>"
                                         + row["供应商"].ToString() + "</li><li>联系人："
                                         + row["联系人"].ToString() + "</li><li>电话："
-                                        + row["联系人手机"].ToString() + "</li><li>地址："
-                                        + row["联系地址"].ToString() + "</li></ul></a></div>";
+                                        + row["联系人手机"].ToString() + "</li><li>"
+                                        + SubStrings.GetWidth(20,"地址："+row["地址"].ToString(),"地址："+row["地址"].ToString()) + "</li></ul></a></div>";
                                 }
 
                                //分页显示信息
@@ -252,7 +252,7 @@
             {
                 string gys_id = Request["gys_id"];   //获取供应商id
 				string str_sql_fxsxx = "";
-				str_sql_fxsxx = "select gys_id, 供应商,联系人,联系人手机,联系地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )";
+				str_sql_fxsxx = "select gys_id, 供应商,联系人,联系人手机,地址 from 材料供应商信息表 where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id='"+gys_id+"') )";
                 i_count = dc.GetRowCount(str_sql_fxsxx);
             }
             catch (Exception e)
@@ -267,7 +267,7 @@
         {
             
             //执行分页的sql语句
-            string str_sqlpage = @"select gys_id,供应商,联系人,联系人手机,联系地址 from (select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表  where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id=@gys_id) ))t where t.RowId between @begin and @end ";
+            string str_sqlpage = @"select gys_id,供应商,联系人,联系人手机,地址 from (select ROW_NUMBER() over (order by gys_id) as RowId ,* from 材料供应商信息表  where gys_id in(select fxs_id from 分销商和品牌对应关系表 where pp_id in(select pp_id from 品牌字典 where scs_id=@gys_id) ))t where t.RowId between @begin and @end ";
             //添加相应参数值
             SqlParameter[] parms = new SqlParameter[] 
             {      
@@ -296,7 +296,7 @@
             <div class="gycs">
             <% if (dt_gysxx != null && dt_gysxx.Rows.Count > 0)
                {
-                   gys_addr = dt_gysxx.Rows[0]["联系地址"].ToString();%>
+                   gys_addr = dt_gysxx.Rows[0]["地址"].ToString();%>
  <ul>
    <li>厂名：<a href="#" class="fxsa"><%=dt_gysxx.Rows[0]["供应商"].ToString()%></a></li>
    <li>联系人：<%=dt_gysxx.Rows[0]["联系人"].ToString()%></li>
@@ -421,7 +421,7 @@ else
               {%>
                     <a href="ppxx.aspx?pp_id=<%=row["pp_id"] %>">
                     <div class="gydl1">
-                        <img src="images/222_03.jpg" />
+                        <%--<img src="images/222_03.jpg" />--%>
                         <span><%=row["品牌名称"].ToString()%></span>
                     </div>
                     </a>
@@ -442,7 +442,7 @@ else
                     if (result != null) {
                         imgsrc = result.ToString();
                     }
-                  
+                    imgsrc = MyHelper.GetCrossDomainServer("../App_Code/config.xml") + "/" + imgsrc;
                     string strs = row["显示名"].ToString();
                     StringBuilder sb = new StringBuilder();
                     int temp = 0;
@@ -480,7 +480,7 @@ else
             {   %>
                 <a href="ppxx.aspx?pp_id=<%=row["pp_id"] %>">
                     <div class="gydl1">
-                        <img src="images/222_03.jpg" />
+                        <%--<img src="images/222_03.jpg" />--%>
                         <span ><%=row["品牌名称"].ToString()%></span>
                     </div>
                 </a>

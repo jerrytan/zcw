@@ -13,6 +13,7 @@
          {
              string cl_id = Request["cl_id"];   //SQL语句
              string fxs_id = Request["fxs_id"];   //SQL语句
+             string nowprice = Request["nowp"];
              string sSQL = "";
              if (cl_id != "")
              {
@@ -22,13 +23,14 @@
                  }
                  string Insert = "";
                  string[] cl_price = cl_id.Split(',');   //添加几项
+                 DataTable dt_cl=new DataTable();
                  for (int i = 0; i < cl_price.Length; i++)
                  {
                      string[] cl = cl_price[i].Split('|');
                      string price = "";
                      price = cl[1];
                      sSQL = "select fl_id,材料编码,是否启用,类型,price,显示名,pp_id,说明,分类名称,品牌名称,生产厂商,规格型号,计量单位,单位体积,单位重量,gys_id,分类编码,yh_id,一级分类名称 from 材料表 where cl_id='" + cl[0] + "'";
-                     DataTable dt_cl = Conn.GetDataTable(sSQL);
+                     dt_cl = Conn.GetDataTable(sSQL);
                      if (dt_cl != null && dt_cl.Rows.Count > 0)
                      {
                          if (price=="0"||price=="")
@@ -46,6 +48,10 @@
                  if (Conn.RunSqlTransaction(Insert))
                  {
                      value = "1";
+                     //==========把价格添加到PriceFxs中=
+                     string fxsSql = "insert into PriceFxs( FxsPriceClid, GysId, FxsId, GysPrice, FxsPrice)values('" + cl_id + "','" + dt_cl.Rows[0]["gys_id"] + "','"+fxs_id+"',(select ScsPrice from PriceScs where ScsPriceClid='"+cl_id+"' and ScsPriceUpdatetime =(select MAX(ScsPriceUpdatetime) from PriceScs where ScsPriceClid='"+cl_id+"')),'"+nowprice+"')";
+                     MySqlHelper.ExecuteNonQuery(fxsSql);
+                     //============================
                  }
                  else
                  {

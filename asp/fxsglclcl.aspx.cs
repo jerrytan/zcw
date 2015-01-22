@@ -47,7 +47,7 @@ public partial class asp_fxsglclcl : System.Web.UI.Page
             int total = Convert.ToInt32(MySqlHelper.ExecuteScalar("select count(*) from  供应商材料表 where fxs_id='" + fxs_id + "'"));
 
             string pageHtml = PagingHelper.ShowPageNavigate(pageIndex, pageSize, total);
-            sSQL = "select top " + pageSize + " cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where  fxs_id='" + fxs_id + "' and myID not in(select top " + (pageIndex - 1) * pageSize + " myID from 供应商材料表 where  fxs_id='" + fxs_id + "' order by myID asc)order by myID asc";
+            sSQL = "select top " + pageSize + " cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,gys_id,fxs_id,品牌名称,price from  供应商材料表 where  fxs_id='" + fxs_id + "' and myID not in(select top " + (pageIndex - 1) * pageSize + " myID from 供应商材料表 where  fxs_id='" + fxs_id + "' order by myID asc)order by myID asc";
             this.pageDiv.InnerHtml = pageHtml;
             this.fxsid.Value = fxs_id;
             this.ppid.Value = ppid1;
@@ -66,7 +66,7 @@ public partial class asp_fxsglclcl : System.Web.UI.Page
             int total = Convert.ToInt32(MySqlHelper.ExecuteScalar("select count(*) from  供应商材料表 where pp_id='" + ppid1 + "' and fxs_id='" + fxs_id+"'"));
 
             string pageHtml=PagingHelper.ShowPageNavigate(pageIndex,pageSize,total);
-            sSQL = "select top "+pageSize+" cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,品牌名称 from  供应商材料表 where pp_id='" + ppid1 + "'and fxs_id='" + fxs_id+"' and myID not in(select top "+(pageIndex-1)*pageSize+" myID from 供应商材料表 where pp_id='" + ppid1 + "' and fxs_id='" + fxs_id+"' order by myID asc)order by myID asc";
+            sSQL = "select top "+pageSize+" cl_id,材料编码,显示名 as 材料名称,规格型号,计量单位,生产厂商,price,gys_id,fxs_id,品牌名称 from  供应商材料表 where pp_id='" + ppid1 + "'and fxs_id='" + fxs_id+"' and myID not in(select top "+(pageIndex-1)*pageSize+" myID from 供应商材料表 where pp_id='" + ppid1 + "' and fxs_id='" + fxs_id+"' order by myID asc)order by myID asc";
             this.pageDiv.InnerHtml=pageHtml;
             this.fxsid.Value = fxs_id;
             this.ppid.Value = ppid1;
@@ -205,4 +205,21 @@ public partial class asp_fxsglclcl : System.Web.UI.Page
         }
     }
     //*****************************小张新增检索功能结束*********************************
+    /// <summary>
+    /// 获得分销商最新的实时报价
+    /// </summary>
+    /// <param name="clid">材料id</param>
+    /// <returns></returns>
+    public string GetGysNewPrice(string clid){
+        string sql = "select * from PriceScs where ScsPriceClid='"+clid+"' and ScsPriceUpdatetime=(select MAX(ScsPriceUpdatetime) from PriceScs where ScsPriceClid='"+clid+"')";
+        DataTable dt = MySqlHelper.GetTable(sql);
+        if (dt.Rows.Count>0)
+        {
+            return dt.Rows[0]["ScsPrice"].ToString();
+        }
+        else
+        {
+            return "";
+        }
+    }
 }

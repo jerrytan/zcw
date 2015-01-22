@@ -1,0 +1,158 @@
+﻿.listmore
+{
+    broder: 1px solid black;
+    text-align: center;
+    height: 25px;
+    width: 160px;
+    border-top: 0;
+    background: #eee;
+    color: #707070;
+    font: normal 12px/25px Tahoma,Verdana;
+    margin-top: 5px;
+}
+.sc2 dd
+{
+    padding-top: 2px;
+}
+.sc2 dd a
+{
+    display: block;
+    height: 30px;
+    background: #f9f9f9;
+    border-bottom: 1px solid #eee;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #999;
+    border-right: 1px solid #eee;
+    font: normal 12px/33px Georgia "宋体";
+    color: #707070;
+    padding-left: 25px;
+    line-height: 30px;
+}
+.sc2 dd a:hover
+{
+    padding-left: 35px;
+}
+.sc2 dd a:hover, .sc2 dd a.current
+{
+    border-left: 2px solid #1160ba;
+    background-color: #f6f6f6;
+    color: #1160ba;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+
+/* 
+.dlspxl
+{
+    border: 1px solid rgb(221, 221, 221);
+    width: 765px;
+    height: auto;
+    float: left;
+    background-color: rgb(248, 248, 248);
+}
+.dlspxt
+{
+    margin: 5px 0px 10px 13px;
+    border: 1px solid rgb(231, 231, 231);
+    width: 172px;
+    height: auto;
+    float: left;
+    display: inline;
+    background-color: rgb(255, 255, 255);
+    padding-bottom: 5px;
+}
+.dlspxt img
+{
+    padding:2px 5px 2px 5px;
+    border: 0px solid rgb(161, 161, 161);
+}
+.dlsl
+{
+    margin: 0px 0px 0px 10px;
+    width: 96px;
+    height: 20px;
+    color: rgb(0, 113, 179);
+    line-height: 20px;
+    float: left;
+    display: inline;
+}
+.dlsgg
+{
+    margin: 0px 0px 0px 10px;
+    width: 156px;
+    height: 20px;
+    line-height: 20px;
+    float: left;
+    display: inline;
+}
+.dlsgg2
+{
+    margin: 0px 0px 0px 10px;
+    width: 156px;
+    height: 20px;
+    line-height: 30px;
+    float: left;
+    display: inline;
+}
+.dlsgg2 img
+{
+     padding:0; margin:5px 10px 0 0;
+}
+ */
+ 
+ /**
+{
+    font: 12px/150% Arial,Verdana, "\5b8b\4f53";
+}*/
+dl
+{
+    display: block;/*
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;*/
+}
+.orderdd
+{
+    height: 24px;
+    border: 1px solid #CECBCE;
+    background: #fff;
+    margin: 0 5px 0 0;
+    line-height: 24px;
+    overflow: hidden;
+    zoom: 1;
+    float: left;
+    line-height: 26px;
+    display: block;
+    width: auto;
+    position: relative;
+}
+.ordera
+{
+    color: #666;
+    padding-right: 20px;
+    display: block;
+    padding: 0 10px;
+    text-decoration: none;
+    line-height: 24px!important ;
+    float: left;
+    font: 12px/150% Arial,Verdana, "\5b8b\4f53";
+}
+dt
+{
+    float: left;
+    line-height: 26px;
+    zoom: 1;
+}
+.orderb
+{
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 9px;
+    height: 11px;
+    overflow: hidden;
+    font-size: 0;
+    background: url(../images/height.png) no-repeat;
+}

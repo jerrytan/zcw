@@ -10,7 +10,7 @@
    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
         data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/index.aspx" charset="utf8"></script>
 
-<div class="box">
+<div class="box" style=" height:240px;">
     <div class="top"></div>
     <div class="logo">
         <a href="index.aspx">

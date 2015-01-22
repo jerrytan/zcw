@@ -72,12 +72,14 @@
                         bh = bh.Replace("\r", " ");
                         bh = bh.Replace("\n", " ");
               
-                        html += "<a href='javascript:void(0)' onclick=\"AddSXZ(this,'" + sxbm +
+                        html += "<a href='javascript:void(0)' style='float:left;' onclick=\"AddSXZ(this,'" + sxbm +
                             "','" + bh + "','" + sxz + "','"+value+"') \">" + sxz + "&nbsp;&nbsp;</a>";
                     }
                 }
                 html += "</td>"
-                    + " <td align='center' bgcolor='#FFFFFF'  style=' width:80px;height:auto;' class='myEdCl'><input  type='text' style=' border:0px; width:80px;height:24px; margin:2px;'  /></td>"
+                    + " <td align='center' bgcolor='#FFFFFF'  style=' width:80px;height:auto;' class='myEdCl'><input  type='text' style=' border:0px; width:80px;height:24px; margin:2px;'  onblur='AddFLSXZ(this)'   /></td>"
+                    + " <td style='display:none;'></td>"
+                    + " <td style='display:none;'></td>"
                     + " <td style='display:none;'></td>"
                     + " <td style='display:none;'></td>"
                     + " <td style='display:none;'></td>"
@@ -86,7 +88,7 @@
             html += " </tbody> "
                     + " <tfoot>"
                     + "        <tr>"
-                    + "        <td width='120' height='32' align='right' bgcolor='#FFFFFF'>名称及规则：</td>"
+                    + "        <td width='120' height='32' align='right' bgcolor='#FFFFFF' style='text-align:center;'>名称及规格</td>"
                     + "        <td align='left' bgcolor='#FFFFFF'><input type='text' id='clmcjgg' style=' width: 293px; '/></td>"
                     + "        <td width='80' align='center' bgcolor='#FFFFFF'>"
                     + "        <input type='Button' name='btnDocNew' value='确定' onClick='AddValue()'  class='filter' style='color:Black;border-style:None;font-family:宋体;font-size:12px;height:20px;width:37px; cursor:pointer;' /></td>"

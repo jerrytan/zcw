@@ -12,8 +12,8 @@ function XHClose() {
 function XHShow() {
     var height = $(window).height();
     var width = $(window).width();
-    var divH = 500;//$("#divXh").height();
-    var divW = 1000;//$("#divXh").width();
+    var divH = 500; //$("#divXh").height();
+    var divW = 1000; //$("#divXh").width();
     var showHeight;
     var showWidth;
     if (height < divH) {
@@ -33,8 +33,8 @@ function XHShow() {
     $("#ceng").fadeIn();
     $("#show").val("1");
 }
-function getXheditor() { 
-//xheditor编辑设置
+function getXheditor() {
+    //xheditor编辑设置
     $(pageInit);
     function pageInit() {
         var allPlugin = {
@@ -46,21 +46,21 @@ function getXheditor() {
                     //此处执Ajax行上传
                     if (editor.getSource() != "" && editor.getSource() != null) {
                         $.ajax({
-                            type: 'get',
+                            type: 'post',
                             async: true, //是否同步
                             data: { 'clid': $("#myclid").val(), 'filedata': editor.getSource() },
-                            url: "http://192.168.1.22/Ashx/DetailsHandler.ashx",
-                            dataType: "jsonp", //数据类型为jsonp  
-                            jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
+                            url: "Ashx/DetailsHandler.ashx",
+                            //                            dataType: "jsonp", //数据类型为jsonp  
+                            //                            jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
                             success: function (data) {
-                                if (data.state == "1") {
+                                if (data == "0") {
                                     MsgShow("保存成功！", true);
                                     //_this.hidePanel();
                                     XHClose();
-                                } else if (data.state == "2") {
+                                } else if (data == "1") {
                                     MsgShow("保存失败！", false);
                                 } else {
-                                    alert("无数据");
+                                    alert("Error");
                                 }
                             }
                         });
@@ -89,7 +89,7 @@ function getXheditor() {
             ImgUploadfy: {
                 c: 'imgUploadfy',
                 t: '',
-                h:1,
+                //h: 1,
                 e: function () {
                     var _this = this;
                     var jTest = $('<div><label for="xheImgUrl" style=" float:left;"> 图片文件：</label> <input id="imgUrl" type="text" style="width: 105px;" tabindex="-1" value="http://" /> <input type="button" class="xheBtn" id="imgNewuploadify" tabindex="-1" style="float:left;"/></div><div style="padding: 0px;"><div style="margin: 1px 0px 2px 0px"><label for="xheImgAlt"> 替换文本:</label> <input type="text" id="xheImgAlt" style="width:169px;" value="" /></div><div style="margin: 1px 0px 2px 0px"><label for="xheImgWidth">&nbsp;宽&nbsp;&nbsp;度&nbsp;:</label><input type="text" id="xheImgWidth" style="width: 50px;" value=""><label for="xheImgHeight">&nbsp;高&nbsp;&nbsp;度&nbsp;:</label><input type="text" id="xheImgHeight" style="width: 50px;" value=""></div><div style="margin: 1px 0px 2px 0px"><label for="xheImgAlign">对齐方式:</label><select id="xheImgAlign" style=" width:54px; height:22px;"><option selected="selected" value="">默认</option><option value="left">左对齐</option><option value="right">右对齐</option><option value="top">顶端</option><option value="middle">居中</option><option value="baseline">基线</option><option value="bottom">底边</option> </select><label for="xheImgBorder">&nbsp;边&nbsp;&nbsp;框&nbsp;:</label><input type="text" id="xheImgBorder" style="width: 50px;"></div><div style="text-align: right; margin: 2px 0px 0px 0px"><input type="button" id="imgSave" value="确定"><input type="button" id="imgCancel" value="取消"></div></div>');
@@ -111,7 +111,7 @@ function getXheditor() {
                         }
                         if (width != null && width != "") {
                             style = style + 'width="' + width + '" ';
-                        }
+                        } 
                         if (height != null && height != "") {
                             style = style + 'height="' + height + '" ';
                         }
@@ -126,10 +126,12 @@ function getXheditor() {
                             html = '<img src="' + url + '" ' + style + '  /><br />';
                         }
                         //获取图片信息结束
-                        editor.appendHTML(html);
+                        //editor.appendHTML(html);
                         _this.loadBookmark();
-                        //_this.pasteText(html);
+                        _this.pasteHTML(html);
                         _this.hidePanel();
+
+                        $(".uploadify").attr("style", "");
                         return false;
                     });
                     jCancel.click(function () {
@@ -144,7 +146,9 @@ function getXheditor() {
         editor = $('#elm').xheditor({
             plugins: allPlugin,
             //skin: 'o2007blue',
-            tools: 'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,SelectAll,Align,List,Outdent,Indent,Link,Unlink,ImgUploadfy,Hr,Emot,Table,Preview,Print,Removeformat,Source,Close,Save'
+            tools: 'Fontface,FontSize,Bold,Italic,Underline,Strikethrough,FontColor,BackColor,SelectAll,Align,List,Outdent,Indent,Link,Unlink,ImgUploadfy,Hr,Emot,Table,Preview,Print,Removeformat,Source,Close,Save',
+            clickCancelDialog: false,//点击任意位置取消面板功能
+            background: 'url(http://xheditor.com/img/demobg.jpg) no-repeat right bottom fixed'
             //upImgUrl: '{editorRoot}http://192.168.1.22/Ashx/XheditorHandler.ashx?clid=' + $("#myclid").val() + '&uploadurl={editorRoot}http://192.168.1.22/Ashx/XheditorHandler.ashx%3Fimmediate%3D1&ext=图片文件(*.jpg;*.jpeg;*.gif;*.png'
         });
     }
@@ -169,6 +173,7 @@ function Draggable() {
 //设置自定义按钮
 function SetBtn() {
     $("#xhe0_iframearea").attr("style", "height:100%");
+    //$("#xhe0_iframe").css("height","166px");
     $("#xhe0_container").children().attr("style", "height:100%");
     $("[title='关于 xhEditor']").parent().attr("style", "display:none");
     //关闭按钮
@@ -188,12 +193,12 @@ window.onresize = function () {
     }
 }
 
- //图片上传
+//图片上传
 function GetUploadfyImg() {
     $("#imgNewuploadify").uploadify({
         'height': '13',
         'width': '50',
-        'uploader': 'http://192.168.1.22/Ashx/UploadifyHandler.ashx',
+        'uploader': GetCrossDomain() + '/Ashx/UploadifyHandler.ashx',
         'swf': 'Scripts/uploadify/uploadify.swf',
         'fileTypeExts': '*.jpg;*.jpeg;*.png;*.gif;',
         'fileTypeDesc': 'Image',

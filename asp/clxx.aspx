@@ -12,7 +12,8 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Web" %>
 
-<%@ Page Language="C#" validateRequest="false" %>
+<%@ Page Language="C#" ValidateRequest="false" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -24,17 +25,15 @@
     <link href="css/all of.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="js/lrtk.js"></script>
     <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
-
+    <script src="Scripts/MyControl/MyControl.js" type="text/javascript"></script>
     <script src="Scripts/flexpaper/js/flexpaper.js" type="text/javascript"></script>
-    
     <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="js/SJLD.js"></script>
     <script src="Scripts/Address.js" type="text/javascript"></script>
     <script src="Scripts/clxxScript.js" type="text/javascript"></script>
-
-
-
-
+    <style type="text/css">
+        
+    </style>
     <script type="text/javascript" language="javascript">
         function setTab(name, cursel, n) {
             for (i = 1; i <= n; i++) {
@@ -129,7 +128,7 @@
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.myclid.Value=Request["cl_id"];
+            this.myclid.Value = Request["cl_id"];
             if (!Page.IsPostBack)
             {
                 cl_id = Request["cl_id"];
@@ -156,14 +155,14 @@
                 string str_sqlppmc = "select pp_id,品牌名称,规格型号,材料编码,显示名,材料编码,计量单位,单位重量,单位体积,说明 from 材料表 where cl_id='" + cl_id + "' ";
                 dt_ppxx = dc_obj.GetDataTable(str_sqlppmc);
 
-                string str_sqlgysxx = "select 供应商,联系人,电话,传真,主页,联系地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='" + cl_id + "') ";
+                string str_sqlgysxx = "select 供应商,联系人,电话,传真,主页,地址,gys_id from 材料供应商信息表 where 单位类型='生产商' and gys_id in (select gys_id from 材料表 where cl_id='" + cl_id + "') ";
                 dt_scsxx = dc_obj.GetDataTable(str_sqlgysxx);
 
                 //string str_sqltop3 = "select top 3 存放地址,材料名称 from 材料多媒体信息表 where cl_id='" + cl_id + "' and 媒体类型 = '图片'";
                 //dt_image = dc_obj.GetDataTable(str_sqltop3);
 
                 string str_sqlfcdz = "select 存放地址,材料名称 from 材料多媒体信息表 where cl_id='" + cl_id + "' and 媒体类型 = '图片'";
-                dt_images =dc_obj.GetDataTable(str_sqlfcdz);
+                dt_images = dc_obj.GetDataTable(str_sqlfcdz);
 
                 string str_fxsxx = "select 供应商,联系人,联系人手机,联系地址,gys_id from 材料供应商信息表 where gys_id in ( select fxs_id from 分销商和品牌对应关系表 where pp_id = (select pp_id from 材料表 where cl_id='" + cl_id + "'))";
                 dt_fxsxx = dc_obj.GetDataTable(str_fxsxx);
@@ -300,7 +299,7 @@
             <a href="index.aspx">首页 ></a>
             <% foreach (System.Data.DataRow row in dt_flxx.Rows)
                {%>
-            <a href="ejfl.aspx?name=<%=row["分类编码"].ToString() %>">
+            <a href="leveltwo.aspx?flbm=<%=row["分类编码"].ToString() %>&flmc=<%=row["显示名字"] %>">
                 <%=row["显示名字"].ToString() %></a>
             <%}%>>
             <% foreach (System.Data.DataRow row in dt_clxx.Rows)
@@ -318,28 +317,30 @@
                       {%>
                     <div style="position: relative">
                         <%
-                          if (dt_images.Rows[0]["存放地址"].ToString() != "")
-                          {
+                            if (dt_images.Rows[0]["存放地址"].ToString() != "")
+                            {
                         %>
                         <a>
                             <script type="text/javascript">
                             </script>
-                            <img src="<%=@"http://192.168.1.22/"+dt_images.Rows[0]["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="Img1" /></a>
+                            <img src="<%=MyHelper.GetCrossDomainServer("../App_Code/config.xml")+"/"+dt_images.Rows[0]["存放地址"].ToString().Replace("//","/").Replace("icon/","")%>"
+                                width="320" height="300" id="Img1" /></a>
                         <%}%>
                     </div>
                     <%} %>
                     <%else
-                      { %>
+                        { %>
                     <ul id="idSlider" class="slider">
                         <%
-                          foreach (System.Data.DataRow row in dt_images.Rows)
-                          {%>
+                            foreach (System.Data.DataRow row in dt_images.Rows)
+                            {%>
                         <div style="position: relative">
                             <%
-                              if (row["存放地址"].ToString() != "")
-                              {%>
+                                if (row["存放地址"].ToString() != "")
+                                {%>
                             <a>
-                                <img src="<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>" width="320" height="300" id="bigImage"></a>
+                                <img src="<%=MyHelper.GetCrossDomainServer("../App_Code/config.xml")+"/"+row["存放地址"].ToString().Replace("//","/").Replace("icon/","")%>"
+                                    width="320" height="300" id="bigImage"></a>
                             <%}%>
                         </div>
                         <%}%>
@@ -353,7 +354,8 @@
                                System.Data.DataRow row = dt_images.Rows[i];
                         %>
                         <li>
-                            <img src='<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>' width="61px" height="45px" click="changeImage('<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/")%>')">
+                            <img src='<%=MyHelper.GetCrossDomainServer("../App_Code/config.xml")+"/"+row["存放地址"].ToString().Replace("//","/").Replace("icon/","")%>'
+                                width="61px" height="45px" click="changeImage('<%=@"http://192.168.1.22/"+row["存放地址"].ToString().Replace("//","/").Replace("icon/","")%>')">
                         </li>
                         <%}%>
                     </ul>
@@ -366,13 +368,16 @@
                            ppid = row["pp_id"].ToString();
                            cl_number = row["材料编码"].ToString();
                     %>
-                    <dd>品牌:</dd>
+                    <dd>
+                        品牌:</dd>
                     <dt style="height: 30px;">
                         <%=row["品牌名称"].ToString() %></dt>
-                    <dd>型号:</dd>
+                    <dd>
+                        型号:</dd>
                     <dt style="height: 30px;">
-                        <%=row["规格型号"].ToString() %></dt>
-                    <dd>编码:</dd>
+                        <%=SubStrings.GetWidth(19,row["规格型号"].ToString(),row["规格型号"].ToString()) %></dt>
+                    <dd>
+                        编码:</dd>
                     <dt style="height: 30px;">
                         <%= cl_number %></dt>
                     <%}%>
@@ -380,47 +385,47 @@
                 <%if (Request.Cookies["CGS_QQ_ID"] != null || Request.Cookies["GYS_QQ_ID"] != null)
                   { %>
                 <%
-                      //供应商
-                      HttpCookie CGS_QQ_id = Request.Cookies["CGS_QQ_ID"];
-                      Object CGS_YH_id = Session["CGS_YH_ID"];
-                      HttpCookie GYS_QQ_id = Request.Cookies["GYS_QQ_ID"];
-                      Object GYS_YH_id = Session["GYS_YH_ID"];
-                      if ((GYS_QQ_id == null) && (GYS_YH_id == null))	//供应商未登录，显示收藏
-                      {
-                          if (CGS_QQ_id != null)
-                          {
-                              string s_SQL = "select dw_id from 用户表 where QQ_id='" + CGS_QQ_id.Value.ToString() + "'";
-                              string dwid = dc_obj.DBLook(s_SQL);
+                    //供应商
+                    HttpCookie CGS_QQ_id = Request.Cookies["CGS_QQ_ID"];
+                    Object CGS_YH_id = Session["CGS_YH_ID"];
+                    HttpCookie GYS_QQ_id = Request.Cookies["GYS_QQ_ID"];
+                    Object GYS_YH_id = Session["GYS_YH_ID"];
+                    if ((GYS_QQ_id == null) && (GYS_YH_id == null))	//供应商未登录，显示收藏
+                    {
+                        if (CGS_QQ_id != null)
+                        {
+                            string s_SQL = "select dw_id from 用户表 where QQ_id='" + CGS_QQ_id.Value.ToString() + "'";
+                            string dwid = dc_obj.DBLook(s_SQL);
 
-                              string sqlCount = @"select * from 采购商关注的材料表 
+                            string sqlCount = @"select * from 采购商关注的材料表 
                             inner join 材料表 on 材料表.cl_id=采购商关注的材料表.cl_id 
                             where dw_id='" + dwid + "' and 采购商关注的材料表.cl_id='" + cl_id + "'";
-                              if (dc_obj.GetRowCount(sqlCount) > 0)
-                              {
+                            if (dc_obj.GetRowCount(sqlCount) > 0)
+                            {
                 %>
                 <span class="xx4_1" style="display: block; margin-left: 40%; margin-right: auto;"><a
                     href="#">已收藏</a> </span>
                 <%
-                              }
+}
                               else
                               {
                 %>
-                <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a id="A1"
-                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>','<%=cl_id %>','<%=clmc %>','<%=clbm %>')">请收藏，便于查找</a> </span>
+                <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a
+                    id="A1" href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>','<%=cl_id %>','<%=clmc %>','<%=clbm %>')">
+                    请收藏，便于查找</a> </span>
                 <%
-                              }
+}
                 %>
-
-
                 <%
-                          }
+}
                           else
                           {
                 %>
                 <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a
-                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">请收藏，便于查找</a> </span>
+                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">
+                    请收藏，便于查找</a> </span>
                 <%
-                          }
+}
 
                       }   
                 %>
@@ -428,53 +433,53 @@
                 <%else %>
                 <%{ %>
                 <%
-                      string CGS_YH_id = "";
-                      if (Session["CGS_YH_ID"] != null)
-                      {
-                          CGS_YH_id = Session["CGS_YH_ID"].ToString();
-                      }
-                      string GYS_YH_id = "";
-                      if (Session["GYS_YH_ID"] != null)
-                      {
-                          GYS_YH_id = Session["GYS_YH_ID"].ToString();
-                      }
+                    string CGS_YH_id = "";
+                    if (Session["CGS_YH_ID"] != null)
+                    {
+                        CGS_YH_id = Session["CGS_YH_ID"].ToString();
+                    }
+                    string GYS_YH_id = "";
+                    if (Session["GYS_YH_ID"] != null)
+                    {
+                        GYS_YH_id = Session["GYS_YH_ID"].ToString();
+                    }
 
-                      if (GYS_YH_id == "")	//供应商未登录，显示收藏
-                      {
-                          if (CGS_YH_id != "")
-                          {
-                              string s_SQL = "select dw_id from 用户表 where yh_id='" + CGS_YH_id + "'";
-                              string dwid = dc_obj.DBLook(s_SQL);
+                    if (GYS_YH_id == "")	//供应商未登录，显示收藏
+                    {
+                        if (CGS_YH_id != "")
+                        {
+                            string s_SQL = "select dw_id from 用户表 where yh_id='" + CGS_YH_id + "'";
+                            string dwid = dc_obj.DBLook(s_SQL);
 
-                              string sqlCount = @"select * from 采购商关注的材料表 
+                            string sqlCount = @"select * from 采购商关注的材料表 
                             inner join 材料表 on 材料表.cl_id=采购商关注的材料表.cl_id 
                             where dw_id='" + dwid + "' and 采购商关注的材料表.cl_id='" + cl_id + "'";
-                              if (dc_obj.GetRowCount(sqlCount) > 0)
-                              {
+                            if (dc_obj.GetRowCount(sqlCount) > 0)
+                            {
                 %>
                 <span class="xx4_1" style="display: block; margin-left: 40%; margin-right: auto;"><a
                     href="#">已收藏</a> </span>
                 <%
-                              }
+}
                               else
                               {
                 %>
-                <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a id="A2"
-                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">请收藏，便于查找</a> </span>
+                <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a
+                    id="A2" href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">
+                    请收藏，便于查找</a> </span>
                 <%
-                              }
+}
                 %>
-
-
                 <%
-                          }
+}
                           else
                           {
                 %>
                 <span class="xx4" style="display: block; margin-left: 40%; margin-right: auto;"><a
-                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">请收藏，便于查找</a> </span>
+                    href="#" onclick="NewWindow('<%=cl_number %>',<%=ppid %>,<%=gys_id %>,'<%=sccs %>',<%=cl_id %>,'<%=clmc %>','<%=clbm %>')">
+                    请收藏，便于查找</a> </span>
                 <%
-                          }
+}
 
                       }   
                 %>
@@ -497,18 +502,25 @@
                 </div>
             </div>--%>
             <div class="gycs" style="float: right; border: 1px solid #ddd;">
-                <div style="font-size: 14px; font-weight: bold; width: 290px; height: 26px; padding-left: 10px; background-color: #f7f7f7;">
+                <div style="font-size: 14px; font-weight: bold; width: 290px; height: 26px; padding-left: 10px;
+                    background-color: #f7f7f7;">
                     生产商信息
                 </div>
                 <ul style="padding: 10px;">
                     <%foreach (System.Data.DataRow row in dt_scsxx.Rows)
                       { %>
-                    <li>生产商名称：<a href="#" class="fxsa"><%=row["供应商"] %></a></li>
+                    <li>生产商名称：<a href="gysxx.aspx?gys_id=<%=row["gys_id"] %>" class="fxsa"><%=row["供应商"] %></a></li>
                     <li>联系人：<%=row["联系人"] %></li>
                     <li>电话：<%=row["电话"] %></li>
-                    <li>传真：<%=row["传真"] %></li>
-                    <li>主页：<a href="#"><%=row["主页"] %></a></li>
-                    <li>地址：<%=row["联系地址"] %></li>
+                    <%
+                        if (row["传真"].ToString()!="")
+                        {
+                            Response.Write("<li>传真："+row["传真"]+"</li>");
+                        }
+                           %>
+                    
+                    <li>主页：<a href="<%=row["主页"] %>"  target="_blank"><%=row["主页"] %></a></li>
+                    <li>地址：<%=row["地址"] %></li>
                     <%} %>
                     <%if (dt_scsxx.Rows.Count == 0)
                       { %>
@@ -536,15 +548,17 @@
             </div>
             <div class="bq_cont" id="con_two_1">
                 <div class="spxq_lib">
-                <!--dt_ppxx-->
+                    <!--dt_ppxx-->
                     <ul>
-                        <li>产品名称：<%=dt_ppxx.Rows[0]["显示名"] %> </li>
-                        <li>品牌名称：<%=dt_ppxx.Rows[0]["品牌名称"] %> </li>
+                        <li>产品名称：<%=dt_ppxx.Rows[0]["显示名"] %>
+                        </li>
+                        <li>品牌名称：<%=dt_ppxx.Rows[0]["品牌名称"] %>
+                        </li>
                         <li>产品编号：<%=dt_ppxx.Rows[0]["材料编码"]%></li>
                         <%
-                            if (dt_ppxx.Rows[0]["计量单位"]!=null&&dt_ppxx.Rows[0]["计量单位"]!="")
+                            if (dt_ppxx.Rows[0]["计量单位"] != null && dt_ppxx.Rows[0]["计量单位"] != "")
                             {
-                                Response.Write("<li>计量单位："+dt_ppxx.Rows[0]["计量单位"]+"</li>");
+                                Response.Write("<li>计量单位：" + dt_ppxx.Rows[0]["计量单位"] + "</li>");
                             }
                             if (dt_ppxx.Rows[0]["单位重量"] != null && dt_ppxx.Rows[0]["单位重量"] != "")
                             {
@@ -558,19 +572,20 @@
                             //{
                             //    Response.Write("<li>产品价格：" + dt_ppxx.Rows[0]["产品价格"] + "</li>");
                             //}
-                            if (dt_ppxx.Rows[0]["说明"] != null && dt_ppxx.Rows[0]["说明"] != "" && dt_ppxx.Rows[0]["说明"] != " ")
+                            Response.Write("</ul>");
+                            if (dt_ppxx.Rows[0]["说明"] != null && dt_ppxx.Rows[0]["说明"] != "")
                             {
-                                Response.Write("<li>说明：" + dt_ppxx.Rows[0]["说明"] + "</li>");
+                                Response.Write("<p style=' width:950px; float:left; margin-left:10px;line-height:25px;'>说明：" + dt_ppxx.Rows[0]["说明"] + "</p>");
                             }
-                             %>
-                        
-                      <%--  <li>单位重量：g</li>--%>
-                      <%--  <li>单位体积：m</li>--%>
+                        %>
+                        <%--  <li>单位重量：g</li>--%>
+                        <%--  <li>单位体积：m</li>--%>
                         <%--<li>产品价格：120元</li>
                         <li>产品说明：</li>--%>
-                    </ul>
+                    
                 </div>
-                <div class="spxq_cont" id="domDetails" align="center"></div>
+                <div class="spxq_cont" id="domDetails">
+                </div>
             </div>
             <div class="bq_cont" id="con_two_2" style="display: none;">
                 <div class="wendang_cont">
@@ -582,11 +597,13 @@
                     </ul>
                 </div>
                 <div class="wendang_zs" align="center">
-                <!--+文档展示开始-->
-                    <div  id="domShow" style="width:940px; height:500px; margin-top:20px; margin-bottom:20px;">
+                    <!--+文档展示开始-->
+                    <div id="domShow" style="width: 940px; height: 500px; margin-top: 9px; margin-bottom: 9px;">
                     </div>
-                <!--+文档展示结束-->
-                文档内容
+                    <%--    <label id="domshuoming" style=" float:left;"></label>--%>
+                    <!--+文档展示结束-->
+                </div>
+                <div class="spxq_cont2" id="domshuoming" align="left">
                 </div>
             </div>
             <div class="bq_cont" id="con_two_3" style="display: none;">
@@ -598,109 +615,48 @@
                         <li id="videoTime">上传时间：2014-12-12</li>
                     </ul>
                 </div>
-                <div class="wendang_zs" id="videoDetails" align="center" style=" padding-top:33px; padding-bottom:33px;">
+                <div class="wendang_zs" id="videoDetails" align="center" style="padding-top: 33px;
+                    padding-bottom: 33px;">
                 </div>
+                <div class="spxq_cont2" id="videoshuoming">
+                </div>
+                <%-- <label id="videoshuoming"></label>--%>
             </div>
-
             <div class="bq_cont" id="con_two_4" style="display: none;">
-
                 <div class="fxs1">
-                    <select class="fu1" id="s1">
+                    <select id="s0" style="width: 130px;" class="fu1" runat="server" value="">
+                    </select>省（市）
+                    <select id="s1" style="width: 130px;" class="fu1" runat="server" value="">
+                    </select>地级市
+                    <input type="hidden" id="region" value="北京市" runat="server" />
+                    <%--<select id="s1" class="fu1">
                         <option></option>
                     </select>
-                    省（市）    
-             <select class="fu2" id="s2">
-                 <option></option>
-             </select>
-                    地级市          
-       <select class="fu3" id="s3">
-           <option></option>
-       </select>
-                    市、县级市、县            
-     
-                    <script language="javascript" type="text/javascript"> 
+                    省（市）
+                    <select id="s2" class="fu2">
+                        <option></option>
+                    </select>
+                    地级市
+                    <select id="s3" class="fu3">
+                        <option></option>
+                    </select>
+                    市、县级市、县
+                    <script type="text/javascript" language="javascript"> 
                     <!--
-    //** Power by Fason(2004-3-11) 
-    //** Email:fason_pfx@hotmail.com
-    var s = ["s1", "s2", "s3"];
-    var opt0 = ["-省(市)-", "-地级市、区-", "-县级市、县、区-"];
-    for (i = 0; i < s.length - 1; i++)
-        document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
-    change(0);
-    //--> 
-                    </script>
+                        //** Power by Fason(2004-3-11) 
+                        //** Email:fason_pfx@hotmail.com
+                        var s = ["s1", "s2", "s3"];
+                        var opt0 = ["-省(市)-", "-地级市、区-", "-县级市、县、区-"];
+                        for (i = 0; i < s.length - 1; i++)
+                            document.getElementById(s[i]).onchange = new Function("change(" + (i + 1) + ")");
+                        change(0);
+                    //--> 
+                    </script>--%>
                 </div>
-                <!-- 存放传值数据-->
-                <input name="fxsid_msg" id="fxsid_msg" type="hidden" value="77">
-
-                <div class="fxsxx_list">
-                    <div class="fxs2">
-                        <ul>
-                            <li>分销商名称：<a href="http://www.zhcnet.cn/asp/gysxx.aspx?gys_id=135" class="fxsa">福建溪石石材杭州分公司</a></li>
-                            <li>联系人：吴经理</li>
-                            <li>电话：0571一81597981</li>
-                            <li>地址：杭州滨江江虹路1750号</li>
-                        </ul>
-                        <div>
-                            <a href="#">
-                                <img src="images/shoucang.gif" alt="" width="56" height="22" /></a>
-                        </div>
-                    </div>
-                    <div class="fxs2">
-                        <ul>
-                            <li>分销商名称：<a href="http://www.zhcnet.cn/asp/gysxx.aspx?gys_id=135" class="fxsa">福建溪石石材杭州分公司</a></li>
-                            <li>联系人：吴经理</li>
-                            <li>电话：0571一81597981</li>
-                            <li>地址：杭州滨江江虹路1750号</li>
-                        </ul>
-                        <div>
-                            <a href="#">
-                                <img src="images/shoucang.gif" alt="" width="56" height="22" /></a>
-                        </div>
-                    </div>
-                    <div class="fxs2">
-                        <ul>
-                            <li>分销商名称：<a href="http://www.zhcnet.cn/asp/gysxx.aspx?gys_id=135" class="fxsa">福建溪石石材杭州分公司</a></li>
-                            <li>联系人：吴经理</li>
-                            <li>电话：0571一81597981</li>
-                            <li>地址：杭州滨江江虹路1750号</li>
-                        </ul>
-                        <div>
-                            <a href="#">
-                                <img src="images/shoucang.gif" alt="" width="56" height="22" /></a>
-                        </div>
-                    </div>
-                    <div class="fxs2">
-                        <ul>
-                            <li>分销商名称：<a href="http://www.zhcnet.cn/asp/gysxx.aspx?gys_id=136" class="fxsa">溪石集团发展有限公司北京销售分公司</a></li>
-                            <li>联系人：陈军</li>
-                            <li>电话：010-67474999</li>
-                            <li>地址：北京市朝阳区十八里店村35号</li>
-                        </ul>
-                        <div>
-                            <a href="#">
-                                <img src="images/shoucang.gif" alt="" width="56" height="22" /></a>
-                        </div>
-                    </div>
-                    <div class="fxs2">
-                        <ul>
-                            <li>分销商名称：<a href="http://www.zhcnet.cn/asp/gysxx.aspx?gys_id=136" class="fxsa">溪石集团发展有限公司北京销售分公司</a></li>
-                            <li>联系人：陈军</li>
-                            <li>电话：010-67474999</li>
-                            <li>地址：北京市朝阳区十八里店村35号</li>
-                        </ul>
-                        <div>
-                            <a href="#">
-                                <img src="images/shoucang.gif" alt="" width="56" height="22" /></a>
-                        </div>
-                    </div>
-                </div>
-                <div id="fy_list" style="width: 400px; height: auto; margin-top: 10px; margin-left: 34%; float: left;">
-                    <span
-                        style="color: black; font-size: 12px;"><font
-                            style="color: gray;">上一页</font>&nbsp;<font
-                                style="color: gray;">下一页</font>&nbsp;&nbsp;第1页/共1页</span>
-                </div>
+                <input type="hidden" id="fxsid_msg" name="fxsid_msg" value="<%=cl_id %>" />
+            <div id="clfxs_list">
+                <%=content %>
+            </div>
             </div>
             <div>
             </div>
@@ -708,9 +664,9 @@
     </div>
     <!--+李宗鹏详情结束----------------------------------------------------------------------------------------------------------------------->
     <!-- 显示 下拉列表对应供应商信息 开始 -->
-    <div class="xx8">
+    <div class="xx8" style="border: 0px; height: 0px;">
         <div class="xx9">
-            <div class="fxs1">
+            <%--<div class="fxs1">
                 <select id="s0" style="width: 130px;" class="fu1" runat="server" value="">
                 </select>省（市）
                         <select id="s1" style="width: 130px;" class="fu1" runat="server" value="">
@@ -739,37 +695,34 @@
                         change(0);
                     //--> 
                     </script>--%>
-            </div>
+            <%-- </div>--%>
             <!-- 存放传值数据-->
-            <input type="hidden" id="fxsid_msg" name="fxsid_msg" value="<%=cl_id %>" />
-            <div id="clfxs_list">
-                <%=content %>
-            </div>
         </div>
     </div>
     <!-- 显示 下拉列表对应供应商信息 结束 -->
-    <div id="fy_list" style="margin-left: 34%; margin-top: 40px; float: left; height: auto; width: 400px;">
+    <div id="fy_list" style="margin-left: 34%; margin-top: 40px; float: left; height: auto;
+        width: 400px;">
         <%=fy_list %>
     </div>
     <!-- 显示3张大图片 开始 -->
     <%//foreach (System.Data.DataRow row in dt_image.Rows)
-      //{%>
-   <%-- <div class="xx10">
+        //{%>
+    <%-- <div class="xx10">
         <div class="xx11">--%>
-            <%
-          //string paths = SubStrings.SubImgPath(row["存放地址"].ToString());
-          //Response.Write(paths);
+    <%
+        //string paths = SubStrings.SubImgPath(row["存放地址"].ToString());
+        //Response.Write(paths);
                 
-            %>
-            <%--<img alt="存放地址" src="<%=row["存放地址"].ToString()%>" />--%>
-            <%--<img alt="存放地址" style="width: 1024px; height: auto;" src="<%=paths.ToString()%>" />
+    %>
+    <%--<img alt="存放地址" src="<%=row["存放地址"].ToString()%>" />--%>
+    <%--<img alt="存放地址" style="width: 1024px; height: auto;" src="<%=paths.ToString()%>" />
         </div>
     </div>--%>
     <%//}%>
     <!-- 显示3张大图片 结束 -->
     <!-- 显示 视频 开始 -->
     <% //if (cl_id.Equals("74"))
-       //{ %>
+        //{ %>
     <%--<div class="xx10">
         <div class="xx11">
             介绍视频
@@ -780,7 +733,7 @@
     </div>--%>
     <% //} %>
     <!-- 显示 视频 结束 -->
-   <%-- </div>--%>
+    <%-- </div>--%>
     <div>
         <!-- 关于我们 广告服务 投诉建议 开始-->
         <!-- #include file="static/aboutus.aspx" -->

@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="../jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script src="MyControl.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnShow").click(function () {
+                var str = $("#txt").val();
+                
+                $("#txtmsg").html(mysubstring(3, str));
+            });
+        });
+    </script>
+</head>
+<body>
+    <input type="text" name="name" value="" id="txt" />
+    <br />
+    <input type="button" name="name" value="检测" id="btnShow" />
+    <br />
+    <a id="txtmsg" href="javascript:void(0)"></a>
+</body>
+</html>

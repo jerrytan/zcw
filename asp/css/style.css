@@ -1,0 +1,55 @@
+﻿/**
+{
+    font: 12px/150% Arial,Verdana, "\5b8b\4f53";
+}*/
+dl
+{
+    display: block;/*
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;*/
+}
+.orderdd
+{
+    height: 24px;
+    border: 1px solid #CECBCE;
+    background: #fff;
+    margin: 0 5px 0 0;
+    line-height: 24px;
+    overflow: hidden;
+    zoom: 1;
+    float: left;
+    line-height: 26px;
+    display: block;
+    width: auto;
+    position: relative;
+}
+.ordera
+{
+    color: #666;
+    padding-right: 20px;
+    display: block;
+    padding: 0 10px;
+    text-decoration: none;
+    line-height: 24px!important ;
+    float: left;
+    font: 12px/150% Arial,Verdana, "\5b8b\4f53";
+}
+dt
+{
+    float: left;
+    line-height: 26px;
+    zoom: 1;
+}
+.orderb
+{
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 9px;
+    height: 11px;
+    overflow: hidden;
+    font-size: 0;
+    background: url(../images/height.png) no-repeat;
+}

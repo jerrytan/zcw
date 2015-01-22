@@ -161,11 +161,11 @@
                                 }
                                 if (cl_id == "" || cl_id == undefined)
                                 {
-                                    cl_id = tr.cells[7].innerHTML + "|" + price + ",";
+                                    cl_id = tr.cells[7].innerHTML + "|" + price + "|"+tr.cells[5].innerHTML+",";
                                 }
                                 else
                                 {
-                                    cl_id += tr.cells[7].innerHTML + "|" + price + ",";
+                                    cl_id += tr.cells[7].innerHTML + "|" + price + "|"+tr.cells[5].innerHTML+",";
                                 }
 
                             }
@@ -242,7 +242,6 @@ protected void Page_Load(object sender, EventArgs e)
     {
         ppmc = Request["ppmc"].ToString();
     }
-   
     this.scs_id.Value = scsid;
     this.pp_id.Value = ppid;
     this.fxs_id.Value = fxsid;
@@ -262,6 +261,7 @@ protected void Add_Click(object sender, System.EventArgs e)
     string fxs_id1 = "";   //SQL语句
     try
     {    
+        
         cl_id1 = this.cl_id.Value;
         fxs_id1 = this.fxs_id.Value;
         string sSQL = "";
@@ -305,6 +305,7 @@ protected void Add_Click(object sender, System.EventArgs e)
                          dt_cl.Rows[0]["品牌名称"] + "','" + dt_cl.Rows[0]["生产厂商"] + "','" + dt_cl.Rows[0]["规格型号"] + "','" + dt_cl.Rows[0]["计量单位"] + "','"
                          + dt_cl.Rows[0]["单位体积"] + "','" + dt_cl.Rows[0]["单位重量"] + "','" + dt_cl.Rows[0]["gys_id"] + "','" + dt_cl.Rows[0]["分类编码"] + "','" +
                          dt_cl.Rows[0]["yh_id"] + "','" + dt_cl.Rows[0]["一级分类名称"] + "','" + fxs_id1 + "',(select getdate()))";
+                        Insert += "  insert into PriceFxs( FxsPriceClid, GysId, FxsId, GysPrice, FxsPrice)values('" + cl[0] + "','" + dt_cl.Rows[0]["gys_id"] + "','" + fxs_id1 + "',(select ScsPrice from PriceScs where ScsPriceClid='" + cl[0] + "' and ScsPriceUpdatetime =(select MAX(ScsPriceUpdatetime) from PriceScs where ScsPriceClid='" + cl[0] + "')),'" + cl[1] + "')";
                     }
                 }
             }
@@ -502,8 +503,8 @@ private void createlm(DataTable objDt)
           <th width="100" align="center"><strong>材料名称</strong></th>
           <th width="140" align="center"><strong>规格/型号</strong></th>
           <th width="70" align="center"><strong>单位</strong></th>
-          <th width="70" align="center"><strong>出场价格</strong></th>          
-          <th width="70" align="center"><strong>预售价格</strong></th>
+          <th width="70" align="center"><strong>生产商指导价</strong></th>          
+          <th width="70" align="center"><strong>实时报价</strong></th>
            <td align="center" style="display:none">cl_id</td>
           <th width="60" align="center"><strong>操作</strong></th>
         </tr>
@@ -521,7 +522,7 @@ private void createlm(DataTable objDt)
           <td class="style1"><%=dr["规格型号"]%></td>
           <td align="center"><%=dr["计量单位"]%></td>
           <td align="center"><%=dr["price"] %></td>          
-          <td align="center"><input type="text"  style="width:100%; height:100%;" /></td>
+          <td align="center"><input type="text"  runat="server" style="width:100%; height:100%;" /></td>
            <td align="center" style="display:none"><%=dr["cl_id"] %></td>
           <td align="center"><a href="clxx.aspx?cl_id=<%=dr["cl_id"] %>" target="_blank"><img src="images/chayue.gif" alt="" width="37" height="20" /></a></td>
         </tr>
@@ -547,6 +548,7 @@ private void createlm(DataTable objDt)
 <input runat="server" type="hidden" id="fxs_id" />
 <input runat="server" type="hidden" id="pp_id" />
 <input runat="server" type="hidden" id="pp_mc" />
+<input runat="server" type="hidden" id="nowp" />
 </form>
 </body>
 </html>

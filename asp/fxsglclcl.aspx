@@ -19,6 +19,7 @@
     <script src="Scripts/jquery-1.4.1.js" type="text/javascript"></script>
     <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
     <link href="css/Paging.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/AddFxsPrice.js" type="text/javascript"></script>
     <script language="javascript" type="text/javascript">
         $(function () {
             $("#pageDiv a").click(function () {
@@ -199,34 +200,37 @@
         class="table2" id="table4">
         <thead>
             <tr>
-                <th width="37" align="center">
+                <th align="center">
                     <input class="middle" type="checkbox" name="checkboxAll" id="checkboxAll" onclick="return selectall();" />
                 </th>
                 <th width="100" align="center" style="display: none;">
                     <strong>cl_id</strong>
                 </th>
-                <th width="100" align="center">
+                <%--<th style=" width:100px; overflow:hidden;" align="center">
                     <strong>材料编码</strong>
-                </th>
-                <th width="90" align="center">
+                </th>--%>
+                <th style=" width:130px; overflow:hidden;" align="center">
                     <strong>材料名称</strong>
                 </th>
-                <th width="140" align="center">
+                <th style=" width:110px; overflow:hidden;" align="center">
                     <strong>规格/型号</strong>
                 </th>
-                <th width="180" align="center">
+                <th style=" width:130px; overflow:hidden;"  align="center">
                     <strong>供应商</strong>
                 </th>
-                <th width="80" align="center">
+                <th style=" width:60px; overflow:hidden;" align="center">
                     <strong>品牌</strong>
                 </th>
-                <th width="55" align="center">
+                <th style=" width:40px; overflow:hidden;" align="center">
                     <strong>单位</strong>
                 </th>
-                <th width="80" align="center">
-                    <strong>价格</strong>
+                <th style=" width110px; overflow:hidden;" align="center">
+                    <strong>厂商指导价</strong>
                 </th>
-                <th width="44" align="center">
+                <th  style=" width:90px; overflow:hidden;"  align="center">
+                    <strong>实时报价</strong>
+                </th>
+                <th  style=" width:45px; overflow:hidden;"  align="center">
                     <strong>操作</strong>
                 </th>
             </tr>
@@ -236,7 +240,9 @@
             <%{ %>
             <% for (int i = 0; i < dtcl.Rows.Count; i++) %>
             <%{ %>
-            <% if (i % 2 == 0)%>
+            <%
+                   if (i % 2 == 0)
+                       %>
             <%{ %>
             <tr style="background: #f2f6ff" onmouseover='this.style.backgroundColor="#fff0e9"'
                 onmouseout='this.style.backgroundColor="#f2f6ff"'>
@@ -248,33 +254,39 @@
                 <td align="center" style="display: none;">
                     <%=dtcl.Rows[i]["cl_id"]%>
                 </td>
-                <td align="center">
+                <%--<td align="center">
                     <%=dtcl.Rows[i]["材料编码"]%>
+                </td>--%>
+                <td align="left" style=" text-align:center;">
+                    <%=SubStrings.GetWidth(5,dtcl.Rows[i]["材料名称"].ToString(),dtcl.Rows[i]["材料名称"].ToString())%>
                 </td>
-                <td align="left">
-                    <%=SubStrings.GetWidth(4,dtcl.Rows[i]["材料名称"].ToString(),dtcl.Rows[i]["材料名称"].ToString())%>
+                <td class="gridtable" style=" text-align:center;">
+                    <%=SubStrings.GetWidth(4,dtcl.Rows[i]["规格型号"].ToString(),dtcl.Rows[i]["规格型号"].ToString())%>
                 </td>
-                <td class="gridtable">
-                    <%=dtcl.Rows[i]["规格型号"]%>
-                </td>
-                <td align="left">
-                    <%=dtcl.Rows[i]["生产厂商"]%>
+                <td align="left" style=" text-align:center;">
+                    <%=SubStrings.GetWidth(6, dtcl.Rows[i]["生产厂商"].ToString(), dtcl.Rows[i]["生产厂商"].ToString())%>
                 </td>
                 <%--<td class="gridtable"><%=ppmc1%></td>--%>
-                <td class="gridtable">
+                <td class="gridtable" style=" text-align:center;">
                     <%=dtcl.Rows[i]["品牌名称"]%>
                 </td>
-                <td align="center">
+                <td align="center" style=" text-align:center;">
                     <%=dtcl.Rows[i]["计量单位"]%>
                 </td>
                 <td align="center">
-                    <%=dtcl.Rows[i]["price"]%>
+                 <%=GetGysNewPrice(dtcl.Rows[i]["cl_id"].ToString())%>
+                </td>
+                <td align="center">
+                    <input type="text"  onblur="AddFxsPrice(this)" name="name" value=" <%= dtcl.Rows[i]["price"] %>" style="width:79px; height:24px; line-height:24px; text-align:center; background-color:#F2F6FF" />
+                    <p style=" display:none;"><%= dtcl.Rows[i]["price"] %></p>
+                    <p style=" display:none;"><%= dtcl.Rows[i]["cl_id"] %>;<%= dtcl.Rows[i]["gys_id"] %>;<%= dtcl.Rows[i]["fxs_id"] %></p>
                 </td>
                 <td align="center">
                     <input type="Button" name="filter" value="查阅" class="filter" filter="" onclick="Read('<%=dtcl.Rows[i]["cl_id"] %>')"
                         style="color: Black; border-style: None; font-family: 宋体; font-size: 12px; height: 20px;
                         width: 37px; cursor: pointer;" />
                 </td>
+                
             </tr>
             <%} %>
             <%else %>
@@ -288,27 +300,32 @@
                 <td align="center" style="display: none;">
                     <%=dtcl.Rows[i]["cl_id"]%>
                 </td>
-                <td align="center">
+                <%--<td align="center">
                     <%=dtcl.Rows[i]["材料编码"]%>
+                </td>--%>
+                <td align="left" style=" text-align:center;">
+                    <%=SubStrings.GetWidth(5,dtcl.Rows[i]["材料名称"].ToString(),dtcl.Rows[i]["材料名称"].ToString())%>
                 </td>
-                <td align="left">
-                    <%=SubStrings.GetWidth(4,dtcl.Rows[i]["材料名称"].ToString(),dtcl.Rows[i]["材料名称"].ToString())%>
+                <td class="gridtable" style=" text-align:center;">
+                    <%=SubStrings.GetWidth(4,dtcl.Rows[i]["规格型号"].ToString(),dtcl.Rows[i]["规格型号"].ToString())%>
                 </td>
-                <td class="gridtable">
-                    <%=dtcl.Rows[i]["规格型号"]%>
-                </td>
-                <td align="left">
-                    <%=dtcl.Rows[i]["生产厂商"]%>
+                <td align="left" style=" text-align:center;">
+                    <%=SubStrings.GetWidth(6, dtcl.Rows[i]["生产厂商"].ToString(), dtcl.Rows[i]["生产厂商"].ToString())%>
                 </td>
                 <%--<td class="gridtable"><%=ppmc1%></td>--%>
-                <td class="gridtable">
+                <td class="gridtable" style=" text-align:center;">
                     <%=dtcl.Rows[i]["品牌名称"]%>
                 </td>
-                <td align="center">
+                <td align="center" style=" text-align:center;">
                     <%=dtcl.Rows[i]["计量单位"]%>
                 </td>
                 <td align="center">
-                    <%=dtcl.Rows[i]["price"]%>
+                 <%=GetGysNewPrice(dtcl.Rows[i]["cl_id"].ToString())%>
+                </td>
+                <td align="center">
+                    <input type="text" onblur="AddFxsPrice(this)" name="name" value=" <%= dtcl.Rows[i]["price"] %>" style="width:79px; height:24px; line-height:24px; text-align:center;" />
+                    <p style=" display:none;"><%= dtcl.Rows[i]["price"] %></p>
+                    <p style=" display:none;"><%= dtcl.Rows[i]["cl_id"] %>;<%= dtcl.Rows[i]["gys_id"] %>;<%= dtcl.Rows[i]["fxs_id"] %></p>
                 </td>
                 <td align="center">
                     <input type="Button" name="filter" value="查阅" class="filter" filter="" onclick="Read('<%=dtcl.Rows[i]["cl_id"] %>')"

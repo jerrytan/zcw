@@ -38,7 +38,7 @@ public class PagingHelper
 
             output.Append(" ");
             int currint = 5;
-            for (int i = 0; i <= 10; i++)
+            for (int i = 0; i <= 11; i++)
             {//一共最多显示10个页码，前面5个，后面5个
                 if ((currentPage + i - currint) >= 1 && (currentPage + i - currint) <= totalPages)
                 {

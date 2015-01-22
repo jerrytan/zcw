@@ -38,7 +38,9 @@
 .sc{ width:1000px; height:auto; float:left; margin:20px 0 20px 0px; display:inline;}
 .sc1{ width:1000px; height:30px; float:left; border-bottom:#FF0000 solid 1px; line-height:30px; font-size:14px; color:#707070; padding:0 0 0 0px;}
 .sc2{ width:980px; height:auto; float:left; margin-top:10px;}
+/*
 .sc2 a{ width:100px; height:30px; float:left; margin:0 30px 0 30px; display:inline; line-height:30px; color:#707070; font-size:14px;}
+*/
 .sc3{ width:998px; height:auto; float:left;border:1px solid #ddd;margin-top:10px;padding-bottom:10px;
 background-color:#f8f8f8;}
 .rh{ width:200px; height:auto; float:left; margin:10px 10px 0 30px; display:inline;}
@@ -60,7 +62,7 @@ background-color:#f8f8f8;}
 .pxright{ width:208px; height:368px; float:left;  background:url(../images/234_03.jpg);}
 .pxright1{ width:150px; height:auto; margin:0 auto;}
 .pxright1 ul{ width:150px; height:auto; margin:75px 0 0 0;}
-.pxright1 li{ width:140px; height:30px; float:left; line-height:30px; padding-left:10px;}
+.pxright1 li{ width:140px; height:28px; float:left; line-height:30px; padding-left:10px;}
 .pxright2{ width:208px; height:auto; float:left;}
 .pxright2 img{ margin:10px 0 0 0; float:left;}
 
@@ -68,26 +70,35 @@ background-color:#f8f8f8;}
 /* ¥Û¿Ì Ø */
 
 .xzss{ width:998px; height:auto; float:left; margin:10px 0 10px 0; padding:10px 0 10px 0;background-color:#f8f8f8; border:1px solid #ddd;}
-.ppxz{ width:960px; height:auto; float:left; margin:0 20px 0 20px; display:inline;
-border-bottom:1px solid #ddd;}
-.ppxz1{ width:50px; height:35px; float:left; line-height:30px;}
+.ppxz{ width:960px; height:auto; float:left; margin:0 20px 0 20px; padding:10px 0 0 0; display:inline;
+border-bottom:1px dashed #ddd;}
+.ppxz1{ width:70px; height:100%; float:left; line-height:30px;}
 .ppxz3 { width:910px; float:left;
 line-height:30px;
 	}
+.ppxz2
+{
+    width:870px;
+    height:auto!important;
+    float:left;
+    }
 .ppxz2 a{
 	width:auto;
+	height:25px;
 	float:left;
-	margin:0 20px 0 0px;
-	line-height:30px;
+	margin:0px 20px 0px 0px;
+	line-height:25px;
 	color:#0081cc;
 
 }
+/*
 .ppxz2 a:active { 	background-color: #06C;
 	display: block; }
 .ppxz2 a:visited { 	background-color: #06C;
 	display: block; }
 .ppxz2  a:hover {color:#F00;}
 .ppxz2 a img{ padding:5px 0 0 0;}
+*/
 .dlspx{ width:765px; height:30px; float:left; padding-left:30px; display:inline;  margin-top:20px;}
 .dlspx1{  width:50px; height:20px; float:left; line-height:20px;}
 .dlspx2{ width:50px; height:20px; float:left; line-height:20px;}
@@ -97,6 +108,7 @@ line-height:30px;
 .fxk{ float:left; margin:3px 5px 0 0; display:inline;}
 .dlspx4{ width:128px; height:22px; float:left; margin:0px 0 0 10px; display:inline; line-height:22px; text-align:center; font-size:14px; background:url(../images/qwqa.jpg);}
 .dlspx4 a{ color:#fff;}
+/*
 .dlspxl{
 	width:765px;
 	height:auto;
@@ -117,6 +129,26 @@ line-height:30px;
 .dlspxt img{padding:10px 5px 10px 10px; border:#a1a1a1 solid 0px;}
 .dlsl{ width:96px; height:30px; float:left; margin:0 0 0 10px; display:inline; color:#0071b3; line-height:30px;}
 .dlsgg{ width:156px; height:30px; float:left; margin:0 0 0 10px; display:inline; line-height:30px;}
+*/
+.dlspxl {
+	border: 1px solid rgb(221, 221, 221); width: 765px; height: auto; float: left; background-color: rgb(248, 248, 248);
+}
+.dlspxt {
+	margin: 5px 0px 10px 13px; border: 1px solid rgb(231, 231, 231); width: 172px; height: auto; float: left; display: inline; background-color: rgb(255, 255, 255); padding-bottom:5px;
+}
+.dlspxt img {
+	padding: 10px 5px 10px 10px; border: 0px solid rgb(161, 161, 161);
+}
+.dlsl {
+	margin: 0px 0px 0px 10px; width: 96px; height: 20px; color: rgb(0, 113, 179); line-height: 20px; float: left; display: inline;
+}
+.dlsgg {
+	margin: 0px 0px 0px 10px; width: 156px; height: 20px; line-height: 20px; float: left; display: inline;
+}
+.dlsgg2 {
+	margin: 0px 0px 0px 10px; width: 156px; height: 30px; line-height: 30px; float: left; display: inline;
+}
+.dlsgg2 img { padding:0; margin:5px 10px 0 0;}
 
 
 

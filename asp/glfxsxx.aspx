@@ -468,7 +468,7 @@
         <ul>
         <%foreach (System.Data.DataRow PP_MC in dt_pp_id.Rows)
           {%>
-        <li><a href="javascript:void(0)" onclick="CZ_P(this,'<%=PP_MC["品牌名称"].ToString() %>','<%=PP_MC["pp_id"].ToString() %>')"><img src="images/biao2.jpg" />&nbsp;&nbsp;<%=PP_MC["品牌名称"].ToString()%></a></li>
+        <li><a href="javascript:void(0)" style=" font-size:15px; font-weight:bold;" onclick="CZ_P(this,'<%=PP_MC["品牌名称"].ToString() %>','<%=PP_MC["pp_id"].ToString() %>')"><%=PP_MC["品牌名称"].ToString()%></a></li>
          <%} %></ul></h2>
       </div>
  <div id="cgs_lb" style="width:795px; margin-left:182px;">

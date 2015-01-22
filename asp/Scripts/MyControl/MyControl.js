@@ -49,3 +49,38 @@ $(window).resize(function () {
 $(window).scroll(function () {
     $("#divMsg").css("top", ($(window).height() - 47) / 2 + ($(window).scrollTop()) + "px");
 });
+
+function GetCrossDomain() {
+    return "http://192.168.1.11:88";
+}
+
+//截取字符串
+function mysubstring(len, str) {
+    //循环获取字符串的总长度
+    var nums = 0;
+    for (var i = 0; i < str.length; i++) {
+        if (str[i].match(/[^\x00-\xff]/ig)) {
+            nums += 2;
+        } else {
+            nums++;
+        }
+    }
+    if (nums <= len * 2) {
+        return str;
+    } else {
+        //循环获取截取以后的字符串
+        var num = 0;
+        var strs = "";
+        for (var i = 0; i < str.length; i++) {
+            //正则表达式判断字符是不是全角
+            if (str[i].match(/[^\x00-\xff]/ig) && (num + 2) <= len * 2) {
+                strs += str[i];
+                num += 2;
+            } else if (!str[i].match(/[^\x00-\xff]/ig) && (num + 1) <= len * 2) {
+                strs += str[i];
+                num++;
+            }
+        }
+        return "<p style=' width:auto; height:auto; ' title='" + str + "'>"+strs+"..</p>";
+    }
+}

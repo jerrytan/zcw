@@ -32,11 +32,11 @@
 
             //日期
             $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
-            $("#txt_zcrq").datePicker({followOffset : [0, 24]}});//datepicker({
-                //changeMonth: true,
-                //changeYear: true,
-				//followOffset : [0, 24]
-            //});
+            $("#txt_zcrq").datepicker({
+                changeMonth: true,
+                changeYear: true,
+				followOffset : [0, 24]
+            });
         });
 
 
@@ -203,7 +203,7 @@
             //提交前判断
             var x = document.getElementById("s0").value;
             var sj = document.getElementById("s1").value;
-            var xsj = document.getElementById("s2").value;
+            var xsj = document.getElementById("region").value;
             document.getElementById("x").value = x;
             document.getElementById("sj").value = sj;
             document.getElementById("xsj").value = xsj;
@@ -613,7 +613,10 @@
                     <!--<input id="btn_sub"  type="submit" value="" style="width:94px;height:36px;background:url(images/lijizhuce.gif) no-repeat;" onclick="return btn_sub_onclick()" />-->
                     <%--<asp:ImageButton ID="Submit1" runat="server" ImageUrl="images/lijizhuce.gif" OnClientClick="getup()"
                         OnClick="Submit1_Click" />--%>
-                    <input type="button" name="name" value="" onclick="getup()" style=" cursor:pointer; background-image:url(images/lijizhuce.gif); width:94px; height:36px;" />
+                        <%--<input type="image" name="Submit1" id="Submit1" src="images/lijizhuce.gif" onclick="getup();" >--%>
+                        <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="images/lijizhuce.gif" OnClientClick="getup()"
+                        OnClick="Submit1_Click" />
+                    <%--<input type="button" name="name" value="" onclick="getup()" style=" cursor:pointer; background-image:url(images/lijizhuce.gif); width:94px; height:36px;" />--%>
                 </td>
                 <td>
                     &nbsp;

@@ -50,3 +50,7 @@ $(window).resize(function () {
 $(window).scroll(function () {
     $("#divMsg").css("top", ($(window).height() - 47) / 2 + ($(window).scrollTop()) + "px");
 });
+
+function GetCrossDomain() {
+    return "http://192.168.1.22";
+}

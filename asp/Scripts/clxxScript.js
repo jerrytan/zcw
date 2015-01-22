@@ -4,31 +4,33 @@ $(function () {
     GetDomVdoDom();//获取文档视频信息
     GetDetails();//获取详情页
 });
-
+var serverUrl = GetCrossDomain();
 function GetDomVdoDom() {
     $.ajax({
         type: 'get',
-        async: true, //是否同步
+        async: true, //是否同步 
+        crossDomain: true,
         data: { 'action': 'dv', 'clid': $("#myclid").val() },
-        url: "http://192.168.1.22/Ashx/clxxJsonHandler.ashx",
+        url: serverUrl + "/Ashx/clxxJsonHandler.ashx",
         dataType: "jsonp", //数据类型为jsonp  
         jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
         success: function (data) {
             //        $("#domShow").text(data.domFile);
 
-            
 
-            
+
+
 
             if (data.domFile == null || data.domFile == "") {
                 $("#two2").css("display", "none");
             } else {
                 $("#domName").text(data.domName);
                 $("#domTime").text(data.domTime);
+                $("#domshuoming").text("说明：" + data.DomSm);
                 $('#domShow').FlexPaperViewer({
                     config: {
 
-                        SWFFile: "http://192.168.1.22/" + data.domFile, //swf路径
+                        SWFFile: serverUrl + "/" + data.domFile, //swf路径
 
                         jsDirectory: "Scripts/flexpaper/FlexPaperViewer.swf", //设置FlexPaperViewer.swf的路径
                         Scale: 0.6, //初始化缩放比例，参数值应该是大于零的整数
@@ -65,12 +67,14 @@ function GetDomVdoDom() {
                 });
             }
             if (data.videoFile == null || data.videoFile == "") {
-                $("#two3").css("display","none") ;
+                $("#two3").css("display", "none");
             } else {
                 $("#videoName").text(data.videoName);
                 $("#videoTime").text(data.videoTime);
-                $("#videoDetails").html("<object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0' width='900' height='500'><param name='movie' value='Scripts/flv/vcastr.swf'><param name='quality' value='high'><param name='allowFullScreen' value='true' /><param name='FlashVars' value='vcastr_file=" + "http://192.168.1.22/" + data.videoFile + "&vcastr_title=" + data.videoName + "&BarColor=0x9F79EE&BarPosition=0' /><param value='transparent' name='wmode'><embed src='Scripts/flv/vcastr.swf' wmode='transparent' allowFullScreen='true' FlashVars='vcastr_file=" + "http://192.168.1.22/" + data.videoFile + "&vcastr_title=" + data.videoName + "&BarColor=0x9F79EE&BarPosition=0' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width='900' height='500'></embed></object>");
+                $("#videoshuoming").text("说明：" + data.VideoSm);
+                $("#videoDetails").html("<object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0' width='900' height='500'><param name='movie' value='Scripts/flv/vcastr.swf'><param name='quality' value='high'><param name='allowFullScreen' value='true' /><param name='FlashVars' value='vcastr_file=" + serverUrl + "/" + data.videoFile + "&vcastr_title=" + data.videoName + "&BarColor=0x9F79EE&BarPosition=0' /><param value='transparent' name='wmode'><embed src='Scripts/flv/vcastr.swf' wmode='transparent' allowFullScreen='true' FlashVars='vcastr_file=" + serverUrl + "/" + data.videoFile + "&vcastr_title=" + data.videoName + "&BarColor=0x9F79EE&BarPosition=0' quality='high' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width='900' height='500'></embed></object>");
             }
+            $("#two4").css("display", "none");
         }
     });
 
@@ -85,7 +89,7 @@ function GetDetails() {
         type: 'get',
         async: true, //是否同步
         data:  { 'action': 'des', 'clid': $("#myclid").val() },
-        url: "http://192.168.1.22/Ashx/clxxsHandler.ashx",
+        url: serverUrl + "/Ashx/clxxsHandler.ashx",
         dataType: "jsonp", //数据类型为jsonp  
         jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
         success: function (data) { 

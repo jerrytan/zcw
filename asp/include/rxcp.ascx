@@ -4,7 +4,6 @@
 	传入参数：无
     owner:丁传宇
 -->
-
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System" %>
@@ -17,10 +16,10 @@
         protected DataConn dc = new DataConn();      
         protected void Page_Load(object sender, EventArgs e)
         {	     
-            string str_Sql = "select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片' and 大小='小' and cl_id in(select cl_id from 材料表 where 类型='主打')";         
+            string str_Sql = "select 存放地址,材料名称,cl_id from 材料多媒体信息表 where  是否上头条='是' and 媒体类型 = '图片' and cl_id in(select cl_id from 材料表 where 类型='主打')";         
             dt_Cltp = dc.GetDataTable(str_Sql);	
         }		
-        
+
 </script>
 
 
@@ -39,7 +38,10 @@
                         <table cellpadding="2" cellspacing="0" border="0" class="tu1">
 						
                             <tr align="center">
-                                <%foreach(System.Data.DataRow row in this.dt_Cltp.Rows){%>
+                                <%
+                                foreach(System.Data.DataRow row in this.dt_Cltp.Rows)
+                                {
+                                %>
                                 <td>
                                     <div class="pii"><a  style="font-size:12px;width:180px;" href="clxx.aspx?cl_id=<%=row["cl_id"].ToString()%>" >
                                         <img src="<%=row["存放地址"].ToString() %>" width="167" height="159" /><%=row["材料名称"].ToString() %></a></div>

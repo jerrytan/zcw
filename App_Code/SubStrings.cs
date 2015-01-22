@@ -22,13 +22,13 @@ public class SubStrings
         {
             if (temp.Length != i && temp.Length - 3 != i && temp.Length - 1 != i && temp.Length - 2 != i)
             {
-                sb.Append(temp[i]+"\\");
+                sb.Append(temp[i] + "\\");
             }
-            else if(temp.Length-1==i)
+            else if (temp.Length - 1 == i)
             {
-                sb.Append("."+temp[i]);
+                sb.Append("." + temp[i]);
             }
-            else if (temp.Length-2==i)
+            else if (temp.Length - 2 == i)
             {
                 sb.Append(temp[i]);
             }
@@ -42,29 +42,54 @@ public class SubStrings
     /// <param name="strs">要截取的字符串</param>
     /// <param name="strs">鼠标放到"..."中显示的全称（title属性）</param>
     /// <returns></returns>
-    public static string GetWidth( int width, string strs,string title)
+    public static string GetWidth(int width, string strs, string title)
     {
         StringBuilder sb = new StringBuilder();
-        int temp = 0;
+        int num = 0;
         for (int i = 0; i < strs.Length; i++)
         {
-            if ((int)strs[i] > 127 && temp < width*2)
+            if ((int)strs[i] > 127)
             {
-                sb.Append(strs[i]);
-                temp = temp + 2;
+                num = num + 2;
             }
-            else if ((int)strs[i] < 127 && temp < width*2)
+            else if ((int)strs[i] < 127 )
             {
-                sb.Append(strs[i]);
-                temp = temp + 1;
-            }
-            else
-            {
-                sb.Append("<a href='javascript:;' onclick='return false;' style='font-weight:bold' title='"+title+"'>...</a>");
-                break;
+                num = num + 1;
             }
         }
-        return sb.ToString();
+        if (num > width * 2)
+        {
+            int temp = 0;
+            sb.Append("<p style=' width:auto; height:auto; ' title='" + title + "'>");
+            for (int i = 0; i < strs.Length; i++)
+            {
+                if ((int)strs[i] > 127 && temp < width * 2)
+                {
+                    sb.Append(strs[i]);
+                    temp = temp + 2;
+                }
+                else if ((int)strs[i] < 127 && temp < width * 2)
+                {
+                    sb.Append(strs[i]);
+                    temp = temp + 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            sb.Append("..</p>");
+            return sb.ToString();
+        }
+        else
+        {
+            sb.Append("<p style=' cursor:pointer;' title='" + title + "'>");
+            sb.Append(strs);
+            sb.Append("</p>");
+            return sb.ToString();
+        }
+
+
     }
     /// <summary>
     /// UTF8转换GB2312
@@ -111,5 +136,5 @@ public class SubStrings
             return "";
         }
     }
-    
+
 }

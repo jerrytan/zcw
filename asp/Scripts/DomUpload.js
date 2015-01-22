@@ -1,4 +1,5 @@
-﻿
+﻿/// <reference path="jquery-1.4.1.js" />
+
 
 
 //图片上传
@@ -7,7 +8,7 @@ function GetImgFlash() {
         // 'debug': true,
         'height': '20',
         'width': '150',
-        'uploader': 'http://192.168.1.22/Ashx/UploadifyHandler.ashx',
+        'uploader': GetCrossDomain() + '/Ashx/UploadifyHandler.ashx',
         'swf': 'Scripts/uploadify/uploadify.swf',
         'fileTypeExts': '*.jpg;*.jpeg;*.png;*.gif',
         //'fileTypeDesc': '请选择文件',
@@ -26,7 +27,14 @@ function GetImgFlash() {
             if (datas[0] == "0") {
                 for (var i = 1; i < datas.length - 1; i++) {
                     imgid = datas[i].split('*');
-                    var imghtml = "<div style='width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;'><div  imgid='" + imgid[1] + "' style='background-image: url(" + imgid[0] + "); background-size: 60px 60px; width: 60px; height: 60px; float: left;'><a  class='imgDel' href='javascript:void(0);' style='background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;'></a></div><div style='width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;'>...</div> </div>";
+                    var imgnamethis = imgid[0].split('//')[imgid[0].split('//').length - 1];
+                    var imgnameall;
+                    imgnameall = imgnamethis.split(".")[0];
+                    if (imgnameall.length > 5) {
+                        imgnameall = imgnameall.substring(0, 6);
+                    }
+
+                    var imghtml = "<div style='width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;'><div  imgid='" + imgid[1] + "' style='background-image: url(" + imgid[0] + "); background-size: 60px 60px; width: 60px; height: 60px; float: left;'><a  class='imgDel' href='javascript:void(0);' style='background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;'></a></div><div style='width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;'><a href='javascript:void(0)' title='" + imgnamethis + "'>" + imgnameall + "</a></div> </div>";
                     $("#imgQ").append(imghtml);
                 }
 
@@ -37,16 +45,35 @@ function GetImgFlash() {
                 $("#mySecc").val("2");
             } else if (datas[0] == "img") {
                 MsgShow("您最多只能上传五张材料相关图片！");
-                $('#uploadify').uploadify('stop', '*');
+                $('#imgUploadify').uploadify('stop');
                 $("#mySecc").val("2");
                 for (var i = 1; i < datas.length - 1; i++) {
                     imgid = datas[i].split('*');
-                    var imghtml = "<div style='width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;'><div  imgid='" + imgid[1] + "' style='background-image: url(" + imgid[0] + "); background-size: 60px 60px; width: 60px; height: 60px; float: left;'><a  class='imgDel' href='javascript:void(0);' style='background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;'></a></div><div style='width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;'>...</div> </div>";
+                    var imgnamethis = imgid[0].split('//')[imgid[0].split('//').length - 1];
+                    var imgnameall;
+                    imgnameall = imgnamethis.split(".")[0];
+                    if (imgnameall.length > 5) {
+                        imgnameall = imgnameall.substring(0, 6);
+                    }
+
+                    var imghtml = "<div style='width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;'><div  imgid='" + imgid[1] + "' style='background-image: url(" + imgid[0] + "); background-size: 60px 60px; width: 60px; height: 60px; float: left;'><a  class='imgDel' href='javascript:void(0);' style='background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;'></a></div><div style='width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;'><a href='javascript:void(0)' title='" + imgnamethis + "'>" + imgnameall + "</a></div> </div>";
                     $("#imgQ").append(imghtml);
                 }
                 imgDel();
-            } else {
-                alert(data);
+            } else if (datas[0] == "imgMore") {
+                MsgShow("您传的图片重复！");
+                for (var i = 1; i < datas.length - 1; i++) {
+                    imgid = datas[i].split('*');
+                    var imgnamethis = imgid[0].split('//')[imgid[0].split('//').length - 1];
+                    var imgnameall;
+                    imgnameall = imgnamethis.split(".")[0];
+                    if (imgnameall.length > 5) {
+                        imgnameall = imgnameall.substring(0, 6);
+                    }
+
+                    var imghtml = "<div style='width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;'><div  imgid='" + imgid[1] + "' style='background-image: url(" + imgid[0] + "); background-size: 60px 60px; width: 60px; height: 60px; float: left;'><a  class='imgDel' href='javascript:void(0);' style='background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;'></a></div><div style='width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;'><a href='javascript:void(0)' title='" + imgnamethis + "'>" + imgnameall + "</a></div> </div>";
+                    $("#imgQ").append(imghtml);
+                }
             }
         },
         'onQueueComplete': function (event, data) {
@@ -68,8 +95,8 @@ function GetVideoFlash() {
         //'debug': true,
         'height': '20',
         'width': '150',
-        'fileSizeLimit': '200MB',
-        'uploader': 'http://192.168.1.22/Ashx/UploadifyHandler.ashx',
+        'fileSizeLimit': 0,
+        'uploader': GetCrossDomain() + '/Ashx/UploadifyHandler.ashx',
         'swf': 'Scripts/uploadify/uploadify.swf',
         'fileTypeExts': '*.avi;*.rmvb;*.mp4;*.wmv;*.swf',
         //'fileTypeDesc': '请选择文件',
@@ -88,15 +115,16 @@ function GetVideoFlash() {
             var datas = data.split(',');
             if (datas[0] == "0") {
                 $("#videoDelName").text(datas[1]);
-                
+
                 MsgShow("上传成功！", true);
+                $("#btnSaveVideoTitleAndMsg").css("display", "");
             } else if (data == "0") {
                 MsgShow("上传失败！", false);
             } else if (data == "vdo") {
-                alert("您最多只能上传一个材料相关视频！");
-                //$('#uploadify').uploadify('stop');
+                MsgShow("您最多只能上传一个材料相关视频！");
+                $('#videoUploadify').uploadify('stop');
             } else {
-                alert(data);
+                MsgShow(data);
             }
         }
     });
@@ -107,7 +135,7 @@ function GetDomFlash() {
     $("#domUploadify").uploadify({
         'height': '20',
         'width': '150',
-        'uploader': 'http://192.168.1.22/Ashx/UploadifyHandler.ashx',
+        'uploader': GetCrossDomain() + '/Ashx/UploadifyHandler.ashx',
         'swf': 'Scripts/uploadify/uploadify.swf',
         'fileTypeExts': '*.pdf;*.doc;*.docx;*.ppt;*.pptx;*.xls;*.xlsx;*.txt;',
         //'fileTypeDesc': '请选择文件',
@@ -126,15 +154,17 @@ function GetDomFlash() {
             var datas = data.split(',');
             if (datas[0] == "0") {
                 $("#domDelName").text(datas[1]);
-                
-                MsgShow("上传成功！",true);
+
+                MsgShow("上传成功！", true);
+
+                $("#btnSaveDomTitleAndMsg").css("display", "");
             } else if (data == "1") {
-                MsgShow("上传失败！",false);
+                MsgShow("上传失败！", false);
             } else if (data == "dom") {
-                alert("您最多只能上传一个材料相关文档！");
-                $('#uploadify').uploadify('stop');
+                MsgShow("您最多只能上传一个材料相关文档！");
+                $('#domUploadify').uploadify('stop');
             } else {
-                alert(data);
+                MsgShow(data);
             }
         }
     });
@@ -150,7 +180,7 @@ function DomUpload() {
     GetVideoFlash();
     $("#btnVideoUploadfy").click(function () {
         if ($("#videoName").val() == null || $("#videoName").val() == "") {
-            alert("请输入视频名称！");
+            MsgShow("请输入视频名称！");
             $('#btnVideoUploadfy').uploadify('cancel');
             return;
         } else {
@@ -162,7 +192,7 @@ function DomUpload() {
     GetDomFlash();
     $("#btnDomUploadfy").click(function () {
         if ($("#domName").val() == null || $("#domName").val() == "") {
-            alert("请输入文档名称！");
+            MsgShow("请输入文档名称！");
             $('#domUploadify').uploadify('cancel');
             return;
         } else {
@@ -175,17 +205,21 @@ function DomUpload() {
 $(function () {
     $("#domName").focusout(function () {
         GetDomFlash();
+        $('#domUploadify').uploadify('stop');
     });
 
     $("#domMsg").focusout(function () {
         GetDomFlash();
+        $('#domUploadify').uploadify('stop');
     });
     $("#videoName").focusout(function () {
         GetVideoFlash();
+        $('#videoUploadify').uploadify('stop');
     });
 
     $("#videoMsg").focusout(function () {
         GetVideoFlash();
+        $('#videoUploadify').uploadify('stop');
     });
     delVideo();
     delDom();
@@ -193,8 +227,13 @@ $(function () {
 });
 
 $(document).ready(function () {
+    //修改视频和文档信息按钮
+    SaveTitleMsg();
     //修改材料信息
     if ($("#myclid").val() != "" && $("#myclid").val() != null) {
+
+
+
         $("#ceng").fadeOut(200);
         getXheditor();
         $("#xhe0_iframearea").attr("style", "height:100%");
@@ -209,7 +248,7 @@ $(document).ready(function () {
             type: 'get',
             async: true, //是否同步
             data: { 'action': 'getAll', 'clid': $('#myclid').val() },
-            url: "http://192.168.1.22/Ashx/clxxJsonHandler.ashx",
+            url: GetCrossDomain() + "/Ashx/clxxJsonHandler.ashx",
 
 
             dataType: "jsonp", //数据类型为jsonp  
@@ -226,18 +265,21 @@ $(document).ready(function () {
                 var videoFile = data.videoFile;
                 var videoName = data.videoName;
                 //显示图片
+                if ((imgFiles.length - 1) > 0) {
+                    $("#imgQ").children().remove();
+                }
                 for (var i = 0; i < imgFiles.length - 1; i++) {
                     if (imgFiles[i] != "" && imgFiles[i] != null) {
                         imgid = imgFiles[i].split('*');
-                        var imghtml = "<div style='width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;'><div  imgid='" + imgid[1] + "' style='background-image: url(" + imgid[0] + "); background-size: 60px 60px; width: 60px; height: 60px; float: left;'><a  class='imgDel' href='javascript:void(0);' style='background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;'></a></div><div style='width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;'>...</div> </div>";
+
+                        var imgnamethis = imgid[0].split('//')[imgid[0].split('//').length - 1];
+                        var imgnameall;
+                        imgnameall = imgnamethis.split(".")[0];
+                        if (imgnameall.length > 5) {
+                            imgnameall = imgnameall.substring(0, 6);
+                        }
+                        var imghtml = "<div style='width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;'><div  imgid='" + imgid[1] + "' style='background-image: url(" + imgid[0] + "); background-size: 60px 60px; width: 60px; height: 60px; float: left;'><a  class='imgDel' href='javascript:void(0);' style='background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;'></a></div><div style='width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;'><a href='javascript:void(0)' title='" + imgnamethis + "'>" + imgnameall + "</a></div> </div>";
                         $("#imgQ").append(imghtml);
-                        //Upload\\Material\\486\\img\\icon\\
-                        //var imgFF = imgFiles[i]; //.replace("Upload\\", "Upload\\\\");
-                        //                        imgFF = imgFF.replace("Material\\", "Material\\\\");
-                        //                        imgFF = imgFF.replace("\\img\\", "\\\\img\\\\");
-                        //                        imgFF = imgFF.replace("icon\\", "icon\\\\");
-                        //var imghtml = "<div style='width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;'><div style='background-image: url(" + imgFF + "); background-size: 60px 60px; width: 60px; height: 60px; float: left;'><a  class='imgDel' href='javascript:void(0);' style='background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;'></a></div><div style='width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;'>...</div> </div>";
-                        //$("#imgQ").append(imghtml);
                     }
                 }
                 imgDel();
@@ -245,9 +287,19 @@ $(document).ready(function () {
                 //显示已经上传的文档
                 $("#domName").val(data.domName);
                 $("#domDelName").text(domFile);
+                $("#domMsg").val(data.DomSm);
+                if (data.domFile != null && data.domFile != "") {
+                    //启用保存标题和说明 按钮
+                    $("#btnSaveDomTitleAndMsg").css("display", "");
+                }
                 //显示上传视频
                 $("#videoDelName").text(videoFile);
                 $("#videoName").val(videoName);
+                $("#videoMsg").val(data.VideoSm);
+                if (data.videoFile != null && data.videoFile != "") {
+                    //启用保存标题和说明 按钮
+                    $("#btnSaveVideoTitleAndMsg").css("display", "");
+                }
                 //显示详情
                 editor.appendHTML(domDes);
             },
@@ -256,7 +308,7 @@ $(document).ready(function () {
             }
         });
         //获取多媒体信息
-        $.getJSON("http://192.168.1.22/Ashx/clxxJsonHandler.ashx", { "action": "getAll", "clid": $("#myclid").val() }, function (data) {
+        $.getJSON(GetCrossDomain() + "/Ashx/clxxJsonHandler.ashx", { "action": "getAll", "clid": $("#myclid").val() }, function (data) {
 
         });
     }
@@ -270,7 +322,7 @@ function imgDel() {
                 type: 'get',
                 async: true, //是否同步
                 data: { 'action': 'imgdel', 'imgid': imgid, 'clid': $("#myclid").val() },
-                url: "http://192.168.1.22/Ashx/UploadifyHandler.ashx",
+                url: GetCrossDomain() + "/Ashx/UploadifyHandler.ashx",
 
 
                 dataType: "jsonp", //数据类型为jsonp  
@@ -283,9 +335,16 @@ function imgDel() {
                         $("#imgQ").children().remove();
                         var imgtemp = data.img;
                         var imgs = imgtemp.split(",");
-                        for (var i = 0; i < imgs.length-1; i++) {
+                        for (var i = 0; i < imgs.length - 1; i++) {
                             imgid = imgs[i].split('*');
-                            var imghtml = "<div style='width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;'><div  imgid='" + imgid[1] + "' style='background-image: url(" + imgid[0] + "); background-size: 60px 60px; width: 60px; height: 60px; float: left;'><a  class='imgDel' href='javascript:void(0);' style='background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;'></a></div><div style='width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;'>...</div> </div>";
+                            var imgnamethis = imgid[0].split('//')[imgid[0].split('//').length - 1];
+                            var imgnameall;
+                            imgnameall = imgnamethis.split(".")[0];
+                            if (imgnameall.length > 5) {
+                                imgnameall = imgnameall.substring(0, 6);
+                            }
+
+                            var imghtml = "<div style='width: 60px; height: 80px; border: 1px solid #DDDDDD; float: left; margin-left:2px; margin-top:2px;'><div  imgid='" + imgid[1] + "' style='background-image: url(" + imgid[0] + "); background-size: 60px 60px; width: 60px; height: 60px; float: left;'><a  class='imgDel' href='javascript:void(0);' style='background-image:url(images/shanchu.gif); width: 11px; height: 10px; float: right;'></a></div><div style='width: 60px; height: 20px; line-height: 20px; text-align: center; float: left;'><a href='javascript:void(0)' title='" + imgnamethis + "'>" + imgnameall + "</a></div> </div>";
                             $("#imgQ").append(imghtml);
                         }
                         imgDel();
@@ -310,17 +369,20 @@ function delVideo() {
                 type: 'get',
                 async: true, //是否同步
                 data: { 'action': 'videodel', 'clid': $("#myclid").val(), 'url': $("#videoDelName").text() },
-                url: "http://192.168.1.22/Ashx/UploadifyHandler.ashx",
+                url: GetCrossDomain() + "/Ashx/UploadifyHandler.ashx",
                 dataType: "jsonp", //数据类型为jsonp  
                 jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
-                success: function (data) { 
+                success: function (data) {
                     if (data.state == "0") {
-                    MsgShow("删除成功！", true);
-                    $("#videoDelName").text("您还未上传视频！")
-                } else if (data.state == "1") {
-                    MsgShow("删除失败！", false);
+                        MsgShow("删除成功！", true);
+                        $("#btnSaveVideoTitleAndMsg").css("display", "none");
+                        $("#videoDelName").text("您还未上传视频！")
+                        $("#videoName").val("");
+                        $("#videoMsg").val("");
+                    } else if (data.state == "1") {
+                        MsgShow("删除失败！", false);
+                    }
                 }
-                } 
             });
         }
     });
@@ -334,20 +396,67 @@ function delDom() {
                 type: 'get',
                 async: true, //是否同步
                 data: { 'action': 'domdel', 'clid': $("#myclid").val(), 'url': $("#domDelName").text() },
-                url: "http://192.168.1.22/Ashx/UploadifyHandler.ashx",
+                url: GetCrossDomain() + "/Ashx/UploadifyHandler.ashx",
                 dataType: "jsonp", //数据类型为jsonp  
                 jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
                 success: function (data) {
                     if (data.state == "0") {
                         MsgShow("删除成功！", true);
 
+                        $("#btnSaveDomTitleAndMsg").css("display", "none");
                         $("#domName").val("");
+                        $("#domMsg").val("");
                         $("#domDelName").text("您还未上传文档！")
                     } else if (data.state == "1") {
                         MsgShow("删除失败！", false);
                     }
-                } 
+                }
             });
         }
     });
- }
+}
+
+//修改标题和说明
+function SaveTitleMsg() {
+    $("#btnSaveDomTitleAndMsg").click(function () {
+        var title = $("#domName").val();
+        var msg = $("#domMsg").val();
+        var url = $("#domDelName").text();
+        $.ajax({
+            type: 'get',
+            async: true, //是否同步
+            data: { 'action': 'editorDom', 'clid': $("#myclid").val(), 'title': title, 'msg': msg, 'url': url },
+            url: GetCrossDomain() + "/Ashx/UploadifyHandler.ashx",
+            dataType: "jsonp", //数据类型为jsonp  
+            jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
+            success: function (data) {
+                if (data.state == "0") {
+                    MsgShow("保存成功！",true);
+                } else if (data.state == "1") {
+                    MsgShow("保存失败！",false);
+                }
+            }
+        });
+    });
+
+    $("#btnSaveVideoTitleAndMsg").click(function () {
+        var title = $("#videoName").val();
+        var msg = $("#videoMsg").val();
+        var url = $("#videoDelName").text();
+        $.ajax({
+            type: 'get',
+            async: true, //是否同步
+            data: { 'action': 'editorVideo', 'clid': $("#myclid").val(), 'title': title, 'msg': msg, 'url': url },
+            url: GetCrossDomain() + "/Ashx/UploadifyHandler.ashx",
+            dataType: "jsonp", //数据类型为jsonp  
+            jsonp: "jsoncallback", //服务端用于接收callback调用的function名的参数  
+            success: function (data) {
+                if (data.state == "0") {
+                    MsgShow("保存成功！", true);
+                } else if (data.state == "1") {
+                    MsgShow("保存失败！", false);
+                }
+            }
+        });
+    });
+}
