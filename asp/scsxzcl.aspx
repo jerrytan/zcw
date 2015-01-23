@@ -221,7 +221,12 @@
             $("#yyfw").text("");
             $("#yyfw").val("");
 
-            document.getElementById("mcgz").value = $(obj).text().replace(" ","");
+            document.getElementById("mcgz").value = $(obj).text().replace(" ", "");
+            try {
+                document.getElementById("mcgz").value = $(obj).text().trim();
+            } catch (e) {
+
+            }
             //end
             var h = obj.parentNode.parentNode;
             var a = h.getElementsByTagName("a");

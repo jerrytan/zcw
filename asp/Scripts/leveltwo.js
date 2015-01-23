@@ -29,7 +29,7 @@ function GetList(pageflbm, obj) {
         var pageHtml = options.NavStr;
         for (var i = 0; i < clxx.length; i++) {
             var json = clxx[i];
-            var html = "<div class='dlspxt'><a href='clxx.aspx?cl_id=" + json.clid + "' target ='_blanck'><img class='dlspxtimg' width='150' height='150' src='" + GetCrossDomain() + "/" + json.存放地址 + "' /></a><div class='dlspxt1'><span class='dlsl'><a href='clxx.aspx?cl_id=" + json.clid + "' target ='_blanck'>" + json.显示名 + "</a></span> <span class='dlsgg'>" + mysubstring(12, "规格:" + json.规格型号) + "</span> <span class='dlsgg'>品牌:" + json.品牌名称 + "</span> <span class='dlsgg2'><img src='images/yanzheng_1.gif' width='16' height='16' /><img src='images/yanzheng_2.gif' width='16' height='16' /><img src='images/yanzheng_3.gif' alt='' width='16' height='16' /></span> </div> </div>";
+            var html = "<div class='dlspxt'><a href='clxx.aspx?cl_id=" + json.clid + "' target ='_blanck'><img class='dlspxtimg' width='150' height='150' src='" + GetCrossDomain() + "/" + json.存放地址 + "' /></a><div class='dlspxt1'><span class='dlsl'><a href='clxx.aspx?cl_id=" + json.clid + "' target ='_blanck'>" + json.显示名 + "</a></span> <span class='dlsgg'>" + mysubstring(11, "规格:" + json.规格型号) + "</span> <span class='dlsgg'>品牌:" + json.品牌名称 + "</span> <span class='dlsgg2'><img src='images/yanzheng_1.gif' width='16' height='16' /><img src='images/yanzheng_2.gif' width='16' height='16' /><img src='images/yanzheng_3.gif' alt='' width='16' height='16' /></span> </div> </div>";
             $("#clbox").append(html);
         }
         $(".paginator").append(pageHtml);

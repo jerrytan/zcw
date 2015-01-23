@@ -39,8 +39,8 @@
                 this.txt_zcjb.Value = dt_gys.Rows[0]["注册级别"].ToString();
                 this.txt_gsmc.Value = dt_gys.Rows[0]["供应商"].ToString();
                 this.txt_yyzzzch.Value = dt_gys.Rows[0]["营业执照注册号"].ToString();
-                this.txt_zcrq.Value = dt_gys.Rows[0]["注册日期"].ToString();
-                this.txt_zcze.Value = dt_gys.Rows[0]["资产总额"].ToString();
+                this.txt_zcrq.Value = dt_gys.Rows[0]["注册日期"].ToString().Substring(0,10);
+                this.txt_zcze.Value = dt_gys.Rows[0]["资产总额"].ToString() == "0" ? "" : dt_gys.Rows[0]["资产总额"].ToString();
                 this.txt_zzdj.Value = dt_gys.Rows[0]["资质等级"].ToString();
                 this.txt_khyh.Value = dt_gys.Rows[0]["开户银行"].ToString();
                 this.txt_zhmc.Value = dt_gys.Rows[0]["账户名称"].ToString();
@@ -56,7 +56,7 @@
                 this.txt_gsyb.Value = dt_gys.Rows[0]["邮编"].ToString();
                 this.txt_gsdh.Value = dt_gys.Rows[0]["电话"].ToString();
 
-                this.txt_qyygrs.Value = dt_gys.Rows[0]["企业员工人数"].ToString();
+                this.txt_qyygrs.Value = dt_gys.Rows[0]["企业员工人数"].ToString() == "0" ? "" : dt_gys.Rows[0]["企业员工人数"].ToString();
                 this.txt_yhzh.Value = dt_gys.Rows[0]["银行账户"].ToString();
                 this.txt_dwlx.Value = dt_gys.Rows[0]["单位类型"].ToString();
                 this.txt_qylb.Value = dt_gys.Rows[0]["企业类别"].ToString();

@@ -258,13 +258,13 @@
                     <%=dtcl.Rows[i]["材料编码"]%>
                 </td>--%>
                 <td align="left" style=" text-align:center;">
-                    <%=SubStrings.GetWidth(5,dtcl.Rows[i]["材料名称"].ToString(),dtcl.Rows[i]["材料名称"].ToString())%>
+                    <%=SubStrings.GetWidth(9,dtcl.Rows[i]["材料名称"].ToString(),dtcl.Rows[i]["材料名称"].ToString())%>
                 </td>
                 <td class="gridtable" style=" text-align:center;">
-                    <%=SubStrings.GetWidth(4,dtcl.Rows[i]["规格型号"].ToString(),dtcl.Rows[i]["规格型号"].ToString())%>
+                    <%=SubStrings.GetWidth(7,dtcl.Rows[i]["规格型号"].ToString(),dtcl.Rows[i]["规格型号"].ToString())%>
                 </td>
                 <td align="left" style=" text-align:center;">
-                    <%=SubStrings.GetWidth(6, dtcl.Rows[i]["生产厂商"].ToString(), dtcl.Rows[i]["生产厂商"].ToString())%>
+                    <%=SubStrings.GetWidth(8, dtcl.Rows[i]["生产厂商"].ToString(), dtcl.Rows[i]["生产厂商"].ToString())%>
                 </td>
                 <%--<td class="gridtable"><%=ppmc1%></td>--%>
                 <td class="gridtable" style=" text-align:center;">
@@ -304,13 +304,13 @@
                     <%=dtcl.Rows[i]["材料编码"]%>
                 </td>--%>
                 <td align="left" style=" text-align:center;">
-                    <%=SubStrings.GetWidth(5,dtcl.Rows[i]["材料名称"].ToString(),dtcl.Rows[i]["材料名称"].ToString())%>
+                    <%=SubStrings.GetWidth(9,dtcl.Rows[i]["材料名称"].ToString(),dtcl.Rows[i]["材料名称"].ToString())%>
                 </td>
                 <td class="gridtable" style=" text-align:center;">
-                    <%=SubStrings.GetWidth(4,dtcl.Rows[i]["规格型号"].ToString(),dtcl.Rows[i]["规格型号"].ToString())%>
+                    <%=SubStrings.GetWidth(7,dtcl.Rows[i]["规格型号"].ToString(),dtcl.Rows[i]["规格型号"].ToString())%>
                 </td>
                 <td align="left" style=" text-align:center;">
-                    <%=SubStrings.GetWidth(6, dtcl.Rows[i]["生产厂商"].ToString(), dtcl.Rows[i]["生产厂商"].ToString())%>
+                    <%=SubStrings.GetWidth(8, dtcl.Rows[i]["生产厂商"].ToString(), dtcl.Rows[i]["生产厂商"].ToString())%>
                 </td>
                 <%--<td class="gridtable"><%=ppmc1%></td>--%>
                 <td class="gridtable" style=" text-align:center;">

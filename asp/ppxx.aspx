@@ -195,8 +195,8 @@
                             + row["gys_id"].ToString() + "'><ul><li class='fxsa'>"
                             + row["供应商"].ToString() + "</li><li>联系人："
                             + row["联系人"].ToString() + "</li><li>电话："
-                            + row["联系人手机"].ToString() + "</li><li>地址："
-                            + row["地址"].ToString() + "</li></ul></a></div>";
+                            + row["联系人手机"].ToString() + "</li><li>"
+                            + SubStrings.GetWidth(22,"地址："+row["地址"].ToString(),row["地址"].ToString()) + "</li></ul></a></div>";
                     }
                     //分页显示信息
 					 if((CurrentPage <= 1) && (PageCount <=1)) { //一页
@@ -263,7 +263,7 @@
     <div class="gysxx">
         <!-- 首页 品牌信息 开始-->
         <div class="gysxx1">
-            <a href="index.aspx">首页 ></a>&nbsp
+            <a href="index.aspx">首页 ></a>
             <% foreach(System.Data.DataRow row in dt_ppxx.Rows)
             {%>
             <a href="#">
@@ -363,7 +363,7 @@
                     <img class='dlspxtimg' width='150' height='150' src='<%=imgsrc %>' /></a><div
                         class='dlspxt1'>
                         <span class='dlsl'><a href='clxx.aspx?cl_id=" + item.clid + "' target='_blanck'>
-                            <%=row["显示名"] %> </a></span> <span class='dlsgg'><% =SubStrings.GetWidth(7,"规格:"+row["规格型号"].ToString(),"规格:"+row["规格型号"].ToString()) %> </span> <span class='dlsgg'>品牌:<a href='ppxx.aspx?pp_id=" + item.ppid + "'>
+                            <%=row["显示名"] %> </a></span> <span class='dlsgg'><% =SubStrings.GetWidth(7,"规格:"+row["规格型号"].ToString(),"规格:"+row["规格型号"].ToString()) %> </span> <span class='dlsgg'>品牌:<a href='ppxx.aspx?pp_id=<%=row["pp_id"] %>'>
                                     <%=row["品牌名称"] %> </a></span> <span class='dlsgg2'>
                                         <img src='images/yanzheng_1.gif' width='16' height='16' /><img src='images/yanzheng_2.gif'
                                             width='16' height='16' /><img src='images/yanzheng_3.gif' alt='' width='16' height='16' /></span>

@@ -575,7 +575,7 @@
                             Response.Write("</ul>");
                             if (dt_ppxx.Rows[0]["说明"] != null && dt_ppxx.Rows[0]["说明"] != "")
                             {
-                                Response.Write("<p style=' width:950px; float:left; margin-left:10px;line-height:25px;'>说明：" + dt_ppxx.Rows[0]["说明"] + "</p>");
+                                Response.Write("<span style=' width:950px; float:left; margin-left:10px;line-height:25px;'>说明：" + dt_ppxx.Rows[0]["说明"] + "</span>");
                             }
                         %>
                         <%--  <li>单位重量：g</li>--%>
