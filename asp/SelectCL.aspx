@@ -584,38 +584,47 @@ protected void Page_Load(object sender, EventArgs e)
 {
     string CompanyID = "";  //营业注册号
     string HtmlMC = "";     //html文件名
+ 
     if (Request["CompanyID"] != null && Request["CompanyID"].ToString() != "")
     {
         CompanyID = Request["CompanyID"].ToString();
     }
-    CompanyID = "110113011939971";
-    this.wjj.Value = CompanyID;
-    if (Request["HtmlMC"] != null && Request["HtmlMC"].ToString() != "")
+    if (CompanyID == "1")
     {
-        HtmlMC = Request["HtmlMC"].ToString();
-    }    
-    this.htmlmc.Value = HtmlMC;
 
-    //验证 CompanyID
-    bool b = false;
-
-    string sSQL = "select cgs_id as id,单位类型 from 采购商基本信息 where 营业执照注册号='" + CompanyID +
-        "' and 审批结果='通过'union select gys_id as id,单位类型 from 材料供应商信息表 where 营业执照注册号='" + CompanyID + "' and  审批结果='通过'";
-
-    DataTable dt_yz = new DataTable();
-    dt_yz = Conn.GetDataTable(sSQL);
-    if (dt_yz != null && dt_yz.Rows.Count > 0)
-    {
-        DWID = dt_yz.Rows[0]["id"].ToString();
-        DWLX = dt_yz.Rows[0]["单位类型"].ToString();
-        b = true;
-        this.DW_ID.Value = DWID;
     }
-    //if (!b)
-    //{
-    //    //地址为超链接
-    //    Response.Write("<script" + ">" + "alert('贵公司未在众材网(www.zhcnet.cn)成功注册，此功能禁用！');window.location.href='http://www.zhcnet.cn';" + "</" + "script>");
-    //}
+    else
+    {
+        //CompanyID = "110113011939971";
+        this.wjj.Value = CompanyID;
+        if (Request["HtmlMC"] != null && Request["HtmlMC"].ToString() != "")
+        {
+            HtmlMC = Request["HtmlMC"].ToString();
+        }
+        this.htmlmc.Value = HtmlMC;
+
+        //验证 CompanyID
+
+        bool b = false;
+        string sSQL = "select cgs_id as id,单位类型 from 采购商基本信息 where 营业执照注册号='" + CompanyID +
+            "' and 审批结果='通过'union select gys_id as id,单位类型 from 材料供应商信息表 where 营业执照注册号='" + CompanyID + "' and  审批结果='通过'";
+
+        DataTable dt_yz = new DataTable();
+        dt_yz = Conn.GetDataTable(sSQL);
+        if (dt_yz != null && dt_yz.Rows.Count > 0)
+        {
+            DWID = dt_yz.Rows[0]["id"].ToString();
+            DWLX = dt_yz.Rows[0]["单位类型"].ToString();
+            b = true;
+            this.DW_ID.Value = DWID;
+        }
+        if (!b)
+        {
+            //地址为超链接
+            Response.Write("<script" + ">" + "alert('贵公司未在众材网(www.zhcnet.cn)成功注册，此功能禁用！');window.location.href='http://www.zhcnet.cn';" + "</" + "script>");
+        }
+    }
+   
 }   
 </script>
  <div class="lib_Menubox2">
