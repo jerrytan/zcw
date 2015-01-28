@@ -238,12 +238,12 @@
                 if (value != "" && value != undefined)
                 {
                     value += tr.cells[1].innerHTML + "◆" + tr.cells[2].innerHTML + "◆" + tr.cells[3].innerHTML + "◆" +
-                    tr.cells[4].innerHTML + "◆" + tr.cells[5].innerHTML + "◆" + tr.cells[8].innerHTML + "▼";
+                    tr.cells[4].innerHTML + "◆" + tr.cells[5].innerHTML + "◆" + tr.cells[6].innerHTML + "◆"+ tr.cells[8].innerHTML + "▼";
                 }
                 else
                 {
                     value = tr.cells[1].innerHTML + "◆" + tr.cells[2].innerHTML + "◆" + tr.cells[3].innerHTML + "◆" +
-                    tr.cells[4].innerHTML + "◆" + tr.cells[5].innerHTML + "◆" + tr.cells[8].innerHTML + "▼";
+                    tr.cells[4].innerHTML + "◆" + tr.cells[5].innerHTML + "◆" + tr.cells[6].innerHTML + "◆"+ tr.cells[8].innerHTML + "▼";
                 }
             }
         }
