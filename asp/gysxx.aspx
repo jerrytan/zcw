@@ -436,7 +436,7 @@ else
                 <a href="clxx.aspx?cl_id=<%=row["cl_id"] %>">			
                 <div class="gydl1">
 			    <%	
-                    string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"+row["cl_id"]+"'";
+                    string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"+row["cl_id"]+"' and 媒体类型='图片'";
                     string imgsrc= "images/222_03.jpg";
                     object result = dc.DBLook(str_sqltop1);
                     if (result != null) {

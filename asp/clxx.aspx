@@ -17,7 +17,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <%--<meta content="IE=10.000" http-equiv="X-UA-Compatible" />--%>
+    <meta content="IE=10.000" http-equiv="X-UA-Compatible" />
     <%--<meta http-equiv="Content-Type" content="text/html"; charset="gb2312" />--%>
     <title>材料信息详情页</title>
     <link href="css/css.css" rel="stylesheet" type="text/css" />
@@ -307,6 +307,7 @@
             <a href="clxx.aspx?cl_id=<%=cl_id %>">
                 <%=row["显示名"].ToString() %></a>
             <%}%>
+        </div>
         </div>
         <!-- 导航链接栏 结束 -->
         <!-- 图片列表和收藏 开始 -->
@@ -661,7 +662,6 @@
             <div>
             </div>
         </div>
-    </div>
     <!--+李宗鹏详情结束----------------------------------------------------------------------------------------------------------------------->
     <!-- 显示 下拉列表对应供应商信息 开始 -->
     <div class="xx8" style="border: 0px; height: 0px;">

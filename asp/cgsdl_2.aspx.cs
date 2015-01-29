@@ -18,8 +18,7 @@ public partial class asp_cgsdl_2 : System.Web.UI.Page
     {
         DataConn objcon = new DataConn();
         string SQL = "select yh_id,QQ_id,等级, QQ号码 from 用户表 where QQ号码='" + this.username.Value + "'";
-        DataTable dt_yh = new DataTable();
-        dt_yh = objcon.GetDataTable(SQL);
+        DataTable dt_yh = objcon.GetDataTable(SQL);
         if (dt_yh != null && dt_yh.Rows.Count > 0)
         {
             yh_id = dt_yh.Rows[0]["yh_id"].ToString();

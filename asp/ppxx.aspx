@@ -350,7 +350,7 @@
                 该品牌下产品</div>
             <%foreach(System.Data.DataRow row in dt_clxx.Rows)
             {
-                string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"+row["cl_id"]+"' ";
+                string str_sqltop1 = "select  top 1 存放地址 from 材料多媒体信息表 where cl_id ='"+row["cl_id"]+"' and 媒体类型='图片' ";
                 string imgsrc= "images/222_03.jpg";
                 object result = objdc.DBLook(str_sqltop1);
                 if (result != null) {
@@ -362,7 +362,7 @@
                 <a href='clxx.aspx?cl_id=<%=row["cl_id"] %>' target='_blanck'>
                     <img class='dlspxtimg' width='150' height='150' src='<%=imgsrc %>' /></a><div
                         class='dlspxt1'>
-                        <span class='dlsl'><a href='clxx.aspx?cl_id=" + item.clid + "' target='_blanck'>
+                        <span class='dlsl'><a href='clxx.aspx?cl_id=<%=row["cl_id"] %>' target='_blanck'>
                             <%=row["显示名"] %> </a></span> <span class='dlsgg'><% =SubStrings.GetWidth(7,"规格:"+row["规格型号"].ToString(),"规格:"+row["规格型号"].ToString()) %> </span> <span class='dlsgg'>品牌:<a href='ppxx.aspx?pp_id=<%=row["pp_id"] %>'>
                                     <%=row["品牌名称"] %> </a></span> <span class='dlsgg2'>
                                         <img src='images/yanzheng_1.gif' width='16' height='16' /><img src='images/yanzheng_2.gif'

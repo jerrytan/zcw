@@ -220,7 +220,7 @@
             this.scope2.InnerHtml = Convert.ToString(dt.Rows[0]["范围"]);          
         }
         sSQL = " select 供应商,地址,电话,联系人,联系人手机,单位类型,gys_id from 材料供应商信息表 where isnull(是否启用,'')='1' and gys_id not in ( select fxs_id from 分销商和品牌对应关系表 where pp_id='" + pp_id +
-            "' and 品牌名称='" + pp_mc + "' and 生产厂商ID='"+scs_id+"')";
+            "' and 品牌名称='" + pp_mc + "' and 生产厂商ID='"+scs_id+"' and 审批结果='通过')";
         dt_fxs = Conn.GetDataTable(sSQL);
         if (!IsPostBack)
         {

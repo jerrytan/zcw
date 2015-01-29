@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
-<meta content="IE=10.000" http-equiv="X-UA-Compatible"/>
+    <meta content="IE=10.000" http-equiv="X-UA-Compatible" />
     <title>公司信息维护</title>
     <script src="js/SJLD.js" type="text/javascript"></script>
     <script src="Scripts/jquery-1.8.3.js" type="text/javascript"></script>
@@ -100,25 +100,22 @@
 </head>
 <body>
     <!-- 头部2开始-->
-   <%-- <uc2:Header2 ID="Header2" runat="server" />--%>
-    <%@ Import Namespace="System.Data" %>
-    <%@ Import Namespace="System.Data.SqlClient" %>
-    <%@ Import Namespace="System" %>
-    <%@ Import Namespace="System.Collections.Generic" %>
-    <%@ Import Namespace="System.Web" %>
-
+    <%-- <uc2:Header2 ID="Header2" runat="server" />--%>
+    <%@ import namespace="System.Data" %>
+    <%@ import namespace="System.Data.SqlClient" %>
+    <%@ import namespace="System" %>
+    <%@ import namespace="System.Collections.Generic" %>
+    <%@ import namespace="System.Web" %>
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
         data-appid="1101078572" data-redirecturi="http://zhcnet.cn/asp/index.aspx" charset="utf8"></script>
-
-        <div class="box">
-
-    <div class="topx">
-        <a href="index.aspx"><img src="images/topx_02.jpg" /></a>
-    </div>
-
-      <%         
-			HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
-            Object gys_yh_id = Session["GYS_YH_ID"];  
+    <div class="box">
+        <div class="topx">
+            <a href="index.aspx">
+                <img src="images/topx_02.jpg" /></a>
+        </div>
+        <%         
+            HttpCookie GYS_QQ_ID = Request.Cookies["GYS_QQ_ID"];
+            Object gys_yh_id = Session["GYS_YH_ID"];
 
             HttpCookie CGS_QQ_ID = Request.Cookies["CGS_QQ_ID"];
             Object cgs_yh_id = Session["CGS_YH_ID"];
@@ -129,272 +126,304 @@
                 //采购商登录
                 if (((GYS_QQ_ID == null) || (gys_yh_id == null)) && ((CGS_QQ_ID != null) && (cgs_yh_id != null)))
                 {
-    %>
-             <div class="anniu"><a  href="QQ_out.aspx" target="_self">采购商登出</a></div>
-    <%          }
+        %>
+        <div class="anniu">
+            <a href="QQ_out.aspx" target="_self">采购商登出</a></div>
+        <%          }
                 //供应商登录
                 else if (((CGS_QQ_ID == null) || (cgs_yh_id == null)) && ((GYS_QQ_ID != null) && (gys_yh_id != null)))
                 {
-    %>
-                 <div class="anniu"><a  href="QQ_out.aspx" target="_self">供应商登出</a></div>
-				 <div class="anniu"><a  href="gyszym.aspx" target="_self">供应商主页面</a></div>
-    <%          }
+        %>
+        <div class="anniu">
+            <a href="QQ_out.aspx" target="_self">供应商登出</a></div>
+        <div class="anniu">
+            <a href="gyszym.aspx" target="_self">供应商主页面</a></div>
+        <%          }
             }
-    %>
+        %>
         <%else %>
-    <%{ %>
-       <%
+        <%{ %>
+        <%
            
-           if (Session["GYS_YH_ID"]!=null)
-           {
-               gys_yh_id1 = Session["GYS_YH_ID"].ToString();
-           }
-           if (Session["CGS_YH_ID"]!=null)
-           {
-               cgs_yh_id1 = Session["CGS_YH_ID"].ToString();
-           }
-           %>
-            <%if (gys_yh_id1 == "" && cgs_yh_id1 != "") { 
-              %>
-              <div class="anniu"><a  href="QQ_out.aspx" target="_self">采购商登出</a></div>
-            <%  }%>
-              <%if (gys_yh_id1 == "" && cgs_yh_id1 == "") { 
-              %>
-             <div class="anniu"><a href="gysdl.aspx" target="_self">供应商登录</a></div>
-                <div class="anniu"><a  href="cgsdl.aspx" target="_self">采购商登录</a></div>
-            <%  }%>
-              <%if (gys_yh_id1 != "" && cgs_yh_id1 == "") { 
-              %>
-               <div class="anniu"><a  href="QQ_out.aspx" target="_self">供应商登出</a></div>
-				 <div class="anniu"><a  href="gyszym.aspx" target="_self">供应商主页面</a></div>
-            <%  }%>
-    <%} %>
-    <div class="gyzy0">
-        <div class="gyzy">
-			<%foreach(System.Data.DataRow row in dt_Yh.Rows){%>            
-            <span><%=row["姓名"].ToString() %></span>           
-            <%}%>
-            欢迎来到众材网！
-              <div style="float:right"><span style="font-weight:bold;">
-    <a href="hyyhgl.aspx">[会员用户管理主页面]</a></span>
+if (Session["GYS_YH_ID"] != null)
+{
+    gys_yh_id1 = Session["GYS_YH_ID"].ToString();
+}
+if (Session["CGS_YH_ID"] != null)
+{
+    cgs_yh_id1 = Session["CGS_YH_ID"].ToString();
+}
+        %>
+        <%if (gys_yh_id1 == "" && cgs_yh_id1 != "")
+          { 
+        %>
+        <div class="anniu">
+            <a href="QQ_out.aspx" target="_self">采购商登出</a></div>
+        <%  }%>
+        <%if (gys_yh_id1 == "" && cgs_yh_id1 == "")
+          { 
+        %>
+        <div class="anniu">
+            <a href="gysdl.aspx" target="_self">供应商登录</a></div>
+        <div class="anniu">
+            <a href="cgsdl.aspx" target="_self">采购商登录</a></div>
+        <%  }%>
+        <%if (gys_yh_id1 != "" && cgs_yh_id1 == "")
+          { 
+        %>
+        <div class="anniu">
+            <a href="QQ_out.aspx" target="_self">供应商登出</a></div>
+        <div class="anniu">
+            <a href="gyszym.aspx" target="_self">供应商主页面</a></div>
+        <%  }%>
+        <%} %>
+        <div class="gyzy0">
+            <div class="gyzy">
+                <%foreach (System.Data.DataRow row in dt_Yh.Rows)
+                  {%>
+                <span>
+                    <%=row["姓名"].ToString() %></span>
+                <%}%>
+                欢迎来到众材网！
+                <div style="float: right">
+                    <span style="font-weight: bold;"><a href="hyyhgl.aspx">[会员用户管理主页面]</a></span>
+                </div>
+            </div>
         </div>
-        </div>
-    </div>
-
-    <!-- 头部2结束-->
-    <form id="form1" runat="server">
-    <div class="yhb">
-        <table width="998px" border="0" cellspacing="0" style="border: 1px solid #dddddd;font-size:12px;">
-            <tr>
-                <td height="34" width="115" colspan="6" bgcolor="#f7f7f7">
-                    <strong class="left_jianju">公司信息</strong>
-                </td>
-            </tr>
-            <tr>
-                <td height="20" colspan="6" align="right">
-                </td>
-            </tr>
-            <tr>
-                <td width="50" height="40">
-                    <span class="xinghao">*</span>
-                </td>
-                <td width="130">
-                    公司名称：
-                </td>
-                <td width="329">
-                    <label for="textfield">
-                    </label>
-                    <input name="txt_gsmc" type="text" class="hyzhc_shrk" id="txt_gsmc" runat="server" onblur="gsmcCheck(this);"/>
-                </td>
-                <td width="50" align="right">
-                </td>
-                <td width="120">
-                    公司简称：
-                </td>
-                <td width="329">
-                    <input name="txt_gsjc" type="text" class="hyzhc_shrk" id="txt_gsjc" runat="server" maxlength="40"/>
-                </td>
-            </tr>
-            <tr>
-                <td height="40">
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                    营业执照注册号：
-                </td>
-                <td>
-                    <input name="txt_yyzzzch" type="text" class="hyzhc_shrk" id="txt_yyzzzch" runat="server"/>
-                </td>
-                <td>
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                    公司QQ号：
-                </td>
-                <td>
-                    <input name="txt_gsQQ" type="text" class="hyzhc_shrk" id="txt_gsQQ" runat="server" onblur="isQQ(this)"/>
-                </td>
-            </tr>
-            <tr>
-                <td height="40">
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                    营业执照图片：
-                </td>
-                <td>
-                    <input type="button" id="btnFilter" value="选择文件"  style="height: 20px;
-                        width: 64px; border-style: none; font-family: 宋体; font-size: 12px;" />
-                    请上传小于5Mb的jpg\gif\png格式的图片
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    法定代表人：
-                </td>
-                <td>
-                    <input name="txt_fddbr" maxlength="20" type="text" class="hyzhc_shrk" id="txt_fddbr" runat="server"/>
-                </td>
-            </tr>
-            <tr>
-                <td height="40">
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                     公司注册日期：
-                </td>
-                <td>
-                    <input name="txt_zcrq" type="text" class="hyzhc_shrk" id="txt_zcrq" runat="server" onblur="dateCheck(this);"/>
-                </td>
-                <td>
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                    注册资金（万元）：
-                </td>
-                <td>
-                    <input name="txt_zczj" type="text" class="hyzhc_shrk" id="txt_zczj" runat="server"/>
-                </td>
-            </tr>
-            <tr>
-                <td height="40">
-                    &nbsp;
-                </td>
-                <td>
-                    资产总额（万元）：
-                </td>
-                <td>
-                    <input name="txt_zcze" type="text" class="hyzhc_shrk" id="txt_zcze" runat="server" onblur="zczeCheck(this);"/>
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    注册级别：
-                </td>
-                <td>
-                     <select runat="server" id="zcjb">
-                        <option value="">请选择</option>
-                        <option value="国家级">国家级</option>
-                        <option value="省级">省级</option>
-                        <option value="地市级">地市级</option>
-                        <option value="区县级">区县级</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td height="40">
-                    &nbsp;
-                </td>
-                <td>
-                    资质等级：
-                </td>
-                <td>
-                     <select runat="server" id="zzdj">
-                        <option value="">请选择</option>
-                        <option value="一级">一级</option>
-                        <option value="二级">二级</option>
-                        <option value="三级">三级</option>
-                    </select>
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    企业类别：
-                </td>
-                <td>
-                    <select runat="server" id="qylb">
-                        <option value="">请选择</option>
-                        <option value="国有">国有</option>
-                        <option value="私营">私营</option>
-                        <option value="个体">个体</option>
-                        <option value="集体">集体</option>
-                        <option value="三资">三资</option>
-                        <option value="其他">其他</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                 <td height="40">
-                    &nbsp;
-                </td>
-                <td>
-                    开户银行：
-                </td>
-                <td>
-                    <input name="txt_khyh" type="text" class="hyzhc_shrk" id="txt_khyh" runat="server"/>
-                </td>
-                <td>
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                    单位类型：
-                </td>
-                <td>
-                    <select runat="server" id="dwlx">
-                        <option value="">请选择</option>
-                        <option value="生产商">生产商</option>
-                        <option value="分销商">分销商</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td height="40">
-                    &nbsp;
-                </td>
-                <td>
-                    账户名称：
-                </td>
-                <td>
-                    <input name="txt_zhmc" type="text" class="hyzhc_shrk" id="txt_zhmc" runat="server"/>
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    银行账户：
-                </td>
-                <td>
-                    <input name="txt_yhzh" type="text" class="hyzhc_shrk" id="txt_yhzh" runat="server" onblur="yhzhCheck(this);"/>
-                </td>
-            </tr>
-            <tr>
-                <td height="40">
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                    公司所在地：
-                </td>
-                <td>
-                    <span class="fl">
-                        <select id="s0" style=" width:130px;" class="fu1" runat="server" value="">
+        <!-- 头部2结束-->
+        <form id="form1" runat="server">
+        <div class="yhb">
+            <table width="998px" border="0" cellspacing="0" style="border: 1px solid #dddddd;
+                font-size: 12px;">
+                <tr>
+                    <td height="34" width="115" colspan="6" bgcolor="#f7f7f7">
+                        <strong class="left_jianju">公司信息</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="20" colspan="6" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50" height="40">
+                        <span class="xinghao">*</span>
+                    </td>
+                    <td width="130">
+                        公司名称：
+                    </td>
+                    <td width="329">
+                        <label for="textfield">
+                        </label>
+                        <input name="txt_gsmc" type="text" class="hyzhc_shrk" id="txt_gsmc" runat="server"
+                            onblur="gsmcCheck(this);" />
+                    </td>
+                    <td width="50" align="right">
+                    </td>
+                    <td width="120">
+                        公司简称：
+                    </td>
+                    <td width="329">
+                        <input name="txt_gsjc" type="text" class="hyzhc_shrk" id="txt_gsjc" runat="server"
+                            maxlength="40" />
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        <span class="xinghao">*</span>
+                    </td>
+                    <td>
+                        营业执照注册号：
+                    </td>
+                    <td>
+                        <input name="txt_yyzzzch" type="text" class="hyzhc_shrk" id="txt_yyzzzch" runat="server" />
+                    </td>
+                    <td>
+                        <span class="xinghao">*</span>
+                    </td>
+                    <td>
+                        公司QQ号：
+                    </td>
+                    <td>
+                        <input name="txt_gsQQ" type="text" class="hyzhc_shrk" id="txt_gsQQ" runat="server"
+                            onblur="isQQ(this)" />
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        <span class="xinghao">*</span>
+                    </td>
+                    <td>
+                        营业执照图片：
+                    </td>
+                    <td>
+                        <input type="button" id="btnFilter" value="选择文件" style="height: 20px; width: 64px;
+                            border-style: none; font-family: 宋体; font-size: 12px;" />
+                        请上传小于5Mb的jpg\gif\png格式的图片
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        法定代表人：
+                    </td>
+                    <td>
+                        <input name="txt_fddbr" maxlength="20" type="text" class="hyzhc_shrk" id="txt_fddbr"
+                            runat="server" />
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        <span class="xinghao">*</span>
+                    </td>
+                    <td>
+                        公司注册日期：
+                    </td>
+                    <td>
+                        <input name="txt_zcrq" type="text" class="hyzhc_shrk" id="txt_zcrq" runat="server"
+                            onblur="dateCheck(this);" />
+                    </td>
+                    <td>
+                        <span class="xinghao">*</span>
+                    </td>
+                    <td>
+                        注册资金（万元）：
+                    </td>
+                    <td>
+                        <input name="txt_zczj" type="text" class="hyzhc_shrk" id="txt_zczj" runat="server" />
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        &nbsp;
+                    </td>
+                    <td>
+                        资产总额（万元）：
+                    </td>
+                    <td>
+                        <input name="txt_zcze" type="text" class="hyzhc_shrk" id="txt_zcze" runat="server"
+                            onblur="zczeCheck(this);" />
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        注册级别：
+                    </td>
+                    <td>
+                        <select runat="server" id="zcjb">
+                            <option value="">请选择</option>
+                            <option value="国家级">国家级</option>
+                            <option value="省级">省级</option>
+                            <option value="地市级">地市级</option>
+                            <option value="区县级">区县级</option>
                         </select>
-                        <select id="s1" style=" width:130px;" class="fu1" runat="server" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        &nbsp;
+                    </td>
+                    <td>
+                        资质等级：
+                    </td>
+                    <td>
+                        <select runat="server" id="zzdj">
+                            <option value="">请选择</option>
+                            <option value="一级">一级</option>
+                            <option value="二级">二级</option>
+                            <option value="三级">三级</option>
                         </select>
-                        <input type="hidden" id="region"  value="北京市" runat="server" />
-                        <%--<select id="s3" class="fu3" runat="server"><option></option></select>
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        企业类别：
+                    </td>
+                    <td>
+                        <select runat="server" id="qylb">
+                            <option value="">请选择</option>
+                            <option value="国有">国有</option>
+                            <option value="私营">私营</option>
+                            <option value="个体">个体</option>
+                            <option value="集体">集体</option>
+                            <option value="三资">三资</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        &nbsp;
+                    </td>
+                    <td>
+                        开户银行：
+                    </td>
+                    <td>
+                        <input name="txt_khyh" type="text" class="hyzhc_shrk" id="txt_khyh" runat="server" />
+                    </td>
+                    <td>
+                        <span class="xinghao">*</span>
+                    </td>
+                    <td>
+                        单位类型：
+                    </td>
+                    <td>
+                        <select runat="server" id="dwlx">
+                            <option value="">请选择</option>
+                            <option value="生产商">生产商</option>
+                            <option value="分销商">分销商</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        &nbsp;
+                    </td>
+                    <td>
+                        账户名称：
+                    </td>
+                    <td>
+                        <input name="txt_zhmc" type="text" class="hyzhc_shrk" id="txt_zhmc" runat="server" />
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        银行账户：
+                    </td>
+                    <td>
+                        <input name="txt_yhzh" type="text" class="hyzhc_shrk" id="txt_yhzh" runat="server"
+                            onblur="yhzhCheck(this);" />
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        <span class="xinghao">*</span>
+                    </td>
+                    <td>
+                        公司所在地：
+                    </td>
+                    <td>
+                        <span class="fl">
+                            <label id="newdqmc" runat="server">
+                            </label>
+                            <%--<a id="dzxiugai" href="javascript:;" style="color: Blue;">修改</a>--%>
+                            <div id="divxiugai" style="position: absolute; top: 0px; left: 0px; width: 300px;
+                                height: 25px; border: 4px solid #ddd; padding:5px; background-color:White; display:none; ">
+                                <select id="s0" style="width: 130px;" class="fu1" runat="server" value="">
+                                </select>
+                                <select id="s1" style="width: 130px;" class="fu1" runat="server" value="">
+                                </select>
+                                <input type="button" name="name" value="确定" class="" />
+                                <input type="hidden" id="region" value="北京市" runat="server" />
+                            </div>
+                            <script type="text/javascript">
+                                
+                                $("#divxiugai").css("left", $("#dzxiugai").offset().left + "px");
+                                $("#divxiugai").css("top", $("#dzxiugai").offset().top + "px");
+                            </script>
+                            <%--<select id="s3" class="fu3" runat="server"><option></option></select>
                         <script type="text/javascript">
                             var s = ["s1", "s2", "s3"];
                             var opt0 = ["-省(市)-", "-地级市、区-", "-县级市、县、区-"];
@@ -406,160 +435,182 @@
                             }
 
                         </script>--%>
-                    </span>
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    企业人数：
-                </td>
-                <td>
-                      <input maxlength="7" name="txt_qyrs" type="text" class="hyzhc_shrk" id="txt_qyrs" runat="server" onblur="qyrsCheck(this);"/>
-                </td>
-            </tr>
-            <tr>
-                 <td height="40">
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                    公司地址：
-                </td>
-                <td>
-                    <input name="txt_gsdz" type="text" class="hyzhc_shrk" id="txt_gsdz" runat="server"/>
-                </td>
-                <td>
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                    公司电话：
-                </td>
-                <td>
-                      <input name="txt_gsdh" type="text" class="hyzhc_shrk" id="txt_gsdh" runat="server" onblur="isTelePhone(this);"/>
-                </td>
-            </tr>
-            <tr>
-                <td height="40">
-                    &nbsp;
-                </td>
-                <td>
-                    公司主页：
-                </td>
-                <td>
-                    <input name="txt_gszy" maxlength="80" type="text" class="hyzhc_shrk" id="txt_gszy" runat="server" onblur="gszyCheck(this)"/>
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                     公司邮编：
-                </td>
-                <td>
-                    <input name="txt_gsyb" type="text" class="hyzhc_shrk" id="txt_gsyb" runat="server"/>
-                </td>
-            </tr>
-            <tr>
-                <td height="40">
-                    &nbsp;
-                </td>
-                <td>
-                    公司传真：
-                </td>
-                <td>
-                    <input name="txt_gscz" type="text" class="hyzhc_shrk" id="txt_gscz" runat="server"/>
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    
-                </td>
-                <td>
-                    
-                </td>
-            </tr>
-            <tr>
-                <td height="40">
-                    <span class="xinghao">*</span>
-                </td>
-                <td>
-                    经营范围：
-                </td>
-                <td colspan="4" height="90px">
-                    <label for="textfield21">
-                    </label>
-                    <textarea class="hyzhc_shrk2" cols="40" id="jyfw"
-                        name="txt_jyfw" rows="6" runat="server"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td height="66">
-                    &nbsp;
-                </td>
-                <td>
-                    备 注：
-                </td>
-                <td colspan="4" height="60px">
-                    <textarea class="hyzhc_shrk3" cols="40" id="txt_bz"
-                        name="txt_bz" rows="6" runat="server"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td height="34" colspan="6" bgcolor="#f7f7f7">
-                    <strong class="left_jianju">管理员信息</strong>
-                </td>
-            </tr>
-            <tr>
-                <td height="20" colspan="6" align="right">
-                </td>
-            </tr>
-             <tr>
-    <td height="40" colspan="6"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td width="50"><span class="xinghao">*</span></td>
-        <td width="120" height="40">姓 名：</td>
-        <td align="left"><input name="txt_xm" type="text" class="hyzhc_shrk_2" id="txt_xm" runat="server" /></td>
-        <td width="80"><span class="xinghao">*</span></td>
-        <td width="60" height="40">手 机：</td>
-        <td align="left"><input name="txt_sj" type="text" class="hyzhc_shrk_2" id="txt_sj"  runat="server"/></td>
-        <td width="70">&nbsp;</td>
-        <td width="60">邮 箱：</td>
-        <td align="left"><input name="txt_yx" style="color:#999" type="text" class="hyzhc_shrk_3" id="txt_yx" onblur="lose()" onfocus="getfocus(this)"  runat="server" value="请注意邮箱格式"/></td>
-        <td width="48">&nbsp;</td>
-        </tr>
-    </table></td>
-    </tr>
-            <tr>
-                <td>
-                    &nbsp;
-                </td>
-                <td height="60">
-                    &nbsp;
-                </td>
-                <td>
-                    <!-- <img src="images/lijizhuce.gif" alt="" width="94" height="36" /> -->
-                    <!--<input id="btn_sub"  type="submit" value="" style="width:94px;height:36px;background:url(images/lijizhuce.gif) no-repeat;" onclick="return btn_sub_onclick()" />-->
-                    <asp:ImageButton id="Submit1"  runat="server" ImageUrl="images/12ff_03.jpg" onclick="Submit1_Click" />
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-            </tr>
-        </table>
-    </div>
-    </form>
-    <!-- 用户信息 结束 -->
-    <!-- 关于我们 广告服务 投诉建议 开始-->
-    <!-- #include file="static/aboutus.aspx" -->
-    <!-- 关于我们 广告服务 投诉建议 结束-->
-    <!--  footer 开始-->
-    <!-- #include file="static/footer.aspx" -->
-    <!-- footer 结束-->
+                        </span>
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        企业人数：
+                    </td>
+                    <td>
+                        <input maxlength="7" name="txt_qyrs" type="text" class="hyzhc_shrk" id="txt_qyrs"
+                            runat="server" onblur="qyrsCheck(this);" />
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        <span class="xinghao">*</span>
+                    </td>
+                    <td>
+                        公司地址：
+                    </td>
+                    <td>
+                        <input name="txt_gsdz" type="text" class="hyzhc_shrk" id="txt_gsdz" runat="server" />
+                    </td>
+                    <td>
+                        <span class="xinghao">*</span>
+                    </td>
+                    <td>
+                        公司电话：
+                    </td>
+                    <td>
+                        <input name="txt_gsdh" type="text" class="hyzhc_shrk" id="txt_gsdh" runat="server"
+                            onblur="isTelePhone(this);" />
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        &nbsp;
+                    </td>
+                    <td>
+                        公司主页：
+                    </td>
+                    <td>
+                        <input name="txt_gszy" maxlength="80" type="text" class="hyzhc_shrk" id="txt_gszy"
+                            runat="server" onblur="gszyCheck(this)" />
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        公司邮编：
+                    </td>
+                    <td>
+                        <input name="txt_gsyb" type="text" class="hyzhc_shrk" id="txt_gsyb" runat="server" />
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        &nbsp;
+                    </td>
+                    <td>
+                        公司传真：
+                    </td>
+                    <td>
+                        <input name="txt_gscz" type="text" class="hyzhc_shrk" id="txt_gscz" runat="server" />
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40">
+                        <span class="xinghao">*</span>
+                    </td>
+                    <td>
+                        经营范围：
+                    </td>
+                    <td colspan="4" height="90px">
+                        <label for="textfield21">
+                        </label>
+                        <textarea class="hyzhc_shrk2" cols="40" id="jyfw" name="txt_jyfw" rows="6" runat="server"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="66">
+                        &nbsp;
+                    </td>
+                    <td>
+                        备 注：
+                    </td>
+                    <td colspan="4" height="60px">
+                        <textarea class="hyzhc_shrk3" cols="40" id="txt_bz" name="txt_bz" rows="6" runat="server"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="34" colspan="6" bgcolor="#f7f7f7">
+                        <strong class="left_jianju">管理员信息</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="20" colspan="6" align="right">
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40" colspan="6">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="50">
+                                    <span class="xinghao">*</span>
+                                </td>
+                                <td width="120" height="40">
+                                    姓 名：
+                                </td>
+                                <td align="left">
+                                    <input name="txt_xm" type="text" class="hyzhc_shrk_2" id="txt_xm" runat="server" />
+                                </td>
+                                <td width="80">
+                                    <span class="xinghao">*</span>
+                                </td>
+                                <td width="60" height="40">
+                                    手 机：
+                                </td>
+                                <td align="left">
+                                    <input name="txt_sj" type="text" class="hyzhc_shrk_2" id="txt_sj" runat="server" />
+                                </td>
+                                <td width="70">
+                                    &nbsp;
+                                </td>
+                                <td width="60">
+                                    邮 箱：
+                                </td>
+                                <td align="left">
+                                    <input name="txt_yx" style="color: #999" type="text" class="hyzhc_shrk_3" id="txt_yx"
+                                        onblur="lose()" onfocus="getfocus(this)" runat="server" value="请注意邮箱格式" />
+                                </td>
+                                <td width="48">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td height="60">
+                        &nbsp;
+                    </td>
+                    <td>
+                        <!-- <img src="images/lijizhuce.gif" alt="" width="94" height="36" /> -->
+                        <!--<input id="btn_sub"  type="submit" value="" style="width:94px;height:36px;background:url(images/lijizhuce.gif) no-repeat;" onclick="return btn_sub_onclick()" />-->
+                        <asp:ImageButton ID="Submit1" runat="server" ImageUrl="images/12ff_03.jpg" OnClick="Submit1_Click" />
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </form>
+        <!-- 用户信息 结束 -->
+        <!-- 关于我们 广告服务 投诉建议 开始-->
+        <!-- #include file="static/aboutus.aspx" -->
+        <!-- 关于我们 广告服务 投诉建议 结束-->
+        <!--  footer 开始-->
+        <!-- #include file="static/footer.aspx" -->
+        <!-- footer 结束-->
 </body>
 </html>

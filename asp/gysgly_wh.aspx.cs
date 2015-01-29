@@ -65,6 +65,7 @@ public partial class asp_gysgly_wh : System.Web.UI.Page
             this.txt_yhzh.Value = dr["银行账户"].ToString();
             this.txt_qyrs.Value = dr["企业员工人数"].ToString() == "0" ? "" : dr["企业员工人数"].ToString();
             this.txt_gsdz.Value = dr["地址"].ToString();
+            this.newdqmc.InnerText=dr["地区名称"].ToString();
             this.txt_gsdh.Value = dr["电话"].ToString();
             this.txt_gszy.Value = dr["主页"].ToString();
             this.txt_gsyb.Value = dr["邮编"].ToString();

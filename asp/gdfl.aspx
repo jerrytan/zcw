@@ -131,7 +131,7 @@
                         <li>
                         <%foreach(var vr in this.Items_Ejfl){ 
                             if (vr.Sid.ToString().Substring(0, 2) == v.Sid.ToString()){%>
-                            <a href="ejfl.aspx?name=<%=vr.Sid %>"><%=vr.Name%></a> |
+                            <a href="leveltwo.aspx?flbm=<%=vr.Sid %>&flmc=<%=vr.Name %>"><%=vr.Name%></a> |
                         <%}} %>
                         </li>
                     </ul>
