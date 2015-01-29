@@ -16,7 +16,7 @@
         {
             DW_id = Request["DWID"].ToString();
         }
-        string sSQL = " select distinct d.材料编码,d.材料名称,d.规格型号,d.品牌名称,a.单位 from 材料分类表 as a ,(select distinct b.材料编码,b.材料名称,c.品牌名称,c.规格型号 from 采购商关注的材料表 as b ,材料表 as c where  b.cl_id=c.cl_id and b.材料编码=c.材料编码 and b.dw_id='" +
+        string sSQL = " select distinct d.材料编码,d.材料名称,d.规格型号,d.品牌名称,a.单位,d.cl_id,d.price from 材料分类表 as a ,(select distinct b.材料编码,b.材料名称,c.品牌名称,c.规格型号,c.cl_id,c.price from 采购商关注的材料表 as b ,材料表 as c where  b.cl_id=c.cl_id and b.材料编码=c.材料编码 and b.dw_id='" +
             DW_id + "') as  d where a.分类编码='" +
             flbm + "' and SUBSTRING(d.材料编码,1," + flbm.Length + ")='" + flbm + "' ";
         DataTable dt = Conn.GetDataTable(sSQL);
@@ -32,8 +32,10 @@
                 + "        <th width='120' align='center' bgcolor='#E3ECFF'><strong>规格\\型号</strong></th>"             
                 + "        <th width='90' align='center' bgcolor='#E3ECFF'><strong>品 牌</strong></th>"
                 + "        <th width='55' align='center' bgcolor='#E3ECFF'><strong>单 位</strong></th>"
-                +"         <th width='70' align='center' bgcolor='#E3ECFF'>价 格</th>"
+                +"         <th width='70' align='center' bgcolor='#E3ECFF'>价 格</th>"                
                 + "        <th width='50' align='center' bgcolor='#E3ECFF'>选 项</th>"
+                 + "        <th  style='display:none;' width='50' align='center' bgcolor='#E3ECFF' >cl_id</th>"
+                  + "        <th width='50' align='center' bgcolor='#E3ECFF'>查阅</th>"
                 + "      </tr>"
                 + "    </thead>    "
                 + "    <tbody id='scclxq'>     ";
@@ -48,15 +50,19 @@
                       + " <td bgcolor='#FFFFFF'>" + dr["规格型号"] + "</td>"                     
                       + " <td align='center' bgcolor='#FFFFFF'>" + dr["品牌名称"] + "</td>"
                       + " <td align='center' bgcolor='#FFFFFF'>" + dr["单位"] + "</td>"
-                      + " <td align='center' bgcolor='#FFFFFF'>" + "" + "</td>"
+                      + " <td align='center' bgcolor='#FFFFFF'>" + dr["price"] + "</td>"
                       + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'  />"
                       + " <label for='checkbox11'></label></td>"
+                      + " <td  style='display:none;' align='center' bgcolor='#FFFFFF'>" + dr["cl_id"] + "</td>"
+                      + " <td align='center' bgcolor='#FFFFFF'>  <input type='button'  value='查阅' onClick='window.open(\"clxx.aspx?cl_id=" + dr["cl_id"] + 
+                      "\")' style='height: 20px; width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;' /></td>"
+                      //<input type='button' value='查阅' onclik='window.open(\"clxx.aspx?cl_id=" + dr["cl_id"] + "\")'> </td>"
                       + " </tr>";
             }
             html += "    </tbody>"
                 + "     <tfoot>"
                 + "     <tr>"
-                + "        <td  height='40' align='right' bgcolor='#FFFFFF' colspan='8' style='padding-right:20px;'>"
+                + "        <td  height='40' align='right' bgcolor='#FFFFFF' colspan='10' style='padding-right:20px;'>"
                 + "            <input type='button' id='btnFilter2' value='确定' onClick='qd_Click()' style='height: 20px;"
                 + "                width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;' />"
                 + "         </td>"

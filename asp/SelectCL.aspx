@@ -238,12 +238,12 @@
                 if (value != "" && value != undefined)
                 {
                     value += tr.cells[1].innerHTML + "◆" + tr.cells[2].innerHTML + "◆" + tr.cells[3].innerHTML + "◆" +
-                    tr.cells[4].innerHTML + "◆" + tr.cells[5].innerHTML + "▼";
+                    tr.cells[4].innerHTML + "◆" + tr.cells[5].innerHTML + "◆" + tr.cells[6].innerHTML + "◆"+ tr.cells[8].innerHTML + "▼";
                 }
                 else
                 {
                     value = tr.cells[1].innerHTML + "◆" + tr.cells[2].innerHTML + "◆" + tr.cells[3].innerHTML + "◆" +
-                    tr.cells[4].innerHTML + "◆" + tr.cells[5].innerHTML + "▼";
+                    tr.cells[4].innerHTML + "◆" + tr.cells[5].innerHTML + "◆" + tr.cells[6].innerHTML + "◆"+ tr.cells[8].innerHTML + "▼";
                 }
             }
         }
@@ -297,15 +297,14 @@
     {
         document.getElementById("allcl").style.display = "none";
         document.getElementById("sccl").style.display = "block";
-
+        document.getElementById("Li1").style.backgroundColor = "#fff";
+        document.getElementById("Li2").style.backgroundColor = "#7dbdf2";
         document.getElementById("menu_lb").style.display = "none";
         document.getElementById("menu_lb1").style.display = "block";
 
         document.getElementById("scclxq").innerHTML = "";
-        document.getElementById("ggxh").value = "";
         document.getElementById("clmcjgg").value = "";
-        document.getElementById("Li1").style.backgroundColor = "#fff";
-        document.getElementById("Li2").style.backgroundColor = "#7dbdf2";
+
 
     }
 </script>
@@ -372,6 +371,7 @@
                     + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[6].innerHTML + "</td> "        //单价
 		            + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		            + " <label for='checkbox11'></label></td>"
+                     + " <td align='center' bgcolor='#FFFFFF' style=' display:none'>" + trck.cells[8].innerHTML + "</td>"
                     + " </tr>";
                     }
                     else
@@ -383,9 +383,10 @@
 		            + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
 		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
 		            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
-                    + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
+                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[6].innerHTML + "</td> "        //单价
 		            + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		            + " <label for='checkbox11'></label></td>"
+                       + " <td align='center' bgcolor='#FFFFFF' style=' display:none'>" + trck.cells[8].innerHTML + "</td> "        //cl_id
                     + " </tr>";
                     }
                 }
@@ -442,6 +443,7 @@
                             + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[6].innerHTML + "</td> "        //单价
 		                    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		                    + " <label for='checkbox11'></label></td>"
+                             + " <td align='center' bgcolor='#FFFFFF' style=' display:none'>" + trck.cells[8].innerHTML + "</td> " 
                             + " </tr>";
                         }
                         else
@@ -453,9 +455,10 @@
 		                    + " <td bgcolor='#FFFFFF'>" + trck.cells[3].innerHTML + "</td>"
 		                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[4].innerHTML + "</td>"
 		                    + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[5].innerHTML + "</td>"
-                            + " <td align='center' bgcolor='#FFFFFF'></td> "        //单价
+                            + " <td align='center' bgcolor='#FFFFFF'>" + trck.cells[6].innerHTML + "</td> "        //单价
 		                    + " <td align='center' bgcolor='#FFFFFF'><input type='checkbox' name='checkbox'checked='checked'  />"
 		                    + " <label for='checkbox11'></label></td>"
+                                + " <td align='center' bgcolor='#FFFFFF' style=' display:none'>" + trck.cells[8].innerHTML + "</td>"
                             + " </tr>";
                         }
                     }
@@ -581,38 +584,47 @@ protected void Page_Load(object sender, EventArgs e)
 {
     string CompanyID = "";  //营业注册号
     string HtmlMC = "";     //html文件名
+ 
     if (Request["CompanyID"] != null && Request["CompanyID"].ToString() != "")
     {
         CompanyID = Request["CompanyID"].ToString();
-    }   
-    CompanyID = "156423654";
-    this.wjj.Value = CompanyID;
-    if (Request["HtmlMC"] != null && Request["HtmlMC"].ToString() != "")
-    {
-        HtmlMC = Request["HtmlMC"].ToString();
-    }    
-    this.htmlmc.Value = HtmlMC;
-
-    //验证 CompanyID
-    bool b = false;
-
-    string sSQL = "select cgs_id as id,单位类型 from 采购商基本信息 where 营业执照注册号='" + CompanyID +
-        "' and 审批结果='通过'union select gys_id as id,单位类型 from 材料供应商信息表 where 营业执照注册号='" + CompanyID + "' and  审批结果='通过'";
-
-    DataTable dt_yz = new DataTable();
-    dt_yz = Conn.GetDataTable(sSQL);
-    if (dt_yz != null && dt_yz.Rows.Count > 0)
-    {
-        DWID = dt_yz.Rows[0]["id"].ToString();
-        DWLX = dt_yz.Rows[0]["单位类型"].ToString();
-        b = true;
-        this.DW_ID.Value = DWID;
     }
-    //if (!b)
-    //{
-    //    //地址为超链接
-    //    Response.Write("<script" + ">" + "alert('贵公司未在众材网(www.zhcnet.cn)成功注册，此功能禁用！');window.location.href='http://www.zhcnet.cn';" + "</" + "script>");
-    //}
+    if (CompanyID == "1")
+    {
+
+    }
+    else
+    {
+        //CompanyID = "110113011939971";
+        this.wjj.Value = CompanyID;
+        if (Request["HtmlMC"] != null && Request["HtmlMC"].ToString() != "")
+        {
+            HtmlMC = Request["HtmlMC"].ToString();
+        }
+        this.htmlmc.Value = HtmlMC;
+
+        //验证 CompanyID
+
+        bool b = false;
+        string sSQL = "select cgs_id as id,单位类型 from 采购商基本信息 where 营业执照注册号='" + CompanyID +
+            "' and 审批结果='通过'union select gys_id as id,单位类型 from 材料供应商信息表 where 营业执照注册号='" + CompanyID + "' and  审批结果='通过'";
+
+        DataTable dt_yz = new DataTable();
+        dt_yz = Conn.GetDataTable(sSQL);
+        if (dt_yz != null && dt_yz.Rows.Count > 0)
+        {
+            DWID = dt_yz.Rows[0]["id"].ToString();
+            DWLX = dt_yz.Rows[0]["单位类型"].ToString();
+            b = true;
+            this.DW_ID.Value = DWID;
+        }
+        if (!b)
+        {
+            //地址为超链接
+            Response.Write("<script" + ">" + "alert('贵公司未在众材网(www.zhcnet.cn)成功注册，此功能禁用！');window.location.href='http://www.zhcnet.cn';" + "</" + "script>");
+        }
+    }
+   
 }   
 </script>
  <div class="lib_Menubox2">
@@ -772,13 +784,15 @@ protected void Page_Load(object sender, EventArgs e)
         <th width="50" align="center" bgcolor="#E3ECFF"><strong>单 位</strong></th>
         <th width="70" align="center" bgcolor="#E3ECFF">价 格</th>
         <th width="50" align="center" bgcolor="#E3ECFF">选 项</th>
+        <th width="50" align="center" bgcolor="#E3ECFF" style=" display:none">cl_id</th>
+        <th width="50" align="center" bgcolor="#E3ECFF">查 阅</th>
       </tr>
     </thead>    
     <tbody id="scclxq">     
     </tbody>
      <tfoot>
      <tr>
-        <td  height="40" align="right" bgcolor="#FFFFFF" colspan="8" style="padding-right:20px;">
+        <td  height="40" align="right" bgcolor="#FFFFFF" colspan="10" style="padding-right:20px;">
             <input type="button" id="btnFilter2" value="确定" onClick="qd_Click()" style="height: 20px;
                 width: 64px; border-style: none; font-family: 宋体; font-size: 12px; cursor:pointer;" />
          </td>
@@ -798,6 +812,7 @@ protected void Page_Load(object sender, EventArgs e)
         <th width="50" align="center" bgcolor="#E3ECFF"><strong>单 位</strong></th>
         <th width="70" align="center" bgcolor="#E3ECFF">价 格</th>
         <th width="50" align="center" bgcolor="#E3ECFF">选 项</th>
+         <th width="50" align="center" bgcolor="#E3ECFF" style=" display:none">cl_id</th>
       </tr>
     </thead>    
     <tbody id="cl">     
